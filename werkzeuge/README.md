@@ -18,6 +18,8 @@ Alles läuft nach `zsh werkzeuge/build.sh` aus `werkzeuge/bin/`.
 | `ana.swift` | Aufnahme auswerten (Phasen, Deltas) | Analyse |
 | `info.swift` | Bildschirm, Fenster, Mausposition ausgeben | Hilfe |
 | `ax.swift` | prüfen, ob Bedienungshilfen freigegeben sind | Hilfe |
+| `felder.swift` | alle Felder eines aufgezeichneten Ereignisses ausgeben (echt vs. künstlich vergleichen) | Analyse |
+| `echt.swift` | „echter“ wirkende Eingaben: Flags 0, Hardware-Zeitstempel (Feld 169), HID-Quelle, direkt an die App (`postToPid`), echte Aufnahme an die App | wird ignoriert (08.11., Galerie 11/12 blieb) |
 
 Fazit: Nur echte Geräte wirken → Mini-Gerät (`../geraet/`).
 

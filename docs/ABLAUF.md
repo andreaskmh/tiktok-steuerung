@@ -28,7 +28,9 @@ Bedienungshilfen sind erteilt.
 
 - Künstliches Scrollen/Wischen per Software: CGEvent-Scroll mit Trackpad-Phasen, Shift + Mausrad,
   aufgezeichnete echte Gesten 1:1 abgespielt (`werkzeuge/test/`) → wird von der iPhone-Synchronisierung
-  ignoriert. Nur **echte Geräte** wirken (Trackpad mit 2 Fingern, Maus mit Shift + Scroll).
+  ignoriert. Ebenso „bereinigte“ Ereignisse (keine Synthetik-Flags, Hardware-Zeitstempel, direkt an die App
+  geschickt, `werkzeuge/test/echt.swift`). Echte Ereignisse tragen intern eine Geräte-Kennung, die sich per
+  Software nicht setzen lässt. Nur **echte Geräte** wirken (Trackpad mit 2 Fingern, Maus mit Shift + Scroll).
 - AssistiveTouch-Menü wird nicht gespiegelt.
 - Tastatursteuerung am iPhone (Bedienungshilfen) blockierte die Eingaben → wieder aus.
 
