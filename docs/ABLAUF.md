@@ -79,3 +79,17 @@ Ablauf noch nicht gebaut. Geplant:
 - Nie in der Nähe von **„Kasse“, „Einkaufswagen“, „Jetzt kaufen“** blind tippen – vorher Bildschirmfoto ansehen.
 - Posten nur nach Arturs OK **pro Stapel**.
 - Keine Nachrichten, Kommentare oder Follows.
+
+## ⚠️ Gefahrenstelle beim Upload (Vorfall 08.11.2026, 21:16)
+
+Im TikTok-Editor liegt **„Weiter“ unten rechts genau dort, wo auf der nächsten Seite „Veröffentlichen“ liegt**.
+Tipps über die iPhone-Synchronisierung kommen manchmal **doppelt bzw. verzögert** an → der zweite Tipp hat das Video
+ohne Beschreibung/Link sofort veröffentlicht (artur.official, Schokoellsen).
+
+Regeln ab jetzt:
+- Nach jedem Tipp unten rechts (Weiter) **sofort den Zeiger aus der unteren Leiste wegbewegen** (z. B. in die obere Bildhälfte)
+  und 2 s warten, bevor irgendetwas anderes passiert.
+- Auf der Beitragsseite **nie** in den Bereich der unteren Knöpfe (Entwürfe / Veröffentlichen) tippen, außer für das
+  freigegebene Veröffentlichen ganz am Schluss.
+- „Weiter“ im Editor nur **einmal** tippen, dann per Foto prüfen – nie ein zweites Mal „zur Sicherheit“.
+- Unten links im Editor ist „Deine Story“ → sofort veröffentlicht, nie antippen.
