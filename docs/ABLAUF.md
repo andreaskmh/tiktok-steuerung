@@ -34,8 +34,13 @@ Bedienungshilfen sind erteilt.
 - AssistiveTouch-Menü wird nicht gespiegelt.
 - Tastatursteuerung am iPhone (Bedienungshilfen) blockierte die Eingaben → wieder aus.
 
-**Lösung:** echte Hardware-Eingaben – entweder die virtuelle Maus über den Karabiner-Treiber (`vmaus/`, Plan B)
-oder das Mini-Gerät = Arduino Pro Micro als echte USB-Maus (`geraet/`). Beide über `geraet/geraet.py`.
+- **Virtuelle Maus über den Karabiner-Treiber (`vmaus/`)**: Ereignisse kommen mit Hardware-Kennung im System an
+  (sauber gemessen 08.11., ohne Trackpad-Störung), werden von der iPhone-Synchronisierung aber trotzdem ignoriert
+  (Rad senkrecht/waagerecht, Shift + Rad). Vermutlich filtert sie virtuelle Geräte heraus.
+- Vorsicht beim Testen: Jede Berührung von Arturs Trackpad/Maus verfälscht das Ergebnis → immer mit
+  `werkzeuge/bin/rec` mitschneiden und prüfen, dass nur die eigenen Ereignisse drin sind.
+
+**Lösung:** echte Hardware-Eingaben – das Mini-Gerät = Arduino Pro Micro als echte USB-Maus (`geraet/`). Beide über `geraet/geraet.py`.
 
 ## Nächster Schritt: Wisch-Test mit dem Mini-Gerät
 

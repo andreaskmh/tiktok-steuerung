@@ -15,7 +15,7 @@ Läuft über die iPhone-Synchronisierung am Mac, gesteuert von Claude.
 
 - ✓ Produkt im TikTok Shop öffnen und Galerie-Bild aufnehmen
 - ✗ Zum nächsten Bild wischen (Software wird ignoriert) → Mini-Gerät ist bestellt
-- ☐ Virtuelle Maus einrichten (`vmaus/ANLEITUNG.md`) → Wisch-Test
+- ✗ Virtuelle Maus (`vmaus/`): eingerichtet, kommt im System an, wird von der iPhone-Synchronisierung ignoriert
 - ☐ Wisch-Test mit dem Mini-Gerät (`geraet/FLASHEN.md`, dann `zsh geraet/wischtest.sh`)
 - ☐ Alle Bilder eines Produkts automatisch holen
 - ☐ Automatisch posten (mit Freigabe pro Stapel)
