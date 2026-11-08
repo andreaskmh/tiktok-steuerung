@@ -1,0 +1,12 @@
+.DS_Store
+werkzeuge/bin/
+geraet/hid_maus/build/
+uebergabe/eingang/*
+uebergabe/ausgang/*
+!uebergabe/eingang/.gitkeep
+!uebergabe/ausgang/.gitkeep
+__pycache__/
+*.png
+*.mp4
+*.mov
+!docs/*.png
