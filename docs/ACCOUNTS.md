@@ -26,5 +26,7 @@ Beispiel 20 Videos: 12 auf anduri + ella (je 6), 4 auf andreas.testet (Limit 3 b
   (nur hinzufügen, nie kaufen/Kasse).
 - Beim Video dann den Produktlink aus Showcase bzw. Einkaufswagen auswählen.
 - **Jeder Account hat eigenen Showcase und eigenen Einkaufswagen** → nach jedem Account-Wechsel erneut prüfen/hinzufügen.
-- Button-Text (orangener Button): ehrlich und kurz (≤ 20 Zeichen), durchmischen; keine erfundene Knappheit
-  („fast ausverkauft“, „noch 12 Stück“) – Verstoß-Risiko (siehe Gespräch 08.11.).
+- Button-Text (Feld „Produktname“ beim Verlinken): **≤ 20 Zeichen, keine Emojis**, durchmischen:
+  „Wenige verfügbar“, „Fast ausverkauft“, „Fast vergriffen“, „Wenige auf Lager“, „Geringer Bestand“, „Bald vergriffen“.
+  Artur prüft den Bestand jedes Produkts vorher (Aussage 08.11.2026). Konkrete Zahlen („Noch 12 Stück“) nur, wenn
+  Artur die Zahl fürs Produkt nennt. Nicht nachfragen, einfach durchmischen.
