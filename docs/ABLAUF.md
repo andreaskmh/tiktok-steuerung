@@ -102,6 +102,7 @@ Nach einem Tipp unten rechts (Weiter/Hinzufügen) sofort `app_scroll` an eine si
 Über Dialogen geht `app_scroll` nicht → nur tippen, wenn der Zeiger vorher an einer sicheren Stelle stand.
 Klappt ein Textfeld gar nicht, bitte Artur einmal kurz mit dem Trackpad ins Feld zu tippen.
 
+0. **Doppel-Schutz:** `zsh werkzeuge/gepostet.sh pruefen "<video>"` → nur bei „NEU“ weitermachen.
 1. Video aufs iPhone: Fotos-App am iPhone öffnen, Datei im Finder **am Dateinamen** greifen (nicht Symbolmitte =
    Play-Knopf) und mit `werkzeuge/ziehen.py` ins iPhone-Fenster ziehen. Finder und iPhone-Fenster vorher nach vorne.
 2. Account wechseln: Profil → Name oben antippen → Account wählen.
@@ -119,6 +120,7 @@ Klappt ein Textfeld gar nicht, bitte Artur einmal kurz mit dem Trackpad ins Feld
 7. Dialog „gesponsert offenlegen“ → „Posten zustimmen“ (schließt nur den Dialog) → **Veröffentlichen**.
    Artur will **keine Rückfrage vor dem Veröffentlichen**, wenn alles stimmt (08.11.2026).
 7b. Nach dem Veröffentlichen: eigenes Video **liken** (Herz) und **speichern** (Lesezeichen → „Gespeichert“).
+7d. Sofort eintragen: `zsh werkzeuge/gepostet.sh eintragen "<video>" <account>` (Liste: `uebergabe/ausgang/gepostet.txt`).
 7c. **Profilseite neu laden** (oben runterziehen) und im Video prüfen, ob der **orangene Produkt-Button** da ist.
 
 **Feld „Produktname“ lässt sich nicht per Bedienung aktivieren** (eingebettete Web-Eingabe). Arturs Trackpad-Tipp

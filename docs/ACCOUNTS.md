@@ -5,7 +5,7 @@
 | `anduri.official` | Videos, **höchste Priorität**, Qualitätsvideos (MoF, HoF, Remakes) | zusammen mit ella ≈ 60 % |
 | `ella_robinson2` | Videos, **höchste Priorität**, Qualitätsvideos (MoF, HoF, Remakes) | zusammen mit anduri ≈ 60 % |
 | `andreas.testet` | Videos, eher BoF/Trend | **max. 3 Videos pro Tag** (Pilotprogramm) |
-| `artur.official` | Videos, eher BoF/Trend | Rest |
+| `artur.official` | Videos, eher BoF/Trend | Rest – **möglichst wenig** (Artur 08.11.: anduri + ella haben Vorrang) |
 | `andreasfastlane` | **nur Slideshows** | – |
 
 Beispiel 20 Videos: 12 auf anduri + ella (je 6), 4 auf andreas.testet (Limit 3 beachten!), 4 auf artur.official.
