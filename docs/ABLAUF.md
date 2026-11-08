@@ -113,6 +113,8 @@ Klappt ein Textfeld gar nicht, bitte Artur einmal kurz mit dem Trackpad ins Feld
 5. Beitragsseite: Beschreibung tippen; Brand über **„@ Erwähnung“** suchen und den Shop-Account wählen.
 6. Link hinzufügen → Produkt → (Hinweis Provisionsschutz: „OK, verstanden“) → im Showcase „Hinzufügen“ →
    „Hinzufügen“ bestätigen → Feld „Produktname“ leeren (Rücktaste) → Button-Text (siehe docs/ACCOUNTS.md) → Hinzufügen.
+6b. **Weitere Optionen** öffnen → prüfen, dass **höchste Qualität / hochwertige Uploads** an ist (sonst einschalten).
 7. Dialog „gesponsert offenlegen“ → „Posten zustimmen“ (schließt nur den Dialog) → **Veröffentlichen**.
    Artur will **keine Rückfrage vor dem Veröffentlichen**, wenn alles stimmt (08.11.2026).
+7b. Nach dem Veröffentlichen: eigenes Video **liken** (Herz) und **speichern** (Lesezeichen → „Gespeichert“).
 8. Vorsicht im Video-Feed: roter Balken „… Aufrufe für … €“ (Promote) direkt unter der Navigationsleiste – nie antippen.
