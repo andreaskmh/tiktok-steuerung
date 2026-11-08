@@ -93,3 +93,26 @@ Regeln ab jetzt:
   freigegebene Veröffentlichen ganz am Schluss.
 - „Weiter“ im Editor nur **einmal** tippen, dann per Foto prüfen – nie ein zweites Mal „zur Sicherheit“.
 - Unten links im Editor ist „Deine Story“ → sofort veröffentlicht, nie antippen.
+
+## Erprobter Upload-Ablauf (08.11.2026, Schokoellsen auf artur.official)
+
+**Zeiger-Regel (wichtigste Regel):** Der erste Tipp landet dort, wo der iPhone-Zeiger zuletzt war. Deshalb vor
+**jedem** Tipp den Zeiger per `app_scroll` (dy 0) an die Zielstelle holen, per Foto prüfen, dann `app_click`.
+Nach einem Tipp unten rechts (Weiter/Hinzufügen) sofort `app_scroll` an eine sichere Stelle oben (z. B. 200,60).
+Über Dialogen geht `app_scroll` nicht → nur tippen, wenn der Zeiger vorher an einer sicheren Stelle stand.
+Klappt ein Textfeld gar nicht, bitte Artur einmal kurz mit dem Trackpad ins Feld zu tippen.
+
+1. Video aufs iPhone: Fotos-App am iPhone öffnen, Datei im Finder **am Dateinamen** greifen (nicht Symbolmitte =
+   Play-Knopf) und mit `werkzeuge/ziehen.py` ins iPhone-Fenster ziehen. Finder und iPhone-Fenster vorher nach vorne.
+2. Account wechseln: Profil → Name oben antippen → Account wählen.
+3. Produkt ins Showcase: Safari → `social1.ai/products/<id>` → „View on TikTok Shop“ → Provisions-Badge
+   („Verdiene … pro Verkauf“) → „Zum Showcase hinzufügen“ (danach heißt der Knopf „Mehr erkunden“).
+   Nie „Kasse“; „Einkaufswagen“ nur, wenn Showcase nicht geht. **Pro Account neu.**
+4. Upload: + → Galerie unten links → Video → Weiter → Weiter (Editor; unten links „Deine Story“ nie!).
+   Zwischendurch geht „Entwürfe“ (Profil → Video-Reiter → Kachel „Entwürfe“).
+5. Beitragsseite: Beschreibung tippen; Brand über **„@ Erwähnung“** suchen und den Shop-Account wählen.
+6. Link hinzufügen → Produkt → (Hinweis Provisionsschutz: „OK, verstanden“) → im Showcase „Hinzufügen“ →
+   „Hinzufügen“ bestätigen → Feld „Produktname“ leeren (Rücktaste) → Button-Text (siehe docs/ACCOUNTS.md) → Hinzufügen.
+7. Dialog „gesponsert offenlegen“ → „Posten zustimmen“ (schließt nur den Dialog) → **Veröffentlichen**.
+   Artur will **keine Rückfrage vor dem Veröffentlichen**, wenn alles stimmt (08.11.2026).
+8. Vorsicht im Video-Feed: roter Balken „… Aufrufe für … €“ (Promote) direkt unter der Navigationsleiste – nie antippen.
