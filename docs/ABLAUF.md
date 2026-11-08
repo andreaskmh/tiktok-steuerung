@@ -119,4 +119,9 @@ Klappt ein Textfeld gar nicht, bitte Artur einmal kurz mit dem Trackpad ins Feld
 7. Dialog „gesponsert offenlegen“ → „Posten zustimmen“ (schließt nur den Dialog) → **Veröffentlichen**.
    Artur will **keine Rückfrage vor dem Veröffentlichen**, wenn alles stimmt (08.11.2026).
 7b. Nach dem Veröffentlichen: eigenes Video **liken** (Herz) und **speichern** (Lesezeichen → „Gespeichert“).
+7c. **Profilseite neu laden** (oben runterziehen) und im Video prüfen, ob der **orangene Produkt-Button** da ist.
+
+**Feld „Produktname“ lässt sich nicht per Bedienung aktivieren** (eingebettete Web-Eingabe). Arturs Trackpad-Tipp
+kommt beim Mac als Klick mit Untertyp „Touch“ an (CGEvent-Feld 7 = 3, Druck 255, Feld 108 = 1); unsere Klicks
+haben das nicht. Nächster Versuch: eigener Klick mit diesen Feldern (werkzeuge/test/). Bis dahin: Artur tippt einmal ins Feld.
 8. Vorsicht im Video-Feed: roter Balken „… Aufrufe für … €“ (Promote) direkt unter der Navigationsleiste – nie antippen.
