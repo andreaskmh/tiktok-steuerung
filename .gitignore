@@ -10,3 +10,6 @@ __pycache__/
 *.mp4
 *.mov
 !docs/*.png
+vmaus/bin/
+vmaus/quelle/
+vmaus/*.pkg

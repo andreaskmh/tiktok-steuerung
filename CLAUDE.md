@@ -18,13 +18,14 @@ kurz und verständlich, Fachbegriffe nur wenn nötig.
 - `docs/UEBERGABE.md` – JSON-Format für `uebergabe/eingang` (Posten) und `uebergabe/ausgang` (Stock).
 - `werkzeuge/` – Fenster-Aufnahme, Zeiger setzen, Prüfer; `test/` = Versuche, die nicht gewirkt haben.
   Bauen: `zsh werkzeuge/build.sh`.
+- `vmaus/` – virtuelle Maus (Karabiner-Treiber) als Plan B, gleiche Befehle wie das Mini-Gerät; `ANLEITUNG.md`.
 - `geraet/` – Mini-Gerät (Arduino Pro Micro als echte USB-Maus), Sketch, `geraet.py`, `FLASHEN.md`.
 
 ## Arbeitsweise
 
 - Bedienung über die **iPhone-Synchronisierung** per Computer-Use (`app_*`-Werkzeuge).
   Fotos immer mit `werkzeuge/aufnahme.sh` (nur das Fenster).
-- Wischen geht nur mit dem **Mini-Gerät**; Software-Wischen ist ausprobiert und wirkt nicht.
+- Wischen geht nur mit echter Hardware: **Mini-Gerät** oder **virtuelle Maus** (`vmaus/`), beide über `geraet/geraet.py`; Software-Wischen ist ausprobiert und wirkt nicht.
 - Fortschritt in einer Zeile, Probleme selbst lösen, Artur nur fragen, wenn nur er es kann.
 
 ## Regeln (nicht verhandelbar)

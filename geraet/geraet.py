@@ -7,25 +7,36 @@ Aufruf:
   python3 geraet/geraet.py "SCROLL 0 -5 5" "CLICK"        # mehrere Befehle nacheinander
   python3 geraet/geraet.py --port /dev/cu.usbmodem1101 ping
 
-Ohne --port gilt $GERAET_PORT, sonst der erste /dev/cu.usbmodem*. Nur Python-Standardbibliothek (kein pyserial).
+Ohne --port gilt $GERAET_PORT, sonst der erste /dev/cu.usbmodem* (Mini-Gerät),
+sonst die virtuelle Maus /var/run/tiktok-maus.sock (vmaus/, Karabiner-Treiber). Nur Python-Standardbibliothek (kein pyserial).
 Wichtig: Das Gerät bewegt den Zeiger nur relativ. Zuerst mit werkzeuge/bin/zeiger an die
 richtige Stelle setzen, dann wischen/scrollen.
 """
-import glob, os, select, sys, termios, time
+import glob, os, select, socket, stat, sys, termios, time
+
+VMAUS = "/var/run/tiktok-maus.sock"
 
 
 def finde_port():
     if os.environ.get("GERAET_PORT"):
         return os.environ["GERAET_PORT"]
     ports = sorted(glob.glob("/dev/cu.usbmodem*"))
-    if not ports:
-        sys.exit("Kein Mini-Gerät gefunden (/dev/cu.usbmodem*). Steckt es? Ist der Sketch drauf?")
-    return ports[0]
+    if ports:
+        return ports[0]
+    if os.path.exists(VMAUS):
+        return VMAUS
+    sys.exit("Weder Mini-Gerät (/dev/cu.usbmodem*) noch virtuelle Maus (" + VMAUS + ") gefunden.")
 
 
 class Geraet:
     def __init__(self, port=None, baud=115200):
         self.port = port or finde_port()
+        self.sock = None
+        if stat.S_ISSOCK(os.stat(self.port).st_mode):
+            self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            self.sock.connect(self.port)
+            self.fd = self.sock.fileno()
+            return
         self.fd = os.open(self.port, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
         a = termios.tcgetattr(self.fd)
         speed = getattr(termios, f"B{baud}", termios.B115200)
@@ -50,7 +61,10 @@ class Geraet:
         return "ERR keine Antwort"
 
     def close(self):
-        os.close(self.fd)
+        if self.sock:
+            self.sock.close()
+        else:
+            os.close(self.fd)
 
 
 def main(argv):

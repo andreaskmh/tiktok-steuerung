@@ -34,7 +34,8 @@ Bedienungshilfen sind erteilt.
 - AssistiveTouch-Menü wird nicht gespiegelt.
 - Tastatursteuerung am iPhone (Bedienungshilfen) blockierte die Eingaben → wieder aus.
 
-**Lösung:** Mini-Gerät = Arduino Pro Micro als echte USB-Maus (`geraet/`).
+**Lösung:** echte Hardware-Eingaben – entweder die virtuelle Maus über den Karabiner-Treiber (`vmaus/`, Plan B)
+oder das Mini-Gerät = Arduino Pro Micro als echte USB-Maus (`geraet/`). Beide über `geraet/geraet.py`.
 
 ## Nächster Schritt: Wisch-Test mit dem Mini-Gerät
 
