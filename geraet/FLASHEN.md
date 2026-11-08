@@ -52,6 +52,8 @@ python3 geraet/geraet.py "SHIFTSCROLL -3"
 
 Dann den ganzen Wisch-Test: `zsh geraet/wischtest.sh` (siehe `docs/ABLAUF.md`).
 
+Ohne Gerät testen: `python3 geraet/attrappe.py` gibt einen Port aus, dann `GERAET_PORT=<port> zsh geraet/wischtest.sh`.
+
 ## Befehle
 
 Stehen oben im Sketch `hid_maus/hid_maus.ino`: `PING`, `SCROLL dx dy n [ms]`, `SHIFTSCROLL n [ms]`,

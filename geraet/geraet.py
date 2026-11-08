@@ -7,7 +7,7 @@ Aufruf:
   python3 geraet/geraet.py "SCROLL 0 -5 5" "CLICK"        # mehrere Befehle nacheinander
   python3 geraet/geraet.py --port /dev/cu.usbmodem1101 ping
 
-Ohne --port wird der erste /dev/cu.usbmodem* genommen. Nur Python-Standardbibliothek (kein pyserial).
+Ohne --port gilt $GERAET_PORT, sonst der erste /dev/cu.usbmodem*. Nur Python-Standardbibliothek (kein pyserial).
 Wichtig: Das Gerät bewegt den Zeiger nur relativ. Zuerst mit werkzeuge/bin/zeiger an die
 richtige Stelle setzen, dann wischen/scrollen.
 """
@@ -15,6 +15,8 @@ import glob, os, select, sys, termios, time
 
 
 def finde_port():
+    if os.environ.get("GERAET_PORT"):
+        return os.environ["GERAET_PORT"]
     ports = sorted(glob.glob("/dev/cu.usbmodem*"))
     if not ports:
         sys.exit("Kein Mini-Gerät gefunden (/dev/cu.usbmodem*). Steckt es? Ist der Sketch drauf?")

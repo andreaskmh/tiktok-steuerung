@@ -6,7 +6,7 @@ import CoreGraphics
 let a = CommandLine.arguments
 var x = 0.0, y = 0.0
 if a.count == 4 && a[1] == "rel" {
-    let p = Process(); p.executableURL = URL(fileURLWithPath: (a[0] as NSString).deletingLastPathComponent + "/fenster")
+    let p = Process(); p.executableURL = URL(fileURLWithPath: ((Bundle.main.executablePath ?? a[0]) as NSString).deletingLastPathComponent + "/fenster")
     let pipe = Pipe(); p.standardOutput = pipe; try! p.run(); p.waitUntilExit()
     let f = String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)!.split(separator: " ").compactMap { Double($0.trimmingCharacters(in: .whitespacesAndNewlines)) }
     guard p.terminationStatus == 0, f.count == 5 else { print("iPhone-Fenster nicht gefunden"); exit(1) }
