@@ -8,5 +8,7 @@ ZIEL=${1:?Aufruf: aufnahme.sh <ziel.png>}
 INFO=$($HIER/bin/fenster ${2:-com.apple.ScreenContinuity}) || { echo "iPhone-Synchronisierung ist nicht offen"; exit 1; }
 ID=${INFO%% *}
 mkdir -p ${ZIEL:h}
-screencapture -x -o -l $ID $ZIEL
+# screencapture darf nicht direkt in geschützte Ordner (~/Documents) schreiben → erst temporär, dann verschieben
+T=$(mktemp -d)/a.png
+screencapture -x -o -l $ID $T && mv $T $ZIEL
 echo "$ZIEL ($(sips -g pixelWidth -g pixelHeight $ZIEL | awk '/pixel/{printf "%s ", $2}')px)"

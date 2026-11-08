@@ -21,8 +21,26 @@ Bedienungshilfen sind erteilt.
    zsh werkzeuge/aufnahme.sh uebergabe/ausgang/<produkt>/bild-01.png
    ```
    Ergebnis: nur das iPhone-Fenster, 668–694 px breit, ohne Schatten.
-7. Zum nächsten Bild wischen → **geht erst mit dem Mini-Gerät** (siehe unten), dann Schritt 6 wiederholen,
-   bis der Zähler einmal rum ist.
+7. Alle Bilder automatisch holen:
+   ```bash
+   zsh werkzeuge/galerie.sh <ordnername> "<Produktname>" "<social1_link>" "<tts_link>"
+   ```
+   Geht zurück auf Bild 1, nimmt jedes Bild auf, wischt weiter (`SHIFTSCROLL ±7 10` = genau ein Bild) und prüft
+   jedes Mal den Zähler (`werkzeuge/bin/zaehler`). Ergebnis in `uebergabe/ausgang/<ordnername>/`.
+
+### Die virtuelle Maus „aufwecken“ (wichtig!)
+
+Die iPhone-Synchronisierung nimmt die virtuelle Maus erst an, nachdem einmal eine **echte** Berührung kam
+(Finger kurz aufs Trackpad legen, ohne zu bewegen). Danach wirkt sie dauerhaft, auch ohne Finger
+(getestet über mehrere Minuten). Nach Sperren/Entsperren der iPhone-Synchronisierung wohl wieder nötig.
+Anzeichen: Befehle sagen „OK“, aber das Bild bewegt sich nicht → Artur bitten, einmal kurz das Trackpad zu berühren.
+
+Weitere Regeln:
+- Das iPhone-Fenster muss **vorne** sein (`open -b com.apple.ScreenContinuity`), sonst landet das Scrollen im Fenster darüber.
+- Zeiger direkt vor jedem Befehl neu setzen (`zeiger rel 0.5 0.45`).
+- Senkrecht scrollen: `SCROLL 0 ±10 n 15`. Zur Galerie: Seite nach oben, dann `CLICK` in die Bildmitte (≈ 40 % Höhe,
+  „Kasse“ liegt bei ≈ 90 %) – vorher immer Foto prüfen.
+- Kleine Rad-Mengen (unter ~6 schnellen Rasten) bewirken in der Galerie nichts.
 
 ## Was NICHT geht (alles am 08.11. probiert)
 
@@ -34,15 +52,12 @@ Bedienungshilfen sind erteilt.
 - AssistiveTouch-Menü wird nicht gespiegelt.
 - Tastatursteuerung am iPhone (Bedienungshilfen) blockierte die Eingaben → wieder aus.
 
-- **Virtuelle Maus über den Karabiner-Treiber (`vmaus/`)**: Ereignisse kommen mit Hardware-Kennung im System an
-  (sauber gemessen 08.11., ohne Trackpad-Störung), werden von der iPhone-Synchronisierung aber trotzdem ignoriert
-  (Rad senkrecht/waagerecht, Shift + Rad). Vermutlich filtert sie virtuelle Geräte heraus.
-- Vorsicht beim Testen: Jede Berührung von Arturs Trackpad/Maus verfälscht das Ergebnis → immer mit
+- Vorsicht beim Testen: Jede Berührung von Arturs Trackpad/Maus (auch ein Wassertropfen!) verfälscht das Ergebnis → immer mit
   `werkzeuge/bin/rec` mitschneiden und prüfen, dass nur die eigenen Ereignisse drin sind.
 
-**Lösung:** echte Hardware-Eingaben – das Mini-Gerät = Arduino Pro Micro als echte USB-Maus (`geraet/`). Beide über `geraet/geraet.py`.
+**Lösung (funktioniert seit 08.11.2026):** virtuelle Maus über den Karabiner-Treiber (`vmaus/`) – oder als Reserve das Mini-Gerät = Arduino Pro Micro als echte USB-Maus (`geraet/`). Beide über `geraet/geraet.py`.
 
-## Nächster Schritt: Wisch-Test mit dem Mini-Gerät
+## Reserve: Mini-Gerät (falls die virtuelle Maus einmal nicht geht)
 
 1. Gerät flashen (`geraet/FLASHEN.md`), anstecken, `python3 geraet/geraet.py ping` → `OK PONG`.
 2. iPhone: ein Produkt in der Vollbild-Galerie öffnen (Zähler sichtbar, z. B. `1/12`).

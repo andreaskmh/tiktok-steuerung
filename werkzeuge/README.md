@@ -6,6 +6,7 @@ Alles läuft nach `zsh werkzeuge/build.sh` aus `werkzeuge/bin/`.
 |---|---|
 | `aufnahme.sh <ziel.png>` | Fenster der iPhone-Synchronisierung sauber aufnehmen (`screencapture -x -o -l <id>`) |
 | `fenster [bundle]` | Fenster-ID + Lage der iPhone-Synchronisierung (`com.apple.ScreenContinuity`) |
+| `galerie.sh <ordner> [produkt] [social1] [tts]` | alle Galerie-Bilder eines Produkts holen + `produkt.json` |
 | `zaehler <bild.png>` | liest den Galerie-Zähler (z. B. `3 12`) per Texterkennung |
 | `zeiger <x> <y>` / `zeiger rel <fx> <fy>` | Mauszeiger setzen, damit das Mini-Gerät an der richtigen Stelle wischt |
 

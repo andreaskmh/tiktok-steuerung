@@ -1,4 +1,4 @@
-# Virtuelle Maus (Plan B ohne Mini-Gerät)
+# Virtuelle Maus (eingerichtet 08.11.2026, funktioniert)
 
 Der Treiber **Karabiner-DriverKit-VirtualHIDDevice** (von pqrs.org, Apple-notarisiert, gemeinfrei)
 meldet im System eine virtuelle USB-Maus + Tastatur an, die macOS wie echte Hardware behandelt.
@@ -21,6 +21,9 @@ Arturs Benutzer öffnen. **Danach gibt es keine Abfragen mehr**, auch nicht nach
    ```bash
    sudo zsh ~/Documents/Coding/TikTok-Steuerung/vmaus/einrichten.sh
    ```
+   Geht das Passwort im Terminal der Claude-App nicht: Claude kopiert `einrichten.sh` + `bin/vmaus` nach
+   `/Users/Shared/tiktok-vmaus-setup/` (Admin-Skripte dürfen nicht in ~/Documents lesen) und startet es per
+   `osascript … with administrator privileges` → normales macOS-Passwortfenster. Danach Kopie löschen.
    Am Ende steht `OK pointing=1 keyboard=1` → fertig.
 4. Erscheint der **Tastatur-Assistent** („Tastatur identifizieren“): einfach schließen.
 
@@ -51,3 +54,8 @@ Programm an seinen geschützten Ort. Treiber und Client müssen dieselbe Protoko
 - Das Socket gehört nur Arturs Benutzer (Rechte 0600).
 - Die virtuelle Maus kann alles, was eine echte Maus kann. Es gelten die Regeln aus `CLAUDE.md`
   (nie blind bei Kasse/Einkaufswagen, Posten nur nach OK).
+
+## Aufwecken
+
+Nach dem Entsperren der iPhone-Synchronisierung reagiert sie erst auf die virtuelle Maus, wenn einmal eine echte
+Trackpad-Berührung kam (Finger kurz drauflegen). Danach dauerhaft. Details: `docs/ABLAUF.md`.
