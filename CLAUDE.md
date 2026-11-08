@@ -25,8 +25,8 @@ kurz und verständlich, Fachbegriffe nur wenn nötig.
 
 - Bedienung über die **iPhone-Synchronisierung** per Computer-Use (`app_*`-Werkzeuge).
   Fotos immer mit `werkzeuge/aufnahme.sh` (nur das Fenster).
-- Wischen geht mit der **virtuellen Maus** (`vmaus/`) über `geraet/geraet.py` – sie muss nach dem Entsperren einmal per echter
-  Trackpad-Berührung „aufgeweckt“ werden (docs/ABLAUF.md). Bilder holen: `werkzeuge/galerie.sh`. Im Test nie klicken, wenn unklar ist, was unter dem Zeiger liegt; Software-Wischen ist ausprobiert und wirkt nicht.
+- Wischen geht mit der **virtuellen Maus** (`vmaus/`) über `geraet/geraet.py` – vor jedem Wisch kurz `MOVE` im iPhone-Fenster
+  (weckt es auf, docs/ABLAUF.md). Bilder holen: `werkzeuge/galerie.sh`. Im Test nie klicken, wenn unklar ist, was unter dem Zeiger liegt; Software-Wischen ist ausprobiert und wirkt nicht.
 - Fortschritt in einer Zeile, Probleme selbst lösen, Artur nur fragen, wenn nur er es kann.
 
 ## Regeln (nicht verhandelbar)

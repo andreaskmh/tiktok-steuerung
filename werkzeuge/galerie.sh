@@ -11,7 +11,8 @@ OUT=$W/uebergabe/ausgang/$NAME; mkdir -p $OUT; TMP=$(mktemp -d)/z.png  # screenc
 zsh $HIER/build.sh >/dev/null
 open -b com.apple.ScreenContinuity; sleep 0.5
 zaehler() { zsh $HIER/aufnahme.sh $TMP >/dev/null; $B/zaehler $TMP; }
-schritt() { $B/zeiger rel 0.5 0.45 >/dev/null; python3 $W/geraet/geraet.py "SHIFTSCROLL $1 10" >/dev/null; sleep 1.1; }
+# vor jedem Wisch kurz bewegen: weckt die iPhone-Synchronisierung für die virtuelle Maus auf
+schritt() { $B/zeiger rel 0.5 0.45 >/dev/null; python3 $W/geraet/geraet.py "MOVE 4 0" "MOVE -4 0" "SHIFTSCROLL $1 10" >/dev/null; sleep 1.1; }
 
 Z=($(zaehler)) || { echo "Kein Galerie-Zähler zu sehen – ist die Vollbild-Galerie offen?"; exit 1; }
 N=${Z[2]}; echo "Galerie: ${Z[1]}/$N"

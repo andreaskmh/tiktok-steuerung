@@ -57,5 +57,5 @@ Programm an seinen geschützten Ort. Treiber und Client müssen dieselbe Protoko
 
 ## Aufwecken
 
-Nach dem Entsperren der iPhone-Synchronisierung reagiert sie erst auf die virtuelle Maus, wenn einmal eine echte
-Trackpad-Berührung kam (Finger kurz drauflegen). Danach dauerhaft. Details: `docs/ABLAUF.md`.
+Nach einer Pause reagiert die iPhone-Synchronisierung erst wieder, wenn sich der Zeiger im Fenster bewegt:
+vor jedem Wisch `MOVE 4 0` + `MOVE -4 0` schicken. Kein Finger nötig. Details: `docs/ABLAUF.md`.

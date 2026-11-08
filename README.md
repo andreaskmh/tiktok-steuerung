@@ -14,7 +14,7 @@ Läuft über die iPhone-Synchronisierung am Mac, gesteuert von Claude.
 ## Stand 08.11.2026
 
 - ✓ Produkt im TikTok Shop öffnen und Galerie-Bild aufnehmen
-- ✓ Zum nächsten Bild wischen – mit der virtuellen Maus (`vmaus/`), nach einmaligem „Aufwecken“ per Trackpad
+- ✓ Zum nächsten Bild wischen – mit der virtuellen Maus (`vmaus/`), ohne Zutun von Artur
 - ✓ Alle Bilder eines Produkts automatisch holen (`werkzeuge/galerie.sh`)
 - ☐ Mehrere Produkte nacheinander (Social1-Liste abarbeiten)
 - ○ Mini-Gerät nur noch als Reserve

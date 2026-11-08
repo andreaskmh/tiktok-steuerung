@@ -30,10 +30,10 @@ Bedienungshilfen sind erteilt.
 
 ### Die virtuelle Maus „aufwecken“ (wichtig!)
 
-Die iPhone-Synchronisierung nimmt die virtuelle Maus erst an, nachdem einmal eine **echte** Berührung kam
-(Finger kurz aufs Trackpad legen, ohne zu bewegen). Danach wirkt sie dauerhaft, auch ohne Finger
-(getestet über mehrere Minuten). Nach Sperren/Entsperren der iPhone-Synchronisierung wohl wieder nötig.
-Anzeichen: Befehle sagen „OK“, aber das Bild bewegt sich nicht → Artur bitten, einmal kurz das Trackpad zu berühren.
+Nach ein paar Minuten Pause (oder nach einem Fensterwechsel) ignoriert die iPhone-Synchronisierung Scroll-Befehle,
+bis sich der Zeiger **im iPhone-Fenster bewegt**. Eine kleine Bewegung der virtuellen Maus reicht:
+`MOVE 4 0` + `MOVE -4 0` direkt vor jedem Wisch (macht `galerie.sh` automatisch). Getestet 08.11.: 7/7 Schritte
+ohne Arturs Zutun. Eine echte Trackpad-Berührung ist **nicht** nötig.
 
 Weitere Regeln:
 - Das iPhone-Fenster muss **vorne** sein (`open -b com.apple.ScreenContinuity`), sonst landet das Scrollen im Fenster darüber.
