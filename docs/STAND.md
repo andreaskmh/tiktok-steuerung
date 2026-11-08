@@ -1,12 +1,11 @@
-# Stand & nächste Schritte (zuletzt 09.11.2026, 00:12)
+# Stand & nächste Schritte (zuletzt 09.11.2026, 00:40)
 
 **Zuerst lesen:** `CLAUDE.md` → `docs/ABLAUF.md` → `docs/ACCOUNTS.md`. Memory: upload-speed-regeln, produkt-immer-ueber-social1.
 
-## Offen (Stapel „Neuer Ordner“, Social1-Liste bof 2.0)
-- **artur.official**: 06 Tunnelblick (ID 1729863109168569276) und 15 Rock Shorts / Hosenrock (ID 1729926696937953544).
-  Beide Produkte liegen schon in arturs Showcase. Tunnelblick-Entwurf hängt evtl. noch offen in TikTok (nicht veröffentlicht).
-- Danach: Log (`uebergabe/ausgang/posts-2026-11-08.json`) ergänzen, Commit.
-- Fertig: ella 5/5, anduri 5/5 (Liste `uebergabe/ausgang/gepostet.txt`, Plan `stapel-2026-11-08-b.json`).
+## Offen
+- Stapel 08.11. komplett (12/12). artur.official 09.11.: Tunnelblick 00:29, Rock Shorts 00:35.
+- Rock Shorts: orangener Shop-Button direkt nach Post noch nicht sichtbar (Link war gesetzt) → Artur kurz prüfen.
+- Kein Abstand zwischen Posts (Artur 09.11.).
 
 ## Schnellster Ablauf (seit 08.11. nachts)
 - Tippen: `python3 werkzeuge/tap.py x y [wSek] …` (virtuelle Maus, sitzt beim 1. Mal). Text: `post.tippe()` (menschlich, Buchstabe für Buchstabe, KEINE Emojis möglich).

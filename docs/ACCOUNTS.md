@@ -13,7 +13,7 @@ Beispiel 20 Videos: 12 auf anduri + ella (je 6), 4 auf andreas.testet (Limit 3 b
 ## Regeln
 
 - **Gleiche Idee + gleiches Produkt** in mehreren Videos → auf **verschiedene Accounts** verteilen (jeden Account testen).
-- **Abstand:** 2–3 Minuten zwischen zwei Uploads (leicht schwanken lassen).
+- **Abstand:** keiner (Artur 09.11.2026).
 - **Ein Account nach dem anderen:** erst alle Videos eines Accounts fertig, dann zum nächsten wechseln.
 - Pro Video: Produktlink (Showcase) hinzufügen, Beschreibung mit Hashtags, **Brand markieren**.
 - Vor dem Posten: Stapel-Plan (Video → Account, Text, Hashtags, Produkt, Brand, Reihenfolge) Artur zeigen, posten erst nach seinem OK.

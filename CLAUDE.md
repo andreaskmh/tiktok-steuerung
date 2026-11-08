@@ -33,7 +33,7 @@ kurz und verständlich, Fachbegriffe nur wenn nötig.
 
 - **Captchas, Logins, Passwörter, Codes macht Artur.** Bot-Schutz nie umgehen.
 - **Nie blind tippen** in der Nähe von „Kasse“, „Einkaufswagen“, „Jetzt kaufen“ – vorher Bildschirmfoto.
-- **Posten nur nach Arturs OK pro Stapel** (im Chat). Mindestens **5 Minuten** zwischen zwei Posts.
+- **Posten nur nach Arturs OK pro Stapel** (im Chat). **Kein Abstand** zwischen Posts (Artur 08.11. und 09.11.2026).
 - Keine Käufe, keine Nachrichten, Kommentare oder Follows.
 - Keine macOS-Sicherheitsabfragen klicken (z. B. „Zubehör erlauben“) – das macht Artur.
 - Jede Änderung am System kurz in `docs/AENDERUNGEN.md` eintragen (Datum, was, warum).

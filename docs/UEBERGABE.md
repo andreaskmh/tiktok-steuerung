@@ -58,7 +58,7 @@ Video und JSON liegen nebeneinander, gleicher Name: `bof-138-03.mp4` + `bof-138-
 | `gepostet` | dieses Projekt | erledigt; zusätzlich `post_link` und `gepostet_um` |
 | `fehler` | dieses Projekt | hat nicht geklappt, Grund im `verlauf` |
 
-Zwischen zwei Posts liegen mindestens **5 Minuten**.
+Zwischen zwei Posts gibt es **keinen Abstand** (Artur 09.11.2026).
 
 ## ausgang/: Stock-Bilder pro Produkt
 

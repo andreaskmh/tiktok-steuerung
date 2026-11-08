@@ -71,7 +71,7 @@ Ablauf noch nicht gebaut. Geplant:
 - Fertiges Video + JSON liegen in `uebergabe/eingang/` (Format: `docs/UEBERGABE.md`).
 - Claude zeigt Artur den ganzen **Stapel** (Video, Account, Produkt, Titel, Hashtags).
 - **Erst nach Arturs OK** pro Stapel: Video hochladen, Showcase-Produkt verlinken, Beschreibung +
-  Hashtags, posten. **5 Minuten Abstand** zwischen zwei Posts.
+  Hashtags, posten. **Kein Abstand** zwischen Posts (Artur 09.11.2026).
 
 ## Regeln (immer)
 
