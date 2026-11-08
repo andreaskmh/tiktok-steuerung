@@ -1,27 +1,25 @@
-# Stand & nächste Schritte (zuletzt 08.11.2026, 22:05)
+# Stand & nächste Schritte (zuletzt 09.11.2026, 00:12)
 
-**Zuerst lesen:** `CLAUDE.md` → `docs/ABLAUF.md` (Upload-Ablauf + Zeiger-Regel) → `docs/ACCOUNTS.md` (Verteilung, Button-Texte).
+**Zuerst lesen:** `CLAUDE.md` → `docs/ABLAUF.md` → `docs/ACCOUNTS.md`. Memory: upload-speed-regeln, produkt-immer-ueber-social1.
 
-## Was läuft
-- iPhone 11 über iPhone-Synchronisierung, Bedienung per Computer-Use (`app_*`, Bundle `com.apple.ScreenContinuity`).
-- Virtuelle Maus `vmaus` (Karabiner-Treiber) ist eingerichtet, Dienste starten automatisch. `python3 geraet/geraet.py STATUS`.
-- Videos aufs iPhone: Fotos-App am iPhone öffnen, `werkzeuge/ziehen.py` (Datei am **Namen** greifen).
-- Produkt ins Showcase: Safari am iPhone → `social1.ai/products/<id>` → View on TikTok Shop → Provisions-Badge →
-  Zum Showcase hinzufügen. **Pro Account.** Social1-Liste am Mac im eingebauten Browser (angemeldet).
-- Erledigt: Schokoellsen → artur.official, Powerbank → anduri.official (Log: `uebergabe/ausgang/posts-2026-11-08.json`).
-- andreas.testet ist für den 08.11. voll.
+## Offen (Stapel „Neuer Ordner“, Social1-Liste bof 2.0)
+- **artur.official**: 06 Tunnelblick (ID 1729863109168569276) und 15 Rock Shorts / Hosenrock (ID 1729926696937953544).
+  Beide Produkte liegen schon in arturs Showcase. Tunnelblick-Entwurf hängt evtl. noch offen in TikTok (nicht veröffentlicht).
+- Danach: Log (`uebergabe/ausgang/posts-2026-11-08.json`) ergänzen, Commit.
+- Fertig: ella 5/5, anduri 5/5 (Liste `uebergabe/ausgang/gepostet.txt`, Plan `stapel-2026-11-08-b.json`).
 
-## Bekannte Stolpersteine
-- **Erster Tipp landet am alten Zeiger** → vor jedem Tipp `app_scroll` (dy 0) ans Ziel; nach Tipps unten rechts
-  Zeiger sofort nach oben. Sonst Gefahr: versehentlich „Veröffentlichen“.
-- Claude-Fenster liegt oft über dem iPhone-Fenster → für die virtuelle Maus vorher `open -b com.apple.ScreenContinuity`.
-- **Feld „Produktname“** reagiert nicht auf unsere Tipps → bisher tippt Artur einmal mit dem Trackpad rein.
-  Nächster Schritt: Klick mit Touch-Kennung nachbauen (CGEvent-Feld 7 = 3, Druck 255, Feld 108 = 1;
-  Aufnahme-Werkzeug `werkzeuge/test/rec2.swift`), per `postToPid` an die iPhone-Synchronisierung schicken.
-- Brand-@: bei mehreren Accounts mit Logo unsicher (Powerbank → `@voltiva_de` geschätzt) – Artur fragen bzw. Shop-Profil prüfen.
-- Video-Feed: roter Promote-Balken „… Aufrufe für … €“ nie antippen.
+## Schnellster Ablauf (seit 08.11. nachts)
+- Tippen: `python3 werkzeuge/tap.py x y [wSek] …` (virtuelle Maus, sitzt beim 1. Mal). Text: `post.tippe()` (menschlich, Buchstabe für Buchstabe, KEINE Emojis möglich).
+- `werkzeuge/post.py a|b|c` und `upload.py publish|like` – Abschnitte am Stück, dazwischen nur kurz Foto.
+- Produkt: Safari am iPhone → `social1.ai/products/<ID>` → View on TikTok Shop → Provisionsfeld → Zum Showcase.
+  Kein Provisionsfeld oder Produkt nicht oben in der Showcase-Liste → **Einkaufswagen** (beliebige Farbe/Größe),
+  beim Verlinken „Weitere Produkte hinzufügen → Einkaufswagen“. Nie scrollen/suchen.
+- Produkt-IDs: Safari am Mac, `do JavaScript` (Apple-Events-JS ist an).
+- Nach „+“: „Kamera nicht verfügbar“ → OK. Keine Pausen zwischen Uploads. Profil nicht neu laden. Like/Speichern nicht nachprüfen.
+- Kein Preis in Beschreibung. Vor „Weiter“ Vorschaubild prüfen (Galerie verschiebt sich) – Artur erlaubt: Video nach Upload aus Galerie löschen.
+- Auf artur.official liegt „Link hinzufügen“ bei y≈388 (eine Zeile weniger als bei ella/anduri, dort 428).
 
-## Nächste Uploads
-Artur schickt Videos + Social1-Liste. Plan (Video → Account, Text, Hashtags, Brand) einmal zeigen, nach „passt“ ohne
-weitere Rückfrage posten; 2–3 Min Abstand; Account komplett abarbeiten, dann wechseln; danach liken, speichern,
-Profil neu laden und orangenen Button prüfen.
+## Stolpersteine
+- iPhone-Zeiger friert ein, wenn Arturs Maus sich bewegt oder das runde Claude-Symbol über dem iPhone-Fenster liegt → Artur fährt kurz mit dem Trackpad drüber. iPhone-Fenster liegt jetzt bei x=700.
+- Arturs Tastatur landet im iPhone, solange das Fenster vorne ist.
+- Kontext wird schnell riesig → neue Session pro Stapel.

@@ -127,3 +127,7 @@ Klappt ein Textfeld gar nicht, bitte Artur einmal kurz mit dem Trackpad ins Feld
 kommt beim Mac als Klick mit Untertyp „Touch“ an (CGEvent-Feld 7 = 3, Druck 255, Feld 108 = 1); unsere Klicks
 haben das nicht. Nächster Versuch: eigener Klick mit diesen Feldern (werkzeuge/test/). Bis dahin: Artur tippt einmal ins Feld.
 8. Vorsicht im Video-Feed: roter Balken „… Aufrufe für … €“ (Promote) direkt unter der Navigationsleiste – nie antippen.
+
+**Feld „Produktname“ (Erkenntnis 08.11.2026, Artur):** Direkt nach „Hinzufügen“ im Showcase ist das Feld bereits **aktiv**.
+Sofort löschen (Rücktaste) und tippen – **kein** Klick, Scroll oder Zeiger-Setzen dazwischen, sonst verliert es den Fokus.
+Klappt es nicht: zurück, Produkt nochmal „Hinzufügen“. Erprobtes Rezept: „Hinzufügen“ per app_click → Seite „Produkt umbenennen“ → `werkzeuge/bin/tipp rel 0.838 0.512` (rechts ins Feld) → sofort Rücktaste ×30 und tippen.
