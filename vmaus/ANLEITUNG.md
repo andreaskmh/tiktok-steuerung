@@ -33,8 +33,12 @@ Arturs Benutzer öffnen. **Danach gibt es keine Abfragen mehr**, auch nicht nach
    virtuellen Maus an (stock.py erreicht Safari → Social1 → TikTok-Produktkarte), aber **Ziehen/Scrollen** wirkt nicht:
    die Vorschaukarte („Einkaufswagen“/„Kasse“ unten) lässt sich nicht hochziehen → `STOPP: Vollbild-Galerie nicht offen`.
    Probiert und **wirkungslos**: `MOVE`-Aufwecken, Zeiger raus/rein, Klick auf die Titelleiste, Fenster aus-/einblenden,
-   iPhone-Synchronisierung neu starten, einmalige Zwei-Finger-Scrollgeste von Artur. Nächster Schritt: Unterschied zum
-   1. MacBook suchen (Trackpad-/Maus-Einstellungen, macOS-Version, `geraet/wischtest.sh` in der Galerie).
+   iPhone-Synchronisierung neu starten, einmalige Zwei-Finger-Scrollgeste von Artur, Scrollen in beide Richtungen
+   („Natürliches Scrollen“ ist hier **aus**, `com.apple.swipescrolldirection = 0`).
+   Geprüft: vmaus-Scrollen wirkt in normalen Mac-Apps (Systemeinstellungen), Tipps wirken im iPhone-Fenster,
+   `rec2` zeigt beim Ziehen korrekte Ereignisse (MouseDown, 43× Dragged). Die iPhone-Synchronisierung setzt sie trotzdem
+   nicht um (auch nicht auf einer Safari-Seite). macOS hier: 27.2 (26B123). Nächster Schritt: am 1. MacBook macOS-Version
+   und „Natürliches Scrollen“ vergleichen und dort `stock.py` gegenprüfen; Reserve: Mini-Gerät (`geraet/`).
 
 ## Benutzen
 
