@@ -12,13 +12,15 @@ stapel.json:
                "button": "Wenige auf Lager",       # ≤ 20 Zeichen, keine Emojis
                "text": "Beschreibung #hashtags ",  # ohne Emojis, ohne Preis
                "brand": "Seamless Fashion",        # Suchwort bei @ Erwähnung
-               "handle": "seamlessfashion"}]}      # genauer Nutzername in der Trefferliste
+               "handle": "seamlessfashion",        # genauer Nutzername in der Trefferliste
+               "ausverkauft": false}]}             # true → ohne Link, nur als Entwurf speichern
 
 Jeder Schritt wird per Texterkennung geprüft. Passt etwas nicht, bricht das Skript sofort ab (STOPP …) und
 tippt nichts mehr – dann schaut Claude per Foto nach. Kein Abstand zwischen Posts, Like + Speichern ohne Kontrolle.
+Produkt im Showcase ausverkauft (oder ausverkauft: true) → Video mit Text + Brand als ENTWURF, ohne Link.
 Vorher: Videos in der iPhone-Galerie (Fotos), iPhone-Synchronisierung entsperrt, Produkte im Showcase.
 """
-import datetime, json, pathlib, random, subprocess, sys, time
+import datetime, json, pathlib, random, re, subprocess, sys, time
 
 HIER = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HIER))
@@ -43,6 +45,13 @@ def key(code, n=1):
     front()
     subprocess.run(["osascript", "-e",
         f'tell application "System Events" to repeat {n} times\nkey code {code}\ndelay 0.02\nend repeat'])
+
+
+def schnell(text):
+    """Auf einen Schlag (Adressleiste, Suche am iPhone). Langsam tippen nur in TikTok (tippe)."""
+    front()
+    esc = text.replace("\\", "\\\\").replace('"', '\\"')
+    subprocess.run(["osascript", "-e", f'tell application "System Events" to keystroke "{esc}"'])
 
 
 def tippe(text):
@@ -109,7 +118,14 @@ def verlinken(produkt, button):
     tx = seh.lesen()
     _, _, ny = muss((seh.alle(produkt, [t for t in tx if t[2] > 180]) or [None])[0],
                     f"„{produkt}“ nicht oben im Showcase → Einkaufswagen-Weg")
-    _, by = muss(seh.finde("Hinzufügen", tx, genau=True, unter=ny, ueber=ny + 120), "Hinzufügen-Knopf fehlt")
+    zeile = " | ".join(t for t, _, y in tx if ny - 5 <= y <= ny + 120)
+    by = seh.finde("Hinzufügen", tx, genau=True, unter=ny, ueber=ny + 120)
+    if AUSVERKAUFT.search(zeile) or not by:
+        log(f"AUSVERKAUFT? „{zeile}“ → Entwurf ohne Link")
+        taps(25, 90, "w1.5")                                    # zurück aus der Showcase-Liste
+        muss(seh.warte("Veröffentlichen", 3, unter=640), "nach Zurück nicht auf der Beitragsseite")
+        return False
+    _, by = by
     taps(264, by, "w2.0")
     tx = seh.lesen()
     d = seh.finde("zum Video", tx)
@@ -124,6 +140,7 @@ def verlinken(produkt, button):
     taps(167, 678, "safe", "w2.2")
     muss(seh.warte("Veröffentlichen", 3, unter=640), "nach Hinzufügen nicht auf der Beitragsseite")
     muss(seh.finde(button), "Produkt-Link fehlt auf der Beitragsseite")
+    return True
 
 
 def beschreiben(text, brand, handle):
@@ -141,6 +158,17 @@ def beschreiben(text, brand, handle):
     tx = seh.lesen()
     muss(seh.finde("Veröffentlichen", tx, unter=640), "nach Brand-Wahl nicht auf der Beitragsseite")
     muss(seh.finde("@", tx, ueber=250), "Brand-Markierung fehlt in der Beschreibung")
+
+
+AUSVERKAUFT = re.compile(r"ausverkauft|nicht verfügbar|nicht vorrätig|(^|[^\d.,])0 auf Lager", re.I)
+
+
+def entwurf_speichern():
+    x, y = muss(seh.finde("Entwürfe", unter=640, ueber=720), "Knopf Entwürfe fehlt")
+    muss(x < 167, "Entwürfe nicht links – Abbruch (Veröffentlichen-Gefahr)")
+    taps(x, y, "w2.5")
+    if seh.finde("Veröffentlichen", unter=640):
+        raise Stopp("Entwurf nicht gespeichert – Beitragsseite noch offen")
 
 
 def veroeffentlichen():
@@ -196,8 +224,13 @@ def ein_post(account, v):
         raise Stopp(f"Doppel-Schutz: {r.stdout.strip()}")
     profil(account);                     log("Account ok")
     hochladen(v["kachel"]);              log("Beitragsseite")
-    verlinken(v["produkt"], v["button"]); log("Produkt verlinkt")
+    verlinkt = False if v.get("ausverkauft") else verlinken(v["produkt"], v["button"])
+    log("Produkt verlinkt" if verlinkt else "OHNE Link (ausverkauft)")
     beschreiben(v["text"], v["brand"], v["handle"]); log("Text + Brand")
+    if not verlinkt:
+        entwurf_speichern(); log("ALS ENTWURF GESPEICHERT (ausverkauft)")
+        eintragen_log(account, dict(v, button="– (Entwurf, ausverkauft)"), start)
+        return "entwurf"
     veroeffentlichen();                  log("VERÖFFENTLICHT")
     subprocess.run(["zsh", str(HIER / "gepostet.sh"), "eintragen", v["datei"], account])
     eintragen_log(account, v, start)
@@ -206,6 +239,7 @@ def ein_post(account, v):
     except Stopp as e:
         log(f"Hinweis: {e}")             # Post ist trotzdem fertig
     log(f"fertig in {time.time() - start:.0f} s")
+    return "gepostet"
 
 
 def main(a):

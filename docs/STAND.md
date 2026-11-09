@@ -8,6 +8,10 @@
 - **Neu: `werkzeuge/posten.py <stapel.json>`** postet einen ganzen Stapel am Stück (Texterkennung statt Fotos).
   Noch nicht live gelaufen → beim ersten Video mitschauen; bei STOPP Foto machen und von Hand weiter.
   Vorlage: `uebergabe/beispiel/stapel-posten.json`.
+- **`werkzeuge/stock.py`** (Stock automatisch über Social1): kommt bis zur TikTok-Produktkarte. Offen: Die Seite öffnet
+  sich als Vorschaukarte, ein Tipp aufs Bild öffnet keine Galerie, „^“ öffnet die Provisions-Info. Den richtigen Weg zur
+  Vollbild-Galerie einmal mit Artur klären, dann in `zur_galerie()` einbauen.
+- Kopplung mit dem Editing System + Sync aufs 2. MacBook: wartet auf Arturs Antwort (Nicolas abgeklärt? GitHub-Repo).
 - Kein Abstand zwischen Posts (Artur 09.11.).
 
 ## Schnellster Ablauf (seit 08.11. nachts)

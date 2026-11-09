@@ -37,6 +37,10 @@ kurz und verständlich, Fachbegriffe nur wenn nötig.
 - **Nicht** mehr kontrollieren: orangener Shop-Button, Like, Speichern. Profil nicht neu laden.
 - **Kein Abstand** zwischen Posts. Nach „+“: „Kamera nicht verfügbar“ → OK.
 - Produkt nicht oben im Showcase → nicht scrollen/suchen, Einkaufswagen-Weg (Memory upload-speed-regeln).
+- **Showcase voll** → STOPP, Artur fragen und auf seine Antwort warten (er löscht selbst), danach weitermachen.
+- **Einkaufswagen voll** → irgendein Produkt aus dem Einkaufswagen entfernen (egal welches), weitermachen.
+- **Produkt ausverkauft** → Video mit Text + Brand als **Entwurf** speichern, ohne Produktlink (posten.py macht das).
+- **Tippen:** langsam (menschlich) nur in TikTok. Links/Adressleiste/Suche am iPhone schnell auf einmal (`posten.schnell`).
 - **Kontext:** Nach jedem Stapel, spätestens bei ~500k Token: `docs/STAND.md` aktualisieren, committen und eine
   **neue Session (fresh)** starten mit „Lies docs/STAND.md und mach weiter“ – nicht im vollen Chat weitermachen.
 
