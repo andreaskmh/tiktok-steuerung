@@ -48,6 +48,20 @@ Video und JSON liegen nebeneinander, gleicher Name: `bof-138-03.mp4` + `bof-138-
 
 \* mindestens einer der beiden Links.
 
+Zusatzfelder fürs automatische Posten (`einreichen.py` setzt sie, `eingang.py posten` braucht sie):
+
+| Feld | Bedeutung |
+|---|---|
+| `kachel` | Text groß auf dem Video (Hook-Label), daran wird es in der iPhone-Galerie und im Profil gefunden |
+| `button` | Button-Text beim Produktlink (≤ 20 Zeichen, keine Emojis) |
+| `brand` | Shop-Name für „@ Erwähnung“ |
+| `handle` | genauer Nutzername des Shops (optional, wenn der Shop-Name in der Trefferliste eindeutig ist) |
+| `ausverkauft` | `true` → als Entwurf ohne Link speichern |
+| `quelle` | Pfad der Export-Datei im Editing System |
+
+Ablauf: Editing System `einreichen.py` → Status `bereit` → Artur sagt „geprüft, zufrieden“ → `eingang.py freigeben <stapel>`
+→ `eingang.py posten <stapel>` → `gepostet` / `entwurf` (ausverkauft) / `fehler`.
+
 ### Status
 
 | Status | Wer setzt ihn | Bedeutung |

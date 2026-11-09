@@ -150,7 +150,14 @@ def beschreiben(text, brand, handle):
     x, y = muss(seh.finde("Erwähnung"), "@ Erwähnung fehlt")
     taps(x, y, "w1.3", 160, 166, "w0.4")
     tippe(brand)
-    f = seh.warte(handle, 4, genau=True, unter=180)
+    if handle:
+        f = seh.warte(handle, 4, genau=True, unter=180)
+    else:                                                       # ohne Nutzername: Shop-Name muss eindeutig sein
+        time.sleep(2.0)
+        tr = seh.alle(brand, [t for t in seh.lesen() if t[2] > 180], genau=True)
+        if len(tr) > 1:
+            raise Stopp(f"„{brand}“ {len(tr)}× in der Trefferliste – Nutzername (handle) angeben")
+        f = (tr[0][1], tr[0][2] + 9) if tr else None           # Name-Zeile liegt ~18 über der Nutzername-Zeile
     if not f:
         namen = [t for t, _, _ in seh.lesen()][:25]
         raise Stopp(f"@{handle} nicht in der Trefferliste: {namen}")

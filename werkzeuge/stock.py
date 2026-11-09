@@ -62,13 +62,25 @@ def zur_galerie(pid):
         time.sleep(0.5)
     else:
         raise Stopp("TikTok-Produktseite nicht erreicht")
-    time.sleep(1.0)
-    sicher_tippen(167, 0.40 * 735)                               # Produktbild oben
     time.sleep(1.5)
-    zz = subprocess.run(["zsh", "-c", f'zsh {HIER}/aufnahme.sh "{seh.TMP}/z.png" >/dev/null && {HIER}/bin/zaehler "{seh.TMP}/z.png"'],
-                        capture_output=True, text=True)
-    muss(zz.returncode == 0, "Vollbild-Galerie nicht offen (kein Zähler)")
-    log(f"Galerie offen: {zz.stdout.strip()}")
+    ziehe_hoch(450, 110)                                         # Vorschaukarte zur vollen Seite hochziehen
+    time.sleep(1.5)
+    for versuch in range(2):                                     # Tipp kommt oft erst beim 2. Mal an
+        sicher_tippen(167, 300)                                  # Produktbild
+        time.sleep(1.8)
+        zz = subprocess.run(["zsh", "-c", f'zsh {HIER}/aufnahme.sh "{seh.TMP}/z.png" >/dev/null && {HIER}/bin/zaehler "{seh.TMP}/z.png"'],
+                            capture_output=True, text=True)
+        if zz.returncode == 0:
+            log(f"Galerie offen: {zz.stdout.strip()}"); return
+    raise Stopp("Vollbild-Galerie nicht offen (kein Zähler)")
+
+
+def ziehe_hoch(von_y, nach_y, x=167):
+    """Echter Wisch nach oben mit der virtuellen Maus (Fensterpunkte)."""
+    out = subprocess.run([str(HIER / "bin" / "fenster")], capture_output=True, text=True).stdout.split()
+    fx, fy = int(out[1]), int(out[2])
+    subprocess.run([sys.executable, str(HIER / "ziehen.py"), str(fx + x), str(fy + von_y), str(fx + x), str(fy + nach_y)],
+                   capture_output=True)
 
 
 def main(a):

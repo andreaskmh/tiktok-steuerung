@@ -8,11 +8,13 @@
 - **Neu: `werkzeuge/posten.py <stapel.json>`** postet einen ganzen Stapel am Stück (Texterkennung statt Fotos).
   Noch nicht live gelaufen → beim ersten Video mitschauen; bei STOPP Foto machen und von Hand weiter.
   Vorlage: `uebergabe/beispiel/stapel-posten.json`.
-- **`werkzeuge/stock.py`** (Stock automatisch über Social1): kommt bis zur TikTok-Produktkarte. Offen: Die Seite öffnet
-  sich als Vorschaukarte, ein Tipp aufs Bild öffnet keine Galerie, „^“ öffnet die Provisions-Info. Den richtigen Weg zur
-  Vollbild-Galerie einmal mit Artur klären, dann in `zur_galerie()` einbauen.
-- Kopplung mit dem Editing System + Sync aufs 2. MacBook: wartet auf Arturs Antwort (Nicolas abgeklärt? GitHub-Repo).
-- Kein Abstand zwischen Posts (Artur 09.11.).
+- **`werkzeuge/stock.py`** läuft (09.11. getestet: Hosenrock 2/2 Bilder). Wichtig: TikTok zeigt erst eine Vorschaukarte,
+  die muss **hochgezogen** werden (macht stock.py), dann Bild antippen → Galerie.
+- **Kopplung mit dem Editing System** steht (Brücke dort `eigene/TIKTOK-STEUERUNG.md`). Offen: In dessen Skills
+  (/bof, /mof, /hof, /remake, /fertig) einen Verweis auf die Brücke eintragen – blockierte der Sicherheitsfilter, Artur muss das
+  erlauben oder selbst eintragen. `eingang.py posten` (Drag aufs iPhone + posten) noch nicht live gelaufen.
+- **Sync:** Repo `andreaskmh/tiktok-steuerung`. Auf dem 2. MacBook: klonen nach ~/Documents/Coding/TikTok-Steuerung,
+  `zsh werkzeuge/sync.sh einrichten`, dann vmaus einrichten (vmaus/ANLEITUNG.md, Artur bestätigt den Treiber).
 
 ## Schnellster Ablauf (seit 08.11. nachts)
 - Tippen: `python3 werkzeuge/tap.py x y [wSek] …` (virtuelle Maus, sitzt beim 1. Mal). Text: `post.tippe()` (menschlich, Buchstabe für Buchstabe, KEINE Emojis möglich).
