@@ -29,16 +29,12 @@ Arturs Benutzer öffnen. **Danach gibt es keine Abfragen mehr**, auch nicht nach
 5. **Freigaben** (wenn macOS fragt oder `stock.py` mit „osascript ist nicht berechtigt“ abbricht):
    Systemeinstellungen → Datenschutz & Sicherheit → **Bedienungshilfen** (Gerätesteuerung): **„claude“ (klein)** und
    „Claude“ einschalten. Bildschirmaufnahme und Automation für System Events erlauben.
-6. **Offenes Problem (2. MacBook, 09.11.2026, noch ungelöst):** Auf dem frisch eingerichteten Mac kommen **Tipps** der
-   virtuellen Maus an (stock.py erreicht Safari → Social1 → TikTok-Produktkarte), aber **Ziehen/Scrollen** wirkt nicht:
-   die Vorschaukarte („Einkaufswagen“/„Kasse“ unten) lässt sich nicht hochziehen → `STOPP: Vollbild-Galerie nicht offen`.
-   Probiert und **wirkungslos**: `MOVE`-Aufwecken, Zeiger raus/rein, Klick auf die Titelleiste, Fenster aus-/einblenden,
-   iPhone-Synchronisierung neu starten, einmalige Zwei-Finger-Scrollgeste von Artur, Scrollen in beide Richtungen
-   („Natürliches Scrollen“ ist hier **aus**, `com.apple.swipescrolldirection = 0`).
-   Geprüft: vmaus-Scrollen wirkt in normalen Mac-Apps (Systemeinstellungen), Tipps wirken im iPhone-Fenster,
-   `rec2` zeigt beim Ziehen korrekte Ereignisse (MouseDown, 43× Dragged). Die iPhone-Synchronisierung setzt sie trotzdem
-   nicht um (auch nicht auf einer Safari-Seite). macOS hier: 27.2 (26B123). Nächster Schritt: am 1. MacBook macOS-Version
-   und „Natürliches Scrollen“ vergleichen und dort `stock.py` gegenprüfen; Reserve: Mini-Gerät (`geraet/`).
+6. **Wenn Wischen am iPhone nicht wirkt** (2. MacBook, 09.11.2026): Tipps kamen an, Ziehen/Scrollen anfangs nicht
+   (`stock.py` → `STOPP: Vollbild-Galerie nicht offen`, Produktkarte mit „Kasse“ bleibt halb unten).
+   Wichtig: Mausrad wirkt nur mit **genug Rasten** (`SCROLL 0 ±10 15 15`), 3 Rasten bewirken nichts – das sah wie ein
+   Defekt aus. `stock.py` schiebt die Karte jetzt notfalls per Mausrad hoch, die Richtung folgt „Natürliches Scrollen“
+   (`defaults read -g com.apple.swipescrolldirection`, hier 0 = aus). Danach lief der Stock-Test (2/2 Bilder).
+   Wirkungslos waren: Zeiger raus/rein, Klick auf die Titelleiste, Fenster aus-/einblenden, App-Neustart (danach Touch ID nötig).
 
 ## Benutzen
 

@@ -81,6 +81,20 @@ def ziehe_hoch(von_y, nach_y, x=167):
     fx, fy = int(out[1]), int(out[2])
     subprocess.run([sys.executable, str(HIER / "ziehen.py"), str(fx + x), str(fy + von_y), str(fx + x), str(fy + nach_y)],
                    capture_output=True)
+    time.sleep(1.2)
+    if not seh.finde("Bestellungen", ueber=220):                 # Kopfzeile weg → Karte ist oben
+        return
+    # Reserve (2. MacBook, 09.11.2026): Ziehen wirkt dort nicht, Mausrad schon – mind. ~10 Rasten, sonst passiert nichts.
+    # Richtung hängt an „Natürliches Scrollen“: aus (0) → negativ schiebt den Inhalt hoch.
+    nat = subprocess.run(["defaults", "read", "-g", "com.apple.swipescrolldirection"], capture_output=True, text=True).stdout.strip()
+    erst = -10 if nat == "0" else 10
+    for dy in (erst, -erst):
+        subprocess.run([str(HIER / "bin" / "zeiger"), "rel", "0.5", "0.55"], capture_output=True)
+        subprocess.run([sys.executable, str(PROJ / "geraet" / "geraet.py"), "MOVE 4 0", "MOVE -4 0", f"SCROLL 0 {dy} 15 15"],
+                       capture_output=True)
+        time.sleep(1.5)
+        if not seh.finde("Bestellungen", ueber=220):
+            log(f"Karte per Mausrad hochgeschoben (SCROLL 0 {dy})"); return
 
 
 def main(a):
