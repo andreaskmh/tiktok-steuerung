@@ -28,6 +28,7 @@ einrichten)
   [ -e "$MEM" ] || ln -s "$ROOT/gedaechtnis" "$MEM"
   echo "Gedächtnis -> $MEM"
   zsh werkzeuge/build.sh
+  [ -x vmaus/bin/vmaus ] || zsh vmaus/build.sh
   echo "Noch von Hand (einmal pro Mac, macht Artur): virtuelle Maus einrichten (vmaus/ANLEITUNG.md), Freigaben für"
   echo "Bildschirmaufnahme + Bedienungshilfen, iPhone-Synchronisierung mit dem iPhone verbinden." ;;
 *) echo "Aufruf: zsh werkzeuge/sync.sh holen|sichern|einrichten"; exit 1 ;;
