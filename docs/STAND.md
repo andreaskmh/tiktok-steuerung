@@ -5,6 +5,9 @@
 ## Offen
 - Stapel 08.11. komplett (12/12). artur.official 09.11.: Tunnelblick 00:29, Rock Shorts 00:35.
 - Rock Shorts: orangener Shop-Button direkt nach Post noch nicht sichtbar (Link war gesetzt) → Artur kurz prüfen.
+- **Neu: `werkzeuge/posten.py <stapel.json>`** postet einen ganzen Stapel am Stück (Texterkennung statt Fotos).
+  Noch nicht live gelaufen → beim ersten Video mitschauen; bei STOPP Foto machen und von Hand weiter.
+  Vorlage: `uebergabe/beispiel/stapel-posten.json`.
 - Kein Abstand zwischen Posts (Artur 09.11.).
 
 ## Schnellster Ablauf (seit 08.11. nachts)

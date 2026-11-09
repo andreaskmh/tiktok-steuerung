@@ -29,6 +29,17 @@ kurz und verständlich, Fachbegriffe nur wenn nötig.
   (weckt es auf, docs/ABLAUF.md). Bilder holen: `werkzeuge/galerie.sh`. Im Test nie klicken, wenn unklar ist, was unter dem Zeiger liegt; Software-Wischen ist ausprobiert und wirkt nicht.
 - Fortschritt in einer Zeile, Probleme selbst lösen, Artur nur fragen, wenn nur er es kann.
 
+## Tempo (Artur, 08./09.11.2026 – gilt vor allem anderen)
+
+- **Posten = `python3 werkzeuge/posten.py <stapel.json>`**: ein Befehl pro Stapel, prüft jeden Schritt selbst per
+  Texterkennung (`werkzeuge/seh.py`). Claude schaut nur bei `STOPP` per Foto nach. Keine Zwischenfotos.
+- Kein Schritt fällt weg (Doppel-Schutz, Link, Button-Text, Beschreibung, Brand, Like, Speichern, Eintragen).
+- **Nicht** mehr kontrollieren: orangener Shop-Button, Like, Speichern. Profil nicht neu laden.
+- **Kein Abstand** zwischen Posts. Nach „+“: „Kamera nicht verfügbar“ → OK.
+- Produkt nicht oben im Showcase → nicht scrollen/suchen, Einkaufswagen-Weg (Memory upload-speed-regeln).
+- **Kontext:** Nach jedem Stapel, spätestens bei ~500k Token: `docs/STAND.md` aktualisieren, committen und eine
+  **neue Session (fresh)** starten mit „Lies docs/STAND.md und mach weiter“ – nicht im vollen Chat weitermachen.
+
 ## Regeln (nicht verhandelbar)
 
 - **Captchas, Logins, Passwörter, Codes macht Artur.** Bot-Schutz nie umgehen.
