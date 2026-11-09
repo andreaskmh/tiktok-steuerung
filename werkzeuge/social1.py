@@ -2,6 +2,7 @@
 """Social1-Liste am Mac (Safari, nur lesen) auslesen: welches Video gehört zu welchem Produkt.
 
   python3 werkzeuge/social1.py <listen-link | listenname> [--bilder]
+  python3 werkzeuge/social1.py --listen        # alle Listen (name, anzahl, datum), neueste zuerst
 
 Ergebnis: uebergabe/ausgang/social1-<listenname>.json mit pro Eintrag
   nr, produkt (voller Name), produkt_id (→ stock.py, posten), tts_link, video_id, tiktok_link, creator, vorschau
@@ -45,9 +46,31 @@ def oeffnen(ziel):
         time.sleep(7)
 
 
+def listen():
+    """Übersicht aller Social1-Listen, neueste zuerst: name<TAB>anzahl<TAB>datum (für die Auswahl beim /bof-Start)."""
+    oeffnen("https://www.social1.ai/saved-videos")
+    t = safari("document.body.innerText")
+    z = [l.strip() for l in t.splitlines() if l.strip()]
+    res = []
+    for i, l in enumerate(z):
+        m = re.fullmatch(r"(\d+) videos?", l)
+        if m and i > 0 and i + 1 < len(z) and z[i + 1].startswith("Updated"):
+            res.append((z[i - 1], int(m.group(1)), z[i + 1].replace("Updated", "").strip()))
+    def datum(d):
+        try:
+            return time.strptime(d, "%d.%m.%Y")
+        except ValueError:
+            return time.gmtime(0)
+    res.sort(key=lambda r: datum(r[2]), reverse=True)
+    for n, k, d in res:
+        print(f"{n}\t{k}\t{d}")
+
+
 def main(a):
     if not a:
         sys.exit(__doc__)
+    if a[0] == "--listen":
+        return listen()
     ziel, bilder = a[0], "--bilder" in a
     oeffnen(ziel)
     vorher, gleich = -1, 0
