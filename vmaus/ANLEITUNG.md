@@ -26,6 +26,15 @@ Arturs Benutzer öffnen. **Danach gibt es keine Abfragen mehr**, auch nicht nach
    `osascript … with administrator privileges` → normales macOS-Passwortfenster. Danach Kopie löschen.
    Am Ende steht `OK pointing=1 keyboard=1` → fertig.
 4. Erscheint der **Tastatur-Assistent** („Tastatur identifizieren“): einfach schließen.
+5. **Freigaben** (wenn macOS fragt oder `stock.py` mit „osascript ist nicht berechtigt“ abbricht):
+   Systemeinstellungen → Datenschutz & Sicherheit → **Bedienungshilfen** (Gerätesteuerung): **„claude“ (klein)** und
+   „Claude“ einschalten. Bildschirmaufnahme und Automation für System Events erlauben.
+6. **Offenes Problem (2. MacBook, 09.11.2026, noch ungelöst):** Auf dem frisch eingerichteten Mac kommen **Tipps** der
+   virtuellen Maus an (stock.py erreicht Safari → Social1 → TikTok-Produktkarte), aber **Ziehen/Scrollen** wirkt nicht:
+   die Vorschaukarte („Einkaufswagen“/„Kasse“ unten) lässt sich nicht hochziehen → `STOPP: Vollbild-Galerie nicht offen`.
+   Probiert und **wirkungslos**: `MOVE`-Aufwecken, Zeiger raus/rein, Klick auf die Titelleiste, Fenster aus-/einblenden,
+   iPhone-Synchronisierung neu starten, einmalige Zwei-Finger-Scrollgeste von Artur. Nächster Schritt: Unterschied zum
+   1. MacBook suchen (Trackpad-/Maus-Einstellungen, macOS-Version, `geraet/wischtest.sh` in der Galerie).
 
 ## Benutzen
 
