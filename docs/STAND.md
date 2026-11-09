@@ -16,6 +16,8 @@
 - **Sync:** Repo `andreaskmh/tiktok-steuerung`. Auf dem 2. MacBook: klonen nach ~/Documents/Coding/TikTok-Steuerung,
   `zsh werkzeuge/sync.sh einrichten`, dann vmaus einrichten (vmaus/ANLEITUNG.md, Artur bestätigt den Treiber).
 
+- **Geplant (Artur, 09.11.):** Slideshows (andreasfastlane) ebenfalls automatisch posten – Artur meldet sich dazu.
+
 ## Schnellster Ablauf (seit 08.11. nachts)
 - Tippen: `python3 werkzeuge/tap.py x y [wSek] …` (virtuelle Maus, sitzt beim 1. Mal). Text: `post.tippe()` (menschlich, Buchstabe für Buchstabe, KEINE Emojis möglich).
 - `werkzeuge/post.py a|b|c` und `upload.py publish|like` – Abschnitte am Stück, dazwischen nur kurz Foto.
