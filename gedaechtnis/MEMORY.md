@@ -1,0 +1,2 @@
+- [Produkt immer über Social1](produkt-immer-ueber-social1.md) — nie manuell in TikTok suchen
+- [Upload-Speed-Regeln](upload-speed-regeln.md) — keine Pausen, Kamera-OK, Einkaufswagen-Trick, liken+speichern

@@ -13,3 +13,7 @@ __pycache__/
 vmaus/bin/
 vmaus/quelle/
 vmaus/*.pkg
+# Doppel-Schutz + Logs müssen auf beiden Macs gleich sein
+!uebergabe/ausgang/gepostet.txt
+!uebergabe/ausgang/posts-*.json
+!uebergabe/ausgang/stapel-*.json
