@@ -9,8 +9,8 @@ kurz und verständlich, Fachbegriffe nur wenn nötig.
 
 - Eigenes Projekt, **getrennt vom Editing-System** (`~/Documents/Coding/Editing System 1.1`, stammt von
   Nicolas Damerius, kuendigedeineneditor.de). Kopplung mit Nicolas abgeklärt (Artur, 09.11.2026).
-- Das Editing System ruft nur unsere Befehle auf (Brücke dort: `eigene/TIKTOK-STEUERUNG.md`): `stock.py` (Stock in
-  dessen `Belege/`), `einreichen.py` (Video + JSON nach `uebergabe/eingang/`), `eingang.py freigeben|posten`.
+- Das Editing System ruft nur unsere Befehle auf (Brücke dort: `eigene/TIKTOK-STEUERUNG.md`): `social1.py` (Social1-Liste → Produkt-IDs, Zuordnung
+  macht Claude selbst), `stock.py` (Stock in dessen `Belege/`), `einreichen.py` (Video + JSON nach `uebergabe/eingang/`), `eingang.py freigeben|posten`.
   Format in `docs/UEBERGABE.md`. Im Editing System nur Arturs eigene Bereiche (`eigene/`) anfassen, nie Nicolas' Paket.
 - Sync aufs 2. MacBook: `zsh werkzeuge/sync.sh holen` bei Chat-Start, `sichern` nach jedem Stapel
   (Repo `andreaskmh/tiktok-steuerung`, Gedächtnis liegt in `gedaechtnis/`).
