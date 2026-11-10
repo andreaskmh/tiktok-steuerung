@@ -33,3 +33,12 @@
 - iPhone-Zeiger friert ein, wenn Arturs Maus sich bewegt oder das runde Claude-Symbol über dem iPhone-Fenster liegt → Artur fährt kurz mit dem Trackpad drüber. iPhone-Fenster liegt jetzt bei x=700.
 - Arturs Tastatur landet im iPhone, solange das Fenster vorne ist.
 - Kontext wird schnell riesig → neue Session pro Stapel.
+
+## 10.11.2026 23:00 – Stapel 2026-11-10-bof139 (Video 139, 28 BoF) – von Artur gestoppt
+- Gepostet (anduri.official): 01 Roll-on Parfümset, 03 VEVOR Rollbock, 05 SPZK, 07 Crocs (Brand von Artur gewählt).
+- 09 Dr.Melaxin: im Einkaufswagen, Beitragsseite offen, beim Button-Text gestoppt → Status „fehler“; Rest „freigegeben“ (alle mit #superdeals).
+- Weiter mit `python3 werkzeuge/post_wagen.py 2026-11-10-bof139` (Showcase zuerst, Wagen nur wenn schon im Showcase). Texte per ⌘V (dauert bis ~15 s), iPhone-Fenster bei x=700.
+
+## 10.11.2026 23:33 – Stapel 2026-11-10-bof139 von Artur gestoppt
+- Gepostet: anduri.official 01, 03, 05, 07, 09, 11, 13, 15, 17 (9). Offen (freigegeben): 02–28 gerade + 19–28 → ella (02–18 gerade), andreas.testet (19–21), artur.official (22–28).
+- Weiter: `python3 werkzeuge/post_wagen.py 2026-11-10-bof139` (iPhone-Fenster x=700). Ohne Brand gepostet: siehe uebergabe/ausgang/ohne-brand.txt.

@@ -30,3 +30,5 @@ Beispiel 20 Videos: 12 auf anduri + ella (je 6), 4 auf andreas.testet (Limit 3 b
   „Wenige verfügbar“, „Fast ausverkauft“, „Fast vergriffen“, „Wenige auf Lager“, „Geringer Bestand“, „Bald vergriffen“.
   Artur prüft den Bestand jedes Produkts vorher (Aussage 08.11.2026). Konkrete Zahlen („Noch 12 Stück“) nur, wenn
   Artur die Zahl fürs Produkt nennt. Nicht nachfragen, einfach durchmischen.
+
+- **#superdeals bei jedem Video** als Hashtag (Artur, 10.11.2026).
