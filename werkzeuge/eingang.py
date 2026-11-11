@@ -42,7 +42,17 @@ def text_von(d):
 
 
 def aufs_iphone(videos):
-    """Videos per echtem Drag & Drop in die Fotos-App am iPhone (eigener Ordner → Zeile 1 liegt immer gleich)."""
+    """Videos in die Fotos-App am iPhone. Kabel: per AirDrop (airdrop.py, ~11 s), sonst echtes Drag & Drop
+    in die iPhone-Synchronisierung (eigener Ordner → Zeile 1 liegt immer gleich)."""
+    if seh.kabel():
+        import airdrop
+        try:
+            airdrop.senden([str(v) for v in videos])
+        except airdrop.Stopp as e:
+            raise Stopp(str(e))
+        seh.kabel().taste("home"); time.sleep(0.8)
+        log(f"{len(videos)} Video(s) per AirDrop aufs iPhone")
+        return
     ordner = pathlib.Path(tempfile.mkdtemp(prefix="iphone-upload-"))
     for v in videos:
         try:

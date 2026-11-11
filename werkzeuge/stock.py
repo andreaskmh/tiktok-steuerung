@@ -20,6 +20,10 @@ GEFAHR = ("kasse", "jetzt kaufen", "einkaufswagen", "kaufen")
 
 
 def home():
+    if seh.kabel():
+        seh.kabel().taste("home"); time.sleep(0.6)
+        seh.kabel().taste("home"); time.sleep(0.8)              # 2× = sicher auf Seite 1
+        return
     subprocess.run(["osascript", "-e", 'tell application "System Events" to tell (first process whose bundle identifier '
                     'is "com.apple.ScreenContinuity") to click menu item "Home-Bildschirm" of menu "Darstellung" of menu bar 1'],
                    capture_output=True)
@@ -40,8 +44,8 @@ def zur_galerie(pid):
     taps(167, y, "w1.2")
     schnell("Safari")
     time.sleep(1.2)
-    muss(seh.warte("Safari", 3, ueber=200), "Safari nicht in der Suche")
-    taps(62, 145, "w2.0")                                        # Toptreffer
+    f = muss(seh.warte("Safari", 3, genau=True, ueber=300), "Safari nicht in der Suche")
+    taps(f[0], f[1] - 20 if seh.kabel() else 145, "w2.0")         # Toptreffer (Kabel: Symbol über dem Namen)
     # Adressleiste unten antippen
     tx = seh.lesen()
     leiste = [t for t in tx if t[2] > 640 and ("." in t[0] or "suchen" in t[0].lower())]
@@ -68,15 +72,71 @@ def zur_galerie(pid):
     for versuch in range(2):                                     # Tipp kommt oft erst beim 2. Mal an
         sicher_tippen(167, 300)                                  # Produktbild
         time.sleep(1.8)
-        zz = subprocess.run(["zsh", "-c", f'zsh {HIER}/aufnahme.sh "{seh.TMP}/z.png" >/dev/null && {HIER}/bin/zaehler "{seh.TMP}/z.png"'],
-                            capture_output=True, text=True)
-        if zz.returncode == 0:
-            log(f"Galerie offen: {zz.stdout.strip()}"); return
+        z = zaehler()
+        if z:
+            log(f"Galerie offen: {z[0]}/{z[1]}"); return
     raise Stopp("Vollbild-Galerie nicht offen (kein Zähler)")
 
 
+def zaehler(p=None):
+    """Galerie-Zähler oben rechts (z. B. 3/12) → (3, 12) oder None."""
+    p = p or f"{seh.TMP}/z.png"
+    seh.aufnahme(p)
+    zz = subprocess.run([str(HIER / "bin" / "zaehler"), p], capture_output=True, text=True)
+    if zz.returncode:
+        return None
+    a = zz.stdout.split()
+    return int(a[0]), int(a[1])
+
+
+def galerie_kabel(name, produkt, s1, tts):
+    """Wie galerie.sh, aber per Kabel: verlustfreie Bilder, echtes Wischen. Ergebnis wie galerie.sh."""
+    import datetime, json
+    K = seh.kabel()
+    out = PROJ / "uebergabe" / "ausgang" / name
+    out.mkdir(parents=True, exist_ok=True)
+    y = K.hoehe() * 0.42
+
+    def schritt(richtung):                                      # +1 = nächstes Bild (Finger nach links)
+        a, b = (280, 54) if richtung > 0 else (54, 280)
+        K.ziehe(a, y, b, y, 0.25); time.sleep(0.9)
+
+    z = muss(zaehler(), "Kein Galerie-Zähler zu sehen – ist die Vollbild-Galerie offen?")
+    n = z[1]; log(f"Galerie: {z[0]}/{n}")
+    v = 0
+    while z[0] > 1:
+        schritt(-1); z = muss(zaehler(), "Zähler weg beim Zurückwischen")
+        v += 1
+        if v > n + 3:
+            raise Stopp("Zurück auf Bild 1 klappt nicht")
+    bilder = []
+    for i in range(1, n + 1):
+        f = out / f"bild-{i:02d}.png"
+        z = None
+        for _ in range(3):                                      # Bild kurz ruhen lassen, dann Zähler prüfen
+            time.sleep(0.3)
+            z = zaehler(str(f))
+            if z and z[0] == i:
+                break
+        if not z or z[0] != i:
+            raise Stopp(f"Erwartet Bild {i}, Zähler zeigt {z}")
+        bilder.append(f.name); log(f"✓ {f.name}")
+        if i < n:
+            schritt(+1)
+    json.dump({"version": 1, "produkt": produkt, "social1_link": s1, "tts_link": tts,
+               "geholt_am": datetime.datetime.now().astimezone().isoformat(timespec="seconds"),
+               "bilder": bilder, "anzahl_laut_galerie": n, "quelle": "kabel"},
+              open(out / "produkt.json", "w"), ensure_ascii=False, indent=2)
+    log(f"Fertig: {n} Bilder in {out}")
+
+
 def ziehe_hoch(von_y, nach_y, x=167):
-    """Echter Wisch nach oben mit der virtuellen Maus (Fensterpunkte)."""
+    """Echter Wisch nach oben (Kabel) bzw. mit der virtuellen Maus (Fensterpunkte)."""
+    if seh.kabel():
+        seh.kabel().ziehe(x, von_y, x, nach_y, 0.35); time.sleep(1.2)
+        if seh.finde("Bestellungen", ueber=220):
+            seh.kabel().ziehe(x, von_y, x, nach_y - 60, 0.5); time.sleep(1.2)
+        return
     out = subprocess.run([str(HIER / "bin" / "fenster")], capture_output=True, text=True).stdout.split()
     fx, fy = int(out[1]), int(out[2])
     subprocess.run([sys.executable, str(HIER / "ziehen.py"), str(fx + x), str(fy + von_y), str(fx + x), str(fy + nach_y)],
@@ -108,9 +168,16 @@ def main(a):
     except Stopp as e:
         sys.exit(f"STOPP: {e}")
     tts = f"https://shop.tiktok.com/view/product/{pid}"
-    r = subprocess.run(["zsh", str(HIER / "galerie.sh"), name, produkt, f"https://www.social1.ai/products/{pid}", tts])
-    if r.returncode:
-        sys.exit("STOPP: galerie.sh abgebrochen")
+    s1 = f"https://www.social1.ai/products/{pid}"
+    if seh.kabel():
+        try:
+            galerie_kabel(name, produkt, s1, tts)
+        except Stopp as e:
+            sys.exit(f"STOPP: {e}")
+    else:
+        r = subprocess.run(["zsh", str(HIER / "galerie.sh"), name, produkt, s1, tts])
+        if r.returncode:
+            sys.exit("STOPP: galerie.sh abgebrochen")
     quelle = PROJ / "uebergabe" / "ausgang" / name
     if ziel:
         ziel.mkdir(parents=True, exist_ok=True)

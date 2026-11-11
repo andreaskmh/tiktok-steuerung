@@ -59,3 +59,30 @@
 - iPhone-Fenster wieder auf x=700 (dort lief der Drag in Fotos); Fotos muss in der Mediathek stehen, nicht in der Suche.
 - Kachel = Text ohne Emoji; Produkt-Feld = Stichwort, das im (abgeschnittenen) Showcase-/Wagen-Titel steht.
 - posten.py/eingang.py unverändert (Claude-Versuche als *.claude-1110 gesichert).
+
+## 11.11.2026 – Umstellung auf Kabel (open-iphone-use)
+- open-iphone-use (github.com/semsturgut/open-iphone-use, Stand 719bd55) nach `~/Documents/Coding/extern/open-iphone-use` geklont und
+  per `sh setup.sh` installiert (`~/.local/bin/open-iphone-use`, MCP + Skill bei Claude Code angemeldet). Warum: iPhone per USB über
+  Xcodes CoreDevice steuern (genaue Tipps, Live-Bild) statt iPhone-Synchronisierung + virtueller Maus. Braucht Xcode 27 + iOS 27, Entwicklermodus.
+- Platz für Xcode: 2.097 Video-/Tondateien (118,8 GB) aus Editing System `Videos/Archiv` und `Videos/Fertige Videos` gelöscht (Artur OK,
+  alles hochgeladen). Texte/Protokolle/Vorlagen blieben. Liste: Editing System `eigene/geloescht-2026-11-11.txt`.
+- 12.11.: iPhone 11 („iPhone von Artur (2)“) auf iOS 27.2.1, Entwicklermodus an, in open-iphone-use als Gerät
+  `cd6297a30ec147bb88a5f37763d805ae` eingebunden. Verbunden über **WLAN** (USB wird vom Mac noch nicht erkannt → Kabel prüfen).
+- Fehler behoben: `oiu/coredevice.py` `_broadcast_frame(self, bgra)` → `(*args)`, weil pymobiledevice3 11.52 jetzt
+  (bild, breite, höhe, drehung) übergibt; sonst kein Live-Bild. Gepatcht in installierter Kopie + Klon (bei Neuinstallation wieder nötig).
+- Getestet: Foto (`GET /api/devices/<id>/frame`, 832×1808), Tippen (Uhr-App), Home-Taste, Wischen links – alles ok.
+- 12.11.: Kabel wird jetzt erkannt (USB). Nach Server-Neustart (`open-iphone-use stop` + `serve`) läuft das iPhone über USB
+  (6 Mbit/s statt 2 über WLAN). Wechselt nicht von selbst von WLAN auf USB → nach dem Einstecken Server neu starten.
+  Stream-Bild 832×1808 ≈ volle iPhone-11-Auflösung (828×1792).
+- 12.11.: **Kabel-Schicht gebaut.** `werkzeuge/kabel.py` (Tippen, Ziehen, Tasten, Text mit deutschem Layout inkl. Umlaute/#/@,
+  Einfügen per gemeinsamer Zwischenablage, verlustfreie Fotos). `seh.py`, `tap.py`, `posten.py`, `post_wagen.py`, `stock.py`
+  nehmen automatisch das Kabel, sobald `open-iphone-use serve` läuft (sonst wie bisher iPhone-Synchronisierung; erzwingen: `TS_MODUS=sync`).
+  Punkte bleiben Breite 334 (Kabel-Höhe ≈ 726 statt 735 → feste y-Werte unten ggf. ein paar Punkte daneben, beim 1. Post prüfen).
+  Server-Erweiterung `werkzeuge/kabel/patch_oiu.py` (drag, hid, PNG) – nach jeder Neuinstallation von open-iphone-use erneut ausführen.
+- 12.11.: Stock per Kabel getestet: Hosenrock 2/2 in 41 s, verlustfrei 832×1808 PNG (`uebergabe/ausgang/test-kabel-hosenrock`).
+- 12.11.: Video aufs iPhone (bisher Ziehen in die iPhone-Synchronisierung) noch offen. AirDrop-Versuch (`werkzeuge/airdrop.swift`):
+  Empfänger heißt nur „Artur“ – Testclip (blau.mp4) kam NICHT in den Fotos dieses iPhones an → anderes Gerät?
+- 12.11.: AirDrop am iPhone 11 auf „Nur für Kontakte“ (Artur OK) → Mac sieht „iPhone von Artur (2)“, Video kommt ohne Abfrage
+  in Fotos (11 s). `werkzeuge/airdrop.py` + `airdrop.swift`, in `eingang.py aufs_iphone` eingebaut. Testclip wieder gelöscht.
+- 12.11.: Kabel-Punkte auf 334×735 (wie altes Fenster) → feste Koordinaten in posten.py treffen (Profil, „+“, Galerie geprüft).
+  Doku: neu `docs/KABEL.md`, CLAUDE.md/ABLAUF.md/STAND.md angepasst.

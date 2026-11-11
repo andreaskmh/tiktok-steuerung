@@ -4,7 +4,7 @@
   python3 werkzeuge/seh.py                 # alle Texte mit Fensterpunkten ausgeben
   python3 werkzeuge/seh.py "Hinzufügen"    # nur Treffer (Teilstring, Groß/klein egal)
 Im Skript: import seh; seh.lesen() -> [(text, x, y)], seh.finde("…") -> (x, y) oder None,
-seh.warte("…", sek) wartet, bis der Text auftaucht. Koordinaten = Fensterpunkte wie tap.py (334 x 735).
+seh.warte("…", sek) wartet, bis der Text auftaucht. Koordinaten = Punkte wie tap.py (334 x 735, Kabel und Synchronisierung gleich). Kabel wird automatisch genommen, wenn open-iphone-use läuft (kabel.py).
 """
 import os, subprocess, sys, tempfile, time, pathlib
 
@@ -18,10 +18,35 @@ def fenster():
     return i, w, h
 
 
-def lesen():
+_KABEL = None
+
+
+def kabel():
+    """Kabel-Steuerung aktiv? (open-iphone-use läuft, iPhone liefert Bild) – einmal pro Lauf geprüft."""
+    global _KABEL
+    if _KABEL is None:
+        import kabel as K
+        _KABEL = K if K.aktiv() else False
+    return _KABEL
+
+
+def aufnahme(p):
+    """Bild vom iPhone nach p (Kabel: verlustfreies Stream-Bild, sonst Fenster der iPhone-Synchronisierung)."""
+    K = kabel()
+    if K:
+        K.foto(p)
+        return BREITE, K.hoehe()
     wid, w, h = fenster()
-    p = os.path.join(TMP, "f.png")
     subprocess.run(["screencapture", "-x", "-o", "-l", str(wid), p], check=True)
+    return w, h
+
+
+BREITE = 334.0
+
+
+def lesen():
+    p = os.path.join(TMP, "f.png")
+    w, h = aufnahme(p)
     out = subprocess.run([str(BIN / "text"), p], capture_output=True, text=True).stdout
     res = []
     for z in out.splitlines():

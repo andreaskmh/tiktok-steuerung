@@ -1,5 +1,8 @@
 # Ablauf (erprobt am 08.11.2026)
 
+> **Seit 12.11.2026 per Kabel → `docs/KABEL.md`.** Die Abläufe unten (Schritte, Gefahrenstellen, Reihenfolge) gelten weiter;
+> Zeiger-, Aufweck- und Ziehen-Regeln betreffen nur noch die alte iPhone-Synchronisierung.
+
 ## Warum über das iPhone?
 
 TikTok Shop ist am Mac leer (auch für Affiliates). Deshalb läuft alles über die

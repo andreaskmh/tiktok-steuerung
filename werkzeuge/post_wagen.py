@@ -18,8 +18,11 @@ HIER = pathlib.Path(__file__).resolve().parent
 def _tippe_einfuegen(text):
     """10.11.2026: Einzel-Tastenanschläge kommen am iPhone nicht an → Text per ⌘V (Einfügen an der Cursor-Stelle)."""
     P.front()
-    subprocess.run(["pbcopy"], input=text.encode("utf-8")); time.sleep(1.5)   # Zwischenablage braucht bis zum iPhone
-    subprocess.run(["osascript", "-e", 'tell application "System Events" to keystroke "v" using command down'])
+    if seh.kabel():
+        seh.kabel().einfuegen(text)                              # gemeinsame Zwischenablage + ⌘V übers Kabel
+    else:
+        subprocess.run(["pbcopy"], input=text.encode("utf-8")); time.sleep(1.5)   # Zwischenablage braucht bis zum iPhone
+        subprocess.run(["osascript", "-e", 'tell application "System Events" to keystroke "v" using command down'])
     gesehen = False
     for i in range(30):                                          # „Einsetzen von ‚MacBook …‘“ erscheint verzögert, läuft bis ~15 s
         da = bool(seh.finde("Einsetzen von"))
@@ -39,7 +42,23 @@ def einfuegen(text):
     _tippe_einfuegen(text)
 
 
+def _kurz(k):
+    """⌘-Kürzel am iPhone: Kabel → Tastatur übers Kabel, sonst Mac-Tastatur in die iPhone-Synchronisierung."""
+    if seh.kabel():
+        return seh.kabel().taste("cmd+" + k)
+    subprocess.run(["osascript", "-e", f'tell application "System Events" to keystroke "{k}" using command down'])
+
+
 def geraet(*cmd):
+    if seh.kabel():                                              # Kabel: „SCROLL 0 dy …“ → echtes Ziehen
+        for c in cmd:
+            t = c.split()
+            if t[0] == "SCROLL":
+                dy = int(t[2]) * int(t[3]) if len(t) > 3 else int(t[2])
+                h = seh.kabel().hoehe()
+                weg = max(-0.35, min(0.35, dy / 150)) * h        # dy>0 = Inhalt runter (ältere/obere Zeilen), Finger nach unten
+                seh.kabel().ziehe(167, h * 0.5 - weg / 2, 167, h * 0.5 + weg / 2, 0.35)
+        return
     subprocess.run([str(HIER / "bin" / "zeiger"), "rel", "0.5", "0.6"], capture_output=True)
     subprocess.run([sys.executable, str(PROJ / "geraet" / "geraet.py"), "MOVE 4 0", "MOVE -4 0", *cmd], capture_output=True)
 
@@ -307,11 +326,11 @@ def button_setzen(button):
     fy = (pn[1] + 58) if pn else 326
     for versuch in range(3):                                     # Feld leeren klappt nicht immer → prüfen und wiederholen
         subprocess.run([sys.executable, str(HIER / "tap.py"), "170", "470", "w0.4", "200", str(round(fy)), "w0.9"], capture_output=True)
-        subprocess.run(["osascript", "-e", 'tell application "System Events" to keystroke "a" using command down']); time.sleep(0.6)
+        _kurz("a"); time.sleep(0.6)
         if versuch == 0:
             P.tippe(button)
         else:
-            subprocess.run(["osascript", "-e", 'tell application "System Events" to keystroke "v" using command down'])
+            _kurz("v")
             time.sleep(1.0)
             for _ in range(25):
                 if not seh.finde("Einsetzen von"):

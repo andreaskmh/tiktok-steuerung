@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Schnelle, verlässliche Tipps im iPhone-Fenster mit der virtuellen Maus (echtes Gerät).
+"""Schnelle, verlässliche Tipps am iPhone: per Kabel (kabel.py, wenn open-iphone-use läuft), sonst virtuelle Maus.
 
 Aufruf (Koordinaten wie in app_screenshot: Fensterpunkte, 0..334 x 0..735):
   python3 werkzeuge/tap.py 302 387              # ein Tipp
@@ -19,7 +19,23 @@ def fenster():
     _, x, y, w, h = map(float, out[:5])
     return x, y, w, h
 
+def main_kabel(K, args):
+    """Kabel: Tipps landen genau, kein Zeiger → „safe“ ist überflüssig."""
+    i = 0
+    while i < len(args):
+        a = args[i]
+        if a.startswith("w"):
+            time.sleep(float(a[1:])); i += 1; continue
+        if a == "safe":
+            i += 1; continue
+        K.tipp(float(a), float(args[i + 1])); i += 2
+
+
 def main(args):
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+    import seh
+    if seh.kabel():
+        return main_kabel(seh.kabel(), args)
     subprocess.run(["open", "-b", "com.apple.ScreenContinuity"])
     time.sleep(0.25)
     fx, fy, fw, fh = fenster()

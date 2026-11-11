@@ -17,7 +17,7 @@ kurz und verständlich, Fachbegriffe nur wenn nötig.
 
 ## Was wo liegt
 
-- `docs/ABLAUF.md` – der erprobte Ablauf am iPhone (zuerst lesen).
+- `docs/KABEL.md` – iPhone per Kabel steuern (zuerst lesen). `docs/ABLAUF.md` – Abläufe am iPhone (alte Steuerung).
 - `docs/UEBERGABE.md` – JSON-Format für `uebergabe/eingang` (Posten) und `uebergabe/ausgang` (Stock).
 - `werkzeuge/` – Fenster-Aufnahme, Zeiger setzen, Prüfer; `test/` = Versuche, die nicht gewirkt haben.
   Bauen: `zsh werkzeuge/build.sh`.
@@ -26,10 +26,10 @@ kurz und verständlich, Fachbegriffe nur wenn nötig.
 
 ## Arbeitsweise
 
-- Bedienung über die **iPhone-Synchronisierung** per Computer-Use (`app_*`-Werkzeuge).
-  Fotos immer mit `werkzeuge/aufnahme.sh` (nur das Fenster).
-- Wischen geht mit der **virtuellen Maus** (`vmaus/`) über `geraet/geraet.py` – vor jedem Wisch kurz `MOVE` im iPhone-Fenster
-  (weckt es auf, docs/ABLAUF.md). Bilder holen: `werkzeuge/galerie.sh`. Im Test nie klicken, wenn unklar ist, was unter dem Zeiger liegt; Software-Wischen ist ausprobiert und wirkt nicht.
+- **Seit 12.11.2026: Bedienung per Kabel** (`docs/KABEL.md`): `open-iphone-use serve`, dann laufen alle Werkzeuge
+  automatisch übers Kabel (`werkzeuge/kabel.py`: Foto, Tippen, Ziehen, Text, AirDrop fürs Video). Fotos: `python3 werkzeuge/kabel.py foto`.
+- Alte Steuerung (iPhone-Synchronisierung + virtuelle Maus `vmaus/`, docs/ABLAUF.md) nur noch als Reserve (`TS_MODUS=sync`).
+  Im Test nie tippen, wenn unklar ist, was dort liegt.
 - Fortschritt in einer Zeile, Probleme selbst lösen, Artur nur fragen, wenn nur er es kann.
 
 ## Tempo (Artur, 08./09.11.2026 – gilt vor allem anderen)

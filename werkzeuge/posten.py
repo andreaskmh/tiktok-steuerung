@@ -18,7 +18,7 @@ stapel.json:
 Jeder Schritt wird per Texterkennung geprüft. Passt etwas nicht, bricht das Skript sofort ab (STOPP …) und
 tippt nichts mehr – dann schaut Claude per Foto nach. Kein Abstand zwischen Posts, Like + Speichern ohne Kontrolle.
 Produkt im Showcase ausverkauft (oder ausverkauft: true) → Video mit Text + Brand als ENTWURF, ohne Link.
-Vorher: Videos in der iPhone-Galerie (Fotos), iPhone-Synchronisierung entsperrt, Produkte im Showcase.
+Vorher: Videos in der iPhone-Galerie (Fotos), iPhone entsperrt (Kabel: open-iphone-use serve, docs/KABEL.md).
 """
 import datetime, json, pathlib, random, re, subprocess, sys, time
 
@@ -37,11 +37,26 @@ def taps(*a):
     T.main([str(x) for x in a])
 
 
+def K():
+    return seh.kabel()
+
+
+_MAC_TASTEN = {51: "backspace", 36: "return", 53: "escape", 48: "tab", 117: "delete"}
+
+
 def front():
+    if K():
+        return
     subprocess.run(["open", "-b", "com.apple.ScreenContinuity"]); time.sleep(0.2)
 
 
 def key(code, n=1):
+    if K():
+        if code == 51:
+            return K().loeschen(n)
+        for _ in range(n):
+            K().taste(_MAC_TASTEN[code])
+        return
     front()
     subprocess.run(["osascript", "-e",
         f'tell application "System Events" to repeat {n} times\nkey code {code}\ndelay 0.02\nend repeat'])
@@ -49,6 +64,8 @@ def key(code, n=1):
 
 def schnell(text):
     """Auf einen Schlag (Adressleiste, Suche am iPhone). Langsam tippen nur in TikTok (tippe)."""
+    if K():
+        return K().text(text)
     front()
     esc = text.replace("\\", "\\\\").replace('"', '\\"')
     subprocess.run(["osascript", "-e", f'tell application "System Events" to keystroke "{esc}"'])
@@ -56,6 +73,8 @@ def schnell(text):
 
 def tippe(text):
     """Zeichen einzeln wie ein schneller Mensch (45–140 ms, selten kurze Denkpause). Keine Emojis."""
+    if K():
+        return K().text(text, menschlich=True)
     front()
     for ch in text:
         esc = ch.replace("\\", "\\\\").replace('"', '\\"')
@@ -255,7 +274,7 @@ def main(a):
     s = json.loads(pathlib.Path(a[0]).read_text())
     nummern = [int(n) for n in a[1:]] or range(1, len(s["videos"]) + 1)
     front()
-    if seh.finde("gesperrt"):
+    if not K() and seh.finde("gesperrt"):
         sys.exit("STOPP iPhone-Synchronisierung gesperrt – Artur: Touch ID")
     for n in nummern:
         v = s["videos"][n - 1]

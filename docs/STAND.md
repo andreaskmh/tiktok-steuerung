@@ -1,4 +1,4 @@
-# Stand & nächste Schritte (zuletzt 09.11.2026, 00:40)
+# Stand & nächste Schritte (zuletzt 12.11.2026)
 
 **Zuerst lesen:** `CLAUDE.md` → `docs/ABLAUF.md` → `docs/ACCOUNTS.md`. Memory: upload-speed-regeln, produkt-immer-ueber-social1.
 
@@ -45,3 +45,9 @@
 
 ## 11.11.2026
 - Stapel 2026-11-10-bof139: Rest (19) hat Artur selbst hochgeladen, Posten beendet. Pflicht-Hashtags: #superdeals #TikTokShopBlackFriday #LIVEDeals.
+
+## 12.11.2026 – Umstellung auf Kabel
+- iPhone 11 per USB über open-iphone-use (docs/KABEL.md). Stock per Kabel getestet (Hosenrock 2/2, 41 s, verlustfrei).
+- Video aufs iPhone per AirDrop (`werkzeuge/airdrop.py`, 11 s, getestet). `eingang.py` nutzt es automatisch.
+- posten.py / post_wagen.py laufen übers Kabel; getestet: Profil-Tipp, „+“, Galerie öffnen. **Ganzer Post noch nicht** →
+  beim nächsten Stapel ersten Post mitschauen, bei STOPP Foto (`python3 werkzeuge/kabel.py foto`).
