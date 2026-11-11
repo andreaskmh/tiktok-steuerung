@@ -31,4 +31,7 @@ Beispiel 20 Videos: 12 auf anduri + ella (je 6), 4 auf andreas.testet (Limit 3 b
   Artur prüft den Bestand jedes Produkts vorher (Aussage 08.11.2026). Konkrete Zahlen („Noch 12 Stück“) nur, wenn
   Artur die Zahl fürs Produkt nennt. Nicht nachfragen, einfach durchmischen.
 
-- **#superdeals bei jedem Video** als Hashtag (Artur, 10.11.2026).
+- **Hashtags bei jedem Video immer: #superdeals #TikTokShopBlackFriday #LIVEDeals** (Artur, 11.11.2026).
+
+## Freigabe (Artur, 11.11.2026)
+- Abnahme der Videos („passt“, /fertig, auch per Sprache) = Freigabe zum Posten. Kein extra Posting-Plan, keine zweite Rückfrage. Ohne Signal im Chat wird nie gepostet.

@@ -42,3 +42,6 @@
 ## 10.11.2026 23:33 – Stapel 2026-11-10-bof139 von Artur gestoppt
 - Gepostet: anduri.official 01, 03, 05, 07, 09, 11, 13, 15, 17 (9). Offen (freigegeben): 02–28 gerade + 19–28 → ella (02–18 gerade), andreas.testet (19–21), artur.official (22–28).
 - Weiter: `python3 werkzeuge/post_wagen.py 2026-11-10-bof139` (iPhone-Fenster x=700). Ohne Brand gepostet: siehe uebergabe/ausgang/ohne-brand.txt.
+
+## 11.11.2026
+- Stapel 2026-11-10-bof139: Rest (19) hat Artur selbst hochgeladen, Posten beendet. Pflicht-Hashtags: #superdeals #TikTokShopBlackFriday #LIVEDeals.
