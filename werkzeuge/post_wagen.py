@@ -403,6 +403,7 @@ def profil(account):
         if seh.finde("Nicht erlauben"):
             x, y = seh.finde("Nicht erlauben"); taps(x, y, "w1.2")
         if seh.warte("@" + account, 3):
+            P.beitraege()
             return
         if [t for t in seh.lesen() if t[0].startswith("@") and t[2] < 200]:
             break                                                # anderes Profil sichtbar → wechseln
@@ -418,6 +419,7 @@ def profil(account):
     if not seh.warte("@" + account, 4):
         subprocess.run([sys.executable, str(HIER / "tap.py"), str(round(z[0])), str(round(z[1])), "w4.0"], capture_output=True)
     muss(seh.warte("@" + account, 6), f"Account-Wechsel zu {account} hat nicht geklappt")
+    P.beitraege()
     log(f"Account gewechselt: {account}")
 
 

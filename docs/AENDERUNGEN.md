@@ -101,3 +101,5 @@
   Behoben unterwegs: Galerie-X/Zurück y=61, Kamera-Seite schließen (x=24), tolerante Link-Prüfung (`seh.aehnlich`, OCR „aut“/„auf“).
   Brand „BotaBay Perfume“ ohne handle nicht eindeutig → ohne Brand (wie vorgesehen); fürs echte Posten handle in der JSON nachtragen.
 - 12.11.: Menschliches Tippen schneller (Artur): Häppchen von 2–5 Zeichen, 25–70 ms Abstand, selten kurze Pausen.
+- 12.11.: Profil immer auf den linken Reiter **Beiträge** (neueste Videos) statt Shop/Showcase (Artur: übersichtlicher).
+  `posten.beitraege()` – tippt nur, wenn ein anderer Reiter offen ist (2. Tipp öffnet sonst das Sortiermenü); in posten.profil und post_wagen.profil.

@@ -99,12 +99,28 @@ def log(msg):
 
 # ---------------------------------------------------------------- Schritte
 
+def beitraege():
+    """Im Profil auf den linken Reiter „Beiträge“ (neueste Videos) statt Shop/Showcase (Artur 12.11.2026).
+    Nur tippen, wenn ein anderer Reiter offen ist – ein 2. Tipp auf „Beiträge“ öffnet das Sortiermenü."""
+    tx = seh.lesen()
+    if seh.finde("Neueste", tx, genau=True):                    # Sortiermenü offen → schließen
+        x, y = seh.finde("Neueste", tx, genau=True); taps(x, y, "w0.8"); return
+    studio = seh.finde("TikTok Studio", tx)
+    if not studio:
+        return
+    shop = seh.finde("Shop für Creator", tx) or seh.finde("Showcase", tx, unter=studio[1] + 20)
+    if shop:
+        taps(34, studio[1] + 37, "w1.2")                         # Raster-Symbol links unter „TikTok Studio“
+
+
+
 def profil(account):
     taps(306, 681, "w1.8")
     if seh.finde("Nicht erlauben"):
         x, y = seh.finde("Nicht erlauben"); taps(x, y, "w1.2")
     if not seh.warte("@" + account, 4):
         raise Stopp(f"Profil zeigt nicht @{account} – Account wechseln (Name oben antippen)")
+    beitraege()
 
 
 def hochladen(kachel):
