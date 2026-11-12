@@ -20,7 +20,7 @@ tippt nichts mehr – dann schaut Claude per Foto nach. Kein Abstand zwischen Po
 Produkt im Showcase ausverkauft (oder ausverkauft: true) → Video mit Text + Brand als ENTWURF, ohne Link.
 Vorher: Videos in der iPhone-Galerie (Fotos), iPhone entsperrt (Kabel: open-iphone-use serve, docs/KABEL.md).
 """
-import datetime, json, pathlib, random, re, subprocess, sys, time
+import datetime, json, os, pathlib, random, re, subprocess, sys, time
 
 HIER = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HIER))
@@ -70,6 +70,7 @@ def key(code, n=1):
 def schnell(text):
     """Auf einen Schlag (Adressleiste, Suche am iPhone). Langsam tippen nur in TikTok (tippe)."""
     if K():
+        K().taste("cmd+a"); time.sleep(0.15); K().taste("backspace"); time.sleep(0.15)   # 12.11.2026: alter Suchtext („SafariTikTok“)
         return K().text(text)
     front()
     esc = text.replace("\\", "\\\\").replace('"', '\\"')
@@ -195,8 +196,11 @@ def beschreiben(text, brand, handle):
     else:                                                       # ohne Nutzername: Shop-Name muss eindeutig sein
         time.sleep(2.0)
         tr = seh.alle(brand, [t for t in seh.lesen() if t[2] > 180], genau=True)
-        if len(tr) > 1:
+        if len(tr) > 1 and os.environ.get("TS_BRAND_STRENG"):
             raise Stopp(f"„{brand}“ {len(tr)}× in der Trefferliste – Nutzername (handle) angeben")
+        if len(tr) > 1:                                         # Artur 12.11.2026: trotzdem markieren → oberster Treffer
+            tr = sorted(tr, key=lambda t: t[2])[:1]
+            log(f"„{brand}“ mehrfach – nehme den obersten Treffer")
         f = (tr[0][1], tr[0][2] + 9) if tr else None           # Name-Zeile liegt ~18 über der Nutzername-Zeile
     if not f:
         namen = [t for t, _, _ in seh.lesen()][:25]

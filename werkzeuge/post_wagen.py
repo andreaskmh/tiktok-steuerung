@@ -168,7 +168,20 @@ def zu_tabs():
             return
         if kamera_zu():
             continue
-        taps(22, 61, "w1.6") if seh.kabel() else taps(23, 92, "w1.6")   # X/Zurück oben links (Kabel: Galerie-X y=61)
+        tx = seh.lesen(); txt = " ".join(t.lower() for t, _, _ in tx)
+        # 12.11.2026: blinde Zurück-Tipps landeten im LIVE-Event-Bereich bzw. bei „Konto hinzufügen“ → bei solchen Seiten sofort Stopp
+        if any(w in txt for w in ("live-event", "event erstellen", "live gehen", "registrieren", "konto hinzufügen", "kasse")):
+            raise Stopp("Unerwartete Seite (LIVE/Registrieren/Kasse) – nichts mehr angetippt")
+        if seh.kabel():
+            K = seh.kabel(); K.taste("home"); time.sleep(0.8)  # sicherer Weg: TikTok neu nach vorn holen, dann Home-Symbol
+            tiktok_auf(); time.sleep(1.0)
+            if _tabs_da():
+                return
+            tx = seh.lesen()
+            if seh.finde("Profil", tx, unter=650) or seh.finde("Freund*innen", tx):
+                taps(33, 681, "w1.6"); continue                  # Home-Symbol unten links
+            continue
+        taps(23, 92, "w1.6")                                     # alte Steuerung: X/Zurück oben links
     muss(_tabs_da(), "TikTok-Hauptseite nicht erreicht")
 
 
@@ -414,7 +427,20 @@ def profil(account):
         if seh.warte("Konto wechseln", 3):
             break
     muss(seh.warte("Konto wechseln", 3), "„Konto wechseln“ öffnet sich nicht")
-    z = muss(seh.finde(account, unter=330), f"{account} nicht in „Konto wechseln“")
+    # 12.11.2026: Liste fährt animiert auf. Erst tippen, wenn die Zeile zweimal an derselben Stelle steht
+    # (sonst lag beim Tipp schon „Konto hinzufügen“ dort → Registrieren-Seite).
+    z, vorher = None, None
+    for _ in range(12):
+        time.sleep(0.5)
+        tx = seh.lesen()
+        z = seh.finde(account, tx, unter=330)
+        if z and vorher and abs(z[1] - vorher[1]) < 3:
+            neu = seh.finde("Konto hinzufügen", tx)
+            if neu and abs(neu[1] - z[1]) < 35:
+                raise Stopp("„Konto hinzufügen“ zu nah am Account – nicht getippt")
+            break
+        vorher, z = z, None
+    z = muss(z, f"{account} nicht (ruhig) in „Konto wechseln“")
     subprocess.run([sys.executable, str(HIER / "tap.py"), str(round(z[0])), str(round(z[1])), "w4.0"], capture_output=True)
     if not seh.warte("@" + account, 4):
         subprocess.run([sys.executable, str(HIER / "tap.py"), str(round(z[0])), str(round(z[1])), "w4.0"], capture_output=True)

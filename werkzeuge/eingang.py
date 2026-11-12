@@ -45,6 +45,8 @@ def text_von(d):
 def aufs_iphone(videos):
     """Videos in die Fotos-App am iPhone. Kabel: per AirDrop (airdrop.py, ~11 s), sonst echtes Drag & Drop
     in die iPhone-Synchronisierung (eigener Ordner → Zeile 1 liegt immer gleich)."""
+    if os.environ.get("TS_OHNE_AIRDROP"):                        # 12.11.2026: Videos sind schon am iPhone (AirDrop kam an, Erkennung nicht)
+        log("TS_OHNE_AIRDROP: Videos schon am iPhone"); return
     if seh.kabel():
         import airdrop
         try:

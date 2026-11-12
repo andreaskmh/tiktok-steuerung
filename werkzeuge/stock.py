@@ -39,7 +39,7 @@ def sicher_tippen(x, y, abstand=45):
     taps(x, y)
 
 
-def zur_galerie(pid):
+def zur_galerie(pid, produkt=None):
     home()
     _, y = muss(seh.finde("Suchen", unter=550), "Home-Bildschirm nicht erreicht")
     taps(167, y, "w1.2")
@@ -59,17 +59,37 @@ def zur_galerie(pid):
     schnell(f"social1.ai/products/{pid}")
     key(36)                                                      # Return
     f = muss(seh.warte("View on TikTok Shop", 15), "Social1-Seite ohne „View on TikTok Shop“ (Login? Artur)")
+    # 12.11.2026: TikTok zeigte noch die ALTE Produktseite (Düfte aus Video 139 unter „Roborock“) → erst weiter,
+    # wenn der Shopname von der Social1-Seite (Zeilen zwischen „Promote S1“ und „View on TikTok Shop“) auch in TikTok steht.
+    import re
+    pw = re.findall(r"[a-zäöüß0-9]{4,}", (produkt or "").lower())[:2]   # auch Social1 zeigt kurz noch das alte Produkt
+    for _ in range(20):
+        s1 = [t for t, _, _ in seh.lesen()]
+        if not pw or any(w in " ".join(s1).lower() for w in pw):
+            break
+        time.sleep(1)
+    else:
+        raise Stopp(f"Social1 zeigt nicht das Produkt {pw}")
+    f = seh.finde("View on TikTok Shop") or f
+    try:
+        kopf = s1[s1.index("Promote S1") + 1: s1.index("View on TikTok Shop")]
+    except ValueError:
+        kopf = []
+    shop = {w for t in kopf if "..." not in t and "…" not in t for w in re.findall(r"[a-z0-9äöü]{4,}", t.lower())}
+    log(f"Shop laut Social1: {sorted(shop) or '?'}")
     taps(f[0], f[1], "w3.0")
-    for _ in range(12):                                          # evtl. „In TikTok öffnen?“
+    for _ in range(40):                                          # evtl. „In TikTok öffnen?“, TikTok lädt manchmal > 10 s
         tx = seh.lesen()
         o = seh.finde("Öffnen", tx, genau=True)
         if o:
             taps(o[0], o[1], "w2.5"); continue
-        if any(g in t.lower() for t, _, _ in tx for g in ("kasse", "jetzt kaufen", "verdiene")):
+        txt = " ".join(t.lower() for t, _, _ in tx)
+        if any(g in txt for g in ("kasse", "jetzt kaufen", "verdiene")) and (not shop or any(w in txt for w in shop)):
             break
         time.sleep(0.5)
     else:
-        raise Stopp("TikTok-Produktseite nicht erreicht")
+        raise Stopp(f"TikTok-Produktseite von {sorted(shop)} nicht erreicht (alte Seite offen?)")
+    log("Produktseite passt (Shop gefunden)")
     time.sleep(1.5)
     ziehe_hoch(450, 110)                                         # Vorschaukarte zur vollen Seite hochziehen
     time.sleep(1.5)
@@ -196,7 +216,7 @@ def main(a):
     produkt = a[2] if len(a) > 2 else name
     ziel = pathlib.Path(a[3]) if len(a) > 3 else None
     try:
-        zur_galerie(pid)
+        zur_galerie(pid, produkt)
     except Stopp as e:
         sys.exit(f"STOPP: {e}")
     tts = f"https://shop.tiktok.com/view/product/{pid}"
