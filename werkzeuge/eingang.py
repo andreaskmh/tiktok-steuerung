@@ -3,7 +3,8 @@
 
   python3 werkzeuge/eingang.py liste                  # was liegt da, mit Status
   python3 werkzeuge/eingang.py freigeben <stapel>     # NUR nach Arturs OK im Chat („Schnitt geprüft, passt“)
-  python3 werkzeuge/eingang.py posten [stapel]        # alle freigegebenen: aufs iPhone ziehen, dann posten.py
+  python3 werkzeuge/eingang.py posten [stapel]        # alle freigegebenen: per AirDrop (Kabel) aufs iPhone, dann post_wagen.ein_post
+                                                      # (ausverkauft → posten.py: Entwurf ohne Link)
                                                       # (ein Account nach dem anderen, kein Abstand)
 Status/Verlauf werden in jede JSON zurückgeschrieben (gepostet / entwurf / fehler).
 """
@@ -101,7 +102,16 @@ def main(a):
             sys.exit("nichts freigegeben")
         liste.sort(key=lambda x: REIHENFOLGE.index(x[1]["account"]) if x[1]["account"] in REIHENFOLGE else 99)
         aufs_iphone([EIN / d["datei"] for _, d in liste])
+        import post_wagen                                         # 12.11.2026: getesteter Weg (Showcase zuerst, sonst Wagen)
         for p, d in liste:
+            if not d.get("ausverkauft"):
+                log(f"── {d['datei']} → {d['account']}")
+                try:
+                    post_wagen.ein_post(p, d)                     # schreibt Status + gepostet.txt selbst
+                except Stopp as e:
+                    schreibe(p, d, "fehler", str(e))
+                    sys.exit(f"STOPP bei {d['datei']}: {e}")
+                continue
             v = {"datei": str(EIN / d["datei"]), "kachel": d["kachel"], "produkt": d["produkt"],
                  "tts_id": d.get("tts_link", "").rstrip("/").split("/")[-1], "button": d["button"],
                  "text": text_von(d), "brand": d["brand"], "handle": d.get("handle", ""),
