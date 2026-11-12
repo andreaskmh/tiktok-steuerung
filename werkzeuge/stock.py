@@ -2,6 +2,7 @@
 """Stock-Bilder eines TikTok-Shop-Produkts vollautomatisch holen (über Social1, nie über die TikTok-Suche).
 
   python3 werkzeuge/stock.py <produkt-id> <ordnername> ["Produktname"] [zielordner]
+  python3 werkzeuge/stock.py --stapel liste.json     # viele Produkte, eine Zeile je Produkt, Fertige übersprungen
 
 Ablauf am iPhone: Home → Safari → social1.ai/products/<id> → „View on TikTok Shop“ → Produktbild antippen
 → Vollbild-Galerie → galerie.sh holt alle Bilder nach uebergabe/ausgang/<ordnername>/.
@@ -160,7 +161,35 @@ def ziehe_hoch(von_y, nach_y, x=167):
             log(f"Karte per Mausrad hochgeschoben (SCROLL 0 {dy})"); return
 
 
+def stapel(liste_pfad):
+    """Viele Produkte am Stück: JSON-Liste [{"id": "...", "name": "kurzname", "produkt": "Produktname", "ziel": "…/Belege/x"}].
+    Schon geholte (ziel/produkt.json vorhanden) werden übersprungen → nach Abbruch einfach neu starten.
+    Eine Zeile pro Produkt; ein Fehler stoppt nicht den ganzen Stapel. Am Ende: Liste der Fehler."""
+    import json
+    liste = json.loads(pathlib.Path(liste_pfad).read_text())
+    fehler = []
+    t0 = time.time()
+    for i, e in enumerate(liste, 1):
+        ziel = pathlib.Path(e["ziel"]) if e.get("ziel") else PROJ / "uebergabe" / "ausgang" / e["name"]
+        if (ziel / "produkt.json").exists():
+            print(f"{i}/{len(liste)} = {e['name']} (schon da)", flush=True); continue
+        t = time.time()
+        r = subprocess.run([sys.executable, __file__, e["id"], e["name"], e.get("produkt", e["name"])] + ([str(ziel)] if e.get("ziel") else []),
+                           capture_output=True, text=True)
+        n = len(list(ziel.glob("bild-*.png"))) if ziel.exists() else 0
+        if r.returncode:
+            grund = (r.stderr.strip().splitlines() or r.stdout.strip().splitlines() or ["?"])[-1]
+            fehler.append((e["name"], grund)); print(f"{i}/{len(liste)} ✗ {e['name']}: {grund}", flush=True)
+        else:
+            print(f"{i}/{len(liste)} ✓ {e['name']}: {n} Bilder, {time.time() - t:.0f} s", flush=True)
+    print(f"FERTIG {len(liste) - len(fehler)}/{len(liste)} in {(time.time() - t0) / 60:.1f} min" +
+          ("".join(f"\n  ✗ {n}: {g}" for n, g in fehler)), flush=True)
+    sys.exit(1 if fehler else 0)
+
+
 def main(a):
+    if a[:1] == ["--stapel"] and len(a) == 2:
+        return stapel(a[1])
     if len(a) < 2:
         sys.exit(__doc__)
     pid, name = a[0], a[1]

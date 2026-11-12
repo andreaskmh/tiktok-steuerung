@@ -8,6 +8,7 @@
   2. Neue Aktion „drag“: eigene Zieh-Bewegung (x1, y1, x2, y2 als Anteile 0..1, dauer in s).
   3. Neue Aktion „hid“: rohe Tastatur-Codes [[modifier, usage], …] (für deutsches Tastaturlayout, Umlaute, #).
   4. Neuer Abruf GET /api/devices/<id>/png: aktuelles Bild verlustfrei als PNG (für Stock-Bilder).
+  5. Ruhender Bildschirm: Bild alle 0,15 s statt 0,5 s (Tipps schneller).
 """
 import pathlib, sys, glob
 
@@ -74,4 +75,7 @@ ersetze("http.py",
         '                    return self.reply(out.getvalue(), mime="image/png")\n'
         '                if not post and parts[3] == "frame":\n',
         'parts[3] == "png":  # TS-Steuerung')
+# 5. Tempo: ruhender Bildschirm liefert alle 0,15 s ein Bild (statt 0,5 s) → jeder Tipp ist ~0,4 s schneller
+ersetze("coredevice.py", "STILL_FRAME_SECONDS = .5", "STILL_FRAME_SECONDS = .15  # TS: schneller", "STILL_FRAME_SECONDS = .15")
+
 print("fertig – Server neu starten: open-iphone-use stop && open-iphone-use serve")

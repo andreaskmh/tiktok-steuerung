@@ -106,3 +106,7 @@
 - 12.11.: `eingang.py posten` = ein Befehl für alles: AirDrop aller Videos, dann pro Video `post_wagen.ein_post` (getesteter Weg,
   Showcase zuerst/sonst Wagen); nur „ausverkauft“ läuft weiter über posten.py (Entwurf ohne Link). Vorher nutzte es nur den alten Showcase-Weg.
   Brücke im Editing System (`eigene/TIKTOK-STEUERUNG.md`) auf Kabel/AirDrop angepasst (dort nicht committet).
+- 12.11.: **Tempo:** Tipp 0,95 s → 0,24 s (Server: ruhendes Bild alle 0,15 s statt 0,5 s, patch_oiu.py Nr. 5); feste Wartezeiten
+  per Kabel × 0,6 (`TS_WARTE`, tap.py; =1 setzt zurück, falls etwas zu schnell ist – Prüfungen per Texterkennung bleiben).
+  `stock.py --stapel liste.json`: viele Produkte, eine Zeile je Produkt, Fertige übersprungen (Test: BotaBay 11 Bilder in 51 s).
+  Kontext-Regeln in CLAUDE.md + Brücke (Hintergrund, nur Endzeilen, Übergabe an frische Session alle ~20 Videos).

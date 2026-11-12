@@ -44,8 +44,14 @@ kurz und verständlich, Fachbegriffe nur wenn nötig.
 - **Einkaufswagen voll** → irgendein Produkt aus dem Einkaufswagen entfernen (egal welches), weitermachen.
 - **Produkt ausverkauft** → Video mit Text + Brand als **Entwurf** speichern, ohne Produktlink (posten.py macht das).
 - **Tippen:** langsam (menschlich) nur in TikTok. Links/Adressleiste/Suche am iPhone schnell auf einmal (`posten.schnell`).
-- **Kontext:** Nach jedem Stapel, spätestens bei ~500k Token: `docs/STAND.md` aktualisieren, committen und eine
-  **neue Session (fresh)** starten mit „Lies docs/STAND.md und mach weiter“ – nicht im vollen Chat weitermachen.
+- **Kontext sparen (Artur 12.11.: nie über 500k, Stapel bis 50+ Videos):**
+  - Lange Läufe (`stock.py --stapel`, `eingang.py posten`) im **Hintergrund**, danach nur die letzten Zeilen lesen
+    (eine Zeile pro Produkt/Video). Kein Mitlesen, keine Zwischenfotos; Foto nur bei `STOPP` (`kabel.py foto`, möglichst Ausschnitt).
+  - Keine großen Dateien/Logs ganz lesen (`tail`, `grep`). Abläufe sind fortsetzbar: Stock überspringt Fertiges,
+    Posten arbeitet nach Status (`eingang.py liste`) → nach Abbruch oder in neuer Session einfach denselben Befehl starten.
+  - **Übergabe:** nach jedem Stapel, alle ~20 Videos oder wenn der Chat lang wird (~300k): `docs/STAND.md` (wo stehen wir,
+    nächster Befehl) aktualisieren, `sync.sh sichern`, dann **neue Session (fresh)** mit „Lies docs/STAND.md und mach weiter“
+    (start_session bzw. hand_off_to_session) – nicht im vollen Chat weitermachen.
 
 ## Regeln (nicht verhandelbar)
 

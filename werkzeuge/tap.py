@@ -19,13 +19,17 @@ def fenster():
     _, x, y, w, h = map(float, out[:5])
     return x, y, w, h
 
+WARTE = float(__import__("os").environ.get("TS_WARTE", "0.6"))  # Kabel: feste Wartezeiten × 0,6 (12.11.2026)
+
+
 def main_kabel(K, args):
-    """Kabel: Tipps landen genau, kein Zeiger → „safe“ ist überflüssig."""
+    """Kabel: Tipps landen genau, kein Zeiger → „safe“ ist überflüssig. Wartezeiten waren für die langsame
+    iPhone-Synchronisierung ausgelegt → per Kabel × WARTE (TS_WARTE=1 = wie früher, falls etwas zu schnell ist)."""
     i = 0
     while i < len(args):
         a = args[i]
         if a.startswith("w"):
-            time.sleep(float(a[1:])); i += 1; continue
+            time.sleep(float(a[1:]) * WARTE); i += 1; continue
         if a == "safe":
             i += 1; continue
         K.tipp(float(a), float(args[i + 1])); i += 2
