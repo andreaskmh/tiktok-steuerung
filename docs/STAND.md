@@ -51,4 +51,5 @@
 - Video aufs iPhone per AirDrop (`werkzeuge/airdrop.py`, 11 s, getestet). `eingang.py` nutzt es automatisch.
 - posten.py / post_wagen.py laufen übers Kabel; ganzer Post als Entwurf getestet (anduri, BotaBay, 12.11. 01:12).
   Echtes Veröffentlichen per Kabel noch nicht → 1. Post im nächsten Stapel mitschauen, bei STOPP Foto (`python3 werkzeuge/kabel.py foto`).
-- Probe-Entwurf „9 DÜFTE UNTER 20€“ liegt in den Entwürfen von anduri.official (kann weg). Video liegt 2× in Fotos am iPhone.
+- Probe-Entwürfe „9 DÜFTE UNTER 20€“ (2×) liegen in den Entwürfen von anduri.official (können weg). Video liegt 2× in Fotos am iPhone.
+- Tempo 12.11. 15:35: ganzer Post (mit Einkaufswagen) 124 s ohne Stopp. Stock: ~50 s pro Produkt. `stock.py --stapel` für viele.

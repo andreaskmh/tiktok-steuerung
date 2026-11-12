@@ -110,3 +110,4 @@
   per Kabel × 0,6 (`TS_WARTE`, tap.py; =1 setzt zurück, falls etwas zu schnell ist – Prüfungen per Texterkennung bleiben).
   `stock.py --stapel liste.json`: viele Produkte, eine Zeile je Produkt, Fertige übersprungen (Test: BotaBay 11 Bilder in 51 s).
   Kontext-Regeln in CLAUDE.md + Brücke (Hintergrund, nur Endzeilen, Übergabe an frische Session alle ~20 Videos).
+- 12.11.: Probe-Post mit Wartezeiten × 0,6: 124 s komplett, kein Stopp.
