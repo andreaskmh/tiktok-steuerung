@@ -4,7 +4,16 @@ Ersetzt die iPhone-Synchronisierung + virtuelle Maus. Grundlage: [open-iphone-us
 (Klon: `~/Documents/Coding/extern/open-iphone-use`), nutzt Xcodes CoreDevice: Live-Bild vom iPhone, Tipps landen genau,
 kein Zeiger, kein „Aufwecken“, keine doppelten Tipps.
 
-## Starten (jedes Mal nach Mac-Neustart oder Kabel neu eingesteckt)
+## Automatisch (Wächter, seit 12.11.2026)
+
+`werkzeuge/kabel/waechter.py` prüft alle 20 s: Server aus → starten; Kabel steckt, Server auf WLAN → neu starten (USB);
+iPhone nicht eingebunden → einbinden. Als Autostart beim Anmelden (einmalig, macht Artur selbst):
+```bash
+zsh werkzeuge/kabel/autostart.sh an       # aus: … aus   |   Stand: … status   |   Protokoll: ~/Library/Logs/ts-iphone-waechter.log
+```
+Nach Änderungen an waechter.py erneut `an` ausführen (kopiert die Fassung nach ~/.local/share/ts-iphone-waechter/).
+
+## Von Hand starten (ohne Wächter)
 
 ```bash
 open-iphone-use stop; open-iphone-use serve     # ~20 s, nimmt USB, wenn das Kabel steckt (sonst WLAN)
