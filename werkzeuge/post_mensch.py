@@ -4,13 +4,14 @@ per Text-Label auf dem Bildschirm (seh.lesen), mit Gefahren-Sperre und menschlic
 
   python3 werkzeuge/post_mensch.py <eingang.json> [--entwurf] [--ohne-airdrop] [--ohne-aufraeumen]
   python3 werkzeuge/post_mensch.py --stapel <stapel> [--entwurf] [--ohne-airdrop]   # alle „freigegeben“, Account für Account
-  python3 werkzeuge/post_mensch.py --aufraeumen <eingang.json>                      # nur Social1-Lesezeichen + Fotos löschen
+  python3 werkzeuge/post_mensch.py --aufraeumen <eingang.json>                      # nur Social1-Lesezeichen + Fotos
+  python3 werkzeuge/post_mensch.py --fotos <stapel>                                 # Gepostete des Stapels aus Fotos löschen löschen
 
 Pro Video:  (Account prüfen/wechseln) → Safari social1.ai/products/<id> → „View on TikTok Shop“ → (Banner „ÖFFNEN“) →
             Showcase über „… pro Verkauf“, sonst Einkaufswagen (verfügbare Variante) → Produktseite zu → „+“ → Galerie →
             Video (Hook-Titel) → Auswählen → Weiter → Weiter → Beschreibung menschlich tippen → Link → Produkt →
             Showcase oben bzw. Weitere Produkte → Einkaufswagen → Hinzufügen → (@Brand, nur wenn Konto da) →
-            Veröffentlichen (--entwurf: „Entwürfe“) → Social1-Lesezeichen am Mac abhaken → Video in Fotos löschen.
+            Veröffentlichen (--entwurf: „Entwürfe“) → Social1-Lesezeichen am Mac abhaken; am Stapel-Ende alle Videos in Fotos löschen.
 Gefahren-Sperre: nie in der Nähe von Kasse, Jetzt kaufen, LIVE, Konto hinzufügen, Delete; CAPTCHA → STOPP.
 Ausgabe: eine Zeile pro Schritt mit Sekunden, am Ende „✓ <datei> 84 s“ bzw. „STOPP …“ (dann Foto: kabel.py foto).
 """
@@ -618,41 +619,60 @@ def _safari(js):
     return (r.stdout.strip() or r.stderr.strip()[:120])
 
 
-def fotos_loeschen(kachel):
-    """Fotos → neuestes Video öffnen → Hook-Titel prüfen → Papierkorb → „Video löschen“ (bleibt 30 Tage in Zuletzt gelöscht)."""
-    if not FOTOS_GETESTET:
-        log("Fotos-Löschen noch nicht freigeschaltet (Lagen ungetestet) – Video bleibt in Fotos"); return
-    app("Fotos")
-    for _ in range(4):                                           # zurück bis zur Mediathek-Übersicht
+def _mediathek(tx):
+    return bool(seh.finde("Mediathek", tx, unter=650) and seh.finde("Sammlungen", tx, unter=650))
+
+
+def fotos_loeschen(kachel, oeffnen=True):
+    """Fotos → Mediathek → Kachel mit dem Hook-Titel (im Raster lesbar) → Vollbild prüfen → Mülleimer → „Video löschen“
+    (bleibt 30 Tage in „Zuletzt gelöscht“). Getestet 12.11.2026: Mülleimer 289/684, 1. Tipp kommt oft nicht an."""
+    if oeffnen:
+        app("Fotos")
+    for _ in range(4):                                           # Fotos öffnet auf der letzten Seite → zurück zur Mediathek
         tx = lesen()
-        if seh.finde("Mediathek", tx) and not seh.finde("Video löschen", tx):
-            if not [t for t in tx if _passt(kachel, t[0]) and 150 < t[2] < 600]:
-                break
-        tipp(23, 57, tx, "Zurück"); ruhe(1.0)
+        if _mediathek(tx):
+            break
+        z = seh.finde("<", tx, ueber=80)
+        tipp(z[0], z[1], tx, "Zurück") if z else tipp(30, 57, tx, "Zurück")
+        ruhe(1.0)
+    muss(_mediathek(lesen()), "Fotos: Mediathek nicht erreicht")
+    treffer = None
+    for _ in range(4):                                           # neueste unten; sonst etwas hochwischen
+        tx = lesen()
+        tr = [t for t in tx if 100 < t[2] < 660 and _passt(kachel, t[0])]
+        if tr:
+            treffer = max(tr, key=lambda t: t[2]); break
+        K().ziehe(167, 250, 167, 560, 0.35); ruhe(1.0)
+    _, x, y = muss(treffer, f"„{kachel}“ nicht in der Mediathek")
+    tipp(x, y + 20, tx, "Video in Fotos"); ruhe(1.3)
     tx = lesen()
-    # neuestes Element steht unten rechts im Raster (über der Leiste) – Position kommt aus dem Foto-Test (Konstante unten)
-    tipp(FOTO_NEU[0], FOTO_NEU[1], tx, "neuestes Video"); ruhe(1.4)
-    tx = lesen()
-    muss([t for t in tx if _passt(kachel, t[0])], f"neuestes Element in Fotos ist nicht „{kachel}“ – nicht gelöscht")
-    tipp(FOTO_PAPIERKORB[0], FOTO_PAPIERKORB[1], tx, "Papierkorb"); ruhe(1.0)
-    l = muss(warte("Video löschen", 3), "„Video löschen“ fehlt")
-    tipp(l[0], l[1], l[2], "Video löschen"); ruhe(1.0)
-    log("Video in Fotos gelöscht")
+    muss(not _mediathek(tx) and [t for t in tx if _passt(kachel, t[0])], "Vollbild zeigt nicht das Video – nicht gelöscht")
+    for _ in range(4):
+        tipp(289, 684, tx, "Mülleimer"); ruhe(1.0)
+        l = warte("Video löschen", 1.5)
+        if l:
+            muss([t for t in l[2] if _passt(kachel, t[0])], "beim Löschen anderes Video offen – abgebrochen")
+            tipp(l[0], l[1], l[2], "Video löschen"); ruhe(1.0)
+            muss(not seh.finde("Video löschen", lesen()), "„Video löschen“ hat nicht gewirkt")
+            log("Video in Fotos gelöscht"); return
+        tx = lesen()
+    raise Stopp("Mülleimer in Fotos reagiert nicht")
 
 
-FOTOS_GETESTET = False           # erst nach dem Test in Fotos auf True (Lagen unten gemessen)
-FOTO_NEU = (278, 560)            # wird beim ersten Test gemessen und angepasst
-FOTO_PAPIERKORB = (300, 690)
-
-
-def aufraeumen(d):
+def aufraeumen(d, fotos=True):
+    """Social1 (Mac, ~3 s) gleich nach dem Post; Fotos gesammelt am Stapel-Ende (fotos_aufraeumen), außer fotos=True."""
     pid = d.get("tts_link", "").rstrip("/").split("/")[-1]
-    r = social1_abhaken(pid)
-    log(f"Social1: {r}")
-    try:
-        fotos_loeschen(d["kachel"])
-    except Stopp as e:
-        log(f"Hinweis Fotos: {e}")
+    log(f"Social1: {social1_abhaken(pid)}")
+    if fotos:
+        fotos_aufraeumen([d["kachel"]])
+
+
+def fotos_aufraeumen(kacheln):
+    for i, k in enumerate(kacheln):
+        try:
+            fotos_loeschen(k, oeffnen=(i == 0))
+        except Stopp as e:
+            log(f"Hinweis Fotos ({k}): {e}")
 
 
 # ---------------------------------------------------------------- Ablauf
@@ -725,7 +745,7 @@ def ein_video(p, d, entwurf=False, aufr=True):
     eintragen(d, dauer, weg, entwurf)
     print(f"✓ {d['datei']} → {d['account']} ({weg}{', Entwurf' if entwurf else ''}) {dauer:.0f} s", flush=True)
     if aufr and not entwurf:
-        aufraeumen(d)
+        aufraeumen(d, fotos=False)
     return dauer
 
 
@@ -748,6 +768,8 @@ def main(a):
     try:
         if a[0] == "--aufraeumen":
             p, d = lade(rest[0]); aufraeumen(d); return
+        if a[0] == "--fotos":                                    # alle heute geposteten Videos des Stapels aus Fotos
+            fotos_aufraeumen([d["kachel"] for _, d in EG.alle() if d["stapel"] == rest[0] and d["status"] in ("gepostet", "entwurf")]); return
         if a[0] == "--stapel":
             liste = [(p, d) for p, d in EG.alle() if d["status"] == "freigegeben" and d["stapel"] == rest[0]]
             if not liste:
@@ -761,18 +783,22 @@ def main(a):
             if type(e).__name__ != "Stopp":
                 raise
             raise Stopp(f"AirDrop: {e} (Videos schon am iPhone? → --ohne-airdrop)")
-        zeiten, aus = [], []
+        zeiten, aus, fertig = [], [], []
         for p, d in liste:
             lim = PILOT.get(d["account"])
             if not entwurf and lim and heute_gepostet(d["account"]) >= lim:
                 aus.append(d["datei"]); log(f"übersprungen (Limit {d['account']}): {d['datei']}"); continue
             log(f"── {d['datei']} → {d['account']}")
             try:
-                zeiten.append(ein_video(p, d, entwurf, aufr))
+                zeiten.append(ein_video(p, d, entwurf, aufr)); fertig.append(d["kachel"])
             except Stopp as e:
                 if not entwurf:
                     schreibe(p, d, "fehler", str(e))
+                if aufr and not entwurf and fertig:
+                    print(f"Hinweis: {len(fertig)} gepostete Videos noch in Fotos – aufräumen: post_mensch.py --fotos {d['stapel']}", flush=True)
                 sys.exit(f"STOPP bei {d['datei']}: {e}")
+        if aufr and not entwurf and fertig:
+            t = time.time(); fotos_aufraeumen(fertig); log(f"Fotos aufgeräumt: {len(fertig)} Videos, {time.time() - t:.0f} s")
         print(f"FERTIG {len(zeiten)}/{len(liste)}" + (f", Ø {sum(zeiten) / len(zeiten):.0f} s" if zeiten else "")
               + (f", Limit übersprungen: {len(aus)}" if aus else ""), flush=True)
         if not entwurf:

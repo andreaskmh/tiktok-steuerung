@@ -119,3 +119,4 @@
   Gefahren-Sperre bei jedem Tipp (Kasse/LIVE/Konto hinzufügen/Delete, CAPTCHA → STOPP), kein Tipp oben links im Feed (LIVE-Symbol –
   Ursache der LIVE-Event-Seite heute). `bin/pixel` (pixel.swift): „+“-Erkennung und rote Knöpfe. `eingang.py posten` ruft es auf
   (alt: `TS_ALT=1`). Test als Entwurf: Showcase-Weg ~91 s, Wagen-Weg 116 s am Stück. Fotos-Löschen noch aus (ungetestet).
+- 12.11. 22:40: Fotos-Löschen in post_mensch fertig (Kachel per Text in der Mediathek, Mülleimer bis 4×), gesammelt am Stapel-Ende; `--fotos <stapel>`.

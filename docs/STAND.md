@@ -57,4 +57,5 @@
 ## 12.11.2026 abends – Posten wie Artur
 - Neu: `post_mensch.py` (docs/POSTEN-MENSCH.md), `eingang.py posten <stapel>` nutzt es. Zwei Entwürfe „BEHEIZTE DECKE“ auf
   anduri.official (Test, können weg); Decke liegt dort im Showcase + Einkaufswagen; aus Social1-Liste „bof 2.0“ abgehakt.
-- Offen: Fotos-Löschen testen (FOTOS_GETESTET), erstes echtes Veröffentlichen mitschauen, Banner-Weg (Safari „ÖFFNEN“) kam im Test nicht vor.
+- Fotos-Löschen getestet (Decke, Ya-Dom, Roborock gelöscht), läuft gesammelt am Stapel-Ende. Offen: Banner-Weg (Safari „ÖFFNEN“)
+  kam im Test nicht vor; erstes echtes Veröffentlichen nur per Ausgabe prüfen (keine Rückfrage an Artur nach der Abnahme).

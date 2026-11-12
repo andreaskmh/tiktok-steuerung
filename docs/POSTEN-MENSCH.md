@@ -8,6 +8,7 @@ python3 werkzeuge/post_mensch.py --stapel <stapel>                 # alle „fre
 python3 werkzeuge/post_mensch.py <eingang.json>                    # ein Video
 python3 werkzeuge/post_mensch.py <json> --entwurf --ohne-airdrop   # Test: bis „Entwürfe“, nichts veröffentlichen
 python3 werkzeuge/post_mensch.py --aufraeumen <json>               # nur Social1-Lesezeichen + Fotos
+python3 werkzeuge/post_mensch.py --fotos <stapel>                  # Gepostete des Stapels aus Fotos löschen
 ```
 Ausgabe: eine Zeile pro Schritt mit Sekunden seit Start, je Video `✓ … 84 s`, am Ende `FERTIG x/y, Ø … s`. `STOPP …` → Foto
 (`python3 werkzeuge/kabel.py foto`), Ursache beheben, denselben Befehl neu starten (Gepostete überspringt der Stapel über den Status).
@@ -33,7 +34,10 @@ Ausgabe: eine Zeile pro Schritt mit Sekunden seit Start, je Video `✓ … 84 s`
 8. **Veröffentlichen** erst, wenn der Knopf kräftig rot ist (Pixel). `--entwurf` / `ausverkauft` → „Entwürfe“ (links geprüft).
 9. **Aufräumen:** Social1 am **Mac** (Safari, Liste offen in einem Tab `social1.ai/saved-videos/<liste>`): Karte mit der Produkt-ID →
    Lesezeichen „Save to list“ → Haken der offenen Liste raus → „Done“ (per JavaScript, nie „Delete“). Spart den App-Wechsel am iPhone.
-   Fotos: Video löschen – **noch nicht freigeschaltet** (`FOTOS_GETESTET`), Lagen werden im Test gemessen.
+   **Fotos gesammelt am Stapel-Ende** (einmal Fotos öffnen statt pro Video, spart ~10 s je Video): Mediathek → Kachel mit dem
+   Hook-Titel (im Raster lesbar) → Vollbild prüfen → Mülleimer (289/684, 1. Tipp kommt oft nicht an → bis 4×) → „Video löschen“
+   (30 Tage in „Zuletzt gelöscht“). Getestet 12.11.: 17 s fürs erste Video inkl. App öffnen, danach ~8 s je Video.
+   Bricht der Stapel ab: `post_mensch.py --fotos <stapel>`.
 
 ## Gefahren-Sperre (jeder Tipp)
 - Kein Tipp, wenn im Umkreis von ~38 Pkt ein Label steht: Kasse, Jetzt kaufen, LIVE (auch OCR „ÇIVE“/„LIV“), LIVE gehen/Event,
@@ -62,5 +66,10 @@ Wagen-Weg ~95 s.
 ## Bekannte Stolpersteine
 - Steuerverbindung reißt manchmal ab („Connection was terminated abruptly“, Bild läuft weiter) → `open-iphone-use stop`,
   `python3 werkzeuge/kabel/waechter.py einmal`.
-- Teilen-Blatt in Fotos („3 Videos ausgewählt“) nimmt keine Kabel-Tipps an → Artur schließt es von Hand.
+- Reißt die Steuerverbindung ab, liefert der Server weiter das **letzte** Bild (sah aus wie ein hängendes Teilen-Blatt in Fotos) →
+  Server neu starten, dann neu schauen.
 - TikTok-Leiste unten hat keine Texte → Hauptseite über die Farben des „+“ (`bin/pixel`, Swift, `zsh werkzeuge/build.sh`).
+
+## Freigabe
+Gepostet wird nur nach Arturs Abnahme der Videos im Chat („passt“, `/fertig`). Danach **keine weitere Abfrage**, auch nicht beim
+ersten Post eines Stapels (Artur 12.11.2026) – Stapel im Hintergrund starten, nur bei `STOPP` eingreifen.
