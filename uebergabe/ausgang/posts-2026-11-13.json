@@ -1,0 +1,26 @@
+{
+ "datum": "2026-11-13",
+ "posts": [
+  {
+   "zeit": "00:06",
+   "account": "andreas.testet",
+   "datei": "Video 142 - 01 Pukka Tee-Adventskalender - V3.mp4",
+   "produkt": "Pukka Bio Tee Adventskalender",
+   "tts_link": "https://shop.tiktok.com/view/product/1729962827319515684",
+   "weg": "showcase",
+   "werkzeug": "von Hand per Kabel"
+  },
+  {
+   "zeit": "00:09",
+   "account": "andreas.testet",
+   "datei": "Video 142 - 03 ESN Zink - V3.mp4",
+   "produkt": "ESN Zink Kapseln",
+   "tts_link": "https://shop.tiktok.com/view/product/1729878767182715226",
+   "weg": "showcase",
+   "werkzeug": "von Hand per Kabel"
+  }
+ ],
+ "zaehler": {
+  "andreas.testet": 2
+ }
+}

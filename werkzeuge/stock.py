@@ -123,7 +123,7 @@ def galerie_kabel(name, produkt, s1, tts):
 
     def schritt(richtung):                                      # +1 = nächstes Bild (Finger nach links)
         a, b = (280, 54) if richtung > 0 else (54, 280)
-        K.ziehe(a, y, b, y, 0.25); time.sleep(0.9)
+        K.ziehe(a, y, b, y, 0.12); time.sleep(0.45)                # schnell: Galerie muss nicht menschlich wirken (Artur 12.11.)
 
     z = muss(zaehler(), "Kein Galerie-Zähler zu sehen – ist die Vollbild-Galerie offen?")
     n = z[1]; log(f"Galerie: {z[0]}/{n}")
@@ -137,8 +137,8 @@ def galerie_kabel(name, produkt, s1, tts):
     for i in range(1, n + 1):
         f = out / f"bild-{i:02d}.png"
         z = None
-        for _ in range(3):                                      # Bild kurz ruhen lassen, dann Zähler prüfen
-            time.sleep(0.3)
+        for _ in range(6):                                      # Bild kurz ruhen lassen, dann Zähler prüfen (schnell, dafür öfter)
+            time.sleep(0.15)
             z = zaehler(str(f))
             if z and z[0] == i:
                 break

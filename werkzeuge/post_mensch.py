@@ -220,7 +220,8 @@ def konto(account):
         if _tabs(tx):
             tipp(*PROFIL, tx, "Profil"); ruhe(1.5)
     tx = lesen()
-    name = [t for t in tx if t[2] < 145 and t[1] < 230 and "@" not in t[0] and len(t[0].strip()) > 3]
+    name = [t for t in tx if 40 < t[2] < 145 and t[1] < 230 and "@" not in t[0] and len(t[0].strip()) > 3
+            and "safari" not in t[0].lower()]                      # „◂ Safari“ oben links ist kein Kontoname (12.11.)
     n = muss(name, "Account-Name oben links nicht gefunden")[0]
     tipp(n[1], n[2], tx, "Account-Name")
     muss(warte("Konto wechseln", 4), "„Konto wechseln“ öffnet sich nicht")
@@ -305,11 +306,11 @@ def showcase_oder_wagen(tx):
             if seh.finde("Mehr erkunden", tx) or seh.finde("im Showcase", tx):
                 break
             time.sleep(0.3)
-        log("schon im Showcase → Einkaufswagen")
+        log("schon im Showcase → Link aus dem Showcase")         # Artur 12.11.: was im Showcase ist, von dort nehmen
         wa = seh.finde("Werbeaktion", lesen())
         if wa:                                                   # Blatt schließen: nach unten wischen
             K().ziehe(167, wa[1] + 10, 167, wa[1] + 420, 0.3); ruhe(1.2)
-        tx = muss(warte("Kasse", 4, unter=600), "Produktkarte nach Blatt nicht zurück")[2]
+        return "showcase"
     else:
         log("kein „pro Verkauf“ → Einkaufswagen")
     in_wagen(tx)
@@ -352,6 +353,8 @@ def in_wagen(tx):
         tx = lesen()
         if seh.finde("hinzugefügt", tx) or seh.finde("Zur Kasse (", tx):
             log("im Einkaufswagen"); return
+        if seh.finde("Option pro Artikel", tx) or seh.finde("für Neukund", tx):   # Artur 12.11.: liegt schon im Wagen
+            log("schon im Einkaufswagen (Neukunden-Hinweis)"); ruhe(2.5); return
         if seh.finde("Bitte auswählen", tx):
             raise Stopp("Variante noch nicht gewählt")
         nb = [t for t in tx if t[2] > 600 and t[0].strip() == "Einkaufswagen"]
@@ -402,13 +405,29 @@ def video_waehlen(kachel):
     if v:
         tipp(v[0], v[1], None, "Reiter Videos"); ruhe(1.0)
     treffer = None
-    for _ in range(10):
+    # Artur 12.11.2026: neue Videos liegen oft ganz UNTEN; große schnelle Wische nach oben schießen drüber.
+    # Erst kleine, langsame Schritte nach unten (bis sich nichts mehr ändert), dann genauso langsam nach oben.
+    def such():
         tx = lesen()
         tr = [t for t in tx if 140 < t[2] < 650 and _passt(kachel, t[0])]
-        if tr:
-            treffer = min(tr, key=lambda t: (t[2], t[1]))        # oben links = neuestes
+        return tx, (min(tr, key=lambda t: (t[2], t[1])) if tr else None)
+    for richtung in (+1, -1):
+        alt = None
+        for _ in range(40):
+            tx, treffer = such()
+            if treffer:
+                break
+            sig = " ".join(t[0] for t in tx)
+            if sig == alt:                                       # Ende der Liste erreicht
+                break
+            alt = sig
+            if richtung > 0:
+                K().ziehe(167, 480, 167, 330, 0.6)               # Finger hoch = weiter nach unten
+            else:
+                K().ziehe(167, 330, 167, 480, 0.6)
+            ruhe(0.9)
+        if treffer:
             break
-        K().ziehe(167, 300, 167, 520, 0.35); ruhe(1.0)
     _, x, y = muss(treffer, f"Video „{kachel}“ nicht in der Galerie")
     tipp(x, y + 25, tx, "Video-Kachel")
     ruhe(1.4)
@@ -490,14 +509,25 @@ def verlinken(weg, produkt):
         e = muss(warte("Einkaufswagen", 4, unter=500), "Auswahl „Einkaufswagen“ fehlt")
         tipp(e[0], e[1], e[2], "Einkaufswagen (Liste)"); ruhe(1.8)
         muss(warte("Produkte suchen", 5), "Einkaufswagen-Liste nicht offen")
-    tx = lesen()
-    hin = sorted([t for t in tx if t[0].strip().startswith("Hinzuf") and 180 < t[2] < 700], key=lambda t: t[2])
-    muss(hin, "kein „Hinzufügen“ in der Liste (ausverkauft?)")
-    hy = hin[0][2]
-    block = " ".join(t[0] for t in tx if hy - 110 <= t[2] <= hy + 10).lower()
     worte = re.findall(r"[a-zäöüß0-9]{4,}", produkt.lower())
+    def oben():
+        tx = lesen()
+        hin = sorted([t for t in tx if t[0].strip().startswith("Hinzuf") and 180 < t[2] < 700], key=lambda t: t[2])
+        if not hin:
+            return tx, None, ""
+        hy = hin[0][2]
+        return tx, hin, " ".join(t[0] for t in tx if hy - 110 <= t[2] <= hy + 10).lower()
+    tx, hin, block = oben()
+    if worte and hin and not any(w in block for w in worte):     # Artur 12.11.: Produkt liegt weiter unten → suchen
+        sfeld = seh.finde("Produkte suchen", tx) or seh.finde("suchen", tx)
+        if sfeld:
+            tipp(sfeld[0], sfeld[1], tx, "Produkte suchen"); ruhe(0.8)
+            menschlich(" ".join(produkt.split()[:3])); ruhe(0.6)
+            K().taste("return"); ruhe(2.2)
+            tx, hin, block = oben()
+    muss(hin, "kein „Hinzufügen“ in der Liste (ausverkauft?)")
     muss(not worte or any(w in block for w in worte), f"oberstes Produkt ist nicht „{produkt}“: {block[:90]}")
-    tipp(hin[0][1], hy, tx, "Hinzufügen"); ruhe(1.6)
+    tipp(hin[0][1], hin[0][2], tx, "Hinzufügen"); ruhe(1.6)
     nach_hinzufuegen(weg)
 
 
