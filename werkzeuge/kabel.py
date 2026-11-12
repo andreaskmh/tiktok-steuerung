@@ -179,9 +179,21 @@ def text(t, menschlich=False):
         for i in range(0, len(codes), 200):
             aktion("hid", keys=codes[i:i + 200])
         return
-    for c in codes:
-        aktion("hid", keys=[c])
-        time.sleep(random.uniform(0.02, 0.1) + (random.uniform(0.2, 0.5) if random.random() < 0.04 else 0))
+    i = 0                                                       # Artur 12.11.: schneller, aber menschlich →
+    while i < len(codes):                                       # kleine Häppchen (2–5 Zeichen) mit 25–70 ms Abstand,
+        n = random.randint(2, 5)                                # dazwischen kurze, selten längere Pausen
+        aktion("hid", keys=codes[i:i + n], pause=round(random.uniform(0.025, 0.07), 3))
+        i += n
+        time.sleep(random.uniform(0.01, 0.06) + (random.uniform(0.15, 0.35) if random.random() < 0.05 else 0))
+
+
+def schreibe(t, menschlich=False):
+    """Tippen, wo möglich; nur bei Zeichen ohne Taste (Emojis) über die Zwischenablage (dann länger warten)."""
+    try:
+        [_code(c) for c in t]
+    except KabelFehler:
+        return einfuegen(t, warte=3.5)
+    text(t, menschlich=menschlich)
 
 
 def einfuegen(t, warte=1.5):

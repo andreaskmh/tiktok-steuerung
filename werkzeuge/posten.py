@@ -44,6 +44,11 @@ def K():
 _MAC_TASTEN = {51: "backspace", 36: "return", 53: "escape", 48: "tab", 117: "delete"}
 
 
+def oben(y):
+    """TikTok-Kopfbereich: per Kabel liegt alles ~35 Pkt höher als im alten Fenster (gemessen 12.11.2026: X/Zurück 92 → 57)."""
+    return y - 35 if K() else y
+
+
 def front():
     if K():
         return
@@ -104,7 +109,7 @@ def profil(account):
 
 def hochladen(kachel):
     taps(167, 681, "w1.8")
-    if seh.finde("Kamera"):
+    if seh.finde("Kamera") and seh.finde("OK", genau=True):     # Hinweis „Kamera nicht verfügbar“ (Kabel: Kamera läuft)
         muss(seh.finde("OK", genau=True), "Kamera-Hinweis ohne OK-Knopf")
         x, y = seh.finde("OK", genau=True); taps(x, y, "w0.8")
     taps(30, 672, "w1.8")                                       # Galerie unten links
@@ -141,7 +146,7 @@ def verlinken(produkt, button):
     by = seh.finde("Hinzufügen", tx, genau=True, unter=ny, ueber=ny + 120)
     if AUSVERKAUFT.search(zeile) or not by:
         log(f"AUSVERKAUFT? „{zeile}“ → Entwurf ohne Link")
-        taps(25, 90, "w1.5")                                    # zurück aus der Showcase-Liste
+        taps(25, oben(90), "w1.5")                              # zurück aus der Showcase-Liste
         muss(seh.warte("Veröffentlichen", 3, unter=640), "nach Zurück nicht auf der Beitragsseite")
         return False
     _, by = by
@@ -155,15 +160,15 @@ def verlinken(produkt, button):
     key(51, 32)                                                 # Feld ist schon aktiv: sofort löschen
     tippe(button)
     time.sleep(0.4)
-    muss(seh.finde(button), f"Button-Text „{button}“ nicht im Feld")
+    muss(seh.aehnlich(button), f"Button-Text „{button}“ nicht im Feld")
     taps(167, 678, "safe", "w2.2")
     muss(seh.warte("Veröffentlichen", 3, unter=640), "nach Hinzufügen nicht auf der Beitragsseite")
-    muss(seh.finde(button), "Produkt-Link fehlt auf der Beitragsseite")
+    muss(seh.aehnlich(button), "Produkt-Link fehlt auf der Beitragsseite")
     return True
 
 
 def beschreiben(text, brand, handle):
-    taps(110, 128, "w0.5")
+    taps(110, oben(128), "w0.5")
     tippe(text)
     time.sleep(0.5)
     x, y = muss(seh.finde("Erwähnung"), "@ Erwähnung fehlt")

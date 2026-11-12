@@ -41,4 +41,7 @@ sobald der Server ein Live-Bild liefert. Alte Steuerung erzwingen: `TS_MODUS=syn
 - Kamera ist per Kabel verfügbar → der Hinweis „Kamera nicht verfügbar“ kommt nicht mehr (Code kann beides).
 - „Neu in Fotos“-Hinweis beim ersten Öffnen der Galerie → „Fortfahren“ (airdrop.py tippt es selbst).
 - Gelöschte Videos stehen in TikToks Galerie noch kurz als schwarze 00:00-Kacheln.
-- Noch **nicht** live getestet: ein ganzer Post mit `posten.py`/`post_wagen.py` per Kabel → beim 1. Stapel mitschauen.
+- Ganzer Post per Kabel getestet (12.11., als Entwurf): `python3 werkzeuge/test/kabel_posttest.py <eingang-json>` (OHNE_AIRDROP=1,
+  wenn das Video schon am iPhone ist). Echte Veröffentlichung per Kabel steht noch aus → 1. Post im Stapel mitschauen.
+- iPhone-**Tastatursteuerung** (Bedienungshilfen) muss AUS sein, sonst drückt die Leertaste fokussierte Knöpfe (z. B. Zurück).
+- TikTok-Kopfbereich liegt per Kabel ~35 Pkt höher als im alten Fenster (`posten.oben()`), unten passt alles.

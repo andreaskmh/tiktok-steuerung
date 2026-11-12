@@ -18,8 +18,10 @@ HIER = pathlib.Path(__file__).resolve().parent
 def _tippe_einfuegen(text):
     """10.11.2026: Einzel-Tastenanschläge kommen am iPhone nicht an → Text per ⌘V (Einfügen an der Cursor-Stelle)."""
     P.front()
-    if seh.kabel():
-        seh.kabel().einfuegen(text)                              # gemeinsame Zwischenablage + ⌘V übers Kabel
+    if seh.kabel():                                              # Kabel: Tippen kommt zuverlässig an (12.11.2026),
+        seh.kabel().schreibe(text, menschlich=True)              # Zwischenablage war manchmal noch alt
+        time.sleep(0.4)
+        return
     else:
         subprocess.run(["pbcopy"], input=text.encode("utf-8")); time.sleep(1.5)   # Zwischenablage braucht bis zum iPhone
         subprocess.run(["osascript", "-e", 'tell application "System Events" to keystroke "v" using command down'])
@@ -38,7 +40,9 @@ PROJ = HIER.parent
 
 
 def einfuegen(text):
-    """Adressleiste: Tastenanschläge kommen in Safari oft nicht an, ⌘V schon (10.11.2026)."""
+    """Adressleiste: Tastenanschläge kamen über die Synchronisierung oft nicht an, ⌘V schon (10.11.2026). Kabel: schnell tippen."""
+    if seh.kabel():
+        return seh.kabel().schreibe(text)
     _tippe_einfuegen(text)
 
 
@@ -93,7 +97,7 @@ def kachel_suchen(kachel):
 
 def hochladen(kachel):
     taps(167, 681, "w1.8")
-    if seh.finde("Kamera"):
+    if seh.finde("Kamera") and seh.finde("OK", genau=True):     # Hinweis „Kamera nicht verfügbar“ (Kabel: Kamera läuft)
         x, y = muss(seh.finde("OK", genau=True), "Kamera-Hinweis ohne OK"); taps(x, y, "w0.8")
     taps(30, 672, "w1.8")
     for _ in range(2):                                           # Reiter „Videos“ (nicht LIVE-Aufnahmen o. Ä.)
@@ -144,16 +148,27 @@ def tiktok_auf():
     for _ in range(3):
         if seh.finde("iPhone-Kamera"):
             x, y = muss(seh.finde("OK", genau=True), "Kamera-Hinweis ohne OK"); taps(x, y, "w1.0")
-        if seh.finde("Sound hinzufügen"):
-            taps(67, 110, "w1.5"); continue
+        if kamera_zu():
+            continue
         break
 
 
+def kamera_zu():
+    """Kamera-/Aufnahme-Seite offen („Sound hinzufügen“) → X oben links (Kabel: x=24 auf Höhe des Texts)."""
+    snd = seh.finde("Sound hinzufügen")
+    if not snd:
+        return False
+    taps(24, snd[1], "w1.5") if seh.kabel() else taps(67, 110, "w1.5")
+    return True
+
+
 def zu_tabs():
-    for _ in range(4):
+    for _ in range(6):
         if _tabs_da():
             return
-        taps(23, 92, "w1.6")
+        if kamera_zu():
+            continue
+        taps(22, 61, "w1.6") if seh.kabel() else taps(23, 92, "w1.6")   # X/Zurück oben links (Kabel: Galerie-X y=61)
     muss(_tabs_da(), "TikTok-Hauptseite nicht erreicht")
 
 
@@ -163,11 +178,14 @@ def in_wagen(pid):
     taps(167, y, "w1.2"); schnell("Safari"); time.sleep(1.2)
     muss(seh.warte("Safari", 3, ueber=200), "Safari nicht in der Suche")
     taps(62, 145, "w2.0")
-    leiste = [t for t in seh.lesen() if t[2] > 640 and ("." in t[0] or "suchen" in t[0].lower())]
-    muss(leiste, "Safari-Adressleiste nicht gefunden")
-    taps(167, leiste[0][2], "w1.0")
-    if not seh.finde("Website suchen"):
-        taps(241, 686, "w0.6")
+    if seh.kabel():                                              # Kabel: ⌘L springt in die Adressleiste (12.11.2026;
+        seh.kabel().taste("cmd+l"); time.sleep(0.8)              # fester Tipp traf dort das Mikrofon → Diktierfunktion)
+    else:
+        leiste = [t for t in seh.lesen() if t[2] > 640 and ("." in t[0] or "suchen" in t[0].lower())]
+        muss(leiste, "Safari-Adressleiste nicht gefunden")
+        taps(167, leiste[0][2], "w1.0")
+        if not seh.finde("Website suchen"):
+            taps(241, 686, "w0.6")
     einfuegen(f"social1.ai/products/{pid}"); time.sleep(0.5); key(36)
     f = seh.warte("View on TikTok Shop", 6)
     if not f:                                                    # Return kam nicht an → obersten Vorschlag antippen
@@ -203,8 +221,9 @@ def in_wagen(pid):
         log("ins Showcase gelegt")
         zu_tabs(); return "showcase"
     log("schon im Showcase → Einkaufswagen")
-    if seh.finde("Werbeaktion"):
-        taps(167, 165, "w1.8")                                   # Werbeaktions-Blatt schließen (Pfeil oben)
+    wa = seh.finde("Werbeaktion")
+    if wa:                                                       # Werbeaktions-Blatt schließen (Pfeil ~29 Pkt über dem Titel;
+        taps(167, wa[1] - 29 if seh.kabel() else 165, "w1.8")    # Kabel 12.11.: fester Wert 165 lag unter dem Pfeil)
     muss(seh.warte("Kasse", 3, unter=640), "Produktkarte nach Blatt nicht zurück")
     w = seh.finde("Einkaufswagen", unter=640)
     muss(w and w[0] < 150, "Einkaufswagen-Knopf nicht links unten")
@@ -329,6 +348,8 @@ def button_setzen(button):
         _kurz("a"); time.sleep(0.6)
         if versuch == 0:
             P.tippe(button)
+        elif seh.kabel():
+            seh.kabel().loeschen(30); P.tippe(button)
         else:
             _kurz("v")
             time.sleep(1.0)
@@ -340,10 +361,10 @@ def button_setzen(button):
         feld = [t for t in seh.lesen() if fy - 15 < t[2] < fy + 15]
         if feld and feld[0][0].strip() == button:
             break
-    muss(seh.finde(button), f"Button-Text „{button}“ nicht im Feld")
+    muss(seh.aehnlich(button), f"Button-Text „{button}“ nicht im Feld")
     taps(167, 678, "safe", "w2.2")
     muss(seh.warte("Veröffentlichen", 3, unter=640), "nach Hinzufügen nicht auf der Beitragsseite")
-    muss(seh.finde(button), "Produkt-Link fehlt auf der Beitragsseite")
+    muss(seh.aehnlich(button), "Produkt-Link fehlt auf der Beitragsseite")
 
 
 def beschreiben_oder_ohne_brand(v):
@@ -354,7 +375,7 @@ def beschreiben_oder_ohne_brand(v):
         if "Trefferliste" not in str(e):
             raise
         for _ in range(3):                                       # Erwähnung schließen (Tipp kommt nicht immer an)
-            subprocess.run([sys.executable, str(HIER / "tap.py"), "22", "94", "w1.5"], capture_output=True)
+            subprocess.run([sys.executable, str(HIER / "tap.py"), "22", str(P.oben(94)), "w1.5"], capture_output=True)
             if seh.warte("Veröffentlichen", 3, unter=640):
                 break
         muss(seh.finde("Veröffentlichen", unter=640), "nach Erwähnung-Schließen nicht auf der Beitragsseite")

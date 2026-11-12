@@ -69,6 +69,21 @@ def finde(muster, texte=None, genau=False, unter=None, ueber=None):
     return None
 
 
+def aehnlich(muster, texte=None, schwelle=0.85):
+    """Wie finde, aber tolerant gegen einzelne Lesefehler (z. B. „aut“ statt „auf“) → (x, y) oder None."""
+    import difflib
+    m = muster.lower().strip()
+    texte = lesen() if texte is None else texte
+    best = None
+    for t, x, y in texte:
+        t2 = t.lower().strip().rstrip("x×").strip()
+        for kand in (t2, t2[:len(m)]):
+            r = difflib.SequenceMatcher(None, m, kand).ratio()
+            if r >= schwelle and (best is None or r > best[0]):
+                best = (r, x, y)
+    return best and (best[1], best[2])
+
+
 def warte(muster, sek=6.0, genau=False, unter=None, ueber=None):
     ende = time.time() + sek
     while True:

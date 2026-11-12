@@ -86,3 +86,18 @@
   in Fotos (11 s). `werkzeuge/airdrop.py` + `airdrop.swift`, in `eingang.py aufs_iphone` eingebaut. Testclip wieder gelöscht.
 - 12.11.: Kabel-Punkte auf 334×735 (wie altes Fenster) → feste Koordinaten in posten.py treffen (Profil, „+“, Galerie geprüft).
   Doku: neu `docs/KABEL.md`, CLAUDE.md/ABLAUF.md/STAND.md angepasst.
+- 12.11.: Probelauf 1 gestoppt: ⌘V fügte am iPhone noch die ALTE Zwischenablage ein (Sync Mac→iPhone > 1,5 s) → Safari suchte
+  bei Google statt Social1. Kabel tippt jetzt alles (Links schnell, TikTok-Texte menschlich); Zwischenablage nur noch für Emojis (`kabel.schreibe`).
+- 12.11.: Probelauf 2 gestoppt: fester Tipp (241,686) in Safari traf das Mikrofon → Diktierfunktion (geschlossen, nicht aktiviert).
+  Kabel: Adressleiste jetzt per ⌘L (post_wagen.in_wagen, stock.zur_galerie).
+- 12.11.: Probeläufe 3–5: Werbeaktions-Blatt schließen jetzt relativ zum Titel; TikTok-Kopfbereich per Kabel ~35 Pkt höher
+  (`posten.oben()`: X/Zurück, Beschreibungsfeld, Sound-Hinweis, Galerie-X in stock.py); Kamera-Hinweis nur noch, wenn OK-Knopf da
+  (per Kabel läuft die Kamera wirklich, „KAMERA“ unten löste den falschen STOPP aus).
+- 12.11.: Ursache „markiert alles / geht beim Tippen zurück“ (Artur): iPhone-**Tastatursteuerung** (Bedienungshilfen) war noch an
+  (von der iPhone-Synchronisierung) → Leertaste drückte den fokussierten Zurück-Knopf. Auf Arturs Wunsch ausgeschaltet; alle
+  Bedienungshilfen geprüft (alles „Aus“, AssistiveTouch aus).
+- 12.11.: **Probelauf ganzer Post per Kabel erfolgreich** (Video 139/01 BotaBay auf anduri.official, als ENTWURF gespeichert,
+  nicht veröffentlicht): AirDrop → Einkaufswagen → Hochladen → Link „Wenige auf Lager“ → Beschreibung → Entwurf.
+  Behoben unterwegs: Galerie-X/Zurück y=61, Kamera-Seite schließen (x=24), tolerante Link-Prüfung (`seh.aehnlich`, OCR „aut“/„auf“).
+  Brand „BotaBay Perfume“ ohne handle nicht eindeutig → ohne Brand (wie vorgesehen); fürs echte Posten handle in der JSON nachtragen.
+- 12.11.: Menschliches Tippen schneller (Artur): Häppchen von 2–5 Zeichen, 25–70 ms Abstand, selten kurze Pausen.

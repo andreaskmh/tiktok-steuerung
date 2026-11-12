@@ -47,10 +47,13 @@ def zur_galerie(pid):
     f = muss(seh.warte("Safari", 3, genau=True, ueber=300), "Safari nicht in der Suche")
     taps(f[0], f[1] - 20 if seh.kabel() else 145, "w2.0")         # Toptreffer (Kabel: Symbol über dem Namen)
     # Adressleiste unten antippen
-    tx = seh.lesen()
-    leiste = [t for t in tx if t[2] > 640 and ("." in t[0] or "suchen" in t[0].lower())]
-    muss(leiste, "Safari-Adressleiste nicht gefunden")
-    taps(167, leiste[0][2], "w1.0")
+    if seh.kabel():                                              # Kabel: ⌘L = Adressleiste, kein Tipp neben das Mikrofon
+        seh.kabel().taste("cmd+l"); time.sleep(0.8)
+    else:
+        tx = seh.lesen()
+        leiste = [t for t in tx if t[2] > 640 and ("." in t[0] or "suchen" in t[0].lower())]
+        muss(leiste, "Safari-Adressleiste nicht gefunden")
+        taps(167, leiste[0][2], "w1.0")
                                                                  # iOS markiert die alte Adresse selbst
     schnell(f"social1.ai/products/{pid}")
     key(36)                                                      # Return
@@ -184,7 +187,7 @@ def main(a):
         for f in quelle.iterdir():
             shutil.copy2(f, ziel / f.name)
         log(f"kopiert nach {ziel}")
-    taps(23, 92, "w0.5")                                         # Galerie schließen (oben links)
+    taps(23, 57 if seh.kabel() else 92, "w0.5")                 # Galerie schließen (oben links)
 
 
 if __name__ == "__main__":

@@ -49,5 +49,6 @@
 ## 12.11.2026 – Umstellung auf Kabel
 - iPhone 11 per USB über open-iphone-use (docs/KABEL.md). Stock per Kabel getestet (Hosenrock 2/2, 41 s, verlustfrei).
 - Video aufs iPhone per AirDrop (`werkzeuge/airdrop.py`, 11 s, getestet). `eingang.py` nutzt es automatisch.
-- posten.py / post_wagen.py laufen übers Kabel; getestet: Profil-Tipp, „+“, Galerie öffnen. **Ganzer Post noch nicht** →
-  beim nächsten Stapel ersten Post mitschauen, bei STOPP Foto (`python3 werkzeuge/kabel.py foto`).
+- posten.py / post_wagen.py laufen übers Kabel; ganzer Post als Entwurf getestet (anduri, BotaBay, 12.11. 01:12).
+  Echtes Veröffentlichen per Kabel noch nicht → 1. Post im nächsten Stapel mitschauen, bei STOPP Foto (`python3 werkzeuge/kabel.py foto`).
+- Probe-Entwurf „9 DÜFTE UNTER 20€“ liegt in den Entwürfen von anduri.official (kann weg). Video liegt 2× in Fotos am iPhone.
