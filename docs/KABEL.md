@@ -4,7 +4,12 @@ Ersetzt die iPhone-Synchronisierung + virtuelle Maus. Grundlage: [open-iphone-us
 (Klon: `~/Documents/Coding/extern/open-iphone-use`), nutzt Xcodes CoreDevice: Live-Bild vom iPhone, Tipps landen genau,
 kein Zeiger, kein „Aufwecken“, keine doppelten Tipps.
 
-## Automatisch (Wächter, seit 12.11.2026)
+## Automatisch (seit 12.11.2026)
+
+Alle Werkzeuge starten den Server **selbst**, wenn er nicht läuft (`kabel.aktiv()` → Wächter einmal, wartet bis 60 s;
+getestet: Server aus → nach 4 s bereit). Das Editing System prüft zusätzlich bei Chat-Start (`waechter.py einmal`, Brücke).
+Autostart beim Anmelden ist damit optional:
+
 
 `werkzeuge/kabel/waechter.py` prüft alle 20 s: Server aus → starten; Kabel steckt, Server auf WLAN → neu starten (USB);
 iPhone nicht eingebunden → einbinden. Als Autostart beim Anmelden (einmalig, macht Artur selbst):

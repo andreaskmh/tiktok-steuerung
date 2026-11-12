@@ -39,14 +39,29 @@ def _post(pfad, daten, timeout=30):
         return json.loads(e.read() or b"{}") | {"ok": False}
 
 
-def aktiv():
-    """True, wenn der Server läuft und das iPhone ein Live-Bild liefert (dann nutzen alle Werkzeuge das Kabel)."""
+def aktiv(starten=True):
+    """True, wenn der Server läuft und das iPhone ein Live-Bild liefert (dann nutzen alle Werkzeuge das Kabel).
+    Läuft der Server nicht (z. B. nach Mac-Neustart), startet ihn der Wächter einmal und es wird bis 60 s gewartet."""
     if os.environ.get("TS_MODUS") == "sync":
         return False
     try:
-        return bool(geraet(nur_pruefen=True))
+        if geraet(nur_pruefen=True):
+            return True
     except Exception:
+        pass
+    if not starten:
         return False
+    w = pathlib.Path(__file__).resolve().parent / "kabel" / "waechter.py"
+    print("iPhone-Server läuft nicht → starte ihn (bis 60 s) …", file=sys.stderr, flush=True)
+    subprocess.run([sys.executable, str(w), "einmal"], capture_output=True, timeout=120)
+    for _ in range(30):
+        try:
+            if geraet(nur_pruefen=True):
+                return True
+        except Exception:
+            pass
+        time.sleep(2)
+    return False
 
 
 def geraet(nur_pruefen=False):
