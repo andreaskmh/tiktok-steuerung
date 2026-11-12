@@ -53,3 +53,8 @@
   Echtes Veröffentlichen per Kabel noch nicht → 1. Post im nächsten Stapel mitschauen, bei STOPP Foto (`python3 werkzeuge/kabel.py foto`).
 - Probe-Entwürfe „9 DÜFTE UNTER 20€“ (2×) liegen in den Entwürfen von anduri.official (können weg). Video liegt 2× in Fotos am iPhone.
 - Tempo 12.11. 15:35: ganzer Post (mit Einkaufswagen) 124 s ohne Stopp. Stock: ~50 s pro Produkt. `stock.py --stapel` für viele.
+
+## 12.11.2026 abends – Posten wie Artur
+- Neu: `post_mensch.py` (docs/POSTEN-MENSCH.md), `eingang.py posten <stapel>` nutzt es. Zwei Entwürfe „BEHEIZTE DECKE“ auf
+  anduri.official (Test, können weg); Decke liegt dort im Showcase + Einkaufswagen; aus Social1-Liste „bof 2.0“ abgehakt.
+- Offen: Fotos-Löschen testen (FOTOS_GETESTET), erstes echtes Veröffentlichen mitschauen, Banner-Weg (Safari „ÖFFNEN“) kam im Test nicht vor.

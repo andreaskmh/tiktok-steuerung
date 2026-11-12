@@ -34,8 +34,9 @@ kurz und verständlich, Fachbegriffe nur wenn nötig.
 
 ## Tempo (Artur, 08./09.11.2026 – gilt vor allem anderen)
 
-- **Posten = `python3 werkzeuge/posten.py <stapel.json>`**: ein Befehl pro Stapel, prüft jeden Schritt selbst per
-  Texterkennung (`werkzeuge/seh.py`). Claude schaut nur bei `STOPP` per Foto nach. Keine Zwischenfotos.
+- **Posten = `python3 werkzeuge/eingang.py posten <stapel>`** (= `post_mensch.py --stapel`, Arturs Ablauf, `docs/POSTEN-MENSCH.md`):
+  ein Befehl pro Stapel im Hintergrund, findet jeden Schritt per Text-Label, Gefahren-Sperre bei jedem Tipp. Claude schaut nur bei
+  `STOPP` per Foto nach. Test ohne Veröffentlichen: `--entwurf`. Keine Zwischenfotos.
 - Kein Schritt fällt weg (Doppel-Schutz, Link, Button-Text, Beschreibung, Brand, Like, Speichern, Eintragen).
 - **Nicht** mehr kontrollieren: orangener Shop-Button, Like, Speichern. Profil nicht neu laden.
 - **Kein Abstand** zwischen Posts. Nach „+“: „Kamera nicht verfügbar“ → OK.

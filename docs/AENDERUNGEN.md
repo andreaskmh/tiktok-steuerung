@@ -113,3 +113,9 @@
 - 12.11.: Probe-Post mit Wartezeiten × 0,6: 124 s komplett, kein Stopp.
 - 12.11.: Wächter `werkzeuge/kabel/waechter.py` + `kabel/autostart.sh an|aus|status` (LaunchAgent): Server automatisch starten, bei Kabel von WLAN auf USB wechseln. Getestet: Server gestoppt → nach 20 s wieder da. Autostart einrichten muss Artur selbst (Freigabe).
 - 12.11.: Werkzeuge starten den iPhone-Server selbst, wenn er fehlt (kabel.aktiv, getestet 4 s); Brücke im Editing System prüft bei Chat-Start (`waechter.py einmal`). Autostart damit optional.
+- 12.11. abends: **`werkzeuge/post_mensch.py`** – Posten nach Arturs Bildschirmaufnahmen (docs/POSTEN-MENSCH.md): Social1-Produktseite →
+  View on TikTok Shop → Showcase („pro Verkauf“) sonst Wagen → + → Galerie → Beschreibung (1 Produkt-Hashtag + 3 Pflicht) → Link →
+  Brand nur mit Konto → Veröffentlichen (erst kräftig rot) → Social1-Lesezeichen am Mac abhaken. Jeder Schritt per Text-Label,
+  Gefahren-Sperre bei jedem Tipp (Kasse/LIVE/Konto hinzufügen/Delete, CAPTCHA → STOPP), kein Tipp oben links im Feed (LIVE-Symbol –
+  Ursache der LIVE-Event-Seite heute). `bin/pixel` (pixel.swift): „+“-Erkennung und rote Knöpfe. `eingang.py posten` ruft es auf
+  (alt: `TS_ALT=1`). Test als Entwurf: Showcase-Weg ~91 s, Wagen-Weg 116 s am Stück. Fotos-Löschen noch aus (ungetestet).

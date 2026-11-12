@@ -3,7 +3,9 @@
 
   python3 werkzeuge/eingang.py liste                  # was liegt da, mit Status
   python3 werkzeuge/eingang.py freigeben <stapel>     # NUR nach Arturs OK im Chat („Schnitt geprüft, passt“)
-  python3 werkzeuge/eingang.py posten [stapel]        # alle freigegebenen: per AirDrop (Kabel) aufs iPhone, dann post_wagen.ein_post
+  python3 werkzeuge/eingang.py posten <stapel> [--ohne-airdrop] [--entwurf]
+                                                      # = post_mensch.py --stapel (Arturs Ablauf, seit 12.11.2026 abends)
+                                                      # alter Weg: TS_ALT=1 … post_wagen.ein_post
                                                       # (ausverkauft → posten.py: Entwurf ohne Link)
                                                       # (ein Account nach dem anderen, kein Abstand)
 Status/Verlauf werden in jede JSON zurückgeschrieben (gepostet / entwurf / fehler).
@@ -97,7 +99,11 @@ def main(a):
             if d["stapel"] == st and d["status"] == "bereit":
                 schreibe(p, d, "freigegeben", "Artur: Schnitt geprüft, OK im Chat"); n += 1
         print(f"{n} Video(s) freigegeben")
-    elif cmd == "posten":
+    elif cmd == "posten" and not os.environ.get("TS_ALT"):     # seit 12.11.2026 abends: Arturs Ablauf (post_mensch.py)
+        if len(a) < 2:
+            sys.exit("posten <stapel>")
+        os.execv(sys.executable, [sys.executable, str(HIER / "post_mensch.py"), "--stapel", *a[1:]])
+    elif cmd == "posten":                                        # alter Weg (post_wagen) nur mit TS_ALT=1
         st = a[1] if len(a) > 1 else None
         liste = [(p, d) for p, d in alle() if d["status"] == "freigegeben" and (st is None or d["stapel"] == st)]
         if not liste:

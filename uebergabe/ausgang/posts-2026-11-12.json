@@ -10,6 +10,17 @@
    "brand": "@",
    "button": "Geringer Bestand",
    "dauer_s": 105
+  },
+  {
+   "zeit": "21:47",
+   "account": "anduri.official",
+   "datei": "Video 140 - 03 Beheizte Decke - V1.mp4",
+   "produkt": "Tragbare beheizte Decke",
+   "tts_link": "https://shop.tiktok.com/view/product/1729915714302417293",
+   "weg": "wagen",
+   "entwurf": true,
+   "dauer_s": 116,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
