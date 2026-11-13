@@ -15,6 +15,7 @@ Pro Video:  (Account prüfen/wechseln) → Safari social1.ai/products/<id> → �
 Gefahren-Sperre: nie in der Nähe von Kasse, Jetzt kaufen, LIVE, Konto hinzufügen, Delete; CAPTCHA → STOPP.
 Ausgabe: eine Zeile pro Schritt mit Sekunden, am Ende „✓ <datei> 84 s“ bzw. „STOPP …“ (dann Foto: kabel.py foto).
 """
+import re
 import datetime, json, os, pathlib, random, re, subprocess, sys, time
 
 HIER = pathlib.Path(__file__).resolve().parent
@@ -463,13 +464,23 @@ def video_waehlen(kachel):
     if v:
         tipp(v[0], v[1], None, "Reiter Videos"); ruhe(1.0)
     treffer = None
+    if os.environ.get("TS_EINZELN"):                             # Artur 13.11.2026: nicht nach Thumbnails suchen –
+        # Video kam gerade per AirDrop = neuestes = letzte Kachel. Artur 13.11.: nicht langsam scrollen → schnelle Wischer ans Ende
+        for _ in range(4):
+            K().ziehe(167, 620, 167, 140, 0.08); time.sleep(0.15)
+        ruhe(0.8)
+        tx = lesen()
+        dauern = [t for t in tx if 120 < t[2] < 650 and re.fullmatch(r"\d{1,2}:\d{2}", t[0].strip())]
+        letzte = muss(max(dauern, key=lambda t: (round(t[2] / 20), t[1])) if dauern else None, "keine Video-Kachel gefunden")
+        treffer = (letzte[0], letzte[1] - 40, letzte[2] - 50)
+        log(f"neuestes Video (letzte Kachel) bei {treffer[1]:.0f},{treffer[2]:.0f}")
     # Artur 12.11.2026: neue Videos liegen oft ganz UNTEN; große schnelle Wische nach oben schießen drüber.
     # Erst kleine, langsame Schritte nach unten (bis sich nichts mehr ändert), dann genauso langsam nach oben.
     def such():
         tx = lesen()
         tr = [t for t in tx if 140 < t[2] < 650 and _passt(kachel, t[0])]
         return tx, (min(tr, key=lambda t: (t[2], t[1])) if tr else None)
-    for richtung in (+1, -1):
+    for richtung in ((+1, -1) if not treffer else ()):
         alt = None
         for _ in range(40):
             tx, treffer = such()
@@ -487,7 +498,7 @@ def video_waehlen(kachel):
         if treffer:
             break
     _, x, y = muss(treffer, f"Video „{kachel}“ nicht in der Galerie")
-    tipp(x, y + 25, tx, "Video-Kachel")
+    tipp(x, y + (0 if os.environ.get("TS_EINZELN") else 25), tx, "Video-Kachel")
     ruhe(1.4)
     a = warte("Auswählen", 4)
     if a:                                                        # Vorschau: Hook-Titel prüfen, dann Auswählen
@@ -510,7 +521,10 @@ def video_waehlen(kachel):
     tx = muss(warte("Link hinzufügen", 4), "Beitragsseite nicht erreicht")[2]
     muss(not seh.finde("Vorlage", tx), "Vorlage/AutoCut am Video (Musik!) – Abbruch, nicht posten")   # Artur 13.11. (Sturmhaube)
     vorschau = [t for t in tx if t[1] > 220 and t[2] < 230 and _passt(kachel, t[0])]
-    muss(vorschau, f"Vorschaubild zeigt nicht „{kachel}“ – falsches Video? Abbruch vor dem Posten")
+    if not vorschau and os.environ.get("TS_EINZELN"):
+        log(f"Vorschau-Text nicht gelesen („{kachel}“) – Einzel-Modus: neuestes Video, weiter")
+    else:
+        muss(vorschau, f"Vorschaubild zeigt nicht „{kachel}“ – falsches Video? Abbruch vor dem Posten")
 
 
 # ---------------------------------------------------------------- 5) Beitrag
@@ -910,7 +924,8 @@ def main(a):
         else:
             liste = [lade(rest[0])]
         try:
-            EG.aufs_iphone([EIN / d["datei"] for _, d in liste])
+            if not os.environ.get("TS_EINZELN"):
+                EG.aufs_iphone([EIN / d["datei"] for _, d in liste])
         except Exception as e:                                   # posten.Stopp / airdrop.Stopp
             if type(e).__name__ != "Stopp":
                 raise
@@ -922,6 +937,8 @@ def main(a):
                 aus.append(d["datei"]); log(f"übersprungen (Limit {d['account']}): {d['datei']}"); continue
             log(f"── {d['datei']} → {d['account']}")
             try:
+                if os.environ.get("TS_EINZELN"):                 # Artur 13.11.2026: Video direkt vor dem Post aufs iPhone
+                    EG.aufs_iphone([EIN / d["datei"]])
                 zeiten.append(ein_video(p, d, entwurf, aufr)); fertig.append(d["kachel"])
             except Stopp as e:
                 if not entwurf:

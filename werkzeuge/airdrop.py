@@ -70,7 +70,8 @@ def angekommen(p, sek):
             if a and (gegen is None or seh.finde(gegen, tx, genau=True)):
                 K.tipp(a[0], a[1]); time.sleep(1.5); break
         else:
-            if any(DATUM.match(t.strip()) and y < 80 for t, _, y in tx):   # Fotos-Ansicht mit Datum oben
+            if any(DATUM.match(t.strip()) and y < 80 for t, _, y in tx) or \
+               seh.finde("Zuletzt gesichert", tx):                  # 13.11.2026: iPhone öffnet auch das Album „Zuletzt gesichert“
                 time.sleep(2)
                 return
         time.sleep(0.7)
