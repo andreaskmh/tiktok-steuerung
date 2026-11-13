@@ -18,9 +18,122 @@
    "tts_link": "https://shop.tiktok.com/view/product/1729878767182715226",
    "weg": "showcase",
    "werkzeug": "von Hand per Kabel"
+  },
+  {
+   "zeit": "16:26",
+   "account": "anduri.official",
+   "datei": "bof 12.11 - Video 142 - 06 Sturmhaube - V3.mp4",
+   "produkt": "ROCKBROS Sturmhaube",
+   "tts_link": "https://shop.tiktok.com/view/product/1729515073990073281",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 0,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "16:35",
+   "account": "anduri.official",
+   "datei": "bof 12.11 - Video 142 - 08 Guess Kopfhoerer - V3.mp4",
+   "produkt": "Guess Metallic Effect",
+   "tts_link": "https://shop.tiktok.com/view/product/1729987116001631065",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 0,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "16:39",
+   "account": "anduri.official",
+   "datei": "bof 12.11 - Video 142 - 14 LOreal Adventskalender - V4.mp4",
+   "produkt": "L'Oréal Paris Beauty Adventskalender",
+   "tts_link": "https://shop.tiktok.com/view/product/1729986641566996845",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 0,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "16:41",
+   "account": "ella_robinson2",
+   "datei": "bof 12.11 - Video 142 - 11 Makita Werkzeugset - V4.mp4",
+   "produkt": "Makita Werkzeug Set 120",
+   "tts_link": "https://shop.tiktok.com/view/product/1729842226884221432",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 117,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "16:43",
+   "account": "ella_robinson2",
+   "datei": "bof 12.11 - Video 142 - 12 Tunnelblick - V3.mp4",
+   "produkt": "3x Tunnelblick-Set",
+   "tts_link": "https://shop.tiktok.com/view/product/1729863853486414780",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 116,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "16:50",
+   "account": "anduri.official",
+   "datei": "bof 12.11 - Video 142 - 06 Sturmhaube - V3.mp4",
+   "produkt": "ROCKBROS Sturmhaube",
+   "tts_link": "https://shop.tiktok.com/view/product/1729515073990073281",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 125,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "16:52",
+   "account": "ella_robinson2",
+   "datei": "bof 12.11 - Video 142 - 10 Symino Gaming Stuhl - V3.mp4",
+   "produkt": "SYMINO Sofa Gaming Stuhl",
+   "tts_link": "https://shop.tiktok.com/view/product/1729541320470010044",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 142,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "16:55",
+   "account": "andreas.testet",
+   "datei": "bof 12.11 - Video 142 - 05 Maenner Honig - V3.mp4",
+   "produkt": "Energy & Vitalität Honigmischung",
+   "tts_link": "https://shop.tiktok.com/view/product/1729940242947938366",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 116,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "16:58",
+   "account": "artur.official",
+   "datei": "bof 12.11 - Video 142 - 13 Saugroboter - V4.mp4",
+   "produkt": "Automatischer Saugroboter",
+   "tts_link": "https://shop.tiktok.com/view/product/1729910312019794537",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 119,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "17:00",
+   "account": "artur.official",
+   "datei": "bof 12.11 - Video 142 - 15 Trolli Saure Erdbeeren - V4.mp4",
+   "produkt": "Trolli Einzeldose",
+   "tts_link": "https://shop.tiktok.com/view/product/1729836039848696457",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 93,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
-  "andreas.testet": 2
+  "andreas.testet": 3,
+  "anduri.official": 4,
+  "ella_robinson2": 3,
+  "artur.official": 2
  }
 }

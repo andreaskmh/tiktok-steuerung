@@ -143,14 +143,34 @@ def home():
     k.taste("home"); time.sleep(0.7)
 
 
+def _ist_app(name, tx=None):
+    """Grob erkennen, ob die App schon vorn ist (13.11.: nicht jedes Mal über die Suche neu öffnen)."""
+    tx = tx or lesen()
+    if name == "TikTok":
+        return _tabs(tx) or bool(seh.finde("Link hinzufügen", tx) or seh.finde("Kasse", tx, unter=600))
+    if name == "Safari":
+        return bool(seh.finde("social1", tx) or seh.finde("View on TikTok Shop", tx) or seh.finde("Saved Videos", tx))
+    return False
+
+
 def app(name):
-    """Home → Suche → App. Die App öffnet auf ihrer letzten Seite → danach immer per Text prüfen."""
+    """App nach vorn. Artur 13.11.: schon vorn → bleiben; sonst Wisch an der unteren Kante (vorige App), sonst Suche."""
+    if _ist_app(name):
+        return
+    if name in ("TikTok", "Safari"):
+        for _ in range(2):                                       # untere Kante nach rechts = zuletzt benutzte App
+            K().ziehe(40, 731, 300, 731, 0.25); ruhe(0.9)
+            if _ist_app(name):
+                log(f"{name} per Wisch"); return
     home()
     s = muss(warte("Suchen", 3, unter=550), "Home-Bildschirm nicht erreicht (Suchen fehlt)")
     tipp(167, s[1], s[2], "Suche")
     ruhe(0.9)
     schnell(name)
-    f = muss(warte(name, 4, genau=True, ueber=330), f"{name} nicht in der Suche")
+    f = warte(name, 4, genau=True, ueber=330)
+    if not f:                                                    # 13.11.: Text kam mal nicht an → noch einmal
+        schnell(name); f = warte(name, 4, genau=True, ueber=330)
+    f = muss(f, f"{name} nicht in der Suche")
     tipp(f[0], f[1] - 20, f[2], name)                            # Symbol über dem Namen
     ruhe(1.4)
 
@@ -220,10 +240,18 @@ def konto(account):
         if _tabs(tx):
             tipp(*PROFIL, tx, "Profil"); ruhe(1.5)
     tx = lesen()
+    for _ in range(3):                                           # 13.11.: Tipp landete auf „Freund*innen“ → erst Profilseite sicherstellen
+        if seh.finde("Follower", tx):
+            break
+        tipp(*PROFIL, None, "Profil"); ruhe(1.5); tx = lesen()
+    muss(seh.finde("Follower", tx), "Profilseite nicht offen")
     name = [t for t in tx if 40 < t[2] < 145 and t[1] < 230 and "@" not in t[0] and len(t[0].strip()) > 3
             and "safari" not in t[0].lower()]                      # „◂ Safari“ oben links ist kein Kontoname (12.11.)
     n = muss(name, "Account-Name oben links nicht gefunden")[0]
-    tipp(n[1], n[2], tx, "Account-Name")
+    breite = len(n[0].strip().rstrip("▾▼v ").strip()) * 11.5      # 13.11.: direkt aufs ▾ rechts neben dem Namen (Name-Tipp öffnet oft nicht)
+    tipp(min(n[1] + breite / 2 + 10, 230), n[2], tx, "Konto-Pfeil ▾")
+    if not warte("Konto wechseln", 3):
+        tipp(n[1], n[2], None, "Account-Name")
     muss(warte("Konto wechseln", 4), "„Konto wechseln“ öffnet sich nicht")
     z = vorher = None
     for _ in range(12):                                          # Liste fährt animiert auf → erst tippen, wenn sie ruht
@@ -235,7 +263,18 @@ def konto(account):
         vorher, z = z, None
     z = muss(z, f"{account} nicht in „Konto wechseln“")
     tipp(z[0], z[1], tx, account, abstand=34)
-    muss(warte("@" + account, 9), f"Wechsel zu {account} hat nicht geklappt")
+    for _ in range(12):                                          # 13.11.: während Upload kein Kontowechsel → bestätigen, warten, nochmal
+        tx = lesen()
+        if seh.finde("@" + account, tx):
+            break
+        if seh.finde("momentan ein Video", tx):
+            bs = seh.finde("Bestätigen", tx)
+            if bs:
+                tipp(bs[0], bs[1], tx, "Bestätigen (Upload läuft)")
+            log("Upload läuft noch – warte"); time.sleep(6)
+            return konto(account)
+        time.sleep(0.8)
+    muss(warte("@" + account, 3), f"Wechsel zu {account} hat nicht geklappt")
     log(f"Account gewechselt: {account}")
 
 
@@ -306,11 +345,13 @@ def showcase_oder_wagen(tx):
             if seh.finde("Mehr erkunden", tx) or seh.finde("im Showcase", tx):
                 break
             time.sleep(0.3)
-        log("schon im Showcase → Link aus dem Showcase")         # Artur 12.11.: was im Showcase ist, von dort nehmen
+        # Artur 13.11.2026 16:30: schon im Showcase → IMMER Einkaufswagen und Link aus dem Einkaufswagen (nie im Showcase suchen)
+        log("schon im Showcase → Einkaufswagen")
         wa = seh.finde("Werbeaktion", lesen())
         if wa:                                                   # Blatt schließen: nach unten wischen
             K().ziehe(167, wa[1] + 10, 167, wa[1] + 420, 0.3); ruhe(1.2)
-        return "showcase"
+        in_wagen(lesen())
+        return "wagen"
     else:
         log("kein „pro Verkauf“ → Einkaufswagen")
     in_wagen(tx)
@@ -433,25 +474,41 @@ def video_waehlen(kachel):
     ruhe(1.4)
     a = warte("Auswählen", 4)
     if a:                                                        # Vorschau: Hook-Titel prüfen, dann Auswählen
-        muss([t for t in a[2] if _passt(kachel, t[0])] or seh.finde(kachel[:6], a[2]), "Vorschau zeigt anderes Video")
+        ok = [t for t in a[2] if _passt(kachel, t[0])] or seh.finde(kachel[:6], a[2])
+        if not ok:                                               # 13.11.: Hook-Titel blendet nach ~1,5 s aus → Kachel-Treffer zählt
+            log(f"Vorschau ohne Hook-Titel – Kachel „{kachel}“ war eindeutig, weiter")
         tipp(a[0], a[1], a[2], "Auswählen"); ruhe(0.9)
     w = muss(warte("Weiter", 4, unter=600), "Video nicht ausgewählt (kein Weiter)")
+    muss(w[0] > 167, "„Weiter“ nicht rechts – AutoCut-Gefahr")       # 13.11.: links liegt AutoCut (Vorlage + Musik)
     tipp(w[0], w[1], w[2], "Weiter"); ruhe(2.2)
     for _ in range(3):                                           # Editor → Weiter (nicht AutoCut/Story/Sound)
         tx = lesen()
         if seh.finde("Beschreibung", tx) or seh.finde("Link hinzufügen", tx):
             return
         w = seh.finde("Weiter", tx, unter=600)
-        if w:
+        if w and w[0] > 167:
             tipp(w[0], w[1], tx, "Weiter (Editor)"); ruhe(2.0)
         else:
             time.sleep(0.8)
     tx = muss(warte("Link hinzufügen", 4), "Beitragsseite nicht erreicht")[2]
+    muss(not seh.finde("Vorlage", tx), "Vorlage/AutoCut am Video (Musik!) – Abbruch, nicht posten")   # Artur 13.11. (Sturmhaube)
     vorschau = [t for t in tx if t[1] > 220 and t[2] < 230 and _passt(kachel, t[0])]
     muss(vorschau, f"Vorschaubild zeigt nicht „{kachel}“ – falsches Video? Abbruch vor dem Posten")
 
 
 # ---------------------------------------------------------------- 5) Beitrag
+
+def tippbar(t):
+    """Nur Zeichen, die das Kabel tippen kann: é→e usw., Emojis raus, Umlaute bleiben."""
+    import unicodedata
+    raus = []
+    for c in t:
+        if c in "äöüÄÖÜß" or (ord(c) < 128):
+            raus.append(c)
+        else:
+            raus.append(unicodedata.normalize("NFKD", c).encode("ascii", "ignore").decode())
+    return " ".join("".join(raus).split()).strip()
+
 
 def beschreibung_text(d):
     """Kurz (Artur): optional 1–2 Wörter + 1 Produkt-Hashtag + die 3 Pflicht-Hashtags (bis 30.11.2026), Reihenfolge wechselt."""
@@ -465,6 +522,9 @@ def beschreibung_text(d):
     if tag:
         teile.insert(random.choice([0, len(teile)]), tag)
     wort = (d.get("kurz") or "").strip()
+    titel = tippbar(d.get("titel") or "")                        # Artur 13.11.: IMMER eine Beschreibung vor die Hashtags
+    if titel:
+        wort = titel
     t = " ".join(([wort] if wort else []) + teile)
     if not pfl:
         t = " ".join(([wort] if wort else []) + [h.lower() for h in eigen[:3]])
@@ -525,10 +585,18 @@ def verlinken(weg, produkt):
             menschlich(" ".join(produkt.split()[:3])); ruhe(0.6)
             K().taste("return"); ruhe(2.2)
             tx, hin, block = oben()
+            for _ in range(8):                                   # 13.11.: Treffer kamen später als 2,2 s → warten
+                if hin and any(w in block for w in worte):
+                    break
+                time.sleep(0.6); tx, hin, block = oben()
     muss(hin, "kein „Hinzufügen“ in der Liste (ausverkauft?)")
     muss(not worte or any(w in block for w in worte), f"oberstes Produkt ist nicht „{produkt}“: {block[:90]}")
     tipp(hin[0][1], hin[0][2], tx, "Hinzufügen"); ruhe(1.6)
     nach_hinzufuegen(weg)
+
+
+_BUTTON = ""
+_umbenannt = False
 
 
 def nach_hinzufuegen(weg):
@@ -544,7 +612,12 @@ def nach_hinzufuegen(weg):
                 log(f"Pilot: noch {r.group(1)} von {r.group(2)}")
             if not kraeftig_rot(80, 678):                        # erst blass (lädt), dann kräftig rot
                 time.sleep(0.4); continue
-            tipp(167, 678, tx, "Hinzufügen (rot)"); ruhe(1.6); continue
+            global _umbenannt
+            if _BUTTON and not _umbenannt:                       # Artur 13.11.: Produktname IMMER umbenennen (≤ 20 Zeichen)
+                tipp(300, 300, tx, "Produktname-Feld"); ruhe(0.6)
+                K().loeschen(32); menschlich(_BUTTON); ruhe(0.5)
+                _umbenannt = True; log(f"umbenannt: {_BUTTON}")
+            tipp(167, 678, None, "Hinzufügen (rot)"); ruhe(1.6); continue
         if seh.finde("zustimmen", tx):
             z = seh.finde("zustimmen", tx); tipp(z[0], z[1], tx, "Posten zustimmen"); ruhe(1.2); continue
         if seh.finde("Veröffentlichen", tx, unter=600) or seh.finde("Entwürfe", tx, unter=600):
@@ -565,10 +638,18 @@ def brand(name, handle):
     if not e:
         log("kein „@ Erwähnung“ – ohne Brand"); return False
     tipp(e[0], e[1], e[2], "@ Erwähnung"); ruhe(1.1)
+    sf = warte("suchen", 3)                                      # 13.11.: erst ins Suchfeld tippen, sonst geht der Text ins Leere
+    if sf:
+        tipp(sf[0], sf[1], sf[2], "Nutzer suchen"); ruhe(0.6)
     menschlich(handle)
     f = warte(handle, 5, genau=True, unter=160)
     if not f:
         f = warte("@" + handle, 1, genau=True, unter=160)
+    if not f and name:                                           # Artur 13.11.: sonst den stimmigsten Treffer (Name = Shop/Marke)
+        tx = lesen()
+        n = re.sub(r"[^a-z0-9]", "", name.lower())
+        tr = [t for t in tx if 160 < t[2] < 700 and n and re.sub(r"[^a-z0-9]", "", t[0].lower()) == n]
+        f = (tr[0][1], tr[0][2] + 9, tx) if tr else None
     if not f:
         log(f"@{handle} nicht gefunden – ohne Brand")
         bk[handle.lower()] = False; cache.write_text(json.dumps(bk, ensure_ascii=False, indent=1))
@@ -607,11 +688,12 @@ def abschluss(entwurf):
         z = seh.finde("zustimmen", tx)
         if z:
             tipp(z[0], z[1], tx, "Posten zustimmen"); ruhe(1.2); continue
-        v = seh.finde("Veröffentlichen", tx, unter=600)
-        if not v:
+        kn = [t for t in tx if t[0].strip().endswith("Veröffentlichen") and t[1] > 167 and t[2] > 600]
+        v = (kn[0][1], kn[0][2]) if kn else None
+        if not v and not seh.finde("Entwürfe", tx, unter=600):
             log("VERÖFFENTLICHT"); return
-        muss(v[0] > 167, "„Veröffentlichen“ nicht rechts – Lage unklar")
-        if not kraeftig_rot(v[0] + 40, v[1]):
+        muss(v, "„Veröffentlichen“-Knopf rechts unten nicht gefunden")
+        if not kraeftig_rot(v[0] + 40, v[1]) and _ < 3:          # 13.11.: nach 3 Versuchen trotzdem tippen
             time.sleep(0.8); continue
         tipp(v[0], v[1], tx, "Veröffentlichen"); ruhe(2.5)
     raise Stopp("Beitragsseite noch offen – nicht veröffentlicht?")
@@ -740,6 +822,8 @@ _konto = None
 
 def ein_video(p, d, entwurf=False, aufr=True):
     global _konto
+    global _BUTTON, _umbenannt
+    _BUTTON, _umbenannt = (d.get("button") or "")[:20], False
     start = time.time()
     datei = EIN / d["datei"]
     if not entwurf:
@@ -763,7 +847,7 @@ def ein_video(p, d, entwurf=False, aufr=True):
     beschreiben(beschreibung_text(d))
     if not aus:
         verlinken(weg, d["produkt"])
-    brand(d.get("brand", ""), d.get("handle", ""))
+    # Artur 13.11.2026: Brand-Markierung abgeschaltet (dauert zu lange)
     abschluss(entwurf or aus)
     entwurf = entwurf or aus
     dauer = time.time() - start
