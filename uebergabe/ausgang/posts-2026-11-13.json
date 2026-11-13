@@ -161,11 +161,110 @@
    "entwurf": true,
    "dauer_s": 94,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "23:12",
+   "account": "anduri.official",
+   "datei": "Video 143 - 04 Winterstiefel Damen - V2.mp4",
+   "produkt": "Damenschuhe, gefüttert mit",
+   "tts_link": "https://shop.tiktok.com/view/product/1729708362239875669",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 115,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "23:14",
+   "account": "anduri.official",
+   "datei": "Video 143 - 07 Nike Air Max Plus - V3.mp4",
+   "produkt": "NIKE GOLF Nike",
+   "tts_link": "https://shop.tiktok.com/view/product/1729971643678956176",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 101,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "23:16",
+   "account": "anduri.official",
+   "datei": "Video 143 - 12 More 7er-Bundle - V2.mp4",
+   "produkt": "More Nutrition 7er-Bundle",
+   "tts_link": "https://shop.tiktok.com/view/product/1729988320511368058",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 103,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "23:18",
+   "account": "anduri.official",
+   "datei": "Video 143 - 14 Ninja FlexDrawer - V2.mp4",
+   "produkt": "Ninja Foodi FlexDrawer",
+   "tts_link": "https://shop.tiktok.com/view/product/1729980113646295162",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 110,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "23:20",
+   "account": "anduri.official",
+   "datei": "Video 143 - 17 Makita Adventskalender - V2.mp4",
+   "produkt": "Makita Adventskalender 2026",
+   "tts_link": "https://shop.tiktok.com/view/product/1729919648562649592",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 106,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "23:27",
+   "account": "anduri.official",
+   "datei": "Video 143 - 19 Squishy Bastelset - V2.mp4",
+   "produkt": "Flavery Flüssigsilikon Squishy",
+   "tts_link": "https://shop.tiktok.com/view/product/1729904859459328029",
+   "weg": "ohne Link",
+   "entwurf": true,
+   "dauer_s": 42,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "23:32",
+   "account": "anduri.official",
+   "datei": "Video 143 - 22 Panzerglas iPhone - V2.mp4",
+   "produkt": "Apple iPhone Mega",
+   "tts_link": "https://shop.tiktok.com/view/product/1729770308272429394",
+   "weg": "ohne Link",
+   "entwurf": true,
+   "dauer_s": 39,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "23:36",
+   "account": "anduri.official",
+   "datei": "Video 143 - 23 More Chunky Flavour - V2.mp4",
+   "produkt": "More Nutrition Chunky",
+   "tts_link": "https://shop.tiktok.com/view/product/1729636543208987514",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 120,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "23:45",
+   "account": "anduri.official",
+   "datei": "Video 143 - 24 ESN Zink - V2.mp4",
+   "produkt": "ESN Zink Kapseln",
+   "tts_link": "https://shop.tiktok.com/view/product/1729878767182715226",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 140,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "andreas.testet": 3,
-  "anduri.official": 4,
+  "anduri.official": 11,
   "ella_robinson2": 3,
   "artur.official": 2
  }

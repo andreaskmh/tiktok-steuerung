@@ -106,6 +106,19 @@ def finde(muster, tx=None, **kw):
     return seh.finde(muster, lesen() if tx is None else tx, **kw)
 
 
+NEU_LADEN = ("Erneut versuchen", "Tippe, um es erneut", "Tippen zum Neuladen", "Neu laden", "Wiederholen", "Aktualisieren")
+
+
+def neu_laden_tippen(tx):
+    """Artur 13.11.2026: Showcase/Shop lädt mit Fehler → Neu-laden-Knopf antippen statt warten."""
+    for m in NEU_LADEN:
+        r = seh.finde(m, tx)
+        if r:
+            K().tipp(r[0], r[1]); log(f"Ladefehler → „{m}“ angetippt"); time.sleep(1.5)
+            return True
+    return False
+
+
 def warte(muster, sek=6.0, **kw):
     """Wartet auf ein Label → (x, y, texte) oder None."""
     ende = time.time() + sek
@@ -114,6 +127,8 @@ def warte(muster, sek=6.0, **kw):
         f = seh.finde(muster, tx, **kw)
         if f:
             return f[0], f[1], tx
+        if neu_laden_tippen(tx):
+            ende += 3; continue
         if time.time() > ende:
             return None
         time.sleep(0.25)
@@ -213,6 +228,9 @@ def tiktok_hauptseite():
         tx = lesen()
         if _tabs(tx):
             return tx
+        vv = seh.finde("verstanden", tx)
+        if vv:
+            tipp(vv[0], vv[1], tx, "OK, verstanden"); ruhe(0.8); continue
         o = seh.finde("OK", tx, genau=True)
         if o and seh.finde("Kamera", tx):
             tipp(o[0], o[1], tx, "OK"); ruhe(0.8); continue
@@ -308,6 +326,8 @@ def zum_produkt(pid, produkt):
     schnell(f"social1.ai/products/{pid}"); time.sleep(0.3)
     K().taste("return")
     f = warte("View on TikTok Shop", 15)
+    if not f:                                                    # 13.11.: Social1 hakt manchmal kurz → einmal neu laden
+        K().taste("cmd+r"); f = warte("View on TikTok Shop", 20)
     if not f:
         raise Stopp("Social1-Seite ohne „View on TikTok Shop“ (Login? Artur)")
     worte = re.findall(r"[a-zäöüß0-9]{4,}", (produkt or "").lower())[:3]
@@ -350,19 +370,28 @@ def zum_produkt(pid, produkt):
 # ---------------------------------------------------------------- 3) Showcase oder Einkaufswagen
 
 def showcase_oder_wagen(tx):
+    # Artur 13.11.2026: „Ausverkauft“ steht unten auf der Produktseite → Showcase ja, Einkaufswagen nein, Video als Entwurf
+    ausv = bool(seh.finde("Ausverkauft", tx, unter=560) or seh.finde("Nicht vorrätig", tx, unter=560))
+    if ausv:
+        log("Produktseite: Ausverkauft")
     v = seh.finde("pro Verkauf", tx)
     if v:
         tipp(v[0], v[1], tx, "pro Verkauf"); ruhe(1.6)
         for _ in range(12):
             tx = lesen()
+            if seh.finde("verstanden", tx) and (seh.finde("nicht verfügbar", tx) or seh.finde("nicht hinzugefügt", tx)):
+                vv = seh.finde("verstanden", tx); tipp(vv[0], vv[1], tx, "OK, verstanden"); ruhe(0.8)
+                log("Produkt nicht verfügbar (gesperrt) → Entwurf ohne Link"); return "ausverkauft"   # Artur 13.11.
             z = seh.finde("Showcase hinzufügen", tx)
             if z:
                 tipp(z[0], z[1], tx, "Zum Showcase hinzufügen"); ruhe(1.6)
                 log("ins Showcase gelegt")
-                return "showcase"
-            if seh.finde("Mehr erkunden", tx) or seh.finde("im Showcase", tx):
-                break
+                return "ausverkauft" if ausv else "showcase"
+            if seh.finde("Mehr erkunden", tx) or seh.finde("im Showcase", tx) or seh.finde("Jetzt erstellen", tx):
+                break                                            # Artur 13.11.: „Jetzt erstellen“ = schon im Showcase
             time.sleep(0.3)
+        if ausv:
+            log("schon im Showcase, ausverkauft → kein Einkaufswagen"); return "ausverkauft"
         # Artur 13.11.2026 16:30: schon im Showcase → IMMER Einkaufswagen und Link aus dem Einkaufswagen (nie im Showcase suchen)
         log("schon im Showcase → Einkaufswagen")
         wa = seh.finde("Werbeaktion", lesen())
@@ -380,8 +409,15 @@ def in_wagen(tx):
     w = muss(seh.finde("Einkaufswagen", tx, unter=600), "Einkaufswagen-Knopf fehlt")
     k = seh.finde("Kasse", tx, unter=600)
     muss(w[0] < 167 and (not k or k[0] > w[0] + 80), "Einkaufswagen nicht links neben Kasse – Lage unklar")
-    tipp(w[0], w[1], tx, "Einkaufswagen (grau)"); ruhe(1.8)
+    tipp(w[0], w[1], tx, "Einkaufswagen (grau)"); ruhe(1.4)
     versucht = set()
+    for runde in range(3):                                       # Artur 13.11.: irgendeine Variante/Größe, Hauptsache schnell
+      if _wagen_runde(versucht):
+          return
+    raise Stopp("nicht in den Einkaufswagen gelegt")
+
+
+def _wagen_runde(versucht):
     for _ in range(14):                                          # „Bitte auswählen“: erste nicht probierte Option
         tx = lesen()
         b = seh.finde("Bitte auswählen", tx)
@@ -391,7 +427,7 @@ def in_wagen(tx):
                and (round(t[1]), round(t[2])) not in versucht]
         o = min(muss(opt, "keine wählbare Variante"), key=lambda t: (round(t[2] / 10), t[1]))
         versucht.add((round(o[1]), round(o[2])))
-        tipp(o[1], o[2], tx, "Variante"); ruhe(0.8)
+        tipp(o[1], o[2], tx, "Variante"); ruhe(0.5)
     probiert = set()
     for _ in range(16):                                          # „nicht vorrätig“ → andere Option der untersten Gruppe
         tx = lesen()
@@ -404,23 +440,22 @@ def in_wagen(tx):
         probiert.add((round(o[1]), round(o[2])))
         tipp(o[1], o[2], tx, "Variante"); ruhe(0.9)
     tx = lesen()
-    muss(not seh.finde("nicht vorrätig", tx), "keine vorrätige Variante gefunden")
+    muss(not seh.finde("nicht vorrätig", tx), "Artikel nicht vorrätig (keine vorrätige Variante)")
     btn = [t for t in tx if t[2] > 600 and t[0].strip() == "Einkaufswagen"]
     muss(btn, "rotes „Einkaufswagen“ im Varianten-Blatt fehlt")
-    tipp(btn[0][1], btn[0][2], tx, "Einkaufswagen (rot)"); ruhe(1.2)
+    tipp(btn[0][1], btn[0][2], tx, "Einkaufswagen (rot)"); ruhe(1.0)
     for i in range(12):
         tx = lesen()
         if seh.finde("hinzugefügt", tx) or seh.finde("Zur Kasse (", tx):
-            log("im Einkaufswagen"); return
+            log("im Einkaufswagen"); return True
         if seh.finde("Option pro Artikel", tx) or seh.finde("für Neukund", tx):   # Artur 12.11.: liegt schon im Wagen
-            log("schon im Einkaufswagen (Neukunden-Hinweis)"); ruhe(2.5); return
+            log("schon im Einkaufswagen (Neukunden-Hinweis)"); ruhe(2.5); return True
         if seh.finde("Bitte auswählen", tx):
-            raise Stopp("Variante noch nicht gewählt")
-        nb = [t for t in tx if t[2] > 600 and t[0].strip() == "Einkaufswagen"]
-        if nb and i in (4, 8):
-            tipp(nb[0][1], nb[0][2], tx, "Einkaufswagen (rot)"); ruhe(1.2)
-        time.sleep(0.4)
-    raise Stopp("nicht in den Einkaufswagen gelegt")
+            log("noch eine Auswahl offen → nächste Variante"); return False
+        if not seh.finde("Bitte auswählen", tx) and not [t for t in tx if t[2] > 600 and t[0].strip() == "Einkaufswagen"] and i >= 2:
+            log("im Einkaufswagen (Blatt zu)"); return True      # Artur 13.11.: nicht extra in den Warenkorb gehen
+        time.sleep(0.3)
+    return False
 
 
 # ---------------------------------------------------------------- 4) Produktseite zu → „+“ → Video
@@ -460,15 +495,13 @@ def video_waehlen(kachel):
             o = seh.finde("OK", tx, genau=True); tipp(o[0], o[1], tx, "OK"); ruhe(0.8); continue
         break
     tipp(30, 672, tx, "Galerie unten links", abstand=60); ruhe(1.6)
-    v = seh.finde("Videos", lesen(), genau=True, ueber=160)
-    if v:
+    v = None if os.environ.get("TS_EINZELN") else seh.finde("Videos", lesen(), genau=True, ueber=160)
+    if v:                                                        # Artur 13.11.: im Einzel-Modus kein Reiterwechsel (neuestes steht in „Alle“)
         tipp(v[0], v[1], None, "Reiter Videos"); ruhe(1.0)
     treffer = None
     if os.environ.get("TS_EINZELN"):                             # Artur 13.11.2026: nicht nach Thumbnails suchen –
         # Video kam gerade per AirDrop = neuestes = letzte Kachel. Artur 13.11.: nicht langsam scrollen → schnelle Wischer ans Ende
-        for _ in range(4):
-            K().ziehe(167, 620, 167, 140, 0.08); time.sleep(0.15)
-        ruhe(0.8)
+        ruhe(0.3)                                                # Artur 13.11.: Galerie öffnet unten beim neuesten → kein Scrollen
         tx = lesen()
         dauern = [t for t in tx if 120 < t[2] < 650 and re.fullmatch(r"\d{1,2}:\d{2}", t[0].strip())]
         letzte = muss(max(dauern, key=lambda t: (round(t[2] / 20), t[1])) if dauern else None, "keine Video-Kachel gefunden")
@@ -566,10 +599,14 @@ def beschreiben(text):
     b = muss(warte("Beschreibung", 4, ueber=330), "„Beschreibung hinzufügen“ fehlt")
     tipp(b[0], b[1], b[2], "Beschreibung")
     ruhe(0.7)
-    menschlich(text)
-    ruhe(0.5)
+    # Artur 13.11.2026: Text einfügen statt tippen (spart ~15 s); kommt die Zwischenablage nicht an → tippen
+    K().einfuegen(text, warte=1.2); ruhe(0.9)
+    anfang = _kn(text.split()[0])[:5] if text.split() else ""
+    if anfang and not any(anfang in _kn(t[0]) for t in lesen()):
+        log("Einfügen nicht angekommen – tippe"); menschlich(text)
+    ruhe(0.4)
     tastatur_zu()
-    log("Beschreibung getippt")
+    log("Beschreibung eingefügt")
 
 
 def tastatur_zu():
@@ -581,49 +618,62 @@ def tastatur_zu():
 
 
 def verlinken(weg, produkt):
-    l = muss(warte("Link hinzufügen", 4), "„Link hinzufügen“ fehlt")
-    tipp(l[0], l[1], l[2], "Link hinzufügen"); ruhe(1.1)
-    p = muss(warte("Produkt", 4, genau=True, unter=380), "Auswahl „Produkt“ fehlt")
-    tipp(p[0], p[1], p[2], "Produkt", abstand=30); ruhe(1.8)
-    for _ in range(25):                                          # warten, bis „Dein Showcase“ geladen ist
-        tx = lesen()
-        if seh.finde("verstanden", tx):
-            v = seh.finde("verstanden", tx); tipp(v[0], v[1], tx, "Verstanden"); ruhe(0.8); continue
-        if seh.finde("Showcase", tx) and [t for t in tx if t[0].startswith("Hinzuf")]:
-            break
-        time.sleep(0.35)
-    if weg == "wagen":
-        tx = lesen()
-        if not seh.finde("Gekaufte Produkte", tx, unter=560):
-            w = muss(seh.finde("Weitere Produkte", tx), "„Weitere Produkte hinzufügen“ fehlt")
-            tipp(w[0], w[1], tx, "Weitere Produkte hinzufügen"); ruhe(1.4)
-        e = muss(warte("Einkaufswagen", 4, unter=500), "Auswahl „Einkaufswagen“ fehlt")
-        tipp(e[0], e[1], e[2], "Einkaufswagen (Liste)"); ruhe(1.8)
-        muss(warte("Produkte suchen", 5), "Einkaufswagen-Liste nicht offen")
+    """Artur 13.11.2026: hakt etwas, am aktuellen Bildschirm weitermachen (nicht neu anfangen).
+    Jede Runde: Bildschirm lesen → passenden nächsten Schritt machen. Max. ~60 s."""
     worte = re.findall(r"[a-zäöüß0-9]{4,}", produkt.lower())
-    def oben():
-        tx = lesen()
+    gesucht = False
+    def oben(tx):
         hin = sorted([t for t in tx if t[0].strip().startswith("Hinzuf") and 180 < t[2] < 700], key=lambda t: t[2])
         if not hin:
-            return tx, None, ""
+            return None, ""
         hy = hin[0][2]
-        return tx, hin, " ".join(t[0] for t in tx if hy - 110 <= t[2] <= hy + 10).lower()
-    tx, hin, block = oben()
-    if worte and hin and not any(w in block for w in worte):     # Artur 12.11.: Produkt liegt weiter unten → suchen
-        sfeld = seh.finde("Produkte suchen", tx) or seh.finde("suchen", tx)
-        if sfeld:
-            tipp(sfeld[0], sfeld[1], tx, "Produkte suchen"); ruhe(0.8)
-            menschlich(" ".join(produkt.split()[:3])); ruhe(0.6)
-            K().taste("return"); ruhe(2.2)
-            tx, hin, block = oben()
-            for _ in range(8):                                   # 13.11.: Treffer kamen später als 2,2 s → warten
-                if hin and any(w in block for w in worte):
-                    break
-                time.sleep(0.6); tx, hin, block = oben()
-    muss(hin, "kein „Hinzufügen“ in der Liste (ausverkauft?)")
-    muss(not worte or any(w in block for w in worte), f"oberstes Produkt ist nicht „{produkt}“: {block[:90]}")
-    tipp(hin[0][1], hin[0][2], tx, "Hinzufügen"); ruhe(1.6)
-    nach_hinzufuegen(weg)
+        return hin, " ".join(t[0] for t in tx if hy - 110 <= t[2] <= hy + 10).lower()
+    ende = time.time() + 60
+    while time.time() < ende:
+        tx = lesen()
+        if seh.finde("verstanden", tx):
+            v = seh.finde("verstanden", tx); tipp(v[0], v[1], tx, "Verstanden"); ruhe(0.8)
+            if seh.finde("nicht verfügbar", tx) or seh.finde("nicht verfugbar", tx) or seh.finde("nicht vorrätig", tx) \
+               or seh.finde("nicht hinzugefügt", tx):
+                raise Stopp("Produkt beim Verlinken nicht vorrätig/verfügbar → Entwurf")
+            continue
+        if seh.finde("zum Video", tx) or seh.finde("umbenennen", tx) or seh.finde("zustimmen", tx):
+            nach_hinzufuegen(weg); return
+        wagen_liste = bool(seh.finde("Einkaufswagen", tx, ueber=80) and seh.finde("Produkte suchen", tx))
+        showcase_liste = bool(seh.finde("Dein Showcase", tx) or seh.finde("Aus dem Showcase", tx))
+        if (weg == "wagen" and wagen_liste) or (weg != "wagen" and showcase_liste):
+            hin, block = oben(tx)
+            if not hin:
+                neu_laden_tippen(tx); time.sleep(0.4); continue
+            if worte and not any(w in block for w in worte) and not gesucht:   # Produkt weiter unten → suchen
+                sfeld = seh.finde("Produkte suchen", tx) or seh.finde("suchen", tx)
+                if sfeld:
+                    tipp(sfeld[0], sfeld[1], tx, "Produkte suchen"); ruhe(0.8)
+                    menschlich(" ".join(produkt.split()[:3])); ruhe(0.6)
+                    K().taste("return"); ruhe(2.0); gesucht = True
+                    continue
+            if worte and not any(w in block for w in worte):
+                time.sleep(0.6); continue                       # Treffer laden noch
+            tipp(hin[0][1], hin[0][2], tx, "Hinzufügen"); ruhe(1.4)
+            nach_hinzufuegen(weg); return
+        if weg == "wagen" and showcase_liste:
+            w = seh.finde("Weitere Produkte", tx)
+            if w:
+                tipp(w[0], w[1], tx, "Weitere Produkte hinzufügen"); ruhe(1.2); continue
+        if weg == "wagen":
+            e = seh.finde("Einkaufswagen", tx, unter=500)
+            if e and not wagen_liste:
+                tipp(e[0], e[1], tx, "Einkaufswagen (Liste)"); ruhe(1.4); continue
+        pr = seh.finde("Produkt", tx, genau=True, unter=380)
+        if pr and not showcase_liste and not wagen_liste:
+            tipp(pr[0], pr[1], tx, "Produkt", abstand=30); ruhe(1.4); continue
+        l = seh.finde("Link hinzufügen", tx)
+        if l and not showcase_liste and not wagen_liste:
+            tipp(l[0], l[1], tx, "Link hinzufügen"); ruhe(1.0); continue
+        if neu_laden_tippen(tx):
+            continue
+        time.sleep(0.4)
+    raise Stopp("Verlinken kam nicht weiter (60 s)")
 
 
 _BUTTON = ""
@@ -646,7 +696,12 @@ def nach_hinzufuegen(weg):
             global _umbenannt
             if _BUTTON and not _umbenannt:                       # Artur 13.11.: Produktname IMMER umbenennen (≤ 20 Zeichen)
                 tipp(300, 300, tx, "Produktname-Feld"); ruhe(0.6)
-                K().loeschen(32); menschlich(_BUTTON); ruhe(0.5)
+                K().taste("cmd+a"); ruhe(0.2); K().loeschen(1); K().loeschen(120)   # Artur 13.11.: Makita – alter Name blieb stehen
+                menschlich(_BUTTON); ruhe(0.5)
+                feld = [t[0] for t in lesen() if 240 < t[2] < 360 and len(t[0].strip()) > 3]
+                if not any(_kn(f) == _kn(_BUTTON) for f in feld):
+                    log(f"Produktname nicht sauber ({feld[:2]}) – nochmal leeren")
+                    K().taste("cmd+a"); ruhe(0.2); K().loeschen(140); menschlich(_BUTTON); ruhe(0.5)
                 _umbenannt = True; log(f"umbenannt: {_BUTTON}")
             tipp(167, 678, None, "Hinzufügen (rot)"); ruhe(1.6); continue
         if seh.finde("zustimmen", tx):
@@ -873,11 +928,23 @@ def ein_video(p, d, entwurf=False, aufr=True):
     else:
         tx = zum_produkt(pid, d["produkt"]);   log("Produktseite")
         weg = "wagen" if d.get("weg") == "wagen" else showcase_oder_wagen(tx)
+        if weg == "ausverkauft":
+            aus = True; weg = "ohne Link"
     zum_plus();                            log("„+“")
     video_waehlen(d["kachel"]);            log("Beitragsseite")
     beschreiben(beschreibung_text(d))
     if not aus:
-        verlinken(weg, d["produkt"])
+        try:
+            verlinken(weg, d["produkt"])
+        except Stopp as e:
+            if "→ Entwurf" not in str(e):
+                raise
+            for _ in range(5):                                   # zurück auf die Beitragsseite, dann als Entwurf
+                tx = lesen()
+                if seh.finde("Entwürfe", tx, unter=600):
+                    break
+                tipp(21, 57, tx, "Zurück"); ruhe(1.0)
+            log("Produkt nicht verfügbar → Entwurf ohne Link"); aus = True
     # Artur 13.11.2026: Brand-Markierung abgeschaltet (dauert zu lange)
     abschluss(entwurf or aus)
     entwurf = entwurf or aus
@@ -930,22 +997,66 @@ def main(a):
             if type(e).__name__ != "Stopp":
                 raise
             raise Stopp(f"AirDrop: {e} (Videos schon am iPhone? → --ohne-airdrop)")
-        zeiten, aus, fertig = [], [], []
-        for p, d in liste:
+        zeiten, aus, fertig, nochmal = [], [], [], []
+        for p, d in liste + [None]:
+            if p is None:                                        # Ende: übersprungene einmal nachholen
+                if True:                                         # Artur 13.11.: nicht am Ende nachholen – Schritte warten selbst
+                    break
+                os.environ["_NACHHOLEN"] = "1"; log(f"── nachholen: {len(nochmal)} Video(s)")
+                liste2 = nochmal; nochmal = []
+                for p2, d2 in liste2:
+                    d2["status"] = "freigegeben"
+                    log(f"── nachholen: {d2['datei']} → {d2['account']}")
+                    try:
+                        if os.environ.get("TS_EINZELN"):
+                            EG.aufs_iphone([EIN / d2["datei"]])
+                            (PROJ / "uebergabe" / "ausgang" / "letztes-airdrop.txt").write_text(d2["datei"])
+                        zeiten.append(ein_video(p2, d2, entwurf, aufr)); fertig.append(d2["kachel"])
+                    except Stopp as e2:
+                        if not entwurf:
+                            schreibe(p2, d2, "fehler", str(e2))
+                        print(f"✗ {d2['datei']}: {e2} (auch beim 2. Versuch)", flush=True)
+                        try:
+                            tiktok_hauptseite()
+                        except Exception:
+                            pass
+                break
             lim = PILOT.get(d["account"])
             if not entwurf and lim and heute_gepostet(d["account"]) >= lim:
                 aus.append(d["datei"]); log(f"übersprungen (Limit {d['account']}): {d['datei']}"); continue
             log(f"── {d['datei']} → {d['account']}")
             try:
                 if os.environ.get("TS_EINZELN"):                 # Artur 13.11.2026: Video direkt vor dem Post aufs iPhone
-                    EG.aufs_iphone([EIN / d["datei"]])
-                zeiten.append(ein_video(p, d, entwurf, aufr)); fertig.append(d["kachel"])
+                    merk = PROJ / "uebergabe" / "ausgang" / "letztes-airdrop.txt"
+                    if merk.exists() and merk.read_text().strip() == d["datei"]:
+                        log("schon am iPhone (letztes AirDrop) – kein zweites AirDrop")   # Artur 13.11.: nach Neustart nicht doppelt
+                    else:
+                        EG.aufs_iphone([EIN / d["datei"]]); merk.write_text(d["datei"])
+                    os.environ.pop("TS_OHNE_AIRDROP_EINMAL", None)
+                try:
+                    zeiten.append(ein_video(p, d, entwurf, aufr)); fertig.append(d["kachel"])
+                except Stopp as e1:
+                    if "nicht vorrätig" not in str(e1):
+                        raise
+                    log("ausverkauft → als Entwurf ohne Link (Artur 08.11.), weiter")   # 13.11.: nicht mehr stoppen
+                    d["ausverkauft"] = True
+                    os.environ["TS_OHNE_AIRDROP_EINMAL"] = "1"
+                    zeiten.append(ein_video(p, d, entwurf, aufr)); fertig.append(d["kachel"])
             except Stopp as e:
                 if not entwurf:
                     schreibe(p, d, "fehler", str(e))
-                if aufr and not entwurf and fertig:
-                    print(f"Hinweis: {len(fertig)} gepostete Videos noch in Fotos – aufräumen: post_mensch.py --fotos {d['stapel']}", flush=True)
-                sys.exit(f"STOPP bei {d['datei']}: {e}")
+                hart = any(w in str(e) for w in ("Showcase voll", "CAPTCHA", "Captcha", "Tageslimit", "Doppel-Schutz", "Login"))
+                if hart or os.environ.get("TS_NIE_WEITER"):
+                    if aufr and not entwurf and fertig:
+                        print(f"Hinweis: {len(fertig)} gepostete Videos noch in Fotos – aufräumen: post_mensch.py --fotos {d['stapel']}", flush=True)
+                    sys.exit(f"STOPP bei {d['datei']}: {e}")
+                # Artur 13.11.2026: „wenn 1 Fehler passiert, warum startest du neu? setz doch einfach fort“
+                print(f"✗ {d['datei']}: {e} – weiter mit dem nächsten (Steuer-Chat prüft es)", flush=True)
+                nochmal.append((p, d))
+                try:
+                    tiktok_hauptseite()
+                except Exception:
+                    pass
         if aufr and not entwurf and fertig:
             t = time.time(); fotos_aufraeumen(fertig); log(f"Fotos aufgeräumt: {len(fertig)} Videos, {time.time() - t:.0f} s")
         print(f"FERTIG {len(zeiten)}/{len(liste)}" + (f", Ø {sum(zeiten) / len(zeiten):.0f} s" if zeiten else "")

@@ -57,7 +57,7 @@ def angekommen(p, sek):
     K = seh.kabel()
     if not K:
         raise Stopp("Kabel-Steuerung nicht aktiv – Ankunft am iPhone bitte selbst prüfen")
-    ende = time.time() + sek
+    start = time.time(); ende = start + sek
     while time.time() < ende:
         if p.poll() is not None:
             out = p.stdout.read()
@@ -71,7 +71,8 @@ def angekommen(p, sek):
                 K.tipp(a[0], a[1]); time.sleep(1.5); break
         else:
             if any(DATUM.match(t.strip()) and y < 80 for t, _, y in tx) or \
-               seh.finde("Zuletzt gesichert", tx):                  # 13.11.2026: iPhone öffnet auch das Album „Zuletzt gesichert“
+               seh.finde("Zuletzt gesichert", tx) or \
+               (time.time() - start > 9 and len(tx) <= 6):          # 13.11.2026: Video spielt schon im Vollbild (kaum Text)
                 time.sleep(2)
                 return
         time.sleep(0.7)
