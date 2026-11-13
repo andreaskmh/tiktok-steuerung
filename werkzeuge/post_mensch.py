@@ -224,6 +224,21 @@ def tiktok_hauptseite():
     raise Stopp("TikTok-Hauptseite nicht erreicht")
 
 
+_LETZTE_KACHEL = ""
+
+
+def upload_abwarten(max_s=120):
+    """Profil → Reiter Videos: warten, bis die Kachel des zuletzt geposteten Videos im Raster steht."""
+    tipp(34, 287, None, "Reiter Videos"); ruhe(1.2)
+    ende = time.time() + max_s
+    while time.time() < ende:
+        tx = lesen()
+        if not _LETZTE_KACHEL or [t for t in tx if t[2] > 290 and _passt(_LETZTE_KACHEL, t[0])]:
+            log("letztes Video ist im Profil – weiter"); return
+        time.sleep(3)
+    log("Upload-Warten: Zeit um – versuche trotzdem")
+
+
 def konto(account):
     """Profil-Tab → @account prüfen, sonst Name ▾ oben links → Account (nie „Konto hinzufügen“)."""
     tx = tiktok_hauptseite()
@@ -249,9 +264,11 @@ def konto(account):
             and "safari" not in t[0].lower()]                      # „◂ Safari“ oben links ist kein Kontoname (12.11.)
     n = muss(name, "Account-Name oben links nicht gefunden")[0]
     breite = len(n[0].strip().rstrip("▾▼v ").strip()) * 11.5      # 13.11.: direkt aufs ▾ rechts neben dem Namen (Name-Tipp öffnet oft nicht)
-    tipp(min(n[1] + breite / 2 + 10, 230), n[2], tx, "Konto-Pfeil ▾")
-    if not warte("Konto wechseln", 3):
-        tipp(n[1], n[2], None, "Account-Name")
+    x0 = min(n[1] + breite / 2 + 10, 230)
+    for dx in (0, -18, 18, -36):                                 # Pfeil-Lage schwankt je Name → ein paar Punkte probieren
+        tipp(x0 + dx, n[2], None, "Konto-Pfeil ▾")
+        if warte("Konto wechseln", 2):
+            break
     muss(warte("Konto wechseln", 4), "„Konto wechseln“ öffnet sich nicht")
     z = vorher = None
     for _ in range(12):                                          # Liste fährt animiert auf → erst tippen, wenn sie ruht
@@ -270,8 +287,8 @@ def konto(account):
         if seh.finde("momentan ein Video", tx):
             bs = seh.finde("Bestätigen", tx)
             if bs:
-                tipp(bs[0], bs[1], tx, "Bestätigen (Upload läuft)")
-            log("Upload läuft noch – warte"); time.sleep(6)
+                tipp(bs[0], bs[1], tx, "Bestätigen (Upload läuft)"); ruhe(0.8)
+            upload_abwarten()                                    # Artur 13.11.: im Profil schauen, ob das Video schon oben ist
             return konto(account)
         time.sleep(0.8)
     muss(warte("@" + account, 3), f"Wechsel zu {account} hat nicht geklappt")
@@ -822,7 +839,7 @@ _konto = None
 
 def ein_video(p, d, entwurf=False, aufr=True):
     global _konto
-    global _BUTTON, _umbenannt
+    global _BUTTON, _umbenannt, _LETZTE_KACHEL
     _BUTTON, _umbenannt = (d.get("button") or "")[:20], False
     start = time.time()
     datei = EIN / d["datei"]
@@ -854,6 +871,7 @@ def ein_video(p, d, entwurf=False, aufr=True):
     if not entwurf:
         subprocess.run(["zsh", str(HIER / "gepostet.sh"), "eintragen", str(datei), d["account"]], capture_output=True)
         schreibe(p, d, "gepostet", f"post_mensch ({weg}), {dauer:.0f} s")
+        _LETZTE_KACHEL = d.get("kachel", "")
     elif aus:
         schreibe(p, d, "entwurf", "ausverkauft – als Entwurf ohne Link gespeichert")
     eintragen(d, dauer, weg, entwurf)
