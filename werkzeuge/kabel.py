@@ -110,6 +110,26 @@ def hoehe():
     return HOEHE
 
 
+def _steuerung_neu():
+    """Artur 15.11.2026: Kabel-Steuerung „Connection was terminated“ → open-iphone-use stop + serve, kurz warten."""
+    global _dev, _frame
+    import subprocess as sp
+    oiu = os.path.expanduser("~/.local/share/open-iphone-use/runtime/venv/bin/open-iphone-use")
+    print("Kabel-Steuerung abgerissen – starte sie neu …", flush=True)
+    sp.run([oiu, "stop"], capture_output=True, timeout=30)
+    time.sleep(3)
+    sp.Popen([oiu, "serve"], stdout=sp.DEVNULL, stderr=sp.DEVNULL, start_new_session=True)
+    for _ in range(30):
+        time.sleep(1)
+        try:
+            _dev = None; _frame = None
+            if geraet():
+                break
+        except Exception:
+            pass
+    time.sleep(5)
+
+
 def aktion(op, **args):
     global _frame, _groesse
     for versuch in range(3):
@@ -123,6 +143,9 @@ def aktion(op, **args):
                 _groesse = (f["width"], f["height"])
             return r
         msg = r.get("message") or r.get("error") or str(r)
+        if ("terminated" in msg or "dial plane" in msg) and versuch < 2:
+            _steuerung_neu()                                    # 15.11.2026: Steuerverbindung abgerissen → Server neu
+            continue
         if "frame" not in msg.lower() and "Frame" not in msg:
             raise KabelFehler(f"{op}: {msg}")
         _frame = None
@@ -206,13 +229,21 @@ def schreibe(t, menschlich=False):
     """Tippen, wo möglich; nur bei Zeichen ohne Taste (Emojis) über die Zwischenablage (dann länger warten)."""
     try:
         [_code(c) for c in t]
-    except KabelFehler:
-        return einfuegen(t, warte=3.5)
+    except KabelFehler:                                         # Artur 14.11.2026: NIE Zwischenablage → Zeichen ohne Taste weglassen
+        t = "".join(c for c in t if _tippbar(c))
     text(t, menschlich=menschlich)
 
 
+def _tippbar(c):
+    try:
+        _code(c); return True
+    except KabelFehler:
+        return False
+
+
 def einfuegen(t, warte=1.5):
-    """Über die gemeinsame Zwischenablage (Mac → iPhone, gleiche Apple-ID) + ⌘V. Geht auch mit Emojis."""
+    """GESPERRT (Artur 14.11.2026): Zwischenablage fügte mehrfach fremde/alte Texte ein → Kontosperr-Risiko. Immer tippen."""
+    raise KabelFehler("Zwischenablage gesperrt (Artur 14.11.2026) – tippen statt einfügen")
     subprocess.run(["pbcopy"], input=t.encode("utf-8"))
     time.sleep(warte)
     taste("cmd+v")

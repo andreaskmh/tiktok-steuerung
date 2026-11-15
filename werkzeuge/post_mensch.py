@@ -82,19 +82,64 @@ def _feed(tx):
     return any(f in t.lower() for t, _, y in tx if y < 100 for f in FEED)
 
 
-def lesen():
-    tx = seh.lesen()
+def _captcha(tx):
     alles = " ".join(t.lower() for t, _, _ in tx)
-    for w in CAPTCHA:
-        if w in alles:
-            raise Stopp(f"CAPTCHA/Prüfung am Bildschirm („{w}“) – Artur, bitte lösen, dann neu starten")
-    return tx
+    alles = re.sub(r"verifiziert\w*", "", alles)   # „Von TikTok verifiziert“ (Shop-Abzeichen) ist kein CAPTCHA
+    return next((w for w in CAPTCHA if w in alles), None)
+
+
+def _melden(text):
+    try:
+        subprocess.run(["osascript", "-e", f'display notification "{text}" with title "TikTok-Posten" sound name "Glass"'],
+                       timeout=10)
+    except Exception:
+        pass
+
+
+def _bild_aktuell(tx):
+    """Artur 15.11.2026: eingefrorenes Bild → Tipps landeten auf LIVE. iPhone-Uhr oben links mit Mac-Uhr vergleichen."""
+    uhr = [t[0].strip() for t in tx if t[2] < 30 and t[1] < 80 and re.fullmatch(r"\d{1,2}:\d{2}", t[0].strip())]
+    if not uhr:
+        return True
+    h, m = map(int, uhr[0].split(":"))
+    jetzt = datetime.datetime.now()
+    ist = (h % 12) * 60 + m
+    soll = (jetzt.hour % 12) * 60 + jetzt.minute
+    d = min((ist - soll) % 720, (soll - ist) % 720)
+    return d <= 1
+
+
+def lesen():
+    """CAPTCHA: nie selbst lösen, aber auch nicht abbrechen (Artur 13.11.2026: „soll automatisiert gehen“) –
+    melden, warten bis Artur es gelöst hat, dann am aktuellen Bildschirm weitermachen."""
+    tx = seh.lesen()
+    if not _bild_aktuell(tx):
+        time.sleep(3); tx = seh.lesen()
+        if not _bild_aktuell(tx):
+            raise Stopp("iPhone-Bild eingefroren (Uhr im Bild ≠ jetzt) – nichts getippt")
+    w = _captcha(tx)
+    if not w:
+        return tx
+    print(f"CAPTCHA/Prüfung am Bildschirm („{w}“) – warte, bis Artur sie gelöst hat …", flush=True)
+    _melden("CAPTCHA am iPhone – bitte lösen, danach geht es von selbst weiter")
+    start = time.time(); letzte = start
+    while time.time() - start < 45 * 60:
+        time.sleep(8)
+        tx = seh.lesen()
+        if not _captcha(tx):
+            print(f"CAPTCHA gelöst nach {time.time() - start:.0f} s – weiter", flush=True)
+            ruhe(2)
+            return seh.lesen()
+        if time.time() - letzte > 5 * 60:
+            _melden("CAPTCHA wartet noch – bitte am iPhone lösen"); letzte = time.time()
+    raise Stopp(f"CAPTCHA/Prüfung („{w}“) seit 45 min ungelöst – Artur, bitte lösen, dann neu starten")
 
 
 def tipp(x, y, tx=None, was="", abstand=38, zitter=3):
     """Ein Tipp mit Gefahren-Sperre (kein Gefahren-Label im Umkreis) und leicht zufälligem Punkt."""
     tx = lesen() if tx is None else tx
-    if x < 70 and y < 110 and _feed(tx):
+    jetzt = lesen()                                             # 15.11.: vor jedem Tipp frisches Bild (Uhr-Prüfung in lesen)
+    if x < 70 and y < 110 and (_feed(tx) or _feed(jetzt)):
         raise Stopp(f"Gefahren-Sperre: oben links im Feed liegt LIVE – {was or 'Tipp'} nicht getippt")
     for t, gx, gy in tx:
         if _gefahr(t) and ((gx - x) ** 2 + (gy - y) ** 2) ** 0.5 < abstand:
@@ -173,6 +218,12 @@ def app(name):
     """App nach vorn. Artur 13.11.: schon vorn → bleiben; sonst Wisch an der unteren Kante (vorige App), sonst Suche."""
     if _ist_app(name):
         return
+    tx = seh.lesen()                                             # 15.11.2026: nach AirDrop offene Fotos-Ansicht →
+    z = [t for t in tx if t[2] < 42 and t[1] < 110 and name.lower() in t[0].lower()]   # Statusleisten-Link „◂ TikTok“
+    if z:
+        T.main([str(round(z[0][1], 1)), str(round(z[0][2], 1))]); ruhe(1.4)
+        if _ist_app(name):
+            log(f"{name} per Zurück-Link oben links"); return
     if name in ("TikTok", "Safari"):
         for _ in range(2):                                       # untere Kante nach rechts = zuletzt benutzte App
             K().ziehe(40, 731, 300, 731, 0.25); ruhe(0.9)
@@ -221,9 +272,45 @@ def _tabs(tx=None):
     return tuerkis and pink
 
 
+def beitrag_abbrechen():
+    """Artur 15.11.2026: halbfertiger Beitrag blieb offen → nächstes Video kam nicht zur Startseite (Kette von Fehlern).
+    Schritt für Schritt zurück bis „Verwerfen“. Oben links nur tippen, wenn die Seite sicher KEIN Feed ist (LIVE!)."""
+    for _ in range(10):
+        tx = lesen()
+        if _tabs(tx):
+            return True
+        v = seh.finde("Verwerfen", tx) or seh.finde("Neu beginnen", tx)
+        if v:
+            tipp(v[0], v[1], tx, "Verwerfen"); ruhe(1.5); continue
+        if seh.finde("bewerben?", tx):                           # Blatt „Wie möchtest du …“ → X oben rechts (nie „LIVE gehen“)
+            tipp(308, 85, tx, "Blatt zu (X)", abstand=25); ruhe(1.2); continue
+        if seh.finde("Informationen zur Werbeaktion", tx):
+            K().ziehe(167, 120, 167, 740, 0.35); ruhe(1.2); continue
+        if _feed(tx):
+            return False
+        liste = seh.finde("Aus dem Showcase", tx) or seh.finde("Produktlinks hinzufügen", tx) \
+            or (seh.finde("Einkaufswagen", tx, ueber=80) and seh.finde("Produkte suchen", tx))
+        beitrag = seh.finde("Veröffentlichen", tx, unter=600) and seh.finde("Entwürfe", tx, unter=600)
+        editor = seh.finde("AutoCut", tx) or seh.finde("Deine Story", tx)
+        umben = seh.finde("Produkt umbenennen", tx)
+        if liste or beitrag or editor or umben:
+            tipp(18, 57, tx, "Zurück (Beitrag abbrechen)", abstand=20); ruhe(1.4); continue
+        if seh.finde("Produkte bewerben", tx) or seh.finde("bewerben?", tx) or seh.finde("Informationen zur Werbeaktion", tx):
+            K().ziehe(167, 120, 167, 740, 0.35); ruhe(1.2); continue   # Blatt nach unten wegwischen
+        x = seh.finde("Sound hinzufügen", tx)
+        if x:                                                    # Kamera → X oben links
+            tipp(24, x[1], tx, "Kamera zu"); ruhe(1.4); continue
+        if seh.finde("Mehrere auswählen", tx):                   # Galerie → X oben links
+            tipp(28, 74, tx, "Galerie zu"); ruhe(1.2); continue
+        return False
+    return _tabs(lesen())
+
+
 def tiktok_hauptseite():
     """TikTok vorn mit unterer Leiste (Startseite … Profil). Unbekannte Seite → X/Zurück oben links, max. 4×."""
     app("TikTok")
+    if beitrag_abbrechen():                                      # 15.11.: offenen Beitrag erst sauber verwerfen
+        return lesen()
     for i in range(6):
         tx = lesen()
         if _tabs(tx):
@@ -231,14 +318,19 @@ def tiktok_hauptseite():
         vv = seh.finde("verstanden", tx)
         if vv:
             tipp(vv[0], vv[1], tx, "OK, verstanden"); ruhe(0.8); continue
+        if seh.finde("nicht verfügbar", tx) or seh.finde("nicht verfugbar", tx):   # Artur 15.11.: Fehlerseite → zurück
+            K().ziehe(3, 400, 220, 400, 0.3); ruhe(1.2); continue
         o = seh.finde("OK", tx, genau=True)
         if o and seh.finde("Kamera", tx):
             tipp(o[0], o[1], tx, "OK"); ruhe(0.8); continue
         snd = seh.finde("Sound hinzufügen", tx)
         if snd:                                                  # Kamera-Seite → X oben links
             tipp(24, snd[1], tx, "Kamera zu"); ruhe(1.2); continue
-        if i < 4 and not _feed(tx):
-            tipp(23, 57, tx, "Zurück"); ruhe(1.2); continue
+        if seh.finde("Kasse", tx, unter=630) or seh.finde("nicht vorrätig", tx):   # 15.11.: Produktblatt offen →
+            K().ziehe(167, 260, 167, 720, 0.35); ruhe(1.2); continue               # nach unten wegwischen (nie „Kasse“ tippen)
+        # Artur 15.11.2026: NIE oben links „Zurück“ tippen (dort liegt LIVE) → Wisch vom linken Rand = Zurück
+        if i < 4:
+            K().ziehe(3, 400, 220, 400, 0.3); ruhe(1.2); continue
         app("TikTok")
     raise Stopp("TikTok-Hauptseite nicht erreicht")
 
@@ -264,9 +356,12 @@ def konto(account):
     tipp(*PROFIL, tx, "Profil"); ruhe(1.5)
     for _ in range(3):
         f = warte("@" + account, 2.5)
-        if f:
-            log(f"Account {account} ✓"); return
         tx = lesen()
+        kopf = [t for t in tx if t[2] < 80 and _kn(account) in _kn(t[0])]   # 15.11.: Name in der Kopfzeile = aktives Konto
+        if f or kopf:
+            log(f"Account {account} ✓"); return
+        if seh.finde("Entwürfe", tx) or seh.finde("Angepinnt", tx):   # Profil gescrollt → hoch, dann neu prüfen
+            K().ziehe(167, 250, 167, 600, 0.3); ruhe(1.0); continue
         if seh.finde("Nicht erlauben", tx):
             n = seh.finde("Nicht erlauben", tx); tipp(n[0], n[1], tx, "Nicht erlauben"); ruhe(1); continue
         if [t for t in tx if t[0].startswith("@") and t[2] < 220]:
@@ -274,11 +369,15 @@ def konto(account):
         if _tabs(tx):
             tipp(*PROFIL, tx, "Profil"); ruhe(1.5)
     tx = lesen()
+    def _profil(tx):                                             # 15.11.: Profil leicht gescrollt → „Follower“ fehlt
+        return seh.finde("Follower", tx) or (seh.finde("TikTok Studio", tx) and seh.finde("Showcase", tx))
     for _ in range(3):                                           # 13.11.: Tipp landete auf „Freund*innen“ → erst Profilseite sicherstellen
-        if seh.finde("Follower", tx):
+        if _profil(tx):
             break
+        if seh.finde("Entwürfe", tx) or seh.finde("Angepinnt", tx):   # Artur 15.11.: Profil gescrollt → selbst hochscrollen
+            K().ziehe(167, 250, 167, 600, 0.3); ruhe(1.0); tx = lesen(); continue
         tipp(*PROFIL, None, "Profil"); ruhe(1.5); tx = lesen()
-    muss(seh.finde("Follower", tx), "Profilseite nicht offen")
+    muss(_profil(tx), "Profilseite nicht offen")
     name = [t for t in tx if 40 < t[2] < 145 and t[1] < 230 and "@" not in t[0] and len(t[0].strip()) > 3
             and "safari" not in t[0].lower()]                      # „◂ Safari“ oben links ist kein Kontoname (12.11.)
     n = muss(name, "Account-Name oben links nicht gefunden")[0]
@@ -351,6 +450,10 @@ def zum_produkt(pid, produkt):
     getippt = 0
     for i in range(70):                                          # bis ~35 s: Banner/Dialoge, TikTok lädt das Produkt
         tx = lesen()
+        if seh.finde("nicht mehr verfügbar", tx) or seh.finde("Produkt nicht verfügbar", tx) \
+           or seh.finde("Artikel nicht verfügbar", tx) or seh.finde("Artikel nicht verfugbar", tx):
+            # Artur 14.11.2026: Seite „Produkt nicht verfügbar“ → Entwurf ohne Link (nicht überspringen)
+            raise Stopp("Produkt nicht verfügbar – nicht vorrätig → Entwurf ohne Link")
         if produktseite_da(tx):
             txt = " ".join(t.lower() for t, _, _ in tx)
             if not shop or any(w in txt for w in shop) or any(w in txt for w in worte) or i > 24:
@@ -449,6 +552,8 @@ def _wagen_runde(versucht):
         if seh.finde("hinzugefügt", tx) or seh.finde("Zur Kasse (", tx):
             log("im Einkaufswagen"); return True
         if seh.finde("Option pro Artikel", tx) or seh.finde("für Neukund", tx):   # Artur 12.11.: liegt schon im Wagen
+            global _NEUKUNDE
+            _NEUKUNDE = True
             log("schon im Einkaufswagen (Neukunden-Hinweis)"); ruhe(2.5); return True
         if seh.finde("Bitte auswählen", tx):
             log("noch eine Auswahl offen → nächste Variante"); return False
@@ -473,13 +578,16 @@ def zum_plus():
             K().ziehe(167, wa[1] + 10, 167, wa[1] + 420, 0.3); ruhe(1.0); continue
         if _feed(tx):                                            # Produktkarte nur halb offen → Karte runterwischen
             K().ziehe(167, 330, 167, 720, 0.3); ruhe(1.0); continue
-        tipp(21, 57, tx, "X / Zurück"); ruhe(1.3)
+        K().ziehe(3, 400, 220, 400, 0.3); ruhe(1.3)            # 15.11.: nie oben links tippen (LIVE)
     raise Stopp("„+“ nicht erreicht")
+
+
+_KYR = str.maketrans("ЗОАЕТСВМНКРХІ×", "3OAETCBMHKPXIX")   # 15.11.: OCR liest „З0-TEILIGES“ (kyrillisch)
 
 
 def _kn(t):
     import unicodedata
-    t = t.upper().replace("Ä", "A").replace("Ö", "O").replace("Ü", "U")
+    t = t.upper().translate(_KYR).replace("Ä", "A").replace("Ö", "O").replace("Ü", "U")
     return re.sub(r"[^A-Z0-9]", "", unicodedata.normalize("NFKD", t))
 
 
@@ -488,13 +596,96 @@ def _passt(kachel, ocr):
     return bool(k) and (o.startswith(k[:max(6, len(k) - 2)]) or (len(o) >= 6 and k.startswith(o)))
 
 
-def video_waehlen(kachel):
+_FF = str(pathlib.Path.home() / "Documents/Coding/Editing System 1.1/tools/bin") + "/"
+
+
+def frisch_datiert(v):
+    """Artur 14.11.2026 (Doppel-Post Nike): Fotos sortiert nach Aufnahmedatum IN der Datei, nicht nach AirDrop-Zeit →
+    Kopie mit Aufnahmedatum = jetzt, damit das gesendete Video wirklich die letzte Kachel ist."""
+    import tempfile
+    ziel = pathlib.Path(tempfile.mkdtemp(prefix="airdrop-frisch-")) / pathlib.Path(v).name
+    jetzt = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000000Z")
+    lokal = datetime.datetime.now().astimezone().strftime("%Y-%m-%dT%H:%M:%S%z")
+    subprocess.run([_FF + "ffmpeg", "-y", "-loglevel", "error", "-i", str(v), "-map", "0", "-c", "copy",
+                    "-metadata", f"creation_time={jetzt}", "-metadata", f"com.apple.quicktime.creationdate={lokal}",
+                    "-movflags", "use_metadata_tags", str(ziel)], check=True, timeout=300)
+    return ziel
+
+
+def dauer_text(v):
+    """Dauer wie in der iPhone-Galerie („0:23“), gerundet."""
+    r = subprocess.run([_FF + "ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(v)],
+                       capture_output=True, text=True, timeout=60)
+    return float(r.stdout.strip())
+
+
+_SOLL_DAUER = None   # Sekunden des Videos, das gerade gepostet wird
+
+
+def cover_pruefen(kachel):
+    """Artur 15.11.2026: falsches Video = Verstoß/Kontosperre. Zweite, unabhängige Prüfung auf der Beitragsseite:
+    Hook-Text im Cover (oben rechts) muss zum Video passen – sonst STOPP, bevor getippt/verlinkt/gespeichert wird."""
+    for _ in range(8):
+        tx = lesen()
+        cover = [t for t in tx if t[1] > 200 and t[2] < 200 and not re.search(r"cover|bearbeiten", t[0], re.I)]
+        if any(_passt(kachel, t[0]) for t in cover):
+            log(f"Cover passt: {kachel}"); return
+        time.sleep(0.5)
+    raise Stopp(f"Cover zeigt nicht „{kachel}“ ({[t[0] for t in cover][:3]}) – falsches Video, NICHT gepostet")
+
+
+_NEUKUNDE = False
+
+
+def erstellen_route():
+    """Artur 15.11.2026: Neukunden-Angebot → Produkt lässt sich nicht (neu) in den Einkaufswagen legen und steht in der
+    Liste nicht oben. NUR dann: Produktseite → „pro Verkauf“ → „Jetzt erstellen“ → „Lade ein Video hoch“ → Produktname
+    umbenennen → Hinzufügen → Kamera → Galerie unten rechts. Produkt ist damit schon verlinkt."""
+    if not seh.finde("Lade ein Video hoch", lesen()):           # 15.11.: steht das Blatt schon offen → dort weiter
+        for _ in range(4):                                       # Varianten-/Werbeblatt zu
+            tx = lesen()
+            if seh.finde("pro Verkau", tx, unter=520):
+                break
+            K().ziehe(167, 130, 167, 720, 0.35); ruhe(1.2)
+        v = muss(seh.finde("pro Verkau", lesen(), unter=520), "„pro Verkauf“ auf der Produktseite fehlt")
+        tipp(v[0], v[1], None, "pro Verkauf"); ruhe(1.6)
+        j = muss(warte("Jetzt erstellen", 5), "„Jetzt erstellen“ fehlt")
+        tipp(j[0], j[1], j[2], "Jetzt erstellen"); ruhe(2.5)
+    h = muss(warte("Lade ein Video hoch", 8), "„Videos – Lade ein Video hoch“ fehlt")
+    tipp(h[0], h[1], h[2], "Videos hochladen"); ruhe(2.5)
+    muss(warte("Produkt umbenennen", 8), "„Produkt umbenennen“ fehlt")
+    muss(warte("/30", 12) or warte("Produktname", 4, genau=True), "Produktname-Feld lädt nicht")        # 15.11.: erst tippen, wenn das Feld geladen ist
+    ruhe(0.8)
+    for versuch in range(2):
+        tx = lesen()
+        lab = muss(seh.finde("Produktname", tx, genau=True), "Feld „Produktname“ fehlt")
+        tipp(200, lab[1] + 59, tx, "Produktname-Feld"); ruhe(0.8)
+        K().taste("cmd+a"); ruhe(0.2); K().loeschen(1); K().loeschen(60); ruhe(0.4)
+        menschlich(_BUTTON); ruhe(0.8)
+        tx = lesen()
+        if [t for t in tx if lab[1] + 40 < t[2] < lab[1] + 90 and _kn(t[0]) == _kn(_BUTTON)]:
+            break
+        log("Produktname nicht sauber – nochmal")
+    else:
+        raise Stopp(f"Produktname nicht „{_BUTTON}“")
+    log(f"umbenannt: {_BUTTON}")
+    K().taste("return"); ruhe(1.2)
+    hz = muss(warte("Hinzufügen", 4, unter=600), "„Hinzufügen“ fehlt")
+    tipp(hz[0], hz[1], hz[2], "Hinzufügen"); ruhe(3.0)
+    muss(warte("KAMERA", 8) or warte("Sound hinzufügen", 4), "Kamera nicht offen")
+    log("Produkt über „Jetzt erstellen“ verlinkt")
+
+
+def video_waehlen(kachel, galerie=None):
     for _ in range(3):
         tx = lesen()
         if seh.finde("Kamera", tx) and seh.finde("OK", tx, genau=True):
             o = seh.finde("OK", tx, genau=True); tipp(o[0], o[1], tx, "OK"); ruhe(0.8); continue
         break
-    tipp(30, 672, tx, "Galerie unten links", abstand=60); ruhe(1.6)
+    if galerie:                                                  # 15.11.: Kamera aus „Jetzt erstellen“ → Galerie unten rechts
+        tipp(galerie[0], galerie[1], tx, "Galerie unten rechts"); ruhe(2.0)
+    else:
+        tipp(30, 672, tx, "Galerie unten links", abstand=60); ruhe(1.6)
     v = None if os.environ.get("TS_EINZELN") else seh.finde("Videos", lesen(), genau=True, ueber=160)
     if v:                                                        # Artur 13.11.: im Einzel-Modus kein Reiterwechsel (neuestes steht in „Alle“)
         tipp(v[0], v[1], None, "Reiter Videos"); ruhe(1.0)
@@ -502,11 +693,35 @@ def video_waehlen(kachel):
     if os.environ.get("TS_EINZELN"):                             # Artur 13.11.2026: nicht nach Thumbnails suchen –
         # Video kam gerade per AirDrop = neuestes = letzte Kachel. Artur 13.11.: nicht langsam scrollen → schnelle Wischer ans Ende
         ruhe(0.3)                                                # Artur 13.11.: Galerie öffnet unten beim neuesten → kein Scrollen
-        tx = lesen()
-        dauern = [t for t in tx if 120 < t[2] < 650 and re.fullmatch(r"\d{1,2}:\d{2}", t[0].strip())]
-        letzte = muss(max(dauern, key=lambda t: (round(t[2] / 20), t[1])) if dauern else None, "keine Video-Kachel gefunden")
+        # Artur 14.11.2026: AirDrop meldet „fertig“, bevor das Video in Fotos liegt → bis 75 s warten, bis die
+        # letzte Kachel die Länge des gesendeten Videos hat; sonst NICHT posten (Doppel-Post Nike)
+        bis = time.time() + 75
+        while True:
+            tx = lesen()
+            dauern = [t for t in tx if 120 < t[2] < 650 and re.fullmatch(r"\d{1,2}:\d{2}", t[0].strip())]
+            muss(dauern, "keine Video-Kachel gefunden")
+            def _sek(t):
+                m, sk = t[0].strip().split(":"); return int(m) * 60 + int(sk)
+            def _hook_ok(t):                                     # Hook-Text unter der Kachel muss passen (falls lesbar)
+                unter = [u for u in tx if abs(u[1] - t[1] + 40) < 60 and 25 < t[2] - u[2] < 95
+                         and not re.fullmatch(r"\d{1,2}:\d{2}", u[0].strip())]
+                return any(_passt(kachel, u[0]) for u in unter)   # 15.11.: Pflicht (Steckschlüssel/Nike beide 0:18)
+            # Artur 14.11.2026: Fotos sortiert AirDrops nicht zuverlässig ans Ende → neueste Kachel mit passender Länge + Hook
+            if _SOLL_DAUER is None:
+                passend = dauern
+            else:
+                passend = [t for t in dauern if abs(_sek(t) - _SOLL_DAUER) <= 1.1 and _hook_ok(t)]
+            if passend:
+                letzte = max(passend, key=lambda t: (round(t[2] / 20), t[1]))
+                break
+            letzte = max(dauern, key=lambda t: (round(t[2] / 20), t[1]))
+            if time.time() > bis:
+                raise Stopp(f"gesendetes Video nicht in der Galerie (letzte Kachel {letzte[0].strip()}, gesucht "
+                            f"{int(_SOLL_DAUER // 60)}:{int(round(_SOLL_DAUER % 60)):02d}) – NICHT gepostet")
+            log(f"keine Kachel mit {_SOLL_DAUER:.0f} s + passendem Hook – Video noch nicht in Fotos, warte")
+            time.sleep(5)
         treffer = (letzte[0], letzte[1] - 40, letzte[2] - 50)
-        log(f"neuestes Video (letzte Kachel) bei {treffer[1]:.0f},{treffer[2]:.0f}")
+        log(f"neuestes Video (letzte Kachel) bei {treffer[1]:.0f},{treffer[2]:.0f}, Dauer {letzte[0].strip()} ✓")
     # Artur 12.11.2026: neue Videos liegen oft ganz UNTEN; große schnelle Wische nach oben schießen drüber.
     # Erst kleine, langsame Schritte nach unten (bis sich nichts mehr ändert), dann genauso langsam nach oben.
     def such():
@@ -574,6 +789,49 @@ def tippbar(t):
     return " ".join("".join(raus).split()).strip()
 
 
+VERBOTEN = (r"\d+[.,]?\d*\s*(€|euro|eur\b|cent|ct\b)", r"€", r"\beuro\b", r"\bcent\b", r"gratis", r"kostenlos", r"geschenkt",
+            r"nur heute", r"vergriffen", r"auf lager", r"ausverkauf", r"garantier", r"rabatt", r"\bsale\b", r"\bdeal\b",
+            r"angebot", r"spar", r"günstig", r"billig", r"\bunter\s+\d", r"\bab\s+\d", r"prozent", r"%", r"\bmore\b",
+            r"reduziert", r"preis", r"wie nie", r"verkauft", r"black friday", r"\bfür\s+\d", r"\bnur\s+\d", r"bestseller",
+            r"\bbeste[nrs]?\b", r"wirkt", r"heilt", r"abnehm",
+            r"krass", r"wahnsinn", r"unglaublich", r"nie wieder", r"sofort", r"\b100\b", r"schluss mit", r"must.?have",
+            r"geheim", r"trick", r"hack", r"viral", r"jeder braucht", r"musst du", r"lohnt", r"teurer", r"fehler",
+            r"schnell", r"letzte chance", r"limitiert", r"exklusiv", r"wow", r"!")
+
+
+def sauber(t):
+    """Artur 14.11.2026 (Verstoß): KEINE Preise, KEINE Versprechen in Beschreibung und Produktname."""
+    t = re.sub(r"\b(für|um|ab|unter|nur|statt)\s+(unter\s+)?\d+[.,]?\d*\s*(€|euro|eur|cent|ct)\b\.?", " ", t, flags=re.I)
+    t = re.sub(r"\d+[.,]?\d*\s*(€|euro|eur|cent|ct)\b", " ", t, flags=re.I)
+    t = re.sub(r"(?i)\b(gratis|kostenlos|nur heute|bald vergriffen|wenige auf lager|günstig|billig)\b", " ", t)
+    return " ".join(t.replace("€", " ").split()).strip(" -–,.!?")
+
+
+def pruefe_verboten(text, was, marke=""):
+    s = text.lower()
+    if marke and "more" in marke.lower():
+        s = s.replace("#more", "").replace(marke.lower(), "")
+    for v in VERBOTEN:
+        if v == r"\bmore\b" and "more" in (marke or "").lower():
+            continue                                             # More-Video darf „More“ heißen
+        if re.search(v, s):
+            raise Stopp(f"{was} enthält Verbotenes („{v}“): {text!r} – nicht gepostet (Artur 14.11.: kein Preis, keine Versprechen)")
+
+
+def produktname(d, kurz=True):
+    """Neutraler Produktname (≤ 20 Zeichen) aus dem Dateinamen, z. B. „Nike Air Max Plus“ – nie „Bald vergriffen“."""
+    n = re.sub(r"^Video \d+ - \d+\s*", "", pathlib.Path(d["datei"]).stem)
+    n = sauber(re.sub(r"\s*-\s*V\d+$", "", n))
+    if kurz and len(n) > 20:
+        n = n[:20].rsplit(" ", 1)[0]
+    return n
+
+
+MARKEN_BEKANNT = ["nike", "airmax", "adidas", "redbull", "apple", "iphone", "samsung", "galaxy", "galaxybuds", "nivea", "garnier",
+                  "esn", "more", "morenutrition", "ninja", "makita", "wmf", "htc", "fanttik", "gillette", "halara", "haribo",
+                  "milka", "lego", "dyson", "shark", "kärcher", "tonies", "mac", "loreal", "maybelline", "starwars"]
+
+
 def beschreibung_text(d):
     """Kurz (Artur): optional 1–2 Wörter + 1 Produkt-Hashtag + die 3 Pflicht-Hashtags (bis 30.11.2026), Reihenfolge wechselt."""
     if d.get("beschreibung"):
@@ -581,14 +839,16 @@ def beschreibung_text(d):
     pfl = PFLICHT[:] if datetime.date.today() <= datetime.date(2026, 11, 30) else []
     random.shuffle(pfl)
     eigen = [h for h in d.get("hashtags", []) if h.lower() not in PFLICHT and h.lower() not in ("#tiktokshop", "#fyp", "#foryou")]
+    # Artur 15.11.2026: KEINE Marken-Hashtags (Nike, Red Bull … geschützt) → Marke, Shop-Name, erstes Wort der Produktnamen raus
+    marken = {_kn(w) for w in [d.get("brand", ""), (d.get("produkt") or " ").split()[0], produktname(d, kurz=False).split()[0]] if w}
+    marken |= {_kn(w) for w in re.findall(r"[A-Za-zÄÖÜäöü]{3,}", d.get("brand", ""))}
+    eigen = [h for h in eigen if not any(m and (_kn(h[1:]).startswith(m) or m.startswith(_kn(h[1:]))) for m in marken)
+             and _kn(h[1:]) not in {_kn(x) for x in MARKEN_BEKANNT}]
     tag = eigen[0].lower() if eigen else ""
     teile = pfl[:]
     if tag:
         teile.insert(random.choice([0, len(teile)]), tag)
-    wort = (d.get("kurz") or "").strip()
-    titel = tippbar(d.get("titel") or "")                        # Artur 13.11.: IMMER eine Beschreibung vor die Hashtags
-    if titel:
-        wort = titel
+    wort = ""                                                    # Artur 15.11.2026: KEIN Produktname, nur Hashtags
     t = " ".join(([wort] if wort else []) + teile)
     if not pfl:
         t = " ".join(([wort] if wort else []) + [h.lower() for h in eigen[:3]])
@@ -596,17 +856,47 @@ def beschreibung_text(d):
 
 
 def beschreiben(text):
-    b = muss(warte("Beschreibung", 4, ueber=330), "„Beschreibung hinzufügen“ fehlt")
-    tipp(b[0], b[1], b[2], "Beschreibung")
+    b = warte("Beschreibung", 4, ueber=330)
+    if b:
+        tipp(b[0], b[1], b[2], "Beschreibung")
+    else:                                                        # 15.11.: Feld hat schon Text (Beitrag fortsetzen)
+        tx = lesen()
+        alt = muss([t for t in tx if t[1] < 230 and 60 < t[2] < 225], "Beschreibungsfeld nicht gefunden")
+        tipp(alt[0][1], alt[0][2], tx, "Beschreibung (vorhandener Text)")
     ruhe(0.7)
     # Artur 13.11.2026: Text einfügen statt tippen (spart ~15 s); kommt die Zwischenablage nicht an → tippen
-    K().einfuegen(text, warte=1.2); ruhe(0.9)
-    anfang = _kn(text.split()[0])[:5] if text.split() else ""
-    if anfang and not any(anfang in _kn(t[0]) for t in lesen()):
-        log("Einfügen nicht angekommen – tippe"); menschlich(text)
-    ruhe(0.4)
+    # Artur 14.11.2026 (Verstoß): Einfügen holte eine alte More-Beschreibung aus der iPhone-Zwischenablage → IMMER tippen,
+    # vorher Feld leeren
+    for versuch in range(2):
+        K().taste("cmd+a"); ruhe(0.2); K().loeschen(1); K().loeschen(len(text) + 40)
+        menschlich(text)
+        ruhe(0.6)
+        if beschreibung_stimmt(text):
+            break
+        log("Beschreibung am Bildschirm stimmt nicht – Feld leeren, neu tippen")
+    else:
+        raise Stopp("Beschreibung am Bildschirm stimmt nicht mit der geplanten überein – NICHT gepostet")
     tastatur_zu()
-    log("Beschreibung eingefügt")
+    log(f"Beschreibung getippt: {text.strip()}")
+
+
+def beschreibung_stimmt(text):
+    """Artur 15.11.2026: falsche Beschreibung/Hashtags = Verstoß. Getippten Text am Bildschirm lesen:
+    alle geplanten Wörter + Hashtags da, kein fremder Hashtag, keine Zahl/€ die nicht geplant ist."""
+    tx = lesen()
+    feld = " ".join(t[0] for t in tx if t[1] < 230 and 60 < t[2] < 225).lower()
+    soll = [w.lower() for w in text.split()]
+    fehlt = [w for w in soll if _kn(w) and _kn(w) not in _kn(feld)]
+    tags = re.findall(r"#[\wäöüß]+", feld)
+    fremd = [h for h in tags if not any(_kn(h) == _kn(w) or _kn(w).startswith(_kn(h)) for w in soll if w.startswith("#"))]
+    preis = re.search(r"\d+[.,]\d+|€|euro", feld) and not re.search(r"\d+[.,]\d+|€|euro", text.lower())
+    sollk = _kn(" ".join(soll))
+    extra = [w for w in re.findall(r"[a-zäöüß]{4,}", feld) if _kn(w) not in sollk]   # fremder Text (alte Beschreibung)
+    if fehlt or fremd or preis or len(extra) > 1:
+        fremd = fremd + extra
+        log(f"Feld: {feld[:120]!r} | fehlt {fehlt[:3]} | fremd {fremd[:3]} | preis {bool(preis)}")
+        return False
+    return True
 
 
 def tastatur_zu():
@@ -617,11 +907,16 @@ def tastatur_zu():
             tipp(f[0], f[1], tx, lab); ruhe(0.8); return
 
 
-def verlinken(weg, produkt):
+def verlinken(weg, produkt, kurz=""):
     """Artur 13.11.2026: hakt etwas, am aktuellen Bildschirm weitermachen (nicht neu anfangen).
     Jede Runde: Bildschirm lesen → passenden nächsten Schritt machen. Max. ~60 s."""
-    worte = re.findall(r"[a-zäöüß0-9]{4,}", produkt.lower())
-    gesucht = False
+    # Artur 14.11.2026: Handschuhe – ein allgemeines Wort reicht nicht (falsches Produkt aus dem Showcase).
+    # Treffer = mind. 2 Wörter aus dem echten Shop-Namen (Social1/TikTok-Link), bei nur einem Wort dieses eine.
+    worte = list(dict.fromkeys(re.findall(r"[a-zäöüß0-9]{4,}", produkt.lower())))
+    noetig = min(1, len(worte))
+    def passt(block):                                            # 15.11.: Umlaute egal (OCR liest „Vitalitat“)
+        return not worte or sum(_kn(w) in _kn(block) for w in worte) >= noetig
+    gesucht = False; gesucht_um = 0.0
     def oben(tx):
         hin = sorted([t for t in tx if t[0].strip().startswith("Hinzuf") and 180 < t[2] < 700], key=lambda t: t[2])
         if not hin:
@@ -645,16 +940,16 @@ def verlinken(weg, produkt):
             hin, block = oben(tx)
             if not hin:
                 neu_laden_tippen(tx); time.sleep(0.4); continue
-            if worte and not any(w in block for w in worte) and not gesucht:   # Produkt weiter unten → suchen
-                sfeld = seh.finde("Produkte suchen", tx) or seh.finde("suchen", tx)
-                if sfeld:
-                    tipp(sfeld[0], sfeld[1], tx, "Produkte suchen"); ruhe(0.8)
-                    menschlich(" ".join(produkt.split()[:3])); ruhe(0.6)
-                    K().taste("return"); ruhe(2.0); gesucht = True
-                    continue
-            if worte and not any(w in block for w in worte):
-                time.sleep(0.6); continue                       # Treffer laden noch
-            tipp(hin[0][1], hin[0][2], tx, "Hinzufügen"); ruhe(1.4)
+            # Artur 14.11.2026: NIE in TikTok nach Produkten suchen – immer über Social1. Das gerade über den
+            # Social1-Link hinzugefügte Produkt steht oben; passt es nicht, warten (lädt) und dann STOPP statt suchen.
+            ziel = hin[0]
+            # Artur 15.11.2026: NIE in der Liste scrollen, NIE suchen. Das gerade über Social1 hinzugefügte Produkt
+            # steht oben → oberstes nehmen, wenn mind. 1 Wort des Shop-Namens passt (Umlaute egal); sonst warten/STOPP.
+            if not passt(block):
+                if time.time() > ende - 30:
+                    raise Stopp(f"oberstes Produkt passt nicht zu „{produkt}“ ({block[:60]!r}) – nicht verlinkt")
+                time.sleep(0.6); continue
+            tipp(ziel[1], ziel[2], tx, "Hinzufügen"); ruhe(1.4)
             nach_hinzufuegen(weg); return
         if weg == "wagen" and showcase_liste:
             w = seh.finde("Weitere Produkte", tx)
@@ -909,7 +1204,11 @@ _konto = None
 def ein_video(p, d, entwurf=False, aufr=True):
     global _konto
     global _BUTTON, _umbenannt, _LETZTE_KACHEL
-    _BUTTON, _umbenannt = (d.get("button") or "")[:20], False
+    # Artur 15.11.2026: Produktname wieder wie üblich („Wenige verfügbar“, „Fast ausverkauft“ …, Liste ACCOUNTS.md),
+    # aber NIE ein Preis darin
+    _BUTTON, _umbenannt = ((d.get("button") or "")[:20] or produktname(d)), False
+    if re.search(r"\d|€|euro|cent|gratis|kostenlos", _BUTTON.lower()):
+        raise Stopp(f"Produktname „{_BUTTON}“ enthält Preis/Zahl – nicht gepostet")
     start = time.time()
     datei = EIN / d["datei"]
     if not entwurf:
@@ -926,16 +1225,27 @@ def ein_video(p, d, entwurf=False, aufr=True):
     if aus:
         weg = "ohne Link"; tiktok_hauptseite()
     else:
+        globals()["_NEUKUNDE"] = False
         tx = zum_produkt(pid, d["produkt"]);   log("Produktseite")
         weg = "wagen" if d.get("weg") == "wagen" else showcase_oder_wagen(tx)
         if weg == "ausverkauft":
             aus = True; weg = "ohne Link"
-    zum_plus();                            log("„+“")
-    video_waehlen(d["kachel"]);            log("Beitragsseite")
-    beschreiben(beschreibung_text(d))
-    if not aus:
+    global _NEUKUNDE
+    if weg == "wagen" and _NEUKUNDE:                             # Artur 15.11.: nur wenn der Einkaufswagen nicht geht
+        _NEUKUNDE = False
+        erstellen_route(); weg = "erstellen"
+        video_waehlen(d["kachel"], galerie=(264, 583)); log("Beitragsseite")
+    else:
+        zum_plus();                            log("„+“")
+        video_waehlen(d["kachel"]);            log("Beitragsseite")
+    cover_pruefen(d["kachel"])
+    _bt = beschreibung_text(d); pruefe_verboten(_bt, "Beschreibung", d.get("brand", ""))
+    beschreiben(_bt)
+    if weg == "erstellen":
+        muss(seh.finde(_BUTTON, lesen()), f"Produkt „{_BUTTON}“ nicht am Beitrag – nicht gepostet")
+    elif not aus:
         try:
-            verlinken(weg, d["produkt"])
+            verlinken(weg, d["produkt"], produktname(d, kurz=False))
         except Stopp as e:
             if "→ Entwurf" not in str(e):
                 raise
@@ -943,7 +1253,7 @@ def ein_video(p, d, entwurf=False, aufr=True):
                 tx = lesen()
                 if seh.finde("Entwürfe", tx, unter=600):
                     break
-                tipp(21, 57, tx, "Zurück"); ruhe(1.0)
+                K().ziehe(3, 400, 220, 400, 0.3); ruhe(1.0)   # 15.11.: nie oben links tippen (LIVE)
             log("Produkt nicht verfügbar → Entwurf ohne Link"); aus = True
     # Artur 13.11.2026: Brand-Markierung abgeschaltet (dauert zu lange)
     abschluss(entwurf or aus)
@@ -998,7 +1308,8 @@ def main(a):
                 raise
             raise Stopp(f"AirDrop: {e} (Videos schon am iPhone? → --ohne-airdrop)")
         zeiten, aus, fertig, nochmal = [], [], [], []
-        for p, d in liste + [None]:
+        for eintrag in liste + [(None, None)]:                   # 15.11.: [None] ließ sich nicht entpacken → Absturz am Ende
+            p, d = eintrag
             if p is None:                                        # Ende: übersprungene einmal nachholen
                 if True:                                         # Artur 13.11.: nicht am Ende nachholen – Schritte warten selbst
                     break
@@ -1028,10 +1339,18 @@ def main(a):
             try:
                 if os.environ.get("TS_EINZELN"):                 # Artur 13.11.2026: Video direkt vor dem Post aufs iPhone
                     merk = PROJ / "uebergabe" / "ausgang" / "letztes-airdrop.txt"
-                    if merk.exists() and merk.read_text().strip() == d["datei"]:
+                    alle = PROJ / "uebergabe" / "ausgang" / f"airdrop-{d['stapel']}.txt"   # Artur 15.11.: nie doppelt AirDrop
+                    schon = alle.read_text().split("\n") if alle.exists() else []
+                    if d["datei"] in schon:
+                        log("schon am iPhone (früher per AirDrop) – kein zweites AirDrop")
+                    elif merk.exists() and merk.read_text().strip() == d["datei"]:
                         log("schon am iPhone (letztes AirDrop) – kein zweites AirDrop")   # Artur 13.11.: nach Neustart nicht doppelt
                     else:
-                        EG.aufs_iphone([EIN / d["datei"]]); merk.write_text(d["datei"])
+                        EG.aufs_iphone([frisch_datiert(EIN / d["datei"])]); merk.write_text(d["datei"])
+                        with open(alle, "a") as fa:
+                            fa.write(d["datei"] + "\n")
+                    global _SOLL_DAUER
+                    _SOLL_DAUER = dauer_text(EIN / d["datei"])
                     os.environ.pop("TS_OHNE_AIRDROP_EINMAL", None)
                 try:
                     zeiten.append(ein_video(p, d, entwurf, aufr)); fertig.append(d["kachel"])

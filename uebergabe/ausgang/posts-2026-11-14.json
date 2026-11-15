@@ -1,0 +1,53 @@
+{
+ "datum": "2026-11-14",
+ "posts": [
+  {
+   "zeit": "00:09",
+   "account": "anduri.official",
+   "datei": "Video 143 - 27 Nivea Men Set - V3.mp4",
+   "produkt": "NIVEA MEN Power",
+   "tts_link": "https://shop.tiktok.com/view/product/1729930865904294478",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 134,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "00:22",
+   "account": "ella_robinson2",
+   "datei": "Video 143 - 03 More Chunky Flavour - V2.mp4",
+   "produkt": "More Nutrition Chunky",
+   "tts_link": "https://shop.tiktok.com/view/product/1729636543208987514",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 113,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "00:40",
+   "account": "artur.official",
+   "datei": "Video 143 - 01 Galaxy Buds4 Pro - V2.mp4",
+   "produkt": "Samsung Galaxy Buds4",
+   "tts_link": "https://shop.tiktok.com/view/product/1729770645347080575",
+   "weg": "ohne Link",
+   "entwurf": true,
+   "dauer_s": 56,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "00:44",
+   "account": "artur.official",
+   "datei": "Video 143 - 06 Magical Christmas Tree - V2.mp4",
+   "produkt": "Magical Christmas Tree",
+   "tts_link": "https://shop.tiktok.com/view/product/1729985954675465162",
+   "weg": "ohne Link",
+   "entwurf": true,
+   "dauer_s": 48,
+   "werkzeug": "post_mensch"
+  }
+ ],
+ "zaehler": {
+  "anduri.official": 1,
+  "ella_robinson2": 1
+ }
+}

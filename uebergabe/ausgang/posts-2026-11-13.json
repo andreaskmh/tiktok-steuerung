@@ -260,11 +260,33 @@
    "entwurf": false,
    "dauer_s": 140,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "23:53",
+   "account": "anduri.official",
+   "datei": "Video 143 - 27 Nivea Men Set - V3.mp4",
+   "produkt": "NIVEA MEN Power",
+   "tts_link": "https://shop.tiktok.com/view/product/1729930865904294478",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 165,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "23:55",
+   "account": "anduri.official",
+   "datei": "Video 143 - 29 Fanttik E1 Max - V2.mp4",
+   "produkt": "Fanttik E1 Max",
+   "tts_link": "https://shop.tiktok.com/view/product/1729628107674523695",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 118,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "andreas.testet": 3,
-  "anduri.official": 11,
+  "anduri.official": 13,
   "ella_robinson2": 3,
   "artur.official": 2
  }

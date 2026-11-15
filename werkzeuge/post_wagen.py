@@ -23,7 +23,7 @@ def _tippe_einfuegen(text):
         time.sleep(0.4)
         return
     else:
-        subprocess.run(["pbcopy"], input=text.encode("utf-8")); time.sleep(1.5)   # Zwischenablage braucht bis zum iPhone
+        raise Stopp("Zwischenablage gesperrt (Artur 14.11.2026) – nur per Kabel tippen")
         subprocess.run(["osascript", "-e", 'tell application "System Events" to keystroke "v" using command down'])
     gesehen = False
     for i in range(30):                                          # „Einsetzen von ‚MacBook …‘“ erscheint verzögert, läuft bis ~15 s
