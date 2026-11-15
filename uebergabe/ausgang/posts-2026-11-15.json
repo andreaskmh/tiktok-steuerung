@@ -121,9 +121,55 @@
    "entwurf": false,
    "dauer_s": 137,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "17:58",
+   "account": "anduri.official",
+   "datei": "Video 143 - 34 Fanttik G10 Nano - V2.mp4",
+   "produkt": "Fanttik G10 Nano",
+   "tts_link": "https://shop.tiktok.com/view/product/1729607669741623343",
+   "weg": "ohne Link",
+   "entwurf": true,
+   "dauer_s": 59,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "18:00",
+   "account": "ella_robinson2",
+   "datei": "Video 143 - 12 More 7er-Bundle - V2.mp4",
+   "produkt": "More Nutrition 7er-Bundle",
+   "tts_link": "https://shop.tiktok.com/view/product/1729988320511368058",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 130,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "18:03",
+   "account": "andreas.testet",
+   "datei": "Video 143 - 29 Fanttik E1 Max - V2.mp4",
+   "produkt": "Fanttik E1 Max",
+   "tts_link": "https://shop.tiktok.com/view/product/1729628107674523695",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 183,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "18:05",
+   "account": "andreas.testet",
+   "datei": "Video 143 - 32 Gillette Venus - V2.mp4",
+   "produkt": "Gillette Venus ComfortGlide",
+   "tts_link": "https://shop.tiktok.com/view/product/1729928177005927312",
+   "weg": "ohne Link",
+   "entwurf": true,
+   "dauer_s": 83,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
-  "artur.official": 9
+  "artur.official": 9,
+  "ella_robinson2": 1,
+  "andreas.testet": 1
  }
 }

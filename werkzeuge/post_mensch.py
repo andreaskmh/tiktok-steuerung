@@ -109,6 +109,14 @@ def _bild_aktuell(tx):
     return d <= 1
 
 
+def popup_ok(tx):
+    """Artur 15.11.2026: Info-Popups (z. B. „Gesamtlikes“) mit „OK“ einfach wegdrücken – selbstständig."""
+    o = seh.finde("OK", tx, genau=True)
+    if o and (seh.finde("Gesamtlikes", tx) or seh.finde("Verstanden", tx) or 250 < o[2] < 700):
+        tipp(o[0], o[1], tx, "OK (Popup)"); ruhe(1.0); return True
+    return False
+
+
 def lesen():
     """CAPTCHA: nie selbst lösen, aber auch nicht abbrechen (Artur 13.11.2026: „soll automatisiert gehen“) –
     melden, warten bis Artur es gelöst hat, dann am aktuellen Bildschirm weitermachen."""
@@ -279,6 +287,8 @@ def beitrag_abbrechen():
         tx = lesen()
         if _tabs(tx):
             return True
+        if popup_ok(tx):
+            continue
         v = seh.finde("Verwerfen", tx) or seh.finde("Neu beginnen", tx)
         if v:
             tipp(v[0], v[1], tx, "Verwerfen"); ruhe(1.5); continue
@@ -357,11 +367,16 @@ def konto(account):
     for _ in range(3):
         f = warte("@" + account, 2.5)
         tx = lesen()
+        if popup_ok(tx):
+            tx = lesen()
         kopf = [t for t in tx if t[2] < 80 and _kn(account) in _kn(t[0])]   # 15.11.: Name in der Kopfzeile = aktives Konto
         if f or kopf:
             log(f"Account {account} ✓"); return
-        if seh.finde("Entwürfe", tx) or seh.finde("Angepinnt", tx):   # Profil gescrollt → hoch, dann neu prüfen
+        if not seh.finde("Follower", tx) and not [t for t in tx if t[0].startswith("@") and t[2] < 220] \
+           and (seh.finde("Entwürfe", tx) or seh.finde("Angepinnt", tx)):   # NUR wenn gescrollt → hoch
             K().ziehe(167, 250, 167, 600, 0.3); ruhe(1.0); continue
+        if seh.finde("Follower", tx):                            # Profil oben, anderes Konto → gleich wechseln
+            break
         if seh.finde("Nicht erlauben", tx):
             n = seh.finde("Nicht erlauben", tx); tipp(n[0], n[1], tx, "Nicht erlauben"); ruhe(1); continue
         if [t for t in tx if t[0].startswith("@") and t[2] < 220]:
@@ -381,9 +396,11 @@ def konto(account):
     name = [t for t in tx if 40 < t[2] < 145 and t[1] < 230 and "@" not in t[0] and len(t[0].strip()) > 3
             and "safari" not in t[0].lower()]                      # „◂ Safari“ oben links ist kein Kontoname (12.11.)
     n = muss(name, "Account-Name oben links nicht gefunden")[0]
-    breite = len(n[0].strip().rstrip("▾▼v ").strip()) * 11.5      # 13.11.: direkt aufs ▾ rechts neben dem Namen (Name-Tipp öffnet oft nicht)
-    x0 = min(n[1] + breite / 2 + 10, 230)
-    for dx in (0, -18, 18, -36):                                 # Pfeil-Lage schwankt je Name → ein paar Punkte probieren
+    # Artur 15.11.2026: nie nach Namenslänge rechnen – im Bild das letzte dunkle Zeichen rechts vom Namen = Pfeil ▾
+    xs = list(range(int(n[1]), 300, 2))
+    dunkel = [x for x, (r, g, b) in zip(xs, farben(*[(x, n[2]) for x in xs])) if r < 90 and g < 90 and b < 90]
+    x0 = (max(dunkel) - 3) if dunkel else n[1] + 60
+    for dx in (0, -6, 6):
         tipp(x0 + dx, n[2], None, "Konto-Pfeil ▾")
         if warte("Konto wechseln", 2):
             break
