@@ -110,9 +110,20 @@
    "entwurf": false,
    "dauer_s": 120,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "17:46",
+   "account": "artur.official",
+   "datei": "Video 143 - 30 Belibuy Autosauger - V3.mp4",
+   "produkt": "Belibuy-V8 max Autostaubsauger",
+   "tts_link": "https://shop.tiktok.com/view/product/1729483256600434756",
+   "weg": "erstellen",
+   "entwurf": false,
+   "dauer_s": 137,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
-  "artur.official": 8
+  "artur.official": 9
  }
 }

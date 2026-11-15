@@ -1227,11 +1227,17 @@ def ein_video(p, d, entwurf=False, aufr=True):
     else:
         globals()["_NEUKUNDE"] = False
         tx = zum_produkt(pid, d["produkt"]);   log("Produktseite")
-        if not seh.finde("pro Verkau", tx):                      # Artur 15.11.: nichts angezeigt → runterwischen (neu laden),
-            K().ziehe(167, 200, 167, 560, 0.4); ruhe(2.5); tx = lesen()   # sonst Produktlink neu öffnen
-            if not seh.finde("pro Verkau", tx):
-                log("„pro Verkauf“ fehlt → Produktlink neu öffnen")
-                tx = zum_produkt(pid, d["produkt"]); log("Produktseite (neu)")
+        for _ in range(16):                                      # 15.11.: „pro Verkauf“ lädt verzögert → bis 8 s warten
+            if seh.finde("pro Verkau", tx):
+                break
+            time.sleep(0.5); tx = lesen()
+        else:
+            log("„pro Verkauf“ fehlt → Produktlink neu öffnen")   # Artur 15.11.: nichts angezeigt → Link neu öffnen
+            tx = zum_produkt(pid, d["produkt"]); log("Produktseite (neu)")
+            for _ in range(16):
+                if seh.finde("pro Verkau", tx):
+                    break
+                time.sleep(0.5); tx = lesen()
         weg = "wagen" if d.get("weg") == "wagen" else showcase_oder_wagen(tx)
         if weg == "ausverkauft":
             aus = True; weg = "ohne Link"
