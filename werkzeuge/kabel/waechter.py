@@ -13,10 +13,18 @@ Einrichten/Entfernen: zsh werkzeuge/kabel/autostart.sh an|aus
 """
 import json, os, pathlib, subprocess, sys, time, urllib.request
 
+def _lokal(schluessel, standard):
+    """Pro Mac eigenes iPhone: ~/.config/tiktok-steuerung/geraet.json (nicht im Git; Umgebungsvariable geht vor)."""
+    try:
+        return json.load(open(pathlib.Path.home() / ".config/tiktok-steuerung/geraet.json")).get(schluessel) or standard
+    except Exception:
+        return standard
+
+
 OIU = str(pathlib.Path.home() / ".local/bin/open-iphone-use")
 PMD = str(pathlib.Path.home() / ".local/share/open-iphone-use/runtime/venv/bin/pymobiledevice3")
 URL = "http://127.0.0.1:27893"
-UDID = os.environ.get("TS_IPHONE_UDID", "00008030-00096C8621C3402E")
+UDID = os.environ.get("TS_IPHONE_UDID") or _lokal("udid", "00008030-00096C8621C3402E")
 LOG = pathlib.Path.home() / "Library/Logs/ts-iphone-waechter.log"
 _letzte = None
 

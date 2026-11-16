@@ -234,3 +234,9 @@
   Entwürfe ebenso. Unverändert: „Zum Showcase hinzufügen“ (Showcase-voll-Prüfung), Account, Rückwege (zur_hauptseite).
   Tests 201/201 (neu `test_tempo_16_11`). Erst beim nächsten echten Lauf prüfbar: AirDrop-Erkennung/Nochmal, Social1 im
   Hintergrund + Markierung, Galerie-Neu-Öffnen, die kürzeren Übergänge.
+
+## 16.11.2026 23:45 – Jedes MacBook hat sein eigenes iPhone (Artur)
+- `kabel.py`, `kabel/waechter.py`, `airdrop.py` lesen das iPhone jetzt aus `~/.config/tiktok-steuerung/geraet.json`
+  (`udid`, `airdrop_ziel`) – liegt nur auf dem jeweiligen Mac, nicht im Git. Ohne Datei gilt wie bisher das iPhone 11
+  `…C3402E` / „iPhone von Artur (2)“. Umgebungsvariablen `TS_IPHONE_UDID` / `TS_AIRDROP_ZIEL` gehen weiterhin vor.
+- MacBook Pro von Artur: open-iphone-use neu installiert (719bd55), Xcode 27.2, patch_oiu, iPhone 11 `…D3802E` per USB eingebunden.

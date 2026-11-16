@@ -43,6 +43,8 @@ sobald der Server ein Live-Bild liefert. Alte Steuerung erzwingen: `TS_MODUS=syn
 
 ## Einmalig eingerichtet
 
+- **Pro MacBook ein eigenes iPhone (16.11.2026):** `~/.config/tiktok-steuerung/geraet.json` mit `{"udid": "…", "airdrop_ziel": "<Name im AirDrop-Fenster>"}` (nicht im Git). UDID: `xcrun devicectl list devices`. Einbinden: `open-iphone-use add --udid <UDID>`.
+
 - Xcode 27.2, iPhone 11 auf iOS 27.2.1, Entwicklermodus an (Artur, 12.11.2026).
 - AirDrop am iPhone: Einstellungen → Allgemein → AirDrop → **Nur für Kontakte** (vorher „Empfangen aus“, Artur OK 12.11.).
   Gleiche Apple-ID → keine Abfrage, das Video öffnet sich direkt in Fotos.

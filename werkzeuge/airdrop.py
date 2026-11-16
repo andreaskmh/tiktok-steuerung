@@ -15,7 +15,16 @@ HIER = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HIER))
 import seh
 
-ZIEL = os.environ.get("TS_AIRDROP_ZIEL", "iPhone von Artur (2)")   # Gerätename im AirDrop-Fenster
+def _lokal(schluessel, standard):
+    """Pro Mac eigenes iPhone: ~/.config/tiktok-steuerung/geraet.json (nicht im Git; Umgebungsvariable geht vor)."""
+    try:
+        import json
+        return json.load(open(pathlib.Path.home() / ".config/tiktok-steuerung/geraet.json")).get(schluessel) or standard
+    except Exception:
+        return standard
+
+
+ZIEL = os.environ.get("TS_AIRDROP_ZIEL") or _lokal("airdrop_ziel", "iPhone von Artur (2)")   # Gerätename im AirDrop-Fenster
 
 
 class Stopp(Exception):

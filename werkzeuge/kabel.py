@@ -12,8 +12,16 @@ nach der letzten Eingabe entstanden ist). Server starten: open-iphone-use serve 
 """
 import json, os, pathlib, random, subprocess, sys, time, urllib.request, urllib.error
 
+def _lokal(schluessel, standard):
+    """Pro Mac eigenes iPhone: ~/.config/tiktok-steuerung/geraet.json (nicht im Git; Umgebungsvariable geht vor)."""
+    try:
+        return json.load(open(pathlib.Path.home() / ".config/tiktok-steuerung/geraet.json")).get(schluessel) or standard
+    except Exception:
+        return standard
+
+
 URL = os.environ.get("OIU_URL", "http://127.0.0.1:27893")
-UDID = os.environ.get("TS_IPHONE_UDID", "00008030-00096C8621C3402E")   # iPhone 11 von Artur
+UDID = os.environ.get("TS_IPHONE_UDID") or _lokal("udid", "00008030-00096C8621C3402E")   # Standard: iPhone 11 von Artur (2)
 BREITE = 334.0
 _dev = None
 _frame = None          # frameID, gültig für die nächste Eingabe
