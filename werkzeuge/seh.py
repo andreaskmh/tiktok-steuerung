@@ -44,10 +44,42 @@ def aufnahme(p):
 BREITE = 334.0
 
 
+_DIENST = None
+
+
+def _ocr(p):
+    """Texterkennung. 16.11.2026 (Tempo): über den laufenden „textdienst“ (Erkennung bleibt geladen, ~0,1 s statt ~0,3 s
+    pro Bild, gleiche Einstellungen wie „text“). Hakt der Dienst → einmal neu starten, sonst wie früher „text“."""
+    global _DIENST
+    for versuch in range(2):
+        try:
+            if _DIENST is None or _DIENST.poll() is not None:
+                if not (BIN / "textdienst").exists() or os.environ.get("TS_OCR") == "alt":
+                    break
+                _DIENST = subprocess.Popen([str(BIN / "textdienst")], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                           text=True, bufsize=1)
+            _DIENST.stdin.write(p + "\n"); _DIENST.stdin.flush()
+            zeilen = []
+            while True:
+                z = _DIENST.stdout.readline()
+                if not z:
+                    raise RuntimeError("textdienst beendet")
+                if z.rstrip("\n") == "##ENDE":
+                    return "\n".join(zeilen)
+                zeilen.append(z.rstrip("\n"))
+        except Exception:
+            try:
+                _DIENST.kill()
+            except Exception:
+                pass
+            _DIENST = None
+    return subprocess.run([str(BIN / "text"), p], capture_output=True, text=True).stdout
+
+
 def lesen():
     p = os.path.join(TMP, "f.png")
     w, h = aufnahme(p)
-    out = subprocess.run([str(BIN / "text"), p], capture_output=True, text=True).stdout
+    out = _ocr(p)
     res = []
     for z in out.splitlines():
         kopf, _, t = z.partition("\t")

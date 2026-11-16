@@ -40,6 +40,7 @@ Video und JSON liegen nebeneinander, gleicher Name: `bof-138-03.mp4` + `bof-138-
 | `tts_link` | ja* | TikTok-Shop-Produktlink (fürs Showcase) |
 | `produkt` | ja | Produktname, wie er im Showcase heißt |
 | `titel` | ja | Beschreibung/Caption des Posts |
+| `text` | nein | kurzer simpler Beschreibungstext vor den Hashtags (klein, ohne Preis/Versprechen, ≤ 8 Wörter; fehlt → Standardsatz) – seit 16.11.2026 |
 | `hashtags` | nein | Liste, jeweils mit `#` |
 | `stapel` | ja | Name des Stapels; Artur gibt immer einen ganzen Stapel frei |
 | `status` | ja | siehe unten |

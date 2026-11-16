@@ -27,7 +27,7 @@ Beispiel 20 Videos: 12 auf anduri + ella (je 6), 4 auf andreas.testet (Limit 3 b
 - Beim Video dann den Produktlink aus Showcase bzw. Einkaufswagen auswählen.
 - **Jeder Account hat eigenen Showcase und eigenen Einkaufswagen** → nach jedem Account-Wechsel erneut prüfen/hinzufügen.
 - Button-Text (Feld „Produktname“ beim Verlinken): **≤ 20 Zeichen, keine Emojis**, durchmischen:
-  „Wenige verfügbar“, „Fast ausverkauft“, „Fast vergriffen“, „Wenige auf Lager“, „Geringer Bestand“, „Bald vergriffen“.
+  „Wenige verfügbar“, „Fast ausverkauft“, „Fast vergriffen“, „Wenige auf Lager“, „Geringer Bestand“. (Nicht „Bald vergriffen“ – Artur 15.11.2026.)
   Artur prüft den Bestand jedes Produkts vorher (Aussage 08.11.2026). Konkrete Zahlen („Noch 12 Stück“) nur, wenn
   Artur die Zahl fürs Produkt nennt. Nicht nachfragen, einfach durchmischen.
 

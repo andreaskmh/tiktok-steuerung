@@ -24,12 +24,20 @@ REIHENFOLGE = ["anduri.official", "ella_robinson2", "andreas.testet", "artur.off
 
 
 def alle():
+    weg = 0
     for p in sorted(EIN.glob("*.json")):
+        try:                                                     # 15.11.2026: iCloud-ausgelagert (dataless) → sofort
+            if os.stat(p).st_flags & 0x40000000:                 # überspringen, ohne zu lesen (Lesen hing je 60 s)
+                weg += 1; continue
+        except OSError:
+            continue
         try:                                                     # 15.11.2026: iCloud-ausgelagerte alte Dateien → überspringen
             d = json.loads(p.read_text(encoding="utf-8"))
         except (OSError, TimeoutError, ValueError) as e:
             print(f"übersprungen (nicht lesbar): {p.name} – {e}", flush=True); continue
         yield p, d
+    if weg:
+        print(f"Hinweis: {weg} ältere Eingang-JSON(s) liegen nur in iCloud – übersprungen", file=sys.stderr, flush=True)
 
 
 def schreibe(p, d, status, info=""):

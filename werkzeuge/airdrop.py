@@ -79,7 +79,9 @@ def angekommen(p, sek):
     raise Stopp("Video nicht am iPhone angekommen (AirDrop am iPhone an? „Nur für Kontakte“)")
 
 
-def senden(videos):
+def senden(videos, nach_klick=None):
+    """nach_klick(): wird aufgerufen, sobald der Empfänger angeklickt ist (Übertragung läuft) – 15.11.2026: damit ein Video
+    auch dann als „gesendet“ gilt, wenn die Ankunft am Bildschirm nicht erkannt wird (sonst doppeltes AirDrop)."""
     videos = [str(pathlib.Path(v).resolve()) for v in videos]
     for v in videos:
         if not pathlib.Path(v).exists():
@@ -89,6 +91,8 @@ def senden(videos):
     try:
         time.sleep(1.5)
         empfaenger_klicken(ZIEL)
+        if nach_klick:
+            nach_klick()
         angekommen(p, 60 + 30 * len(videos))
     finally:
         if p.poll() is None:

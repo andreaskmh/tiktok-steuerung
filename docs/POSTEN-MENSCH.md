@@ -13,6 +13,17 @@ python3 werkzeuge/post_mensch.py --fotos <stapel>                  # Gepostete d
 Ausgabe: eine Zeile pro Schritt mit Sekunden seit Start, je Video `✓ … 84 s`, am Ende `FERTIG x/y, Ø … s`. `STOPP …` → Foto
 (`python3 werkzeuge/kabel.py foto`), Ursache beheben, denselben Befehl neu starten (Gepostete überspringt der Stapel über den Status).
 
+## Seit 15.11.2026 abends: Zustandsmaschine
+- `werkzeuge/bildschirm.py` erkennt jeden Bildschirm aus dem OCR-Text (Dialoge vor Seiten, LIVE/System nie antippen).
+- `zur_hauptseite()`: von jedem Bildschirm mit genau einem Schritt je Bildschirm zurück (ersetzt tiktok_hauptseite/beitrag_abbrechen).
+- `ein_video` merkt sich den Fortschritt; Hänger → `fortsetzen_planen` liest den Bildschirm und macht dort weiter (bis 6×).
+- Fehlerarten: `Stopp` (weiter am Bildschirm), `Sperre` (falsches Video/Produkt/Text → verwerfen, nächstes Video),
+  `Hart` (Lauf stoppt), `Entwurf` (nicht verfügbar → ohne Link). 3 gescheiterte Videos in Folge → STOPP + Foto.
+- Schluss-Prüfung (Cover + Beschreibung) vor jedem Veröffentlichen/Entwurf. Beschreibung = nur Hashtags.
+- Tests: `python3 werkzeuge/test/test_posten.py` (offline, 646 echte Bildschirme), Trockenlauf `post_mensch.py --wo`.
+- Details + Lehren: Editing System `eigene/TIKTOK-STEUERUNG.md` §2 „15.11.2026 19:00“.
+Die Schritt-Beschreibung unten gilt weiter, Fotos: zuerst Sammel-Löschen in „Zuletzt gesichert“.
+
 ## Ablauf pro Video
 1. **Account** (nur beim 1. Video und bei Wechsel): TikTok → Profil (300/681) → `@account`? sonst Name oben links → „Konto wechseln“ →
    Account erst antippen, wenn die Liste ruht (nie „Konto hinzufügen“).
@@ -73,3 +84,11 @@ Wagen-Weg ~95 s.
 ## Freigabe
 Gepostet wird nur nach Arturs Abnahme der Videos im Chat („passt“, `/fertig`). Danach **keine weitere Abfrage**, auch nicht beim
 ersten Post eines Stapels (Artur 12.11.2026) – Stapel im Hintergrund starten, nur bei `STOPP` eingreifen.
+
+## Drei Produkt-Szenarien (Artur 16.11.2026, Bildschirmaufnahmen)
+1. **Noch nie im Showcase:** „pro Verkauf“ → „Zum Showcase hinzufügen“ → Produktseite zu → „+“ → … → Link → Produkt →
+   Showcase (warten bis „Wird geladen“ weg + Liste ruhig) → oberstes → umbenennen → Hinzufügen.
+2. **Schon im Showcase** („Jetzt erstellen“/„Mehr erkunden“ im Werbe-Blatt): Blatt zu → Einkaufswagen (1 Tipp, Toast abwarten)
+   → „+“ → … → Link → Produkt → „Weitere Produkte hinzufügen“ → „Einkaufswagen“ → oberstes → Dialog „Hinzufügen“ → umbenennen.
+3. **Kann nicht in den Einkaufswagen** (Neukunden-Hinweis): „pro Verkauf“ → „Jetzt erstellen“ → „Videos“ → umbenennen (nicht
+   änderbar → Standard-Namen) → Hinzufügen → Galerie unten rechts → Video → Beitrag (Produkt schon verlinkt).

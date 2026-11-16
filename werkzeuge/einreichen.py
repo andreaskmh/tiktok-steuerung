@@ -33,6 +33,7 @@ def main():
     a.add_argument("--hashtags", default="")
     a.add_argument("--button", default="")
     a.add_argument("--notiz", default="")
+    a.add_argument("--text", default="", help="kurzer simpler Beschreibungstext, klein, ohne Preis/Versprechen (16.11.2026)")
     o = a.parse_args()
     v = pathlib.Path(o.video).expanduser().resolve()
     if not v.exists():
@@ -53,7 +54,7 @@ def main():
          "produkt": o.produkt, "titel": o.titel, "hashtags": o.hashtags.split(), "stapel": o.stapel,
          "status": "bereit", "notiz": o.notiz, "verlauf": [],
          "kachel": o.kachel, "button": button, "brand": o.brand, "handle": o.handle.lstrip("@"),
-         "quelle": str(v)}
+         "quelle": str(v), "text": o.text.strip().lower()}
     ziel.with_suffix(".json").write_text(json.dumps(d, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"eingereicht: {ziel.name} → {o.account} (Stapel {o.stapel}, wartet auf Arturs OK)")
 

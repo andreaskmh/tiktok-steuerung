@@ -78,4 +78,27 @@ ersetze("http.py",
 # 5. Tempo: ruhender Bildschirm liefert alle 0,15 s ein Bild (statt 0,5 s) → jeder Tipp ist ~0,4 s schneller
 ersetze("coredevice.py", "STILL_FRAME_SECONDS = .5", "STILL_FRAME_SECONDS = .15  # TS: schneller", "STILL_FRAME_SECONDS = .15")
 
+# 6. Schnelles Tippen (Artur 16.11.2026: „Menschen tippen deutlich schneller“): press() hält jede Taste ~0,1 s
+#    (40 ms gedrückt + 40 ms + 20 ms). hid mit Argument „halt“ nutzt press_kurz: Taste nur „halt“ Sekunden gedrückt.
+ersetze("coredevice.py",
+        "        async def press(self, keys):\n",
+        "        async def press_kurz(self, keys, halt):  # TS-Steuerung: schnelles Tippen\n"
+        "            await self._ensure_keyboard()\n"
+        "            service, keyboard = self._uhs, self._kb_service_id\n"
+        "            modifiers = tuple(u for u in keys if u >= 0xE0)\n"
+        "            if modifiers and len(modifiers) < len(keys):\n"
+        "                await service.send_keyboard(keyboard, modifiers); await asyncio.sleep(.015)\n"
+        "            await service.send_keyboard(keyboard, keys); await asyncio.sleep(halt)\n"
+        "            await service.send_keyboard(keyboard, ()); await asyncio.sleep(.01)\n"
+        "\n"
+        "        async def press(self, keys):\n",
+        "async def press_kurz(self, keys, halt):")
+ersetze("coredevice.py",
+        "                await connection.press(held(int(modifier), int(usage)))\n"
+        "                if args.get('pause'): await asyncio.sleep(float(args['pause']))\n",
+        "                if args.get('halt'): await connection.press_kurz(held(int(modifier), int(usage)), min(.1, float(args['halt'])))  # TS\n"
+        "                else: await connection.press(held(int(modifier), int(usage)))\n"
+        "                if args.get('pause'): await asyncio.sleep(float(args['pause']))\n",
+        "connection.press_kurz(held(")
+
 print("fertig – Server neu starten: open-iphone-use stop && open-iphone-use serve")

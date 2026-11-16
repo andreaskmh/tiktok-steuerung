@@ -120,3 +120,63 @@
   Ursache der LIVE-Event-Seite heute). `bin/pixel` (pixel.swift): „+“-Erkennung und rote Knöpfe. `eingang.py posten` ruft es auf
   (alt: `TS_ALT=1`). Test als Entwurf: Showcase-Weg ~91 s, Wagen-Weg 116 s am Stück. Fotos-Löschen noch aus (ungetestet).
 - 12.11. 22:40: Fotos-Löschen in post_mensch fertig (Kachel per Text in der Mediathek, Mülleimer bis 4×), gesammelt am Stapel-Ende; `--fotos <stapel>`.
+- 16.11.2026 17:05 – **Drei Produkt-Szenarien nach Arturs Bildschirmaufnahmen** (szenario1–3.mp4; Backups `*.bak-20261116-szenarien`):
+  (1) Neukunden-Erkennung nur noch beim echten Hinweis („1 Option pro Artikel … Schaltfläche Kaufen“) – vorher lösten
+  „Funde für Neukund*innen“ (Shop-Reiter) und Ähnliches fälschlich den „Jetzt erstellen“-Weg aus. (2) Einkaufswagen: nach dem
+  grauen Knopf erst das Ergebnis abwarten (Toast „hinzugefügt“ / Neukunden-Hinweis / Varianten-Blatt); vorher wurde der graue
+  Knopf bei Produkten ohne Varianten ein 2. Mal gedrückt. (3) Showcase-/Wagen-Liste erst nach „Wird geladen“ und mit zwei
+  gleichen Bildern entscheiden (Szenario 1 zeigte kurz die alte Reihenfolge). (4) Blatt „Hinzufügen von“: nur „Einkaufswagen“
+  (darunter verdeckt „Gekaufte Produkte“). (5) Werbe-Blatt schließen, bis Kasse + Einkaufswagen frei stehen. (6) „+“: Produktseite
+  über die Zustandsmaschine schließen (kein Wisch auf Höhe 400 mehr). (7) Szenario 3: X am Blatt „Wie möchtest du …“ relativ
+  zum Titel, kurze Toasts nicht sofort als Fehler, Produktname nicht änderbar (2. Durchlauf) → nach ~5 s Standard-Namen
+  behalten, nach dem Speichern sofort zurück zur Hauptseite. Tests 166/166 (neu `test_szenarien`), Tests sperren jetzt das
+  echte iPhone (Kabel-Aufrufe brechen ab). Noch nicht am iPhone gelaufen → erster Lauf als `--entwurf`.
+- 16.11.2026 17:22 (Artur: „warum schreibst du so langsam“): menschliches Tippen etwa doppelt so schnell – weiter jedes Zeichen
+  einzeln, Pause 60–150 ms (Leerzeichen +40–150 ms, 4 % Denkpause 0,3–0,7 s) statt 120–300 ms. Backup `kabel.py.bak-20261116-tippen`.
+- 16.11.2026 17:28 (Artur: „übernimm meine Tippgeschwindigkeit aus den Aufnahmen, menschlich mit kleinen zufälligen Pausen“):
+  ersetzt 17:22. Seine Aufnahmen: ~9–10 Zeichen/s. Bremse war ~0,3 s Rückmeldung je Befehl bei jedem einzelnen Buchstaben
+  (45 Zeichen ≈ 40 s). Jetzt Wortstücke von 2–6 Zeichen in einem Befehl, Tastenabstand zufällig 30–90 ms (Server-Argument
+  `pause`), zwischen Stücken 40–160 ms (+ bei Leerzeichen, 5 % Denkpause 0,25–0,6 s) → ~5–7 Zeichen/s. Tests angepasst.
+- 16.11.2026 17:30 (Artur: „schon falsch gehandelt, du hast den Produktnamen nicht geändert – jetzt kannst du es nicht mehr“):
+  Abkürzung „Name nach ~5 s unverändert → nicht änderbar, Standard-Namen behalten“ (17:05) wieder entfernt – das Feld WAR
+  änderbar, die Eingabe kam nur verzögert an. Übersprungen wird nur noch, wenn kein Namensfeld/Zähler erscheint (wie 15.11.).
+- 16.11.2026 17:35 (Artur: „das Umbenennen hat nicht geklappt“, Fanttik, Szenario 3 simuliert): Prüfung meldete „umbenannt“,
+  weil der Zähler 16/30 zur Länge von „Wenige verfügbar“ passte – der alte Name „E1 Max Schrauber“ hat auch 16 Zeichen.
+  Jetzt zählt der Zähler nur, wenn sich der Feldtext gegenüber vorher geändert hat (`name_ok(…, alt)`). Test ergänzt.
+  Außerdem: Test-Schalter `"weg": "erstellen"` in der Eingang-JSON erzwingt den „Jetzt erstellen“-Weg (Szenario 3 üben).
+- 16.11.2026 19:30 (Artur: „einfach aufs transparente X unter ‚Jetzt anfordern‘ klicken, falls sowas wieder kommt“):
+  Popup „Jetzt anfordern“ (verdeckte das „pro Verkauf“-Badge → Produkt wurde 3× neu über Social1 geöffnet) = neuer Dialog
+  `DLG_ANFORDERN` → Tipp aufs X darunter (gelesenes ×, sonst 60 Pkt unter dem Knopf), nie auf „anfordern“; Foto
+  `anfordern-*.png` als Beleg. Wird auch beim Warten aufs Badge weggedrückt. Tests 172/172.
+- 16.11.2026 19:35 (Artur: „du klickst das Textfeld am Anfang weg, deswegen kannst du nicht reinschreiben“): Umbenennen –
+  ist die Tastatur schon offen (Feld aktiv), wird NICHT ins Feld getippt, direkt ⌘A → Löschen → Name. Vor dem Feld-Tipp
+  Bildschirm frisch lesen (Hinweisband „Überprüfe die Qualität …“ verschiebt das Feld nach dem Laden). Name im Feld war der
+  KI-Vorschlag „E1 Max Schrauber“.
+- 16.11.2026 19:55 – **Tempo, ohne Prüfungen anzutasten** (Backups `*.bak-20261116-speed`, `kabel/patch_oiu.py.bak-20261116-tippen`):
+  (1) Zeitbuch `TS_ZEITBUCH=1`: je Log-Zeile Warten / Bild lesen / Eingaben. (2) Server-Patch 6 (`patch_oiu.py`): hid-Argument
+  `halt` = Taste nur kurz gedrückt (vorher fest ~0,1 s je Taste). Tippen in TikTok: Wortstücke 4–10 Zeichen, Taste 25–35 ms,
+  Abstand 15–50 ms, kurze zufällige Pausen → Beschreibung 13–16 s statt 23 s (vorher 40 s). Löschen 60× ≈ 2 s statt 6 s.
+  Adressleiste/Suche: halt 0,035 + 15 ms Abstand (mit 0,02 ohne Abstand verlor die iOS-Suche Zeichen). Server nach Patch neu
+  starten. (3) Fehler unterwegs behoben: Blatt „Hinzufügen von“ – OCR liest „: Einkaufswagen“ (genaue Suche fand nichts →
+  60 s Hänger); Home-Bildschirm mit TikTok-Widget „What Live do you want to watch?“ galt als LIVE-Seite → jetzt Home (Widget
+  bleibt gesperrt); Showcase-Seite „Entdecken | Verwalten“ galt als Feed → eigene Seite, Zurück-Pfeil; „Mehr erkunden“ wird nie
+  angetippt. Unverändert: Doppel-Schutz, Kachel-/Cover-/Beschreibungs-/Produkt-/Schluss-Prüfung, Gefahren-Sperre. Tests 177/177.
+- 16.11.2026 20:00 – **Bild lesen schneller:** neuer `werkzeuge/textdienst.swift` (bleibt laufen, Erkennung bleibt geladen;
+  gleiche Einstellungen wie `text`: accurate, de+en, ohne Sprachkorrektur – Ausgabe am Testbild identisch). `seh.lesen` nutzt
+  ihn automatisch, fällt bei Problemen auf `bin/text` zurück (`TS_OCR=alt` erzwingt den alten Weg). Gemessen im Lauf:
+  ~0,22 s statt ~0,4–1,0 s pro Bild. Roxlin (Einkaufswagen, Entwurf) 91 s statt 120 s (Mittag 139 s). `bin/` ist nicht im
+  Git → auf dem 2. MacBook nach `sync.sh holen` einmal `zsh werkzeuge/build.sh`. Backup `seh.py.bak-20261116-ocr`.
+  Hinweis: Bei hoher Mac-Last (Load 18–20 durch macOS-KI-Dienste) wird jedes Lesen langsamer.
+- 16.11.2026 20:10 – **Tempo 3 (Artur: Social1 → Produktseite + Umbenennen, „wenn damit kein Fehler passiert“)** (Backup
+  `post_mensch.py.bak-20261116-speed2`): feste Pausen nach „View on TikTok Shop“ (2,0 → 0,8 s) und „Öffnen“ (2,5 → 1,0 s),
+  Link-Navigation (Link hinzufügen / Produkt / Weitere Produkte / Einkaufswagen 1,0–1,4 → 0,6–0,7 s), „Jetzt erstellen“-Hinzufügen
+  (3,0 → 1,5 s), Umbenennen (Pausen 0,8/0,9/0,6 → 0,3/0,6/0,4). Neu: Doppel-Tipp-Schutz `kuerzlich()/merke()` – dasselbe Label
+  wird innerhalb von 2,5–4 s nie ein zweites Mal angetippt (auch „Hinzufügen“ nach dem Umbenennen). Namens-Prüfung schaut alle
+  0,5 s statt 1,0 s nach, gleiche Gesamtzeit. Unverändert: Auswahl von Video und Listen-Produkt, alle Prüfungen.
+  Probelauf (Entwürfe, mit 2 Kontowechseln): Fanttik „Jetzt erstellen“ 87 s (vorher 106), Roxlin Einkaufswagen 99 s inkl.
+  Kontowechsel (vorher 120 ohne). `zlog()`: Zwischenzeiten in zum_produkt nur mit TS_ZEITBUCH=1.
+- 16.11.2026 20:20 (Artur: „ab sofort auch ein einfacher kurzer simpler Beschreibungstext, nicht komplex, nicht unbedingt
+  Emojis, alles kleingeschrieben, nicht nur die Hashtags“; ersetzt „nur Hashtags“ vom 15.11.): Beschreibung = kurzer Text +
+  Hashtags. Text aus Eingang-JSON `text` (neu: `einreichen.py --text "…"`), sonst neutraler Standardsatz (`KURZTEXTE`).
+  Immer klein, ohne Emojis/#, ≤ 8 Wörter; Preis/Versprechen (VERBOTEN) → Standardsatz. Beschreibungs-Prüfung am Bildschirm
+  unverändert (alle Wörter + Hashtags müssen dastehen). Backups `*.bak-20261116-text`. Nicht am iPhone getestet (Artur: kein Test).

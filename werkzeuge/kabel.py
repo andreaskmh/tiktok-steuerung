@@ -18,6 +18,7 @@ BREITE = 334.0
 _dev = None
 _frame = None          # frameID, gültig für die nächste Eingabe
 _groesse = None        # (breite, höhe) in Pixeln
+_alter = 0             # Alter des zuletzt geholten Bilds in ms (Server: ageMilliseconds) – eingefroren, wenn groß
 
 
 class KabelFehler(Exception):
@@ -83,11 +84,12 @@ def _p(pfad=""):
 
 def _frisch():
     """frameID eines Bilds nach der letzten Eingabe holen."""
-    global _frame, _groesse
+    global _frame, _groesse, _alter
     for _ in range(20):
         d = _get(_p("/snapshot"))
         f = d["frame"]
         _groesse = (f["width"], f["height"])
+        _alter = int(f.get("ageMilliseconds") or 0)             # 15.11.2026: eingefrorenes Bild direkt erkennen
         if f["frameID"] != _frame or _frame is None:
             _frame = f["frameID"]
             return _frame
@@ -110,6 +112,16 @@ def hoehe():
     return HOEHE
 
 
+def bild_alter():
+    """Alter (ms) des zuletzt geholten Bilds. > ~5000 = Bildstrom steht (Bild eingefroren, Artur 15.11.2026)."""
+    return _alter
+
+
+def neu_verbinden():
+    """Öffentlich: Server neu starten (Bild eingefroren / Steuerung abgerissen)."""
+    _steuerung_neu()
+
+
 def _steuerung_neu():
     """Artur 15.11.2026: Kabel-Steuerung „Connection was terminated“ → open-iphone-use stop + serve, kurz warten."""
     global _dev, _frame
@@ -128,6 +140,32 @@ def _steuerung_neu():
         except Exception:
             pass
     time.sleep(5)
+    auf_usb()
+
+
+def steuerung_art():
+    """„Connected over USB“ / „Connected over Wi-Fi“ (Server-Angabe) oder ""."""
+    try:
+        return next((d.get("control_status", "") for d in _get("/api/devices", timeout=3) if d.get("udid") == UDID), "")
+    except Exception:
+        return ""
+
+
+def auf_usb():
+    """15.11.2026: Nach einem Server-Neustart lief die Steuerung über WLAN – Tipps/Tippen kamen verspätet oder gar nicht an
+    (Beschreibungsfeld blieb leer). Hängt das Kabel dran, Server über den Wächter auf USB umstellen."""
+    global _dev, _frame
+    if "Wi-Fi" not in steuerung_art():
+        return
+    print("Steuerung läuft über WLAN – stelle auf Kabel (USB) um …", flush=True)
+    w = pathlib.Path(__file__).resolve().parent / "kabel" / "waechter.py"
+    subprocess.run([sys.executable, str(w), "einmal"], capture_output=True, timeout=120)
+    for _ in range(30):
+        time.sleep(1)
+        if "USB" in steuerung_art():
+            break
+    _dev = None; _frame = None
+    time.sleep(3)
 
 
 def aktion(op, **args):
@@ -213,16 +251,32 @@ def _code(ch):
 def text(t, menschlich=False):
     """Tippt über die Hardware-Tastatur. menschlich=True: einzeln mit 45–140 ms (TikTok-Regel)."""
     codes = [_code(c) for c in t]
-    if not menschlich:
+    if not menschlich:                                          # Adressleiste/Suche (nicht TikTok): am Stück, kurz gedrückt
         for i in range(0, len(codes), 200):
-            aktion("hid", keys=codes[i:i + 200])
+            aktion("hid", keys=codes[i:i + 200], halt=0.035, pause=0.015)   # 16.11.: 0,02 ohne Abstand → iOS-Suche verlor Zeichen
         return
-    i = 0                                                       # Artur 12.11.: schneller, aber menschlich →
-    while i < len(codes):                                       # kleine Häppchen (2–5 Zeichen) mit 25–70 ms Abstand,
-        n = random.randint(2, 5)                                # dazwischen kurze, selten längere Pausen
-        aktion("hid", keys=codes[i:i + n], pause=round(random.uniform(0.025, 0.07), 3))
+    # Artur 16.11.2026: „Menschen tippen deutlich schneller“ (seine Aufnahmen: ~9–10 Zeichen/s). Gemessen 19:35: 50 Zeichen
+    # = 16 s, weil der Server jede Taste ~0,1 s hielt und jeder Befehl ~0,4 s Rückmeldung kostet. Jetzt: Wortstücke von
+    # 4–10 Zeichen in EINEM Befehl, Taste nur ~25–35 ms gedrückt (Server-Patch 6 „halt“), zufälliger Tastenabstand
+    # 15–50 ms, kurze zufällige Pausen zwischen Stücken, selten eine kleine Denkpause. Verschluckte Zeichen fängt die
+    # Prüfung danach ab (beschreibung_stimmt / name_ok → neu tippen).
+    i = 0
+    while i < len(t):
+        n = min(len(t) - i, random.randint(4, 10))
+        aktion("hid", keys=codes[i:i + n], pause=round(random.uniform(0.015, 0.05), 3),
+               halt=round(random.uniform(0.025, 0.035), 3))
         i += n
-        time.sleep(random.uniform(0.01, 0.06) + (random.uniform(0.15, 0.35) if random.random() < 0.05 else 0))
+        time.sleep(tipp_pause(t[i - 1]))
+
+
+def tipp_pause(c):
+    """Pause NACH einem Wortstück (Sekunden)."""
+    pause = random.uniform(0.02, 0.09)
+    if c == " ":
+        pause += random.uniform(0.02, 0.08)
+    if random.random() < 0.04:
+        pause += random.uniform(0.15, 0.35)                     # kurz überlegen
+    return pause
 
 
 def schreibe(t, menschlich=False):
@@ -250,7 +304,7 @@ def einfuegen(t, warte=1.5):
 
 
 def loeschen(n):
-    aktion("hid", keys=[[0, 0x2a]] * n)
+    aktion("hid", keys=[[0, 0x2a]] * n, halt=0.02)              # 16.11.2026: kurz gedrückt (Patch 6) – 60× ≈ 2 s statt 6 s
 
 
 # ---------------------------------------------------------------- Bilder
