@@ -795,8 +795,59 @@ def test_szenarien():
     check("Produktname-Zeile gelesen", P.feldzeile(um, 307) == "Sf3500 Retro-Handheld-Spielkon", P.feldzeile(um, 307))
 
 
+def test_tempo_16_11():
+    """16.11.2026 abends (Tempo ohne Hänger): Varianten-Wahl, AirDrop-Merkliste, Hook-Toleranz, Social1-Liste."""
+    # Varianten: Tatort-artig („Fall:“ mit Bildern, „Menge:“ + Hinweis darunter) → Bildkacheln ÜBER Menge/Hinweis
+    syn = [("Tatort Escape Adventskalender", 150, 300), ("Fall:", 30, 470), ("Menge:", 41, 600), ("1", 273, 600),
+           ("+", 305, 600), ("Der Artikel ist nicht vorrätig", 167, 634), ("Einkaufswagen", 167, 673)]
+    gr, opt = P.varianten_optionen(syn)
+    check("Varianten: Gruppe „Fall:“, nicht „Menge:“", gr == (30, 470), gr)
+    check("Varianten: Bildkacheln über „Menge“", opt and all(o[2] < 590 for o in opt), opt)
+    check("Varianten-Blatt mit „Menge:“ + „Fall:“ erkannt", B.erkenne(syn) == B.VARIANTEN, B.erkenne(syn))
+    syn_ohne_knopf = [t for t in syn if t[0] != "Einkaufswagen"] + [("In den Warenkorb", 167, 673)]
+    check("Varianten-Blatt auch ohne Knopf „Einkaufswagen“", B.erkenne(syn_ohne_knopf) == B.VARIANTEN, B.erkenne(syn_ohne_knopf))
+    syn2 = [("Farbe: Schwarz", 50, 420), ("Schwarz", 50, 455), ("Weiß", 120, 455), ("Größe", 30, 520), ("S", 40, 560),
+            ("M", 90, 560), ("Menge:", 41, 610), ("+", 305, 610), ("-", 230, 610), ("Der Artikel ist nicht vorrätig", 167, 640),
+            ("Einkaufswagen", 167, 673)]
+    gr, opt = P.varianten_optionen(syn2)
+    check("Varianten: nie „+“/„-“/Menge/Hinweis", [o[0] for o in opt] == ["S", "M"], opt)
+    gr, opt = P.varianten_optionen(syn2, {(40, 560), (90, 560)})
+    check("Varianten: alle Texte probiert → keine blinden Bildtipps", opt == [], opt)
+    for f in FAELLE:
+        if f["soll"] == B.VARIANTEN and any("vorrätig" in t[0] for t in f["tx"]):
+            gr, opt = P.varianten_optionen([tuple(t) for t in f["tx"]])
+            check(f"Varianten echt {f['datei'][:15]}: Optionen über dem Hinweis",
+                  opt and all(o[2] < 625 and o[0] not in ("Einkaufswagen", "+") for o in opt), opt)
+    pr = fall("20261113-011840")                                  # Produktseite mit „nicht vorrätig“ + Kasse ≠ Varianten
+    check("Produktseite mit Hinweis bleibt Produktseite", B.erkenne(pr) == B.PRODUKTSEITE, B.erkenne(pr))
+    # AirDrop-Merkliste: Ankunft gesehen ≠ nur angeklickt
+    import tempfile
+    t = pathlib.Path(tempfile.mkdtemp()) / "a.txt"
+    check("AirDrop: keine Merkliste → nicht da", not P.airdrop_schon_da("x.mp4", t))
+    t.write_text("Video 1 - 04 A - V1.mp4\n")
+    check("AirDrop: Zeile genau", P.airdrop_schon_da("Video 1 - 04 A - V1.mp4", t)
+          and not P.airdrop_schon_da("Video 1 - 04 A - V1", t))
+    # Hook-Toleranz kurze Hooks (genau 1 Buchstabe), fremde Hooks nie
+    check("Hook kurz: 1 Lesefehler ok", P._passt("EISTEE?! 😍", "EISTEF?!"))
+    check("Hook kurz: anderer Hook nein", not P._passt("EISTEE?! 😍", "MILKA?!") and not P._passt("TATORT 😍", "TOTARS"))
+    check("Hook lang: fremd nein", not P._passt("PURELEI ARMBAND -50%?! 😍", "PURELEI FÜR DIE HÄLFTE?!"))
+    ok, _c = P.cover_passt([("8ESTES", 270, 120), ("GESCHENK FUR", 270, 135), ("ELTERN", 270, 150)], "BESTES GESCHENK FÜR ELTERN 😍")
+    check("Cover: Hook über 3 Zeilen", ok)
+    ok, _c = P.cover_passt([("PURELEI", 270, 120), ("ARMBAND", 270, 135)], "BESTES GESCHENK FÜR ELTERN 😍")
+    check("Cover: fremder Hook über 2 Zeilen nein", not ok)
+    # Social1-Liste: JSON-Feld > Link > neueste Liste mit dem Produkt > Standard
+    check("Liste aus JSON", P.liste_fuer({"social1_liste": "abc"}) == "abc")
+    check("Liste aus social1_link", P.liste_fuer({"social1_link": "https://www.social1.ai/saved-videos/6afb1c70204ef09999b79488"})
+          == "6afb1c70204ef09999b79488")
+    if (P.AUS / "social1-bof.json").exists():
+        check("Liste per Produkt (Tatort → bof)", P.liste_fuer({"tts_link": "https://shop.tiktok.com/view/product/1729954254982650611"})
+              == "6afb1c70204ef09999b79488", P.liste_fuer({"tts_link": "https://shop.tiktok.com/view/product/1729954254982650611"}))
+    check("Liste unbekanntes Produkt → Standard", P.liste_fuer({"tts_link": "x/1"}) == P.SOCIAL1_LISTE)
+
+
 def main():
-    for t in (test_erkennung, test_sicherungen, test_plan, test_hauptseite, test_zum_beitrag, test_ablauf, test_hauptschleife, test_erstellen_weg, test_szenarien):
+    for t in (test_erkennung, test_sicherungen, test_plan, test_hauptseite, test_zum_beitrag, test_ablauf, test_hauptschleife, test_erstellen_weg, test_szenarien,
+              test_tempo_16_11):
         try:
             t()
         except Exception:

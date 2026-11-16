@@ -221,6 +221,12 @@ def erkenne(tx, tabs=None):
                                                                                          or any(re.match(r"^[A-Za-zÄÖÜäöü][\w ]{1,20}:", t[0].strip()) for t in tx))):
         # 16.11.2026 (Tatort): Blatt mit „Fall:“ + „Der Artikel ist nicht vorrätig“ blieb „unbekannt“ → nie weggeklickt
         return VARIANTEN
+    menge = any(re.match(r"(?i)\W*menge\s*:", t[0]) and t[2] > 450 for t in tx)
+    if menge and not hat(tx, "Kasse", unter=600) and not hat(tx, "Veröffentlichen", unter=600) \
+       and (hat(tx, "nicht vorrätig", unter=450) or any(re.match(r"^[A-Za-zÄÖÜäöü][\w ]{1,20}:", t[0].strip()) and 250 < t[2] < 650
+                                                          and not re.match(r"(?i)\W*menge", t[0].strip()) for t in tx)):
+        return VARIANTEN                                         # 16.11.2026 (Tempo): Varianten-Blatt, dessen roter Knopf
+                                                                 # anders heißt/nicht gelesen wurde – „Menge:“ + Gruppe
     # ---- Link-Listen (vor Beitrag: Liste liegt als Seite darüber)
     if hat(tx, "Dein Showcase") or hat(tx, "Aus dem Showcase"):
         return SHOWCASE_LISTE

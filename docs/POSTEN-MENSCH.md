@@ -23,6 +23,9 @@ Ausgabe: eine Zeile pro Schritt mit Sekunden seit Start, je Video `✓ … 84 s`
 - Tests: `python3 werkzeuge/test/test_posten.py` (offline, 646 echte Bildschirme), Trockenlauf `post_mensch.py --wo`.
 - Details + Lehren: Editing System `eigene/TIKTOK-STEUERUNG.md` §2 „15.11.2026 19:00“.
 Die Schritt-Beschreibung unten gilt weiter, Fotos: zuerst Sammel-Löschen in „Zuletzt gesichert“.
+- Seit 16.11.2026 23:30 (Tempo): AirDrop kommt nicht an → sofort nochmal (vor TikTok), „schon da“ nur nach gesehener Ankunft
+  (`ausgang/airdrop-<stapel>-da.txt`); Social1-Abhaken läuft im Hintergrund (Mac) ohne Neuladen; Übergänge warten auf den
+  nächsten Bildschirm statt fester Pausen. Details `docs/AENDERUNGEN.md`.
 
 ## Ablauf pro Video
 1. **Account** (nur beim 1. Video und bei Wechsel): TikTok → Profil (300/681) → `@account`? sonst Name oben links → „Konto wechseln“ →

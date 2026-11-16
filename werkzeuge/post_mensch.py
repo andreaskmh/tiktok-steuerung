@@ -312,8 +312,9 @@ def home():
 def _ist_app(name, tx=None):
     """Grob erkennen, ob die App schon vorn ist (13.11.: nicht jedes Mal über die Suche neu öffnen)."""
     tx = tx or lesen()
-    if name == "TikTok":
-        return _tabs(tx) or bool(seh.finde("Link hinzufügen", tx) or seh.finde("Kasse", tx, unter=600))
+    if name == "TikTok":                                         # 16.11.: auch Kamera/Galerie/Vorschau/Editor (nach AirDrop
+        return _tabs(tx) or bool(seh.finde("Link hinzufügen", tx) or seh.finde("Kasse", tx, unter=600)) \
+            or B.erkenne(tx) in (B.KAMERA, B.GALERIE, B.VORSCHAU, B.EDITOR)   # nicht weiterwischen)
     if name == "Safari":
         return bool(seh.finde("social1", tx) or seh.finde("View on TikTok Shop", tx) or seh.finde("Saved Videos", tx))
     return False
@@ -777,8 +778,8 @@ def showcase_oder_wagen(tx):
         log("Produktseite: Ausverkauft")
     v = seh.finde("pro Verkauf", tx)
     if v:
-        tipp(v[0], v[1], tx, "pro Verkauf"); ruhe(1.6)
-        for _ in range(12):
+        tipp(v[0], v[1], tx, "pro Verkauf"); ruhe(0.6)          # 16.11.: war 1,6 s – die Schleife wartet aufs Blatt
+        for _ in range(14):
             tx = lesen()
             if seh.finde("verstanden", tx) and (seh.finde("nicht verfügbar", tx) or seh.finde("nicht hinzugefügt", tx)):
                 vv = seh.finde("verstanden", tx); tipp(vv[0], vv[1], tx, "OK, verstanden"); ruhe(0.8)
@@ -880,6 +881,39 @@ def in_wagen(tx):
     raise Stopp("nicht in den Einkaufswagen gelegt")
 
 
+KEIN_OPTION = re.compile(r"(?i)nicht vorr|vorrätig|menge|einkaufswagen|tabelle|lieferung|versand|kasse|€|^\W*[+\-–]?\W*$|^\d{1,3}$")
+
+
+def varianten_optionen(tx, probiert=()):
+    """Reine Funktion (Artur 16.11.2026, Tatort: „nimm doch einfach die andere Variante“): Varianten-Blatt mit „Der Artikel
+    ist nicht vorrätig“ → (Gruppe (x, y) oder None, Liste antippbarer Optionen [(text, x, y)]). Gruppe = „Größe“/„Farbe“
+    bzw. die unterste „Name:“-Zeile (Fall:, Sorte: …), aber nie „Menge:“. Optionen = Texte unter der Gruppe, oberhalb von
+    „Menge“/Hinweis/rotem Knopf; nie „+“/„-“, Menge, Hinweis, Preis, Einkaufswagen (vorher hätte „+“ die Menge erhöht).
+    Ohne Texte: Bildkacheln nebeneinander (auch die müssen über „Menge“/Hinweis liegen)."""
+    unten = min([t[2] for t in tx if re.match(r"(?i)\W*menge\b", t[0].strip()) and t[2] > 450]
+                + [t[2] for t in tx if "vorrätig" in t[0].lower() and t[2] > 450]
+                + [t[2] for t in tx if t[0].strip() == "Einkaufswagen" and t[2] > 600] + [700])
+    gr = None
+    for w in ("Größe", "Farbe"):
+        kand = [t for t in tx if t[0].strip().lower().startswith(w.lower()) and "tabelle" not in t[0].lower()
+                and 150 < t[2] < unten]
+        if kand:
+            gr = (kand[-1][1], kand[-1][2]); break
+    if not gr:                                                   # „Fall:“, „Sorte:“ … → unterste „Name:“-Zeile
+        kopf = [t for t in tx if re.match(r"^[A-Za-zÄÖÜäöü][\w ]{1,20}:", t[0].strip()) and 250 < t[2] < unten
+                and not re.match(r"(?i)\W*menge", t[0].strip())]
+        if kopf:
+            k = max(kopf, key=lambda t: t[2]); gr = (k[1], k[2])
+    if not gr:
+        return None, []
+    texte = [t for t in tx if gr[1] + 15 < t[2] < min(gr[1] + 110, unten - 8) and t[0].strip()
+             and not KEIN_OPTION.search(t[0].strip())]
+    opt = [t for t in texte if (round(t[1]), round(t[2])) not in probiert]
+    if not texte and gr[1] + 55 < unten - 15:                    # Varianten nur als Bilder → Kacheln nebeneinander
+        opt = [("", x, gr[1] + 55) for x in (50, 130, 212, 294) if (round(x), round(gr[1] + 55)) not in probiert]
+    return gr, opt
+
+
 def _wagen_runde(versucht):
     for _ in range(14):                                          # „Bitte auswählen“: erste nicht probierte Option
         tx = lesen()
@@ -896,16 +930,7 @@ def _wagen_runde(versucht):
         tx = lesen()
         if not seh.finde("nicht vorrätig", tx):
             break
-        gr = seh.finde("Größe", tx) or seh.finde("Farbe", tx)
-        if not gr:                                               # Artur 16.11.2026 (Tatort): Gruppe heißt auch „Fall:“,
-            kopf = [t for t in tx if re.match(r"^[A-Za-zÄÖÜäöü][\w ]{1,20}:", t[0].strip()) and 250 < t[2] < 690]
-            if kopf:                                             # „Sorte:“ … → unterste „Name:“-Zeile = Gruppe
-                k = max(kopf, key=lambda t: t[2]); gr = (k[1], k[2])
-        opt = [t for t in tx if gr and gr[1] + 15 < t[2] < gr[1] + 110 and t[0].strip()
-               and (round(t[1]), round(t[2])) not in probiert] if gr else []
-        if not opt and gr:                                       # Varianten nur als Bilder (kein Text) → Bildkacheln
-            opt = [("", x, gr[1] + 55) for x in (50, 130, 212, 294)   # nebeneinander antippen („nimm einfach die
-                   if (round(x), round(gr[1] + 55)) not in probiert]  # andere Variante“, Artur 16.11.2026)
+        gr, opt = varianten_optionen(tx, probiert)               # 16.11.2026: reine Funktion (offline getestet)
         if not opt:
             raise Entwurf("Artikel nicht vorrätig, keine weitere Variante")
         o = min(opt, key=lambda t: (round(t[2] / 10), t[1]))
@@ -941,6 +966,34 @@ def _wagen_runde(versucht):
 
 # ---------------------------------------------------------------- 4) Produktseite zu → „+“ → Video
 
+def warte_bildschirm(ziele, max_s, min_s=0.3, nachlauf=0.35):
+    """16.11.2026 (Tempo): statt fester Pause nach einem Tipp warten, bis einer der erwarteten Bildschirme erkannt ist
+    (dann kurz nachlaufen lassen – Animation), höchstens max_s = die alte feste Pause. Nie langsamer als vorher, und
+    der nächste Schritt passiert erst, wenn der neue Bildschirm wirklich da ist (die Zustandsmaschine prüft ihn ohnehin)."""
+    time.sleep(min_s)
+    ende = time.time() + max(0.0, max_s - min_s)
+    for _ in range(int(max_s / 0.2) + 2):                        # Rundenzahl begrenzt (Tests ohne echte Pausen)
+        if time.time() >= ende:
+            break
+        z, _tx, _t = lage()
+        if z in ziele:
+            time.sleep(nachlauf); return z
+        time.sleep(0.15)
+    return None
+
+
+def _zurueck_in_tiktok():
+    """Nach einem AirDrop mitten im Erstellen (Fotos springt auf): zurück in TikTok, ohne den Beitrag zu verlieren –
+    „◂ TikTok“ oben links bzw. app("TikTok") (erkennt Galerie/Kamera/Editor jetzt als TikTok)."""
+    try:
+        z, tx, _t = lage()
+        if z in ERSTELLEN_SEITEN or z == B.BEITRAG:
+            return
+        app("TikTok")
+    except Stopp as e:
+        log(f"zurück in TikTok: {e}")
+
+
 def zum_plus():
     """16.11.2026: Produktseite/Blätter über die Zustandsmaschine schließen (X oben links bei der Social1-Produktseite,
     Blätter runterwischen) – der alte Wisch vom linken Rand auf Höhe 400 blätterte nur das Produktbild (vgl. 15.11. 19:50)
@@ -950,7 +1003,7 @@ def zum_plus():
         if not _tabs(tx):
             tx = zur_hauptseite(abbrechen=True)
         if _tabs(tx):
-            tipp(167, 681, tx, "+"); ruhe(1.6)
+            tipp(167, 681, tx, "+"); warte_bildschirm((B.KAMERA, B.GALERIE), 1.6)
             return
     raise Stopp("„+“ nicht erreicht")
 
@@ -971,7 +1024,11 @@ def _passt(kachel, ocr):
     # 16.11.2026 (HOTU): OCR las „ANHÄNGER“ als „ANMANGER“ → Kachel nie gefunden, Lauf hing. Ähnlichkeit ≥ 85 %
     # (ab 10 Zeichen); Länge ±1 s bleibt Pflicht, fremde Hooks sind weit darunter.
     import difflib
-    return len(k) >= 10 and len(o) >= 10 and difflib.SequenceMatcher(None, k, o[:len(k) + 2]).ratio() >= 0.85
+    if len(k) >= 10 and len(o) >= 10 and difflib.SequenceMatcher(None, k, o[:len(k) + 2]).ratio() >= 0.85:
+        return True
+    # 16.11.2026 (Tempo): kurze Hooks (6–9 Zeichen, z. B. „EISTEE?!“) hatten gar keine Toleranz → genau EIN gelesener
+    # Buchstabe darf abweichen (gleiche Länge), sonst nichts. Länge ±1 s bleibt in der Galerie Pflicht.
+    return 6 <= len(k) < 10 and len(o) >= len(k) and sum(a != b for a, b in zip(k, o[:len(k)])) <= 1
 
 
 _FF = str(pathlib.Path.home() / "Documents/Coding/Editing System 1.1/tools/bin") + "/"
@@ -1004,7 +1061,9 @@ _AKT_DATEI = None    # Datei des Videos, das gerade gepostet wird (für ein zwei
 def cover_passt(tx, kachel):
     """Reine Funktion: Cover oben rechts auf der Beitragsseite zeigt den Hook? → (ok, cover-texte)."""
     cover = [t for t in tx if t[1] > 200 and t[2] < 200 and not re.search(r"cover|bearbeiten", t[0], re.I)]
-    return any(_passt(kachel, t[0]) for t in cover), cover
+    # 16.11.2026: Hook im Cover steht oft auf 2–3 Zeilen (OCR liest sie einzeln) → auch die Zeilen zusammen prüfen
+    zusammen = " ".join(t[0] for t in sorted(cover, key=lambda t: t[2]))
+    return any(_passt(kachel, t[0]) for t in cover) or (len(cover) > 1 and _passt(kachel, zusammen)), cover
 
 
 def cover_pruefen(kachel):
@@ -1104,7 +1163,8 @@ def erstellen_route(ausverkauft=False):
             v2 = seh.finde("Videos", tx2, genau=True); ka2 = seh.finde("Karussell", tx2)
             if not (v and v2 and abs(v[1] - v2[1]) < 3 and (not ka2 or ka2[1] - v2[1] > 50)):
                 time.sleep(0.5); continue
-            tipp(v2[0], v2[1] + 10, tx2, "Videos (Lade ein Video hoch)"); ruhe(2.5); continue
+            tipp(v2[0], v2[1] + 10, tx2, "Videos (Lade ein Video hoch)")   # 16.11.: war feste 2,5 s
+            warte_bildschirm((B.UMBENENNEN, B.KAMERA), 2.5); continue
         if z == B.UMBENENNEN:
             if not umbenannt:
                 lab = seh.finde("Produktname", tx, genau=True)
@@ -1176,7 +1236,8 @@ def erstellen_route(ausverkauft=False):
             # „Mehr erkunden“: kurz warten, sonst Blatt zu und „pro Verkauf“ neu öffnen.
             j = seh.finde("Jetzt erstellen", tx, unter=560)
             if j:
-                tipp(j[0], j[1], tx, "Jetzt erstellen"); ruhe(2.5); continue
+                tipp(j[0], j[1], tx, "Jetzt erstellen")             # 16.11.: war feste 2,5 s → bis das Blatt da ist
+                warte_bildschirm((B.BEWERBEN, B.UMBENENNEN, B.KAMERA), 2.5); continue
             if seh.finde("Mehr erkunden", tx, unter=560):
                 mehr += 1
                 if mehr % 3 == 0:
@@ -1229,9 +1290,10 @@ def galerie_kachel(tx, kachel, soll_dauer):
 def zum_beitrag(kachel, galerie=None, warten_s=120):
     """Zustandsmaschine „+“ → Beitragsseite (Artur 15.11.2026): jede Runde Bildschirm lesen, genau ein Schritt.
     Hakt etwas, geht es am aktuellen Bildschirm weiter. Video NUR mit passender Länge + Hook (sonst Sperre)."""
-    gewaehlt = bestaetigt = nochmal = False
-    seit = None
-    for _ in range(60):
+    gewaehlt = bestaetigt = nochmal = neu_geoeffnet = False
+    seit = vor_ziel = None
+    gemeldet = fotos_zurueck = 0
+    for _ in range(90):                                          # 16.11.: 90 Runden (Warten jetzt 2 s statt 5 s je Runde)
         z, tx, tabs = lage()
         if z == B.BEITRAG:
             if seh.finde("Vorlage", tx):                         # Artur 13.11.: AutoCut/Vorlage (Musik) am Video
@@ -1239,13 +1301,16 @@ def zum_beitrag(kachel, galerie=None, warten_s=120):
             return tx
         if dialog_wegmachen(z, tx):
             continue
+        if z in (B.FOTOS_VOLLBILD, B.FOTOS_ALBUM, B.FOTOS_MEDIATHEK) and fotos_zurueck < 2:
+            fotos_zurueck += 1                                   # 16.11.: spät angekommenes AirDrop öffnet Fotos →
+            _zurueck_in_tiktok(); continue                       # zurück in TikTok (Galerie), nicht abbrechen
         if z in (B.FEED, B.PROFIL, B.TIKTOK) and tabs:
-            tipp(167, 681, tx, "+"); ruhe(1.6); continue
+            tipp(167, 681, tx, "+"); warte_bildschirm((B.KAMERA, B.GALERIE), 1.6); continue
         if z == B.KAMERA:
             if galerie:                                          # 15.11.: Kamera aus „Jetzt erstellen“ → Galerie unten rechts
-                tipp(galerie[0], galerie[1], tx, "Galerie unten rechts"); ruhe(2.0)
+                tipp(galerie[0], galerie[1], tx, "Galerie unten rechts"); warte_bildschirm((B.GALERIE,), 2.0)
             else:
-                tipp(30, 672, tx, "Galerie unten links", abstand=60); ruhe(1.6)
+                tipp(30, 672, tx, "Galerie unten links", abstand=60); warte_bildschirm((B.GALERIE,), 1.6)
             continue
         if z == B.GALERIE or (z == B.VORSCHAU and not bestaetigt):
             if z == B.VORSCHAU:                                  # Vorschau: Hook steht im Bild (falls lesbar), dann Auswählen
@@ -1253,35 +1318,46 @@ def zum_beitrag(kachel, galerie=None, warten_s=120):
                 tipp(a[0], a[1], tx, "Auswählen"); ruhe(0.9); bestaetigt = gewaehlt = True; continue
             w = seh.finde("Weiter", tx, genau=True, unter=600)
             if gewaehlt and w and w[0] > 167:
-                tipp(w[0], w[1], tx, "Weiter"); ruhe(2.2); continue
+                tipp(w[0], w[1], tx, "Weiter"); warte_bildschirm((B.EDITOR, B.BEITRAG), 2.2); continue
             ziel = galerie_kachel(tx, kachel, _SOLL_DAUER)
             if not ziel:
                 seit = seit or time.time()
                 if time.time() - seit > warten_s:
                     raise Sperre(f"gesendetes Video „{kachel}“ ({_SOLL_DAUER and round(_SOLL_DAUER)} s) nicht in der Galerie "
                                  "– NICHT gepostet")
-                if time.time() - seit > 15 and not nochmal and _AKT_DATEI:   # Artur 16.11.2026 22:25: „wenn der AirDrop
-                    nochmal = True                               # nicht zuverlässig ist bzw. lange dauert, airdrop nochmal“
+                if time.time() - seit > 15 and not nochmal and _AKT_DATEI \
+                   and _AIRDROPS.get(_AKT_DATEI, 0) < 2:          # Artur 16.11.2026 22:25: „wenn der AirDrop nicht
+                    nochmal = time.time()                        # zuverlässig ist bzw. lange dauert, airdrop nochmal“
+                    _AIRDROPS[_AKT_DATEI] = _AIRDROPS.get(_AKT_DATEI, 0) + 1   # (vorher schon 2× → nicht nochmal)
                     try:
                         import airdrop
                         airdrop.senden([str(frisch_datiert(EIN / _AKT_DATEI))])
                         log("Video nach 15 s nicht in der Galerie → nochmal per AirDrop")
                     except Exception as e:
                         log(f"zweites AirDrop ging nicht: {e}")
-                    continue
-                log("keine Kachel mit passender Länge + Hook – Video noch nicht in Fotos, warte"); time.sleep(5); continue
-            log(f"Video-Kachel „{kachel}“ bei {ziel[0]:.0f},{ziel[1]:.0f} ✓ (Länge + Hook)")
-            tipp(ziel[0], ziel[1], tx, "Video-Kachel"); ruhe(1.4); gewaehlt = True; continue
+                    _zurueck_in_tiktok()                         # 16.11.: Fotos springt nach dem AirDrop auf → zurück in
+                    continue                                     # die Galerie (vorher Hänger „unbekannt“, Video 145-08)
+                if nochmal and not neu_geoeffnet and time.time() - nochmal > 10:
+                    neu_geoeffnet = True                         # 16.11.: Galerie zeigt neue Videos evtl. erst nach dem
+                    log("nach dem 2. AirDrop noch keine Kachel → Galerie neu öffnen")   # Neu-Öffnen → zu (Kamera), die
+                    tipp(28, 74, tx, "Galerie zu"); ruhe(1.2); continue            # Kamera-Regel öffnet sie wieder
+                if time.time() - gemeldet > 10:                  # Log höchstens alle 10 s (Kontext sparen)
+                    log("keine Kachel mit passender Länge + Hook – Video noch nicht in Fotos, warte"); gemeldet = time.time()
+                time.sleep(2); continue                          # 16.11.: war 5 s – nur Lesen, kein Tipp
+            if not (vor_ziel and abs(vor_ziel[0] - ziel[0]) < 4 and abs(vor_ziel[1] - ziel[1]) < 4):
+                vor_ziel = ziel; time.sleep(0.25); continue      # 16.11.: erst tippen, wenn die Kachel in zwei Bildern
+            log(f"Video-Kachel „{kachel}“ bei {ziel[0]:.0f},{ziel[1]:.0f} ✓ (Länge + Hook)")   # gleich liegt (Galerie fährt ein)
+            tipp(ziel[0], ziel[1], tx, "Video-Kachel"); warte_bildschirm((B.VORSCHAU,), 1.4); gewaehlt = True; continue
         if z == B.VORSCHAU and bestaetigt:
             w = seh.finde("Weiter", tx, genau=True, unter=600)
             if w and w[0] > 167:                                 # 13.11.: links liegt AutoCut (Vorlage + Musik)
-                tipp(w[0], w[1], tx, "Weiter"); ruhe(2.2); continue
+                tipp(w[0], w[1], tx, "Weiter"); warte_bildschirm((B.EDITOR, B.BEITRAG), 2.2); continue
             time.sleep(0.6); continue
         if z == B.EDITOR:
             w = seh.finde("Weiter", tx, genau=True, unter=600)
             if not (w and w[0] > 167):
                 raise Stopp("Editor: „Weiter“ nicht rechts – AutoCut-Gefahr")
-            tipp(w[0], w[1], tx, "Weiter (Editor)"); ruhe(2.0); continue
+            tipp(w[0], w[1], tx, "Weiter (Editor)"); warte_bildschirm((B.BEITRAG,), 2.0); continue
         raise Stopp(f"unerwarteter Bildschirm „{z}“ auf dem Weg zur Beitragsseite")
     raise Stopp("Beitragsseite nicht erreicht")
 
@@ -1551,8 +1627,8 @@ def verlinken(weg, produkt, kurz=""):
                 if time.time() > ende - 30:
                     raise ListeFalsch(f"oberstes Produkt passt nicht zu „{produkt}“ ({block[:60]!r}) – nicht verlinkt")
                 time.sleep(0.6); continue
-            tipp(ziel[1], ziel[2], tx, "Hinzufügen"); ruhe(1.4)
-            nach_hinzufuegen(weg); return
+            tipp(ziel[1], ziel[2], tx, "Hinzufügen"); ruhe(0.6)  # 16.11.: war 1,4 s – nach_hinzufuegen wartet selbst
+            nach_hinzufuegen(weg); return                        # (tippt in der Liste nichts mehr an)
         quellen = seh.finde("Hinzufügen von", tx) or seh.finde("Gekaufte Produkte", tx) or seh.finde("Kooperationen", tx)
         if weg == "wagen" and quellen and not wagen_liste:       # Blatt „Hinzufügen von“ (Szenario 2, Aufnahme 16.11.):
             e = [t for t in tx if t[2] > 500 and re.fullmatch(r"\W{0,3}\s*einkaufswagen", t[0].strip().lower())]   # OCR „: Einkaufswagen“
@@ -1603,7 +1679,9 @@ def nach_hinzufuegen(weg):
         if seh.finde("zum Video", tx):                           # Dialog „Produkt zum Video hinzufügen?“
             d = seh.finde("zum Video", tx)
             h = muss(seh.finde("Hinzufügen", tx, genau=True, unter=d[1]), "Dialog ohne Hinzufügen")
-            tipp(h[0], h[1], tx, "Hinzufügen (Dialog)"); ruhe(1.4); continue
+            if kuerzlich("dialog-hinzu", 2.5):                   # 16.11.: Dialog blendet noch aus → nicht nochmal
+                time.sleep(0.3); continue
+            tipp(h[0], h[1], tx, "Hinzufügen (Dialog)"); merke("dialog-hinzu"); ruhe(0.7); continue   # war 1,4 s
         if seh.finde("umbenennen", tx):
             r = re.search(r"noch (\d+) von (\d+)", " ".join(t for t, _, _ in tx))
             if r:
@@ -1634,7 +1712,7 @@ def nach_hinzufuegen(weg):
                 log(f"umbenannt: {_BUTTON}" if ok else "Produktname nicht sauber übernommen – weiter")
             if kuerzlich("hinzufuegen-rot", 3.0):               # 16.11.: nie zweimal „Hinzufügen“ in Folge
                 time.sleep(0.4); continue
-            tipp(167, 678, None, "Hinzufügen (rot)"); merke("hinzufuegen-rot"); ruhe(1.2); continue
+            tipp(167, 678, None, "Hinzufügen (rot)"); merke("hinzufuegen-rot"); ruhe(0.6); continue   # Schutz 3 s oben
         if seh.finde("zustimmen", tx):
             z = seh.finde("zustimmen", tx); tipp(z[0], z[1], tx, "Posten zustimmen"); ruhe(1.2); continue
         if seh.finde("Veröffentlichen", tx, unter=600) or seh.finde("Entwürfe", tx, unter=600):
@@ -1691,16 +1769,31 @@ def zurueck_beitrag():
     muss(seh.finde("Veröffentlichen", lesen(), unter=600), "nicht zurück auf der Beitragsseite")
 
 
+def _bis_weg(label, max_s, min_s=0.5):
+    """Wartet, bis der Knopf (unten, Text endet auf label) verschwunden ist → True, sonst nach max_s False."""
+    time.sleep(min_s)
+    ende = time.time() + max(0.0, max_s - min_s)
+    for _ in range(int(max_s / 0.3) + 2):
+        tx = lesen()
+        if not [t for t in tx if label.lower() in t[0].lower() and t[2] > 600]:
+            return True
+        if time.time() >= ende:
+            break
+        time.sleep(0.3)
+    return False
+
+
 def abschluss(entwurf):
     tx = lesen()
     if entwurf:
         e = muss(seh.finde("Entwürfe", tx, unter=600), "Knopf „Entwürfe“ fehlt")
         muss(e[0] < 167, "„Entwürfe“ nicht links – Abbruch (Veröffentlichen-Gefahr)")
-        tipp(e[0], e[1], tx, "Entwürfe"); ruhe(2.0)
-        muss(not seh.finde("Veröffentlichen", lesen(), unter=600), "Entwurf nicht gespeichert – Beitragsseite noch offen")
+        tipp(e[0], e[1], tx, "Entwürfe")
+        weg = _bis_weg("Veröffentlichen", 3.0, min_s=0.6)        # 16.11.: war feste 2,0 s – Prüfung bleibt gleich
+        muss(weg, "Entwurf nicht gespeichert – Beitragsseite noch offen")
         log("ALS ENTWURF GESPEICHERT"); return
-    ruhe(1.0, 1.8)                                               # Knopf wird erst nach dem Laden kräftig rot
-    for _ in range(8):
+    ruhe(0.3, 0.6)                                               # Knopf wird erst nach dem Laden kräftig rot (16.11.: war
+    for _ in range(10):                                          # 1,0–1,8 s fest – die Schleife wartet auf kräftig rot)
         tx = lesen()
         z = seh.finde("zustimmen", tx)
         if z:
@@ -1710,43 +1803,183 @@ def abschluss(entwurf):
         if not v and not seh.finde("Entwürfe", tx, unter=600):
             log("VERÖFFENTLICHT"); return
         muss(v, "„Veröffentlichen“-Knopf rechts unten nicht gefunden")
-        if not kraeftig_rot(v[0] + 40, v[1]) and _ < 3:          # 13.11.: nach 3 Versuchen trotzdem tippen
-            time.sleep(0.8); continue
-        tipp(v[0], v[1], tx, "Veröffentlichen"); ruhe(2.5)
+        if not kraeftig_rot(v[0] + 40, v[1]) and _ < 5:          # 13.11.: nach 3 Versuchen trotzdem tippen (16.11.: 5,
+            time.sleep(0.8); continue                            # weil die feste Pause davor kürzer ist – gleiche Zeit)
+        tipp(v[0], v[1], tx, "Veröffentlichen")
+        _bis_weg("Veröffentlichen", 4.0, min_s=0.8)              # 16.11.: war feste 2,5 s; nochmal getippt wird erst,
+                                                                 # wenn der Knopf nach 4 s noch da ist (vorher 2,5 s)
     raise Stopp("Beitragsseite noch offen – nicht veröffentlicht?")
 
 
 # ---------------------------------------------------------------- 6) Aufräumen
 
-def social1_abhaken(pid, liste_id=None):
+def social1_abhaken(pid, liste_id=None, _runde=0):
     """Mac-Safari (Artur eingeloggt): auf der Social1-Liste die Karte des Produkts → Lesezeichen → Liste abhaken → Done.
-    Nie „Delete“ (löscht die ganze Liste). Ohne offene Liste im Mac-Safari: Hinweis, kein Stopp."""
+    Nie „Delete“ (löscht die ganze Liste). Ohne offene Liste im Mac-Safari: Hinweis, kein Stopp.
+    16.11.2026 (Tempo): kein Neuladen nach jedem Abhaken mehr. Abgehakte Karten bekommen eine Markierung (data-ts-ab)
+    und werden beim nächsten Mal übersprungen (2. Vorbild-Video desselben Produkts). Ist der Haken der gefundenen Karte
+    schon raus (Seite veraltet), wird die Liste neu geladen und einmal wiederholt – nie wird „abgehakt“ gemeldet, ohne
+    dass ein gesetzter Haken entfernt wurde."""
     js = r"""(()=>{const u=location.href; const m=u.match(/saved-videos\/([0-9a-f]+)/); if(!m) return 'keine-liste';
-const lid=m[1]; const k=[...document.querySelectorAll('[data-slot=card]')].find(k=>{const p=k.querySelector('img[src*="/products/"]');return p&&p.src.includes('PID')});
-if(!k) return 'nicht-in-liste'; k.querySelector('button[title="Save to list"]').click(); return 'auf:'+lid})()""".replace("PID", pid)
-    r = _safari(js)
+const lid=m[1]; document.querySelectorAll('[data-ts-aktiv]').forEach(k=>delete k.dataset.tsAktiv);
+const k=[...document.querySelectorAll('[data-slot=card]')].find(k=>{const p=k.querySelector('img[src*="/products/"]');return !k.dataset.tsAb&&p&&p.src.includes('PID')});
+if(!k) return 'nicht-in-liste'; k.dataset.tsAktiv='1'; k.querySelector('button[title="Save to list"]').click(); return 'auf:'+lid})()""".replace("PID", pid)
+    liste_id = liste_id or SOCIAL1_LISTE
+    r = _safari(js, liste_id)
+    if r == "keine-liste":                                       # 16.11.2026: Liste nicht offen → öffnen, nochmal
+        _liste_oeffnen(liste_id); r = _safari(js, liste_id)
+    if r == "nicht-in-liste" and _runde == 0:                    # Seite älter als die Liste → einmal neu laden
+        _liste_oeffnen(liste_id); return social1_abhaken(pid, liste_id, 1)
     if not r.startswith("auf:"):
         return r
-    time.sleep(1.2)
     lid = r[4:]
     js2 = r"""(()=>{const d=document.querySelector('[data-slot=dialog-content]'); if(!d) return 'kein-dialog';
 const c=d.querySelector('button[role=checkbox][id="LID"]'); if(!c) return 'keine-checkbox';
-if(c.getAttribute('aria-checked')=='true') c.click(); return 'ok'})()""".replace("LID", lid)
-    r2 = _safari(js2)
-    time.sleep(0.8)
+if(c.getAttribute('aria-checked')=='true'){c.click(); return 'ok'}
+const b=[...d.querySelectorAll('button')].find(b=>b.innerText.trim()=='Close'); if(b) b.click(); return 'schon-raus'})()""".replace("LID", lid)
+    r2 = "kein-dialog"
+    for _ in range(8):                                           # 16.11.: Dialog abwarten statt fester 1,2 s
+        time.sleep(0.3)
+        r2 = _safari(js2, liste_id)
+        if r2 not in ("kein-dialog", "keine-checkbox"):          # Listen im Dialog laden evtl. noch
+            break
+    if r2 == "schon-raus":                                       # veraltete Karte (schon abgehakt) → neu laden, nochmal
+        _safari("(()=>{const k=document.querySelector('[data-ts-aktiv]'); if(k){k.dataset.tsAb='1'} return 'ok'})()", liste_id)
+        if _runde == 0:
+            _liste_oeffnen(liste_id); return social1_abhaken(pid, liste_id, 1)
+        return "schon-raus"
     js3 = r"""(()=>{const d=document.querySelector('[data-slot=dialog-content]'); if(!d) return 'zu';
 const c=d.querySelector('button[role=checkbox][id="LID"]'); const ok=c&&c.getAttribute('aria-checked')=='false';
-const b=[...d.querySelectorAll('button')].find(b=>b.innerText.trim()==(ok?'Done':'Close')); if(b) b.click(); return ok?'abgehakt':'nicht-abgehakt'})()""".replace("LID", lid)
-    return _safari(js3) if r2 == "ok" else r2
+if(!ok) return 'warte';
+const b=[...d.querySelectorAll('button')].find(b=>b.innerText.trim()=='Done'); if(b) b.click();
+const k=document.querySelector('[data-ts-aktiv]'); if(k){k.dataset.tsAb='1'; delete k.dataset.tsAktiv}
+return 'abgehakt'})()""".replace("LID", lid)
+    js3_zu = r"""(()=>{const d=document.querySelector('[data-slot=dialog-content]'); if(!d) return 'zu';
+const b=[...d.querySelectorAll('button')].find(b=>b.innerText.trim()=='Close'); if(b) b.click(); return 'nicht-abgehakt'})()"""
+    if r2 != "ok":
+        if r2 == "keine-checkbox":
+            _safari(js3_zu, liste_id)                            # Dialog nicht offen stehen lassen
+        return r2
+    r3 = "warte"
+    for _ in range(8):                                           # 16.11.: Haken-Wechsel abwarten statt fester 0,8 s
+        time.sleep(0.25)
+        r3 = _safari(js3, liste_id)
+        if r3 != "warte":
+            break
+    if r3 == "warte":
+        r3 = _safari(js3_zu, liste_id)
+    return r3
+
+
+_S1_FADEN = None
+
+
+def aufraeumen_im_hintergrund(d):
+    """16.11.2026 (Tempo): Social1-Abhaken läuft am Mac (Safari) – das iPhone muss darauf nicht warten (~3–6 s je Video).
+    Immer nur ein Abhaken gleichzeitig (vorheriges wird erst abgewartet); am Lauf-Ende wartet main() auf das letzte."""
+    import threading
+    global _S1_FADEN
+    social1_warten()
+
+    def los():
+        try:
+            aufraeumen(d, fotos=False)
+        except Exception as e:
+            log(f"Social1 ging nicht: {e}")
+    _S1_FADEN = threading.Thread(target=los, name="social1")
+    _S1_FADEN.start()
+
+
+def social1_warten():
+    if _S1_FADEN is not None and _S1_FADEN.is_alive():
+        _S1_FADEN.join(60)
+
+
+NV_LISTE = "nicht verfügbar"   # Artur 16.11.2026: eigene Social1-Liste für ausverkaufte/nicht provisionsberechtigte Produkte
+
+
+def social1_verschieben(pid, liste_id=None, ziel=NV_LISTE):
+    """Vorbild-Video des Produkts aus der ausgewählten Liste in die Liste „nicht verfügbar“ verschieben (Lesezeichen →
+    Haken bei „nicht verfügbar“ setzen, fehlt die Liste: „Create new list“ → Haken der Arbeitsliste raus → Done)."""
+    liste_id = liste_id or SOCIAL1_LISTE
+    js = r"""(()=>{const k=[...document.querySelectorAll('[data-slot=card]')].find(k=>{const p=k.querySelector('img[src*="/products/"]');return p&&p.src.includes('PID')});
+if(!k) return 'nicht-in-liste'; k.querySelector('button[title="Save to list"]').click(); return 'auf'})()""".replace("PID", pid)
+    r = _safari(js, liste_id)
+    if r == "keine-liste":
+        _liste_oeffnen(liste_id); r = _safari(js, liste_id)
+    if r != "auf":
+        return r
+    time.sleep(1.2)
+    such = r"""(()=>{const d=document.querySelector('[data-slot=dialog-content]'); if(!d) return 'kein-dialog';
+const c=[...d.querySelectorAll('button[role=checkbox]')].find(c=>c.nextElementSibling&&c.nextElementSibling.innerText.trim()=='ZIEL');
+if(!c) return 'fehlt'; if(c.getAttribute('aria-checked')!='true') c.click(); return 'ok'})()""".replace("ZIEL", ziel)
+    r = _safari(such, liste_id)
+    if r == "fehlt":                                             # Liste anlegen (React-Feld per nativem Setter)
+        _safari(r"""(()=>{const d=document.querySelector('[data-slot=dialog-content]');[...d.querySelectorAll('button')].find(b=>b.innerText.trim()=='Create new list').click();return 'ok'})()""", liste_id)
+        time.sleep(0.8)
+        _safari(r"""(()=>{const i=document.querySelector('[data-slot=dialog-content] input[placeholder="Enter list name..."]');
+Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(i,'ZIEL');i.dispatchEvent(new Event('input',{bubbles:true}));return 'ok'})()""".replace("ZIEL", ziel), liste_id)
+        time.sleep(0.6)
+        _safari(r"""(()=>{const b=[...document.querySelectorAll('[data-slot=dialog-content] button[type=submit]')].find(b=>b.innerText.trim()=='Create');if(b&&!b.disabled)b.click();return 'ok'})()""", liste_id)
+        time.sleep(2.0)
+        r = _safari(such, liste_id)                              # neue Liste ist meist schon angehakt
+    if r != "ok":
+        return f"verschieben: {r}"
+    time.sleep(0.6)
+    js3 = r"""(()=>{const d=document.querySelector('[data-slot=dialog-content]');const c=d.querySelector('button[role=checkbox][id="LID"]');
+if(c&&c.getAttribute('aria-checked')=='true') c.click(); return 'ok'})()""".replace("LID", liste_id)
+    _safari(js3, liste_id); time.sleep(0.8)
+    js4 = r"""(()=>{const d=document.querySelector('[data-slot=dialog-content]');const c=d.querySelector('button[role=checkbox][id="LID"]');
+const n=[...d.querySelectorAll('button[role=checkbox]')].find(c=>c.nextElementSibling&&c.nextElementSibling.innerText.trim()=='ZIEL');
+const ok=(!c||c.getAttribute('aria-checked')=='false')&&n&&n.getAttribute('aria-checked')=='true';
+const b=[...d.querySelectorAll('button')].find(b=>b.innerText.trim()==(ok?'Done':'Close')); if(b) b.click(); return ok?'nach „ZIEL“ verschoben':'nicht-verschoben'})()""".replace("LID", liste_id).replace("ZIEL", ziel)
+    r = _safari(js4, liste_id)
+    _liste_oeffnen(liste_id)
+    return r
+
+
+def _liste_oeffnen(liste_id):
+    """Social1-Liste im Mac-Safari öffnen/neu laden (Tab mit social1 per „set URL“, sonst neues Fenster), bis Karten da."""
+    url = f"https://www.social1.ai/saved-videos/{liste_id}"
+    subprocess.run(["osascript", "-e", 'tell application "Safari"\nrepeat with d in documents\n'
+                    'if URL of d contains "social1.ai/saved-videos" then\nset URL of d to "' + url + '"\nreturn\nend if\n'
+                    'end repeat\nmake new document with properties {URL:"' + url + '"}\nend tell'], capture_output=True, text=True)
+    for _ in range(30):
+        time.sleep(0.5)
+        n = _safari("String(document.querySelectorAll('[data-slot=card]').length)", liste_id)
+        if n.isdigit() and int(n) > 0:
+            time.sleep(1.0); return
+
+
+def liste_fuer(d):
+    """Artur 16.11.2026: abhaken in der Social1-Liste, die beim Schneiden ausgewählt war (nicht fest bof 2.0).
+    Reihenfolge: `social1_liste` aus der Eingang-JSON → neueste ausgang/social1-*.json mit diesem Produkt → SOCIAL1_LISTE."""
+    if d.get("social1_liste"):
+        return d["social1_liste"]
+    m = re.search(r"saved-videos/([0-9a-f]{24})", d.get("social1_link", ""))
+    if m:
+        return m.group(1)
+    pid = d.get("tts_link", "").rstrip("/").split("/")[-1]
+    beste = None
+    for f in AUS.glob("social1-*.json"):
+        try:
+            j = json.loads(f.read_text())
+        except Exception:
+            continue
+        if any(e.get("produkt_id") == pid for e in j.get("eintraege", [])):
+            m = re.search(r"saved-videos/([0-9a-f]{24})", j.get("url", ""))
+            if m and (beste is None or str(j.get("gelesen", "")) > beste[0]):
+                beste = (str(j.get("gelesen", "")), m.group(1))
+    return beste[1] if beste else SOCIAL1_LISTE
 
 
 SOCIAL1_LISTE = os.environ.get("TS_SOCIAL1_LISTE", "6af5c87e84c1d2f55b052550")   # Artur 15.11.2026: die richtige Liste
 
 
-def _safari(js):
+def _safari(js, liste_id=None):
     esc = js.replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ")
     r = subprocess.run(["osascript", "-e", 'tell application "Safari"\nrepeat with d in documents\n'
-                        'if URL of d contains "social1.ai/saved-videos/' + SOCIAL1_LISTE + '" then return do JavaScript "' + esc + '" in d\n'
+                        'if URL of d contains "social1.ai/saved-videos/' + (liste_id or SOCIAL1_LISTE) + '" then return do JavaScript "' + esc + '" in d\n'
                         'end repeat\nreturn "keine-liste"\nend tell'], capture_output=True, text=True)
     return (r.stdout.strip() or r.stderr.strip()[:120])
 
@@ -1794,7 +2027,7 @@ def fotos_loeschen(kachel, oeffnen=True):
 def aufraeumen(d, fotos=True):
     """Social1 (Mac, ~3 s) gleich nach dem Post; Fotos gesammelt am Stapel-Ende (fotos_aufraeumen), außer fotos=True."""
     pid = d.get("tts_link", "").rstrip("/").split("/")[-1]
-    log(f"Social1: {social1_abhaken(pid)}")
+    log(f"Social1: {social1_abhaken(pid, liste_fuer(d))}")
     if fotos:
         fotos_aufraeumen([d])
 
@@ -2209,6 +2442,7 @@ def ein_video(p, d, entwurf=False, aufr=True):
                 log(f"Kabel: {e} → Server neu"); seh.kabel().neu_verbinden()
             fortsetzen_planen(F, str(e)[:90])
     aus = F["ohne_link"]
+    test_entwurf = entwurf
     weg = F["produkt"] if not aus else "ohne Link"
     abschluss(entwurf or aus)
     if F["produkt"] == "erstellen":                              # Szenario 3 (Aufnahme 16.11.): nach dem Speichern steht
@@ -2229,7 +2463,14 @@ def ein_video(p, d, entwurf=False, aufr=True):
     eintragen(d, dauer, weg, entwurf)
     print(f"✓ {d['datei']} → {d['account']} ({weg}{', Entwurf' if entwurf else ''}) {dauer:.0f} s", flush=True)
     if aufr and not entwurf:
-        aufraeumen(d, fotos=False)
+        aufraeumen_im_hintergrund(d)                             # 16.11.: Mac-Safari parallel zum nächsten Video
+    elif aufr and aus and not test_entwurf:                      # 16.11.: im --entwurf-Test Social1 nicht anfassen                                           # Artur 16.11.2026: ausverkauft/nicht provisionsberechtigt
+        pid = d.get("tts_link", "").rstrip("/").split("/")[-1]  # → Vorbild in Social1-Liste „nicht verfügbar“ verschieben
+        social1_warten()                                         # nie zwei Social1-Schritte gleichzeitig im Mac-Safari
+        try:
+            log(f"Social1: {social1_verschieben(pid, liste_fuer(d))}")
+        except Exception as e:
+            log(f"Social1 verschieben ging nicht: {e}")
     return dauer
 
 
@@ -2266,10 +2507,16 @@ def airdrop_einmal(d):
     Empfänger angeklickt ist. Ankunft am Bildschirm nicht erkannt → kein Fehler: die Galerie-Prüfung (Länge + Hook,
     bis 120 s) entscheidet, ob das Video da ist."""
     merk = AUS / "letztes-airdrop.txt"
-    alle = AUS / f"airdrop-{d['stapel']}.txt"
-    schon = alle.read_text().split("\n") if alle.exists() else []
-    if d["datei"] in schon or (merk.exists() and merk.read_text().strip() == d["datei"]):
-        log("schon am iPhone (früher per AirDrop) – kein zweites AirDrop"); return
+    alle = AUS / f"airdrop-{d['stapel']}.txt"                     # angeklickt (Übertragung gestartet)
+    da = AUS / f"airdrop-{d['stapel']}-da.txt"                    # 16.11.2026: Ankunft am iPhone GESEHEN (Fotos)
+    if airdrop_schon_da(d["datei"], da):
+        log("schon am iPhone (Ankunft früher gesehen) – kein zweites AirDrop"); return
+    if airdrop_schon_da(d["datei"], alle) or (merk.exists() and merk.read_text().strip() == d["datei"]):
+        # 16.11.2026 (Video 145-04): früher angeklickt, Ankunft aber nie gesehen (z. B. Lauf abgebrochen, AirDrop hing) →
+        # galt als „schon am iPhone“, die Galerie wartete vergeblich. Jetzt: nochmal senden (Artur 16.11. 22:25:
+        # „wenn der AirDrop nicht zuverlässig ist, airdrop nochmal“). Doppelt in Fotos schadet nicht (Galerie wählt nach
+        # Länge + Hook, Fotos-Aufräumen löscht alle passenden Kacheln).
+        log("früher angeklickt, Ankunft nie gesehen → nochmal per AirDrop")
 
     def gesendet():
         merk.write_text(d["datei"])
@@ -2278,19 +2525,51 @@ def airdrop_einmal(d):
     if not seh.kabel():
         raise Stopp("Kabel-Steuerung nicht aktiv – kein AirDrop")
     import airdrop
+    try:                                                         # Fotos noch vorn → würde sofort als „angekommen“ gelten
+        if airdrop._fotos_vorn(seh.lesen()):
+            seh.kabel().taste("home"); time.sleep(0.6)
+    except Exception:
+        pass
     datei = frisch_datiert(EIN / d["datei"])
-    try:
-        airdrop.senden([str(datei)], nach_klick=gesendet)
-        log("per AirDrop aufs iPhone")
-    except Exception as e:
-        if d["datei"] in (alle.read_text().split("\n") if alle.exists() else []):
-            log(f"AirDrop gesendet, Ankunft nicht gesehen ({e}) – Galerie prüft")
+    letzter = None
+    for versuch in (1, 2):                                       # 16.11.2026: kommt es nicht an → sofort nochmal (vorher
+        try:                                                     # erst in der TikTok-Galerie nach 15 s → Fotos sprang
+            _AIRDROPS[d["datei"]] = _AIRDROPS.get(d["datei"], 0) + 1   # mitten in TikTok auf → Hänger)
+            erg = airdrop.senden([str(datei)], nach_klick=gesendet)
+            if erg == "fotos":
+                with open(da, "a") as fa:
+                    fa.write(d["datei"] + "\n")
+            log("per AirDrop aufs iPhone" + ("" if erg == "fotos" else " (Mac meldet OK, Fotos nicht gesehen – Galerie prüft)"))
+            letzter = None
+            break
+        except Exception as e:
+            letzter = e
+            if versuch == 1:
+                log(f"AirDrop nicht angekommen ({e}) → sofort nochmal")
+                try:
+                    seh.kabel().taste("home"); time.sleep(0.6)
+                except Exception:
+                    pass
+    if letzter is not None:
+        if airdrop_schon_da(d["datei"], alle):
+            log(f"AirDrop gesendet, Ankunft nicht gesehen ({letzter}) – Galerie prüft")
         else:
-            raise Stopp(f"AirDrop nicht gesendet: {e}")
+            raise Stopp(f"AirDrop nicht gesendet: {letzter}")
     try:
         seh.kabel().taste("home"); time.sleep(0.8)
     except Exception:
         pass
+
+
+_AIRDROPS = {}       # 16.11.2026: Datei → wie oft in diesem Lauf per AirDrop geschickt (Galerie schickt höchstens bis 2×)
+
+
+def airdrop_schon_da(datei, liste):
+    """Reine Funktion: steht die Datei als eigene Zeile in der Merkliste (Datei fehlt → nein)?"""
+    try:
+        return datei in pathlib.Path(liste).read_text().split("\n")
+    except FileNotFoundError:
+        return False
 
 
 MAX_FEHLER_FOLGE = 3
@@ -2383,6 +2662,7 @@ def main(a):
                     except Exception:
                         pass
                     sys.exit(f"STOPP: {folge} Videos hintereinander gescheitert (zuletzt: {e}) – Foto {foto}")
+        social1_warten()                                         # 16.11.: letztes Social1-Abhaken (Hintergrund) abwarten
         if aufr and not entwurf and fertig:
             t = time.time(); fotos_aufraeumen(fertig); log(f"Fotos aufgeräumt in {time.time() - t:.0f} s")
         print(f"FERTIG {len(zeiten)}/{len(liste)}" + (f", Ø {sum(zeiten) / len(zeiten):.0f} s" if zeiten else "")

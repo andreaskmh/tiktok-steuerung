@@ -189,3 +189,48 @@
 - 16.11.2026 22:16 – beschreibung_stimmt: zwei benachbarte OCR-Stücke zusammen vergleichen („#digita kamera“ = #digitalkamera am Zeilenumbruch), HOTU war fälschlich gesperrt. Fremde Hashtags weiter streng. Backup post_mensch.py.bak-20261116-beschr.
 - 16.11.2026 22:22 – „Dieses Produkt ist nicht provisionsberechtigt“ auf der Produktseite → sofort Entwurf ohne Link (Regel 12.11.), vorher: kein Badge → Wagen → Neukunde → „Jetzt erstellen“ ohne Badge → Hänger (House of Thêom).
 - 16.11.2026 22:25 – Galerie: Video nach 15 s (erst 40, Artur: zu lang) nicht da → einmal nochmal per AirDrop (Artur: „wenn der AirDrop nicht zuverlässig ist bzw. lange dauert, airdrop nochmal“). Backup post_mensch.py.bak-20261116-airdrop2.
+- 16.11.2026 22:36 – Hinweis: SOCIAL1_LISTE ist fest auf bof 2.0; beim Stapel 2026-11-16-bof (Liste „bof“) griff das Abhaken nicht („keine-liste“) → nachträglich mit TS_SOCIAL1_LISTE=6afb1c70204ef09999b79488. Zweiter Abhaken-Klick aufs gleiche Produkt braucht vorher Neuladen.
+- 16.11.2026 22:45 – Social1-Abhaken in der Liste, die beim Schneiden gewählt war (Artur: „nicht nur bof 2.0“): einreichen.py --liste <name|link|id> → `social1_liste` in der JSON; fehlt sie, sucht post_mensch.liste_fuer() die neueste ausgang/social1-*.json mit dem Produkt; Liste nicht offen → wird im Mac-Safari geöffnet; nach jedem Abhaken neu laden (2. Klick aufs gleiche Produkt). Backups *.bak-20261116-liste.
+- 16.11.2026 22:55 – Neue Social1-Liste „nicht verfügbar“ (ID 6afb797b0db9dac6d93b5ccf, von Claude angelegt). Entwurf ohne Link (ausverkauft/nicht provisionsberechtigt) → `social1_verschieben()`: Vorbild aus der Arbeitsliste raus, Haken bei „nicht verfügbar“ (fehlt die Liste: wird angelegt). House of Thêom (Video 145-03) von Hand verschoben. Backup post_mensch.py.bak-20261116-nv.
+- 16.11.2026 23:05 – **stock.py prüft die Postbarkeit schon beim Stock-Holen** (Anlass: Video 03 House of Thêom fertig
+  geschnitten, dann nur Entwurf, weil „nicht provisionsberechtigt“). Backup `stock.py.bak-20261116-check`. Auf der Produktseite
+  wird nur GELESEN (vor und nach dem Hochziehen der Karte, kein zusätzlicher Tipp): `produkt.json` bekommt
+  `"status": {"provision", "vorraetig", "neukunden", "hinweis"}` (true/false/null). „Verdiene … pro Verkauf“ → provision true,
+  „nicht provisionsberechtigt“ → false; „nicht vorrätig“/„ausverkauft“ → vorraetig false; Seite „Artikel/Produkt nicht
+  verfügbar“ → keine Galerie, `produkt.json` nur mit Status (bilder leer); „Angebot für Neukund*innen“/„Neukunden-Angebot“ →
+  neukunden true (Neukunden-Preis auf der Seite, KEIN Hindernis; den Einkaufswagen-Hinweis sieht man erst beim Tipp).
+  `--stapel`-Zeile: `✓ kurz: 5 Bilder, 31 s ⚠ nicht provisionsberechtigt (Neukunden-Angebot)`. Social1-Namensprüfung robuster
+  (`name_passt`: Akzente egal, Titel mit „…“ als Namensanfang, sonst die ersten zwei Namenswörter in einer Zeile; einzelnes
+  Wort nur bei einwortigen Namen). Feste Pausen um das Hochziehen 1,5+1,5 → Badge-Warteschleife (0,4 s) + 1,0 s.
+  Test: Thêom provision false, PS5-Akku + Pukka provision true; je ~31–39 s (alt 36–41 s).
+- 16.11.2026 23:30 – **Tempo ohne Hänger (Bericht Video 145, Ziel ~1,5–2 min je Video), keine Prüfung entfernt** (Backups
+  `post_mensch.py.bak-20261116-tempo2`, `airdrop.py.bak-20261116-tempo`, `bildschirm.py.bak-20261116-tempo`,
+  `test/test_posten.py.bak-20261116-tempo2`; nur offline getestet, iPhone nicht benutzt):
+  (1) **AirDrop:** Ankunft gilt nur noch als „gesehen“, wenn Fotos am iPhone aufgeht (`airdrop.angekommen` → „fotos“/„mac“;
+  „kaum Text nach 9 s“ nur, wenn sich der Bildschirm seit dem Senden geändert hat); Wartezeit 40 s statt 90 s; kommt es nicht
+  an → **sofort** nochmal (noch vor TikTok, `airdrop_einmal`), statt erst in der Galerie nach 15 s. Neue Merkliste
+  `ausgang/airdrop-<stapel>-da.txt` (Ankunft gesehen): nur die verhindert ein zweites AirDrop – „angeklickt“ allein
+  (`airdrop-<stapel>.txt`/`letztes-airdrop.txt`) meldete bei 145-04 fälschlich „schon am iPhone“. Höchstens 2 AirDrops je
+  Video und Lauf. Galerie-Fallback: nach dem 2. AirDrop zurück in TikTok (`_zurueck_in_tiktok`, „◂ TikTok“; Fotos-Bildschirme
+  im Galerie-Weg → zurück statt Hänger „unbekannt“ wie bei 145-08), nach 10 s ohne Kachel Galerie einmal neu öffnen;
+  Warten in der Galerie 2 s statt 5 s je Runde (nur Lesen). `_ist_app("TikTok")` erkennt Kamera/Galerie/Vorschau/Editor.
+  (2) **Varianten nicht vorrätig:** neue reine Funktion `varianten_optionen()` – Gruppe nie „Menge:“, Optionen nur über
+  „Menge“/Hinweis/rotem Knopf, nie „+“/„-“/Menge/Preis (vorher hätte „+“ die Menge erhöht); Bildkacheln nur, wenn die Gruppe
+  gar keine Text-Optionen hat. `bildschirm.VARIANTEN` zusätzlich: „Menge:“ + Gruppe/„nicht vorrätig“ ohne Kasse unten (falls
+  der rote Knopf anders heißt) – an allen 646 + 768 gespeicherten Bildschirmen keine Abweichung zu vorher.
+  (3) **Hook-OCR:** kurze Hooks (6–9 Zeichen) dürfen genau 1 Buchstaben abweichen (vorher gar keine Toleranz); Cover-Prüfung
+  liest den Hook auch über 2–3 Zeilen zusammen. Länge ±1 s, fremde Hooks und Beschreibungs-Prüfung unverändert streng.
+  (4) **Social1:** kein Neuladen mehr nach jedem Abhaken; abgehakte Karten werden markiert (`data-ts-ab`) und übersprungen
+  (2. Video desselben Produkts); ist der Haken schon raus (Seite veraltet) oder die Karte fehlt → einmal neu laden, nochmal.
+  „abgehakt“ nur, wenn ein gesetzter Haken wirklich entfernt wurde. Dialog/Haken werden abgewartet statt fester 1,2/0,8 s.
+  Abhaken läuft im Hintergrund parallel zum nächsten Video (Mac-Safari, immer nur eins gleichzeitig, am Ende abgewartet).
+  `--entwurf` verschiebt nichts mehr in Social1 („nicht verfügbar“ nur bei echten Läufen).
+  (5) **Feste Pausen → Warten auf den nächsten Bildschirm** (`warte_bildschirm`, höchstens so lange wie die alte Pause):
+  „+“, Galerie öffnen, Kachel → Vorschau, Weiter → Editor/Beitrag, Editor → Beitrag, „Jetzt erstellen“, „Videos“.
+  Kachel wird erst angetippt, wenn sie in zwei Bildern gleich liegt (Galerie fährt ein). „pro Verkauf“ 1,6 → 0,6 s (Schleife
+  wartet), Listen-„Hinzufügen“ 1,4 → 0,6 s, Dialog „Hinzufügen“ 1,4 → 0,7 s mit Doppel-Tipp-Schutz, rotes „Hinzufügen“
+  1,2 → 0,6 s (Schutz 3 s bleibt), Veröffentlichen: Pause davor 0,3–0,6 s statt 1,0–1,8 s (wartet weiter auf kräftig rot,
+  bis 5 statt 3 Runden), danach warten bis der Knopf weg ist (bis 4 s) statt fest 2,5 s – nochmal getippt wird erst nach 4 s.
+  Entwürfe ebenso. Unverändert: „Zum Showcase hinzufügen“ (Showcase-voll-Prüfung), Account, Rückwege (zur_hauptseite).
+  Tests 201/201 (neu `test_tempo_16_11`). Erst beim nächsten echten Lauf prüfbar: AirDrop-Erkennung/Nochmal, Social1 im
+  Hintergrund + Markierung, Galerie-Neu-Öffnen, die kürzeren Übergänge.
