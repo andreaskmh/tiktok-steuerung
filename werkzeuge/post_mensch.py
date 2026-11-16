@@ -897,8 +897,15 @@ def _wagen_runde(versucht):
         if not seh.finde("nicht vorrätig", tx):
             break
         gr = seh.finde("Größe", tx) or seh.finde("Farbe", tx)
+        if not gr:                                               # Artur 16.11.2026 (Tatort): Gruppe heißt auch „Fall:“,
+            kopf = [t for t in tx if re.match(r"^[A-Za-zÄÖÜäöü][\w ]{1,20}:", t[0].strip()) and 250 < t[2] < 690]
+            if kopf:                                             # „Sorte:“ … → unterste „Name:“-Zeile = Gruppe
+                k = max(kopf, key=lambda t: t[2]); gr = (k[1], k[2])
         opt = [t for t in tx if gr and gr[1] + 15 < t[2] < gr[1] + 110 and t[0].strip()
                and (round(t[1]), round(t[2])) not in probiert] if gr else []
+        if not opt and gr:                                       # Varianten nur als Bilder (kein Text) → Bildkacheln
+            opt = [("", x, gr[1] + 55) for x in (50, 130, 212, 294)   # nebeneinander antippen („nimm einfach die
+                   if (round(x), round(gr[1] + 55)) not in probiert]  # andere Variante“, Artur 16.11.2026)
         if not opt:
             raise Entwurf("Artikel nicht vorrätig, keine weitere Variante")
         o = min(opt, key=lambda t: (round(t[2] / 10), t[1]))
@@ -959,7 +966,12 @@ def _kn(t):
 
 def _passt(kachel, ocr):
     k, o = _kn(kachel), _kn(ocr)
-    return bool(k) and (o.startswith(k[:max(6, len(k) - 2)]) or (len(o) >= 6 and k.startswith(o)))
+    if bool(k) and (o.startswith(k[:max(6, len(k) - 2)]) or (len(o) >= 6 and k.startswith(o))):
+        return True
+    # 16.11.2026 (HOTU): OCR las „ANHÄNGER“ als „ANMANGER“ → Kachel nie gefunden, Lauf hing. Ähnlichkeit ≥ 85 %
+    # (ab 10 Zeichen); Länge ±1 s bleibt Pflicht, fremde Hooks sind weit darunter.
+    import difflib
+    return len(k) >= 10 and len(o) >= 10 and difflib.SequenceMatcher(None, k, o[:len(k) + 2]).ratio() >= 0.85
 
 
 _FF = str(pathlib.Path.home() / "Documents/Coding/Editing System 1.1/tools/bin") + "/"
@@ -986,6 +998,7 @@ def dauer_text(v):
 
 
 _SOLL_DAUER = None   # Sekunden des Videos, das gerade gepostet wird
+_AKT_DATEI = None    # Datei des Videos, das gerade gepostet wird (für ein zweites AirDrop)
 
 
 def cover_passt(tx, kachel):
@@ -1216,7 +1229,7 @@ def galerie_kachel(tx, kachel, soll_dauer):
 def zum_beitrag(kachel, galerie=None, warten_s=120):
     """Zustandsmaschine „+“ → Beitragsseite (Artur 15.11.2026): jede Runde Bildschirm lesen, genau ein Schritt.
     Hakt etwas, geht es am aktuellen Bildschirm weiter. Video NUR mit passender Länge + Hook (sonst Sperre)."""
-    gewaehlt = bestaetigt = False
+    gewaehlt = bestaetigt = nochmal = False
     seit = None
     for _ in range(60):
         z, tx, tabs = lage()
@@ -1247,6 +1260,15 @@ def zum_beitrag(kachel, galerie=None, warten_s=120):
                 if time.time() - seit > warten_s:
                     raise Sperre(f"gesendetes Video „{kachel}“ ({_SOLL_DAUER and round(_SOLL_DAUER)} s) nicht in der Galerie "
                                  "– NICHT gepostet")
+                if time.time() - seit > 15 and not nochmal and _AKT_DATEI:   # Artur 16.11.2026 22:25: „wenn der AirDrop
+                    nochmal = True                               # nicht zuverlässig ist bzw. lange dauert, airdrop nochmal“
+                    try:
+                        import airdrop
+                        airdrop.senden([str(frisch_datiert(EIN / _AKT_DATEI))])
+                        log("Video nach 15 s nicht in der Galerie → nochmal per AirDrop")
+                    except Exception as e:
+                        log(f"zweites AirDrop ging nicht: {e}")
+                    continue
                 log("keine Kachel mit passender Länge + Hook – Video noch nicht in Fotos, warte"); time.sleep(5); continue
             log(f"Video-Kachel „{kachel}“ bei {ziel[0]:.0f},{ziel[1]:.0f} ✓ (Länge + Hook)")
             tipp(ziel[0], ziel[1], tx, "Video-Kachel"); ruhe(1.4); gewaehlt = True; continue
@@ -1442,8 +1464,13 @@ def beschreibung_stimmt(text, tx=None):
     feld = feld_text(tx)
     soll = [w.lower() for w in text.split()]
     ist = re.findall(r"[0-9a-zäöüß]+", feld)                     # „#“ trennt nur (OCR liest es mal als f/F/#)
-    fehlt = [w for w in soll if _kn(w) and not any(_gleich(w, i) for i in ist) and _kn(w) not in _kn(feld)]
-    fremd = [i for i in ist if len(i) >= 2 and not any(_gleich(i, w) or _kn(i) in _kn(w) and len(i) >= 4 for w in soll)]
+    # 16.11.2026 (HOTU): OCR las „#digitalkamera“ am Zeilenumbruch als „digita kamera“ → 3× gelöscht + Sperre.
+    # Daher auch zwei benachbarte OCR-Stücke zusammen vergleichen (nur für „fehlt“, fremde Wörter bleiben streng).
+    paare = ist + [a + b for a, b in zip(ist, ist[1:])]
+    fehlt = [w for w in soll if _kn(w) and not any(_gleich(w, i) for i in paare) and _kn(w) not in _kn(feld)]
+    fremd = [i for i in ist if len(i) >= 2 and not any(_gleich(i, w) or _kn(i) in _kn(w) and len(i) >= 4 for w in soll)
+             and not any(i in (a, b) and any(_gleich(a + b, w) and abs(len(a + b) - len(_kn(w))) <= 2 for w in soll)
+                         for a, b in zip(ist, ist[1:]))]
     if not all(w.startswith("#") for w in soll):                 # mit Text: ein kurzes Füllwort tolerieren
         fremd = [i for i in fremd if len(i) >= 4]
         fremd = fremd if len(fremd) > 1 else []
@@ -2053,24 +2080,24 @@ def _ablauf(d, F, pid):
         else:
             _NEUKUNDE = False
             tx = zum_produkt(pid, d["produkt"]); log("Produktseite")
-            for runde in range(4):                               # 15.11.: „pro Verkauf“ lädt verzögert → warten, und
+            for runde in range(1):                               # 15.11.: „pro Verkauf“ lädt verzögert → warten, und
                 for i in range(12):                              # Artur 15.11.2026: „wenn kein Badge erscheint, musst du
                     if B.erkenne(tx) in (B.DLG_ANFORDERN, B.DLG_SCHLIESSEN, B.DLG_OK, B.DLG_ERLAUBEN, B.DLG_OEFFNEN, B.LADEFEHLER):
                         dialog_wegmachen(B.erkenne(tx), tx); tx = lesen(); continue   # Popup weg, nicht neu laden
                     if nicht_vorraetig(tx):                      # Artur 21:33: „Artikel ist nicht vorrätig“ ZUERST lesen →
                         raise Entwurf("Artikel nicht vorrätig → nur Video ohne Produkt als Entwurf")   # nichts geht
+                    if seh.finde("nicht provisionsberechtigt", tx):  # Artur 12.11.2026 (Galaxy Buds) + 16.11. (House of
+                        raise Entwurf("Produkt nicht provisionsberechtigt → nur als Entwurf ohne Link")   # Thêom): Entwurf
                     if seh.finde("pro Verkau", tx) or seh.finde("Mehr erkunden", tx):   # hochswipen“ → nach ~3 s hoch;
                         break                                    # „wenn kein Badge da ist, einfach nochmal über Social1
-                    if i == 6 and B.erkenne(tx) == B.PRODUKTSEITE:   # öffnen“ → bis 3× neu über Social1
-                        tx = badge_scrollen()
-                        if seh.finde("pro Verkau", tx) or seh.finde("Mehr erkunden", tx):
-                            break
+                    # Artur 16.11.2026 21:50: KEIN Scrollen mehr (badge_scrollen raus) – fehlt das Badge, einfach
+                    # nochmal über Social1 öffnen, bis es angezeigt wird (bis 10×)
                     time.sleep(0.5); tx = lesen()
                 else:
-                    if runde < 3:
-                        log(f"kein „pro Verkauf“-Badge → nochmal über Social1 öffnen ({runde + 1}/3)")
-                        tx = zum_produkt(pid, d["produkt"]); log("Produktseite (neu)"); continue
-                    raise Stopp("„pro Verkauf“-Badge fehlt auch nach 3× Social1")
+                    # Artur 16.11.2026 22:05: „damit wir keine Zeit verlieren: wenn das Badge nicht angezeigt wird,
+                    # packs einfach in den Einkaufswagen“ → kein Neu-Öffnen, direkt Einkaufswagen-Weg
+                    log("kein „pro Verkauf“-Badge → direkt in den Einkaufswagen")
+                    F["nur_wagen"] = True
                 break
             # Artur 15.11.2026 20:15 – DREI Wege: (1) „Zum Showcase hinzufügen“ → Produkt aus dem Showcase,
             # (2) schon im Showcase → Einkaufswagen → Produkt aus dem Einkaufswagen, (3) geht beides nicht (Neukunden-
@@ -2280,7 +2307,7 @@ def main(a):
         os.environ["TS_OHNE_AIRDROP"] = "1"
     rest = [x for x in a if not x.startswith("--")]
     import eingang as EG
-    global _SOLL_DAUER
+    global _SOLL_DAUER, _AKT_DATEI
     if a[0] == "--wo":                                           # Trockenlauf: nur lesen, nichts tippen
         tx = seh.lesen()
         alt = seh.kabel().bild_alter() if seh.kabel() else 0
@@ -2326,6 +2353,7 @@ def main(a):
                 if not os.environ.get("TS_OHNE_AIRDROP"):
                     airdrop_einmal(d)
                 _SOLL_DAUER = dauer_text(EIN / d["datei"])
+                _AKT_DATEI = d["datei"]
                 zeiten.append(ein_video(p, d, entwurf, aufr)); fertig.append(d)
                 folge = 0
             except Hart as e:

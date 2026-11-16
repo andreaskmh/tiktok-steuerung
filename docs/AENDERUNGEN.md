@@ -180,3 +180,12 @@
   Hashtags. Text aus Eingang-JSON `text` (neu: `einreichen.py --text "…"`), sonst neutraler Standardsatz (`KURZTEXTE`).
   Immer klein, ohne Emojis/#, ≤ 8 Wörter; Preis/Versprechen (VERBOTEN) → Standardsatz. Beschreibungs-Prüfung am Bildschirm
   unverändert (alle Wörter + Hashtags müssen dastehen). Backups `*.bak-20261116-text`. Nicht am iPhone getestet (Artur: kein Test).
+
+- 16.11.2026 21:52 – Badge fehlt: kein Scrollen mehr (badge_scrollen nicht mehr aufgerufen), stattdessen bis 10× neu über Social1 öffnen, bis „pro Verkauf“ erscheint (Artur: „einfach von Social1 aus nochmal öffnen bis es angezeigt wird, kein Scrollen“). Backup post_mensch.py.bak-20261116-badge.
+- 16.11.2026 22:00 – Variante nicht vorrätig: Gruppen-Titel jetzt auch „Fall:“/„Sorte:“ usw. (jede „Name:“-Zeile), Varianten ohne Text als Bildkacheln nebeneinander antippen (Artur: „nimm doch einfach die andere Variante“, Tatort). Backup post_mensch.py.bak-20261116-variante.
+- 16.11.2026 22:05 – Varianten-Blatt mit „Fall:“ + „nicht vorrätig“ wurde nicht erkannt („unbekannt“) → nie weggewischt, Lauf hing. bildschirm.VARIANTEN erkennt jetzt auch „nicht vorrätig“ und jede „Name:“-Gruppe. Backup bildschirm.py.bak-20261116-variante.
+- 16.11.2026 22:05 – Kein „pro Verkauf“-Badge (nach ~8 s Warten) → nicht mehr neu über Social1 öffnen, sondern direkt Einkaufswagen-Weg (F["nur_wagen"]), Artur: „damit wir keine Zeit verlieren … packs einfach in den Einkaufswagen“. Backup post_mensch.py.bak-20261116-ohnebadge.
+- 16.11.2026 22:12 – Galerie-Hook OCR-tolerant (_passt: Ähnlichkeit ≥ 85 %, ab 10 Zeichen): „ANHÄNGER“ als „ANMANGER“ gelesen → HOTU-Kachel nie gefunden, Lauf hing 8 min. Backup post_mensch.py.bak-20261116-ocrhook.
+- 16.11.2026 22:16 – beschreibung_stimmt: zwei benachbarte OCR-Stücke zusammen vergleichen („#digita kamera“ = #digitalkamera am Zeilenumbruch), HOTU war fälschlich gesperrt. Fremde Hashtags weiter streng. Backup post_mensch.py.bak-20261116-beschr.
+- 16.11.2026 22:22 – „Dieses Produkt ist nicht provisionsberechtigt“ auf der Produktseite → sofort Entwurf ohne Link (Regel 12.11.), vorher: kein Badge → Wagen → Neukunde → „Jetzt erstellen“ ohne Badge → Hänger (House of Thêom).
+- 16.11.2026 22:25 – Galerie: Video nach 15 s (erst 40, Artur: zu lang) nicht da → einmal nochmal per AirDrop (Artur: „wenn der AirDrop nicht zuverlässig ist bzw. lange dauert, airdrop nochmal“). Backup post_mensch.py.bak-20261116-airdrop2.

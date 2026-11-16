@@ -121,7 +121,122 @@
    "entwurf": true,
    "dauer_s": 99,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "22:01",
+   "account": "anduri.official",
+   "datei": "Video 145 - 01 Tatort Adventskalender - V1.mp4",
+   "produkt": "Tatort Escape Adventskalender",
+   "tts_link": "https://shop.tiktok.com/view/product/1729954254982650611",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 151,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "22:03",
+   "account": "anduri.official",
+   "datei": "Video 145 - 04 SoTasty Zero Sirup - V1.mp4",
+   "produkt": "SoTasty Zero Sirup",
+   "tts_link": "https://shop.tiktok.com/view/product/1729922516087511174",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 119,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "22:05",
+   "account": "anduri.official",
+   "datei": "Video 145 - 09 Purelei Armband - V1.mp4",
+   "produkt": "Purelei Tiny Heart Armband",
+   "tts_link": "https://shop.tiktok.com/view/product/1729940604468042669",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 108,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "22:07",
+   "account": "ella_robinson2",
+   "datei": "Video 145 - 02 Tatort Adventskalender - V1.mp4",
+   "produkt": "Tatort Escape Adventskalender",
+   "tts_link": "https://shop.tiktok.com/view/product/1729954254982650611",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 117,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "22:15",
+   "account": "ella_robinson2",
+   "datei": "Video 145 - 10 Purelei Armband - V1.mp4",
+   "produkt": "Purelei Tiny Heart Armband",
+   "tts_link": "https://shop.tiktok.com/view/product/1729940604468042669",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 109,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "22:17",
+   "account": "ella_robinson2",
+   "datei": "Video 145 - 05 HOTU Mini-Kamera - V1.mp4",
+   "produkt": "HOTU Mini Keychain Digital",
+   "tts_link": "https://shop.tiktok.com/view/product/1729551081910999678",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 110,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "22:21",
+   "account": "andreas.testet",
+   "datei": "Video 145 - 03 House of Theom Midnight Cherry - V1.mp4",
+   "produkt": "House of Thêom Midnight Cherry",
+   "tts_link": "https://shop.tiktok.com/view/product/1729948382606170985",
+   "weg": "ohne Link",
+   "entwurf": true,
+   "dauer_s": 59,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "22:23",
+   "account": "andreas.testet",
+   "datei": "Video 145 - 07 Fanttik Autosauger - V1.mp4",
+   "produkt": "Fanttik Slim V8 Apex",
+   "tts_link": "https://shop.tiktok.com/view/product/1729477086257715247",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 94,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "22:30",
+   "account": "andreas.testet",
+   "datei": "Video 145 - 08 PS5-Controller-Akku - V3.mp4",
+   "produkt": "Black Friday Wiederaufl",
+   "tts_link": "https://shop.tiktok.com/view/product/1729716031361358128",
+   "weg": "erstellen",
+   "entwurf": false,
+   "dauer_s": 222,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "22:32",
+   "account": "artur.official",
+   "datei": "Video 145 - 06 Pukka Adventskalender - V1.mp4",
+   "produkt": "Pukka Bio Tee Adventskalender",
+   "tts_link": "https://shop.tiktok.com/view/product/1729962827319515684",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 120,
+   "werkzeug": "post_mensch"
   }
  ],
- "zaehler": {}
+ "zaehler": {
+  "anduri.official": 3,
+  "ella_robinson2": 3,
+  "andreas.testet": 2,
+  "artur.official": 1
+ }
 }

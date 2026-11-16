@@ -217,7 +217,9 @@ def erkenne(tx, tabs=None):
         return WERBE_BLATT
     rot_wagen = [t for t in tx if t[2] > 600 and t[0] == "Einkaufswagen"]
     if hat(tx, "Bitte auswählen") or (rot_wagen and not hat(tx, "Kasse", unter=600) and (hat(tx, "Menge") or hat(tx, "Größe")
-                                                                                         or hat(tx, "Farbe"))):
+                                                                                         or hat(tx, "Farbe") or hat(tx, "nicht vorrätig")
+                                                                                         or any(re.match(r"^[A-Za-zÄÖÜäöü][\w ]{1,20}:", t[0].strip()) for t in tx))):
+        # 16.11.2026 (Tatort): Blatt mit „Fall:“ + „Der Artikel ist nicht vorrätig“ blieb „unbekannt“ → nie weggeklickt
         return VARIANTEN
     # ---- Link-Listen (vor Beitrag: Liste liegt als Seite darüber)
     if hat(tx, "Dein Showcase") or hat(tx, "Aus dem Showcase"):
