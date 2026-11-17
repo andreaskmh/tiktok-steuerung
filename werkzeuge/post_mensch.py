@@ -46,6 +46,28 @@ class Sperre(Stopp):
     Video als Fehler markieren, mit dem nächsten weiter. Artur 15.11.2026: „lieber nicht posten als falsch posten“."""
 
 
+class Limit(Sperre):
+    """17.11.2026 (Artur, 148-51): TikTok zeigt einen Hinweis zum Tageslimit → dieses Video verwerfen, Account für heute
+    fertig (alle weiteren Videos des Accounts überspringen), mit dem nächsten Account weiter."""
+
+
+LIMIT_RE = re.compile(r"(tages)?limit\b|limit erreicht|maximale? anzahl|heute (keine|nicht mehr)|morgen (erneut|wieder)|"
+                      r"daily limit|reached the limit|noch 0 von", re.I)
+
+
+def limit_hinweis(tx):
+    """Reine Funktion: Text eines Limit-/Tageslimit-Hinweises am Bildschirm (sonst None). Produktnamen wie „Limited“
+    oder „limitiert“ zählen nicht (Wortgrenze)."""
+    for t in tx:
+        if LIMIT_RE.search(t[0]) and not re.search(r"limitiert|limited", t[0], re.I):
+            return t[0].strip()
+    return None
+
+
+def bildschirmtext(tx, n=40):
+    return " | ".join(t[0].strip() for t in tx[:n])
+
+
 class Hart(Stopp):
     """Stoppt den ganzen Lauf (Showcase voll, Tageslimit, Doppel-Schutz, Login, Bild bleibt eingefroren)."""
 
@@ -526,6 +548,29 @@ def bewerben_x_y(tx):
     return max(40, t[1] - 52) if t else 85
 
 
+def tiktok_schliessen():
+    """17.11.2026 (Artur: „lerne TikTok auf dem Handy zu schließen“, Steuer-Chat am iPhone geübt): bei Hängern TikTok
+    hart beenden statt nur nach vorn holen. Doppel-Home = App-Umschalter (Wisch vom unteren Rand öffnet ihn übers Kabel
+    nicht), TikTok-Karte nach rechts holen, Karte nach oben wegwischen, prüfen, Home. Punkte 334 × 735."""
+    K().taste("home"); ruhe(1.0)
+    K().taste("home"); K().taste("home"); ruhe(1.2)
+    tx, k = None, None
+    for i in range(4):
+        tx = lesen()
+        k = seh.finde("TikTok", tx, genau=True)
+        if k:
+            break
+        K().ziehe(90, 400, 300, 400, 0.4); ruhe(0.8)
+    if not k:
+        log("App-Umschalter: TikTok-Karte nicht gefunden"); K().taste("home"); ruhe(0.8); return False
+    x = min(max(k[0], 150), 300)
+    K().ziehe(x, 450, x, 40, 0.25); ruhe(1.0)
+    weg = not seh.finde("TikTok", lesen(), genau=True)
+    K().taste("home"); ruhe(0.8)
+    log("TikTok geschlossen (App-Umschalter)" if weg else "TikTok-Karte nicht weggewischt")
+    return weg
+
+
 def zur_hauptseite(abbrechen=True, max_schritte=16):
     """Zustandsmaschine (Artur 15.11.2026): von JEDEM Bildschirm zurück zur TikTok-Hauptseite mit Leiste – je Bildschirm
     genau ein Schritt, dann neu schauen. Halbfertiger Beitrag wird verworfen (abbrechen). Nie oben links im Feed (LIVE),
@@ -538,8 +583,9 @@ def zur_hauptseite(abbrechen=True, max_schritte=16):
         gleich = gleich + 1 if z == vorher else 0
         vorher = z
         if gleich >= 3 and apps < 2 and z != B.PRODUKTSEITE:
-            log(f"Bildschirm „{z}“ bleibt – TikTok neu nach vorn"); apps += 1; gleich = 0
-            app("TikTok", erzwingen=True); continue
+            log(f"Bildschirm „{z}“ bleibt – TikTok schließen + neu öffnen"); apps += 1; gleich = 0
+            tiktok_schliessen()                                  # 17.11.2026 (Artur): App schließen statt nach vorn
+            app("TikTok", erzwingen=True); ruhe(4.0); continue
         if dialog_wegmachen(z, tx, abbrechen=abbrechen):
             continue
         if z == B.LIVE:
@@ -1315,6 +1361,11 @@ def erstellen_route(ausverkauft=False):
                 mehr += 1
                 if mehr % 3 == 0:
                     if mehr > 9:
+                        try:                                     # 17.11.2026 (148-08/32): Bild + Text sichern
+                            foto = AUS / f"mehr-erkunden-{time.strftime('%H%M%S')}.png"; seh.kabel().foto(str(foto))
+                            log(f"nur „Mehr erkunden“ – Foto {foto.name} – Bildschirm: {bildschirmtext(tx, 80)}")
+                        except Exception:
+                            pass
                         raise Stopp("„Jetzt erstellen“ erscheint nicht (nur „Mehr erkunden“)")
                     log("nur „Mehr erkunden“ (nicht antippen) → Blatt zu, „pro Verkauf“ neu")
                     blatt_runter(130)
@@ -1876,6 +1927,14 @@ def nach_hinzufuegen(weg):
             if kuerzlich("dialog-hinzu", 2.5):                   # 16.11.: Dialog blendet noch aus → nicht nochmal
                 time.sleep(0.3); continue
             tipp(h[0], h[1], tx, "Hinzufügen (Dialog)"); merke("dialog-hinzu"); ruhe(0.7); continue   # war 1,4 s
+        lh = limit_hinweis(tx)                                   # 17.11.2026: erst Hinweise lesen, dann warten
+        if lh:
+            try:
+                foto = AUS / f"limit-{time.strftime('%H%M%S')}.png"; seh.kabel().foto(str(foto))
+            except Exception:
+                foto = None
+            log(f"Hinweis am Bildschirm: {bildschirmtext(tx)}")
+            raise Limit(f"Tageslimit-Hinweis: „{lh}“")
         if seh.finde("umbenennen", tx):
             r = re.search(r"noch (\d+) von (\d+)", " ".join(t for t, _, _ in tx))
             if r:
@@ -1916,6 +1975,11 @@ def nach_hinzufuegen(weg):
         if seh.finde("Veröffentlichen", tx, unter=600) or seh.finde("Entwürfe", tx, unter=600):
             log(f"Produkt verlinkt ({weg})"); return
         time.sleep(0.4)
+    try:                                                         # 17.11.2026 (148-51): Bild der Hängestelle sichern
+        foto = AUS / f"verlinken-haenger-{time.strftime('%H%M%S')}.png"; seh.kabel().foto(str(foto))
+        log(f"Hänger beim Verlinken – Foto {foto.name} – Bildschirm: {bildschirmtext(lesen())}")
+    except Exception:
+        pass
     raise Stopp("nach dem Verlinken nicht zurück auf der Beitragsseite")
 
 
@@ -2842,7 +2906,13 @@ def main(a):
         liste = bereit
         zeiten, aus, fertig, fehler = [], [], [], []
         folge = 0
+        limit_konten = set()                                     # 17.11.2026: Tageslimit-Hinweis gesehen → Account fertig
         for p, d in liste:
+            if d["account"] in limit_konten:
+                if not entwurf:
+                    schreibe(p, d, "fehler", f"LIMIT {d['account']} – heute nicht mehr")
+                print(f"✗ {d['datei']}: LIMIT {d['account']} – Account für heute fertig, übersprungen", flush=True)
+                fehler.append(d["datei"]); continue
             lim = PILOT.get(d["account"])
             if not entwurf and lim and heute_gepostet(d["account"]) >= lim:
                 aus.append(d["datei"]); log(f"übersprungen (Limit {d['account']}): {d['datei']}"); continue
@@ -2866,6 +2936,8 @@ def main(a):
                 if not entwurf:
                     schreibe(p, d, "fehler", str(e))
                 art = "SPERRE (nicht gepostet)" if isinstance(e, Sperre) else "Fehler"
+                if isinstance(e, Limit):
+                    limit_konten.add(d["account"]); art = f"LIMIT {d['account']}"; folge -= 1   # kein Ketten-Fehler
                 print(f"✗ {d['datei']}: {art}: {e} – weiter mit dem nächsten (Steuer-Chat prüft es)", flush=True)
                 fehler.append(d["datei"]); folge += 1
                 try:
