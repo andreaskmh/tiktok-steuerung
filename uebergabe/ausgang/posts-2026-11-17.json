@@ -275,12 +275,23 @@
    "entwurf": false,
    "dauer_s": 90,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "14:33",
+   "account": "artur.official",
+   "datei": "Video 147 - 25 UNO No Mercy - V1.mp4",
+   "produkt": "UNO No Mercy Kartenspiel",
+   "tts_link": "https://shop.tiktok.com/view/product/1729766249490848305",
+   "weg": "erstellen",
+   "entwurf": false,
+   "dauer_s": 85,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "anduri.official": 8,
   "ella_robinson2": 8,
   "andreas.testet": 3,
-  "artur.official": 5
+  "artur.official": 6
  }
 }

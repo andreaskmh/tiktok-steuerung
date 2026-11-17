@@ -606,6 +606,11 @@ def test_ablauf():
     # 17.11.: Galerie-Länge „100:29“ (Symbol vor 00:29 mitgelesen) → 00:29; Kachel 147-13 wurde nie erkannt
     tx = [('NOTFALL-KURBELRADIO U', 164, 356), ('100:29', 200, 420), ('SOTASTY ZERO SIRUP U', 53, 356), ('00:19', 91, 419),
           ('NOTFALL-KURBELRADIO U', 55, 582), ('100:29', 89, 645)]
+    tx2 = [('LYORA ERMIS e', 54, 475), ('00:12', 91, 532), ('UNO NO MERCY FÜR 1 CENT U', 54, 545), ('00:11', 92, 644),
+           ('TATORT ADVENTSKALENDER •', 164, 474), ('00:22', 201, 532), ('UNO NO MERCY FÜR 1 CENT U', 165, 547), ('00:11', 203, 644)]
+    check("Galerie: Hook ganz oben in der Kachel (≈98 über der Länge) zählt, Kachel darüber nicht",
+          P.galerie_kachel(tx2, 'UNO NO MERCY FÜR 1 CENT 😍', 10.57) == (163, 594)
+          and P.galerie_kachel(tx2, 'LYORA ERMIS 😍', 12.4) == (51, 482), str(P.galerie_kachel(tx2, 'UNO NO MERCY FÜR 1 CENT 😍', 10.57)))
     check("Galerie: „100:29“ = 00:29, neueste passende Kachel", P.galerie_kachel(tx, 'NOTFALL-KURBELRADIO 😍', 28.5) == (49, 595)
           and B.dauer_text("10:29") == "10:29", str(P.galerie_kachel(tx, 'NOTFALL-KURBELRADIO 😍', 28.5)))
     # Weg 4: Neukunden-Hinweis auch nach dem Leeren (More 7er, 21:05) → „Jetzt erstellen“, kein Verlinken über Listen

@@ -1314,7 +1314,9 @@ def galerie_kachel(tx, kachel, soll_dauer):
     dauern = B.dauern(tx)
 
     def hook_ok(t):
-        unter = [u for u in tx if abs(u[1] - t[1] + 40) < 60 and 25 < t[2] - u[2] < 95 and not B.dauer_text(u[0])]
+        # 17.11.2026 (147-25 UNO): Hook ganz oben in der Kachel liegt ~98 über der Länge → bis 108 (Kachel ~112 hoch,
+        # Hook der Kachel darüber liegt immer > 112 entfernt)
+        unter = [u for u in tx if abs(u[1] - t[1] + 40) < 60 and 25 < t[2] - u[2] < 108 and not B.dauer_text(u[0])]
         return any(_passt(kachel, u[0]) for u in unter)
     passend = [t for t in dauern if (soll_dauer is None or abs(_sek(t[0]) - soll_dauer) <= 1.1) and hook_ok(t)]
     if not passend:
