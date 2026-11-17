@@ -1409,7 +1409,7 @@ def zum_beitrag(kachel, galerie=None, warten_s=120):
     seit = vor_ziel = None
     gemeldet = fotos_zurueck = 0
     unbekannt_seit = None
-    galerie_foto = False
+    galerie_foto = mehrfach_getippt = False
     for _ in range(90):                                          # 16.11.: 90 Runden (Warten jetzt 2 s statt 5 s je Runde)
         z, tx, tabs = lage()
         if z != B.UNBEKANNT:
@@ -1439,8 +1439,9 @@ def zum_beitrag(kachel, galerie=None, warten_s=120):
             if gewaehlt and w and w[0] > 167:
                 tipp(w[0], w[1], tx, "Weiter"); warte_bildschirm((B.EDITOR, B.BEITRAG), 2.2); continue
             m = seh.finde("Mehrere auswählen", tx) or seh.finde("Mehrere auswahlen", tx)
-            if m and mehrfach_an(m[1]):                     # 17.11.2026 (Artur: „Claude schaltet aus“): Mehrfach-
-                if not kuerzlich("mehrfach-aus", 3.0):           # Auswahl in der Galerie aus (roter Haken unten links)
+            if m and not mehrfach_getippt and mehrfach_an(m[1]):   # 17.11.2026 (Artur: „Claude schaltet aus“): Mehrfach-
+                mehrfach_getippt = True                          # Auswahl aus – höchstens EIN Tipp pro Video (nie hin und her)
+                if not kuerzlich("mehrfach-aus", 3.0):           # (roter Haken unten links)
                     tipp(19, m[1], tx, "Mehrere auswählen (aus)"); merke("mehrfach-aus"); ruhe(0.8)
                     lesen(); log("„Mehrere auswählen“ ausgeschaltet" if not mehrfach_an(m[1]) else
                                  "„Mehrere auswählen“ noch an")
