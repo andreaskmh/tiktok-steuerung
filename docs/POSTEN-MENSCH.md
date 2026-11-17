@@ -95,3 +95,5 @@ ersten Post eines Stapels (Artur 12.11.2026) – Stapel im Hintergrund starten, 
    → „+“ → … → Link → Produkt → „Weitere Produkte hinzufügen“ → „Einkaufswagen“ → oberstes → Dialog „Hinzufügen“ → umbenennen.
 3. **Kann nicht in den Einkaufswagen** (Neukunden-Hinweis): „pro Verkauf“ → „Jetzt erstellen“ → „Videos“ → umbenennen (nicht
    änderbar → Standard-Namen) → Hinzufügen → Galerie unten rechts → Video → Beitrag (Produkt schon verlinkt).
+
+**17.11.2026 19:10 – Umbenennen mit ungültigen Zeichen (Video 148-01 ESN, Steuer-Chat):** Shop-Name „ESN Vitamin D3+K2 …“ → TikTok zeigt „Ungültige Zeichen entfernen: +“, Hinzufügen bleibt blass. Der Einkaufswagen-/Showcase-Weg wartete vor dem Umbenennen auf das rote Hinzufügen → nie umbenannt → „nach dem Verlinken nicht zurück“ (2×). Jetzt: steht „Ungültige“ da, wird sofort umbenannt; danach neu lesen, Hinzufügen erst bei Rot. Leeren robust (`feld_leeren`): Feld antippen, ⌘A, ⌘→ (Cursor ans Ende), Löschen × (Zeichen + 5), am Bildschirm 0/30 prüfen (bis 3×), erst dann den Button-Text tippen und mit `name_ok` prüfen. Gilt auch für den „Jetzt erstellen“-Weg. Backup `werkzeuge/post_mensch.py.bak-20261117-1905-plus`.

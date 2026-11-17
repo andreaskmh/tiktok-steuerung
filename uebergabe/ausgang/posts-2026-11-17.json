@@ -297,10 +297,43 @@
    "entwurf": false,
    "dauer_s": 93,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "19:04",
+   "account": "anduri.official",
+   "datei": "Video 148 - 11 SoTasty Zero Sirup - V1.mp4",
+   "produkt": "SoTasty Zero Sirup",
+   "tts_link": "https://shop.tiktok.com/view/product/1729922516087511174",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 109,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "19:06",
+   "account": "anduri.official",
+   "datei": "Video 148 - 16 Aprizo Parfum-Set - V1.mp4",
+   "produkt": "Aprizo - Lot von 3 parfums unisexe Bois, Aïsha, Bakar4",
+   "tts_link": "https://shop.tiktok.com/view/product/1729801680131693395",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 87,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "19:08",
+   "account": "anduri.official",
+   "datei": "Video 148 - 01 ESN Vitamin D3K2 - V1.mp4",
+   "produkt": "ESN Vitamin D3+K2 Daily Tabletten 300er-Pack",
+   "tts_link": "https://shop.tiktok.com/view/product/1729878773326322010",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 84,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
-  "anduri.official": 9,
+  "anduri.official": 12,
   "ella_robinson2": 8,
   "andreas.testet": 3,
   "artur.official": 6

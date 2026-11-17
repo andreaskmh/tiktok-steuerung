@@ -1156,6 +1156,40 @@ def feldzeile(tx, lab_y):
     return " ".join(z)
 
 
+def feld_zaehler(tx, lab_y):
+    """Reine Funktion: Zähler „N/30“ neben dem Label Produktname → N (None, wenn nicht lesbar)."""
+    jetzt = seh.finde("Produktname", tx, genau=True)
+    lab_y = jetzt[1] if jetzt else lab_y
+    z = [t for t in tx if re.fullmatch(r"\d{1,2}/30", t[0].strip()) and abs(t[2] - lab_y) < 15]
+    return int(z[0][0].strip().split("/")[0]) if z else None
+
+
+def feld_leeren(lab_y):
+    """17.11.2026 (148-01 ESN, Steuer-Chat): Produktname-Feld robust leeren – Feld antippen, Cursor ans Ende (⌘→),
+    so oft Löschen wie Zeichen drin sind (+5), dann am Bildschirm prüfen, dass es leer ist (0/30). Vorher blieb mit
+    ⌘A/Löschen der alte Name „ESN Vitamin D3+K2 Daily Tablet“ stehen. Gibt True zurück, wenn das Feld leer ist."""
+    for runde in range(3):
+        tx = lesen()
+        n = feld_zaehler(tx, lab_y)
+        if n == 0:
+            return True
+        produktname_feld_tippen(tx, lab_y)
+        K().taste("cmd+a"); ruhe(0.2)
+        try:
+            K().aktion("hid", keys=[[8, 0x4F]])                  # ⌘→ = Cursor ans Zeilenende
+        except Exception as e:
+            log(f"Cursor ans Ende ging nicht: {e}")
+        ruhe(0.2)
+        K().loeschen((n if n is not None else 30) + 5); ruhe(0.5)
+        for _w in range(6):
+            n2 = feld_zaehler(lesen(), lab_y)
+            if n2 == 0:
+                return True
+            time.sleep(0.4)
+        log(f"Produktname-Feld nicht leer ({n2}/30) – nochmal leeren")
+    return False
+
+
 def name_ok(tx, lab_y, alt=None):
     """Produktname im Umbenennen-Feld = _BUTTON? OCR-tolerant (Auswahl-Griffe/Cursor lesen sich mit, 15.11. 20:26 WMF:
     richtiger Name, 4× neu getippt) – ähnlicher Text in der Feldzeile ODER Zähler „N/30“ mit N = Länge."""
@@ -1216,8 +1250,8 @@ def erstellen_route(ausverkauft=False):
                     log("Produktname-Feld nicht änderbar (Produkt schon einmal so verlinkt) → Umbenennen übersprungen")
                     umbenannt = True; continue
                 alt = feldzeile(tx, lab[1])                      # Name vorher (für die Zähler-Prüfung)
-                produktname_feld_tippen(tx, lab[1])
-                K().taste("cmd+a"); ruhe(0.3); K().loeschen(40); ruhe(0.4)
+                if not feld_leeren(lab[1]):                      # 17.11.: robust leeren (0/30), dann tippen
+                    log("Produktname-Feld lässt sich nicht leeren")
                 menschlich(_BUTTON); ruhe(0.3)
                 # Artur 15.11.2026 20:28: „gib einfach die Textvorschläge für den Produktnamen ein“ → einmal tippen,
                 # keine Neu-tipp-Schleife; aber warten, bis TikTok den Text übernommen hat (Eingaben kommen verzögert
@@ -1239,8 +1273,7 @@ def erstellen_route(ausverkauft=False):
                         pass
                     log(f"Produktname nicht übernommen – Feld zeigt {zeile} (Foto {foto.name})")
                     if runde == 0:                               # Artur 21:12: „es war doch da“ → einmal neu: Feld
-                        produktname_feld_tippen(tx, lab[1])      # antippen, leeren, tippen
-                        K().taste("cmd+a"); ruhe(0.3); K().loeschen(40); ruhe(0.6)
+                        feld_leeren(lab[1])                      # antippen, leeren (0/30), tippen
                         menschlich(_BUTTON); ruhe(1.0)
                 if ok:
                     log(f"umbenannt: {_BUTTON}")
@@ -1847,9 +1880,11 @@ def nach_hinzufuegen(weg):
             r = re.search(r"noch (\d+) von (\d+)", " ".join(t for t, _, _ in tx))
             if r:
                 log(f"Pilot: noch {r.group(1)} von {r.group(2)}")
-            if not kraeftig_rot(80, 678):                        # erst blass (lädt), dann kräftig rot
-                time.sleep(0.4); continue
             global _umbenannt
+            # 17.11.2026 (148-01 ESN): Shop-Name mit „+“ → „Ungültige Zeichen entfernen“, Hinzufügen bleibt blass →
+            # früher nie umbenannt (wartete auf Rot) → Hänger. Jetzt: ungültige Zeichen = Feld geladen → umbenennen.
+            if not kraeftig_rot(80, 678) and not (_BUTTON and not _umbenannt and seh.finde("Ungültige", tx)):
+                time.sleep(0.4); continue                        # erst blass (lädt), dann kräftig rot
             if _BUTTON and not _umbenannt:                       # Artur 13.11.: Produktname IMMER umbenennen (≤ 20 Zeichen)
                 # 15.11. 21:30 (Artur: „Umbenennen hat nicht geklappt, da steht ‚Wen‘“): Tipp direkt auf den Namen,
                 # leeren, tippen, warten bis der GANZE Name im Feld steht (TikTok verschluckt bei Verzögerung Zeichen),
@@ -1857,9 +1892,10 @@ def nach_hinzufuegen(weg):
                 lab = seh.finde("Produktname", tx, genau=True)
                 lab_y = lab[1] if lab else 307
                 alt = feldzeile(tx, lab_y)                       # Name vorher (für die Zähler-Prüfung)
+                ok = False
                 for runde in range(2):
-                    produktname_feld_tippen(lesen(), lab_y)
-                    K().taste("cmd+a"); ruhe(0.3); K().loeschen(60); ruhe(0.4)
+                    if not feld_leeren(lab_y):                   # 17.11.: nur in ein leeres Feld (0/30) tippen
+                        log("Produktname-Feld lässt sich nicht leeren"); continue
                     menschlich(_BUTTON); ruhe(0.3)               # 16.11.: war 0,8 – die Prüfung unten wartet ohnehin,
                     ok = False                                   # bis der GANZE Name im Feld steht (gleiche Gesamtzeit,
                     for _w in range(16):                         # öfter nachgesehen)
@@ -1871,6 +1907,7 @@ def nach_hinzufuegen(weg):
                     log("Produktname unvollständig – nochmal komplett neu")
                 _umbenannt = True
                 log(f"umbenannt: {_BUTTON}" if ok else "Produktname nicht sauber übernommen – weiter")
+                time.sleep(0.4); continue                        # 17.11.: neu lesen → Hinzufügen erst, wenn es rot ist
             if kuerzlich("hinzufuegen-rot", 3.0):               # 16.11.: nie zweimal „Hinzufügen“ in Folge
                 time.sleep(0.4); continue
             tipp(167, 678, None, "Hinzufügen (rot)"); merke("hinzufuegen-rot"); ruhe(0.6); continue   # Schutz 3 s oben
