@@ -803,12 +803,34 @@
    "entwurf": false,
    "dauer_s": 108,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "21:18",
+   "account": "artur.official",
+   "datei": "Video 148 - 17 HOTU Schluesselanhaenger Kamera - V1.mp4",
+   "produkt": "HOTU Mini Keychain Digital Camera with 32G Card, Y2K Pocket-Size Camera 1080P HD – 1MP Lens, Flash & 0.96\" Screen ,Target retro digital camera,Vlog Camera for Travel, Concerts, Kids & Instant Party.",
+   "tts_link": "https://shop.tiktok.com/view/product/1729551081910999678",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 98,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "21:23",
+   "account": "artur.official",
+   "datei": "Video 148 - 33 Pfirsichringe - V1.mp4",
+   "produkt": "Pfirsichringe (500g) | Halal Süßigkeiten | glutenfrei | weich",
+   "tts_link": "https://shop.tiktok.com/view/product/1729470744204578359",
+   "weg": "erstellen",
+   "entwurf": false,
+   "dauer_s": 74,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "anduri.official": 23,
   "ella_robinson2": 24,
   "andreas.testet": 3,
-  "artur.official": 21
+  "artur.official": 23
  }
 }

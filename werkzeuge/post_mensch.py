@@ -34,6 +34,50 @@ AUS = PROJ / "uebergabe" / "ausgang"
 PFLICHT = ["#tiktokshopblackfriday", "#superdeals", "#livedeals"]      # bis 30.11.2026 (Artur)
 PILOT = {"andreas.testet": 3}                                          # Shopping-Videos pro Tag
 REIHENFOLGE = ["anduri.official", "ella_robinson2", "andreas.testet", "artur.official", "andreasfastlane"]
+TAGESLIMIT = 25                                                         # TikTok: Shopping-Videos pro Account und Tag
+AUFFUELLEN = ["anduri.official", "ella_robinson2", "artur.official", "andreas.testet"]   # nie andreasfastlane (Slideshows)
+
+
+def limit_datei():
+    return AUS / f"limit-{datetime.date.today().isoformat()}.json"
+
+
+def limit_heute():
+    """Accounts, bei denen TikTok heute den Limit-Hinweis gezeigt hat (bleibt über Neustarts erhalten)."""
+    try:
+        return set(json.loads(limit_datei().read_text()))
+    except Exception:
+        return set()
+
+
+def limit_merken(konto):
+    k = limit_heute() | {konto}
+    limit_datei().write_text(json.dumps(sorted(k)))
+
+
+def umverteilen(d, limit_konten, geplant):
+    """17.11.2026 (Artur: „Wenn ein Account voll ist, fülle die anderen Accounts auf“): Konto mit Platz für ein Video
+    eines vollen Accounts. Platz = veröffentlichte Posts heute + schon dorthin geplante < Limit (andreas.testet: PILOT).
+    Kein Produkt doppelt auf einem Account (heute gepostet oder geplant). None = alle voll → REST-POSTEN für morgen."""
+    tag = datetime.date.today().isoformat()
+    pf = AUS / f"posts-{tag}.json"
+    posts = json.loads(pf.read_text()).get("posts", []) if pf.exists() else []
+    if any(x.get("datei") == d.get("datei") and not x.get("entwurf") for x in posts):
+        return None                                              # gleiche Datei nie doppelt (hart, auf keinem Account)
+    # Artur 17.11.2026 21:30: Produkt-Regel nur als Vorrang – passt das Video sonst nirgends hin, darf es auf einen
+    # Account, der dasselbe Produkt (anderes Video) heute schon hat. Datei-Doppelschutz bleibt hart (gepostet.sh).
+    for produkt_regel in (True, False):
+        for k in AUFFUELLEN:
+            if k in limit_konten or k == d["account"]:
+                continue
+            lim = PILOT.get(k, TAGESLIMIT)
+            if heute_gepostet(k) + len(geplant.get(k, [])) >= lim:
+                continue
+            schon = {x.get("tts_link") for x in posts if x.get("account") == k} | {x.get("tts_link") for x in geplant.get(k, [])}
+            if produkt_regel and d.get("tts_link") in schon:
+                continue
+            return k
+    return None
 T0 = time.time()
 
 
@@ -578,6 +622,9 @@ def zur_hauptseite(abbrechen=True, max_schritte=16):
     vorher, gleich, apps = None, 0, 0
     for _ in range(max_schritte):
         z, tx, tabs = lage()
+        if seh.finde("weiter bearbeiten", tx):                   # 17.11.2026: Banner „Diesen Beitrag weiter bearbeiten?
+            log("Banner „Beitrag weiter bearbeiten?“ → nach oben weggewischt (kein Entwurf)")   # Entwurf speichern |
+            K().ziehe(167, 62, 167, 8, 0.2); ruhe(1.2); continue   # Bearbeiten“ nach App-Neustart → weg, nichts speichern
         if tabs and z in (B.FEED, B.PROFIL, B.TIKTOK):
             return tx
         gleich = gleich + 1 if z == vorher else 0
@@ -2911,12 +2958,19 @@ def main(a):
         liste = bereit
         zeiten, aus, fertig, fehler = [], [], [], []
         folge = 0
-        limit_konten = set()                                     # 17.11.2026: Tageslimit-Hinweis gesehen → Account fertig
+        limit_konten = limit_heute()                             # 17.11.2026: Tageslimit-Hinweis gesehen → Account fertig
+        geplant = {}                                             # umgehängte Videos je Account (Platz-Rechnung)
         for p, d in liste:
             if d["account"] in limit_konten:
+                neu = None if entwurf else umverteilen(d, limit_konten, geplant)
+                if neu:                                          # 17.11.2026: anderen Account auffüllen
+                    alt = d["account"]; d["account"] = neu; geplant.setdefault(neu, []).append(d)
+                    schreibe(p, d, "freigegeben", f"umgehängt {alt} → {neu} (LIMIT {alt})")
+                    print(f"↪ {d['datei']}: {alt} voll → {neu}", flush=True)
+                    liste.append((p, d)); continue               # später im Lauf posten (eigener Konto-Block)
                 if not entwurf:
-                    schreibe(p, d, "fehler", f"LIMIT {d['account']} – heute nicht mehr")
-                print(f"✗ {d['datei']}: LIMIT {d['account']} – Account für heute fertig, übersprungen", flush=True)
+                    schreibe(p, d, "fehler", f"LIMIT {d['account']} – heute nicht mehr, alle Accounts voll")
+                print(f"✗ {d['datei']}: LIMIT {d['account']} – alle Accounts voll, für morgen", flush=True)
                 fehler.append(d["datei"]); continue
             lim = PILOT.get(d["account"])
             if not entwurf and lim and heute_gepostet(d["account"]) >= lim:
@@ -2942,7 +2996,14 @@ def main(a):
                     schreibe(p, d, "fehler", str(e))
                 art = "SPERRE (nicht gepostet)" if isinstance(e, Sperre) else "Fehler"
                 if isinstance(e, Limit):
-                    limit_konten.add(d["account"]); art = f"LIMIT {d['account']}"; folge -= 1   # kein Ketten-Fehler
+                    limit_konten.add(d["account"]); limit_merken(d["account"])
+                    art = f"LIMIT {d['account']}"; folge -= 1     # kein Ketten-Fehler
+                    neu = None if entwurf else umverteilen(d, limit_konten, geplant)
+                    if neu:                                      # 17.11.2026: dieses Video gleich mit umhängen
+                        alt = d["account"]; d["account"] = neu; geplant.setdefault(neu, []).append(d)
+                        schreibe(p, d, "freigegeben", f"umgehängt {alt} → {neu} (LIMIT {alt})")
+                        print(f"↪ {d['datei']}: {alt} voll → {neu}", flush=True)
+                        liste.append((p, d))
                 print(f"✗ {d['datei']}: {art}: {e} – weiter mit dem nächsten (Steuer-Chat prüft es)", flush=True)
                 fehler.append(d["datei"]); folge += 1
                 try:

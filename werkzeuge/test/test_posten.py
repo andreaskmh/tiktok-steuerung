@@ -13,6 +13,8 @@ H = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(H.parent))
 import bildschirm as B
 import post_mensch as P
+P.limit_heute = lambda: set()                 # 17.11.2026: echte Tages-Limitliste nie in Tests
+P.limit_merken = lambda konto: None
 import kabel as _KB
 import seh as _SEH
 
