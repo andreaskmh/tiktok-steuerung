@@ -566,6 +566,8 @@ def _test_fotos_sammel():
         finally:
             for n, v in alt.items():
                 setattr(P, n, v)
+    check("Fotos: „237 Objekte“ + „Auswählen“ oben ≠ Auswahlmodus", P._ausgewaehlt(album) is None
+          and P._ausgewaehlt([('Objekte auswählen', 166, 688)]) == 0 and P._ausgewaehlt([('Auswahl (3) anzeigen', 165, 688)]) == 3)
     erg, st = lauf()
     check("Fotos: Auswählen → 2 Kacheln je 1× → Papierkorb → 2 löschen, kein Wisch im Auswahlmodus, nie Alle",
           erg == 2 and st["wisch_in_auswahl"] == 0 and st["tipps"].count("Kachel DIKKA TONIE IST ZURÜCK 😍") == 1

@@ -2227,7 +2227,8 @@ def _ausgewaehlt(tx):
         or re.search(r"auswahl\s*\((\d+)\)", alles)                # 17.11.: iOS neu „Auswahl (N) anzeigen“
     if m:
         return int(m.group(1))
-    return 0 if re.search(r"objekte\s+ausw[aä]hlen", alles) else None   # Auswahlmodus, nichts gewählt
+    # Auswahlmodus, nichts gewählt: „Objekte auswählen“ als EIN Text unten (nicht „237 Objekte“ + „Auswählen“ oben)
+    return 0 if any(re.fullmatch(r"\W*objekte\s+ausw[aä]hlen\W*", t.strip().lower()) and y > 600 for t, _, y in tx) else None
 
 
 def fotos_sammel_loeschen(videos):

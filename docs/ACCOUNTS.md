@@ -35,3 +35,5 @@ Beispiel 20 Videos: 12 auf anduri + ella (je 6), 4 auf andreas.testet (Limit 3 b
 
 ## Freigabe (Artur, 11.11.2026)
 - Abnahme der Videos („passt“, /fertig, auch per Sprache) = Freigabe zum Posten. Kein extra Posting-Plan, keine zweite Rückfrage. Ohne Signal im Chat wird nie gepostet.
+
+- **Tageslimit TikTok: max. 25 Videos pro Account und Tag** (Artur 17.11.2026; andreas.testet weiter 3). Bis zum Maximum verteilen (Zähler `posts-JJJJ-MM-TT.json`), Rest nicht posten, sondern für den nächsten Tag vormerken (`REST-POSTEN.md` im Videoordner).
