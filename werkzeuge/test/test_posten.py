@@ -15,6 +15,8 @@ import bildschirm as B
 import post_mensch as P
 P.limit_heute = lambda: set()                 # 17.11.2026: echte Tages-Limitliste nie in Tests
 P.limit_merken = lambda konto: None
+P.methoden = lambda account, pid: {}           # 17.11.2026: echter Methoden-Speicher nie in Tests
+P.methode_merken = lambda *a, **k: None
 import kabel as _KB
 import seh as _SEH
 
@@ -692,8 +694,9 @@ def test_ablauf():
         mit_ablauf(ab, d)
     finally:
         Ablauf.schritt = alt_schritt
-    check("Neukunden-Hinweis → direkt Jetzt erstellen (nicht leeren)", "leeren" not in ab.aufrufe and "erstellen" in ab.aufrufe
-          and "verlinken" not in ab.aufrufe and ab.entwurf is False, str(ab.aufrufe))
+    # 17.11.2026 (Artur): Neukunden-Hinweis → Produkt aus dem Showcase (Reihenfolge Einkaufswagen → Showcase → Erstellen)
+    check("Neukunden-Hinweis → Showcase (nicht leeren, nicht erstellen)", "leeren" not in ab.aufrufe
+          and "erstellen" not in ab.aufrufe and "verlinken" in ab.aufrufe and ab.entwurf is False, str(ab.aufrufe))
     # Preis im Produktnamen → Sperre vor allem anderen
     ab = Ablauf()
     try:
@@ -763,14 +766,20 @@ def test_erstellen_weg():
           (B.PRODUKTSEITE, "tipp:pro Verkauf"): "w3", ("w3", "tipp:Jetzt erstellen"): B.BEWERBEN,
           (B.BEWERBEN, "tipp:Videos"): B.KAMERA}
     sim = Sim("w1", ue, bilder=bilder)
+    alt_ts, alt_zp, alt_pid = P.tiktok_schliessen, P.zum_produkt, P._AKT_PID   # 17.11.2026: „Mehr erkunden“ →
+    P.tiktok_schliessen = lambda: True                                          # TikTok schließen + Produkt neu
+    P.zum_produkt = lambda pid, prod: setattr(sim, "z", B.PRODUKTSEITE)
+    P._AKT_PID = "1"
     try:
         mit_sim(sim, P.erstellen_route)
         taps = [a for _, a in sim.log]
-        check("Erstellen-Weg: Showcase → „Mehr erkunden“ NIE antippen → pro Verkauf neu → Jetzt erstellen → Videos → Kamera",
+        check("Erstellen-Weg: Showcase → „Mehr erkunden“ NIE antippen → TikTok neu → pro Verkauf → Jetzt erstellen → Kamera",
               sim.z == B.KAMERA and "tipp:Zum Showcase hinzufügen" in taps and "tipp:Jetzt erstellen" in taps
               and not any("Mehr erkunden" in t for t in taps), str(sim.log))
     except Exception as e:
         check("Erstellen-Weg", False, f"{e} {sim.log}")
+    finally:
+        P.tiktok_schliessen, P.zum_produkt, P._AKT_PID = alt_ts, alt_zp, alt_pid
     sim = Sim("w1", ue, bilder=bilder)
     try:
         mit_sim(sim, P.erstellen_route, True); ok = False

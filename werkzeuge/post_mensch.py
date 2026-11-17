@@ -35,7 +35,38 @@ PFLICHT = ["#tiktokshopblackfriday", "#superdeals", "#livedeals"]      # bis 30.
 PILOT = {"andreas.testet": 3}                                          # Shopping-Videos pro Tag
 REIHENFOLGE = ["anduri.official", "ella_robinson2", "andreas.testet", "artur.official", "andreasfastlane"]
 TAGESLIMIT = 25                                                         # TikTok: Shopping-Videos pro Account und Tag
-AUFFUELLEN = ["anduri.official", "ella_robinson2", "artur.official", "andreas.testet"]   # nie andreasfastlane (Slideshows)
+AUFFUELLEN = ["anduri.official", "ella_robinson2", "artur.official", "andreas.testet"]
+LETZTER_AUSWEG = "andreasfastlane"   # Artur 17.11.2026: „Wenn alle anderen nicht gehen, machst du die restlichen Videos bei
+                                     # andreasfastlane“ – erst wenn alle anderen voll (Limit) sind
+
+
+def _methoden_datei():
+    return AUS / "methoden.json"
+
+
+def methoden(account, pid):
+    """17.11.2026 (Artur: „merk dir pro Produkt und Account, welche Methode schon versucht wurde“):
+    {"gescheitert": [...], "geklappt": "showcase"|"wagen"|"erstellen"} – gilt über Neustarts und Tage."""
+    try:
+        return json.loads(_methoden_datei().read_text()).get(f"{account}|{pid}", {})
+    except Exception:
+        return {}
+
+
+def methode_merken(account, pid, weg, ok):
+    if weg not in ("showcase", "wagen", "erstellen"):
+        return
+    try:
+        alle = json.loads(_methoden_datei().read_text())
+    except Exception:
+        alle = {}
+    m = alle.setdefault(f"{account}|{pid}", {"gescheitert": [], "geklappt": None})
+    if ok:
+        m["geklappt"] = weg
+        m["gescheitert"] = [x for x in m["gescheitert"] if x != weg]
+    elif weg not in m["gescheitert"]:
+        m["gescheitert"].append(weg)
+    _methoden_datei().write_text(json.dumps(alle, ensure_ascii=False, indent=1))
 
 
 def limit_datei():
@@ -77,6 +108,8 @@ def umverteilen(d, limit_konten, geplant):
             if produkt_regel and d.get("tts_link") in schon:
                 continue
             return k
+    if d["account"] != LETZTER_AUSWEG and LETZTER_AUSWEG not in limit_konten:   # letzte Stufe vor „REST für morgen“
+        return LETZTER_AUSWEG
     return None
 T0 = time.time()
 
@@ -904,7 +937,7 @@ def zum_produkt(pid, produkt):
 
 # ---------------------------------------------------------------- 3) Showcase oder Einkaufswagen
 
-def showcase_oder_wagen(tx):
+def showcase_oder_wagen(tx, nur_showcase=False):
     # Artur 13.11.2026: „Ausverkauft“ steht unten auf der Produktseite → Showcase ja, Einkaufswagen nein, Video als Entwurf
     ausv = bool(seh.finde("Ausverkauft", tx, unter=560) or seh.finde("Nicht vorrätig", tx, unter=560))
     if ausv:
@@ -929,6 +962,10 @@ def showcase_oder_wagen(tx):
             time.sleep(0.3)
         if ausv:
             log("schon im Showcase, ausverkauft → kein Einkaufswagen"); return "ausverkauft"
+        if nur_showcase:                                         # 17.11.2026: Einkaufswagen ging hier schon nicht →
+            log("schon im Showcase → Produkt aus dem Showcase (Einkaufswagen geht bei diesem Produkt nicht)")
+            blatt_runter(130); ruhe(0.8)
+            return "showcase"
         # Artur 13.11.2026 16:30: schon im Showcase → IMMER Einkaufswagen und Link aus dem Einkaufswagen (nie im Showcase suchen)
         log("schon im Showcase → Einkaufswagen")
         tx = lesen()
@@ -944,6 +981,8 @@ def showcase_oder_wagen(tx):
         in_wagen(tx)
         return "wagen"
     else:
+        if nur_showcase:
+            log("kein „pro Verkauf“ – Produkt aus dem Showcase versuchen"); return "showcase"
         log("kein „pro Verkauf“ → Einkaufswagen")
     in_wagen(tx)
     return "wagen"
@@ -1189,6 +1228,7 @@ def dauer_text(v):
 
 _SOLL_DAUER = None   # Sekunden des Videos, das gerade gepostet wird
 _AKT_DATEI = None    # Datei des Videos, das gerade gepostet wird (für ein zweites AirDrop)
+_AKT_PID, _AKT_PRODUKT = None, None   # 17.11.2026: für „Mehr erkunden“ → TikTok schließen + Produkt neu öffnen
 
 
 def cover_passt(tx, kachel):
@@ -1307,7 +1347,7 @@ def erstellen_route(ausverkauft=False):
     → „Videos – Lade ein Video hoch“ → Produktname umbenennen → Hinzufügen → Kamera (Galerie unten rechts).
     Produkt ist damit verlinkt – kein Auswählen aus Listen. Ausverkauft: nur ins Showcase, dann Entwurf ohne Link.
     Zustandsmaschine: setzt an jedem dieser Bildschirme fort."""
-    umbenannt = False; feld_warten = 0; unklar = 0; mehr = 0
+    umbenannt = False; feld_warten = 0; unklar = 0; mehr = 0; neu_geladen = False
     for _ in range(36):
         z, tx, _t = lage()
         if z == B.KAMERA:
@@ -1406,8 +1446,13 @@ def erstellen_route(ausverkauft=False):
                 warte_bildschirm((B.BEWERBEN, B.UMBENENNEN, B.KAMERA), 2.5); continue
             if seh.finde("Mehr erkunden", tx, unter=560):
                 mehr += 1
+                if mehr >= 3 and not neu_geladen and _AKT_PID:   # Artur 17.11.2026: „wenn da ‚Mehr erkunden‘ steht,
+                    neu_geladen = True; mehr = 0                 # einmal die App komplett schließen, so lädt sie sich
+                    log("nur „Mehr erkunden“ → TikTok schließen, Produkt neu über Social1")   # neu“ → dann „Jetzt erstellen“
+                    tiktok_schliessen(); zum_produkt(_AKT_PID, _AKT_PRODUKT); log("Produktseite (neu geladen)")
+                    continue
                 if mehr % 3 == 0:
-                    if mehr > 9:
+                    if mehr > 9 or neu_geladen:
                         try:                                     # 17.11.2026 (148-08/32): Bild + Text sichern
                             foto = AUS / f"mehr-erkunden-{time.strftime('%H%M%S')}.png"; seh.kabel().foto(str(foto))
                             log(f"nur „Mehr erkunden“ – Foto {foto.name} – Bildschirm: {bildschirmtext(tx, 80)}")
@@ -2656,8 +2701,15 @@ def _ablauf(d, F, pid):
             # Artur 15.11.2026 20:15 – DREI Wege: (1) „Zum Showcase hinzufügen“ → Produkt aus dem Showcase,
             # (2) schon im Showcase → Einkaufswagen → Produkt aus dem Einkaufswagen, (3) geht beides nicht (Neukunden-
             # Angebot, oberstes Listen-Produkt passt nicht) → „Jetzt erstellen“ → Video
+            mem = methoden(d["account"], pid)                    # 17.11.2026: Methoden-Speicher je Produkt + Account
+            if mem.get("geklappt") or mem.get("gescheitert"):
+                log(f"Methoden-Speicher: geklappt={mem.get('geklappt')} gescheitert={mem.get('gescheitert')}")
             if F.get("nur_erstellen") or d.get("weg") == "erstellen":   # Weg 4 / Test-Schalter (Artur 16.11.2026:
                 weg = "erstellen"                                # „stell dir vor, der Neukunden-Hinweis wär gekommen“)
+            elif mem.get("geklappt") == "erstellen":
+                weg = "erstellen"
+            elif "wagen" in mem.get("gescheitert", []) or mem.get("geklappt") == "showcase":
+                weg = showcase_oder_wagen(tx, nur_showcase=True)   # Einkaufswagen ging hier schon nicht
             elif F.get("nur_wagen"):                             # nach dem Leeren: direkt in den Einkaufswagen
                 in_wagen(tx); weg = "wagen"
             else:
@@ -2665,8 +2717,11 @@ def _ablauf(d, F, pid):
             if weg == "ausverkauft":
                 F["ohne_link"] = True; weg = "ohne"
             elif weg == "wagen" and _NEUKUNDE:                   # Artur 15.11. 21:08: Neukunden-Hinweis → Einkaufswagen
-                log("Neukunden-Hinweis – Einkaufswagen geht nicht → direkt „Jetzt erstellen“ (Video-Methode)")
-                weg = "erstellen"                                # geht nicht → DIREKT „Jetzt erstellen“ (nicht leeren)
+                # Artur 17.11.2026: „Wenn es im Showcase drin ist, ist es auch eingespeichert und du kannst es vom
+                # Showcase entnehmen“ → Reihenfolge Einkaufswagen → Showcase → „Jetzt erstellen“
+                methode_merken(d["account"], pid, "wagen", False)
+                log("Neukunden-Hinweis – Einkaufswagen geht nicht → Produkt aus dem Showcase nehmen")
+                weg = "showcase"
             if weg == "erstellen":
                 F["erstellen_offen"] = True
             F["produkt"] = weg
@@ -2733,6 +2788,7 @@ def ein_video(p, d, entwurf=False, aufr=True):
         if lim and heute_gepostet(d["account"]) >= lim:
             raise Hart(f"{d['account']}: Tageslimit {lim} erreicht")
     pid = muss(d.get("tts_link", "").rstrip("/").split("/")[-1], "keine Produkt-ID (tts_link)")
+    globals()["_AKT_PID"], globals()["_AKT_PRODUKT"] = pid, d["produkt"]   # 17.11.: „Mehr erkunden“-Rettung
     F = {"konto": False, "produkt": None, "beitrag": False, "cover": False, "text": False, "link": False,
          "ohne_link": bool(d.get("ausverkauft")), "erstellen_offen": False}
     neustarts = 0
@@ -2746,6 +2802,7 @@ def ein_video(p, d, entwurf=False, aufr=True):
             verbindung_merken(False)
             raise
         except (ListeFalsch, WagenLeeren) as e:                  # Artur 15.11. 21:10: „wenn weder Showcase noch
+            methode_merken(d["account"], pid, F.get("produkt"), False)   # 17.11.: Speicher
             if F.get("nur_erstellen"):                           # Einkaufswagen gehen, dann Jetzt erstellen“
                 raise Sperre(f"{e} – auch über „Jetzt erstellen“ nicht, nicht verlinkt")
             verbindung_merken(False)
@@ -2796,6 +2853,8 @@ def ein_video(p, d, entwurf=False, aufr=True):
     else:                                                        # 15.11.: auch --entwurf merken → Neustart macht ihn nicht doppelt
         schreibe(p, d, "entwurf", f"als Entwurf gespeichert ({weg}), {dauer:.0f} s")
     eintragen(d, dauer, weg, entwurf)
+    if not entwurf:
+        methode_merken(d["account"], pid, weg, True)             # 17.11.2026: Methoden-Speicher
     print(f"✓ {d['datei']} → {d['account']} ({weg}{', Entwurf' if entwurf else ''}) {dauer:.0f} s", flush=True)
     if aufr and not entwurf:
         aufraeumen_im_hintergrund(d)                             # 16.11.: Mac-Safari parallel zum nächsten Video
