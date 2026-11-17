@@ -525,21 +525,21 @@ def test_ablauf():
     check("Weg 1/2: Showcase/Wagen + Verlinken", ab.aufrufe == ["konto", "zum_produkt", "showcase", "hauptseite", "zum_beitrag",
                                                                "cover", "beschreiben", "verlinken", "schluss", "abschluss"],
           str(ab.aufrufe))
-    # Hänger beim Verlinken (Liste offen) → nur Verlinken nochmal
+    # Artur 17.11.: Hänger beim Verlinken → Beitrag verwerfen, Video einmal komplett neu (nicht am Bildschirm weiter)
     ab = Ablauf({"verlinken": [P.Stopp("Verlinken kam nicht weiter (60 s)")]}, schirm=B.SHOWCASE_LISTE)
     mit_ablauf(ab, d)
-    check("Hänger Verlinken: nur Verlinken nochmal", ab.aufrufe.count("verlinken") == 2 and ab.aufrufe.count("beschreiben") == 1
-          and ab.aufrufe.count("zum_produkt") == 1 and ab.entwurf is False, str(ab.aufrufe))
+    check("Hänger Verlinken: Beitrag verwerfen + Video neu", ab.aufrufe.count("verlinken") == 2 and ab.aufrufe.count("beschreiben") == 2
+          and ab.aufrufe.count("zum_produkt") == 2 and ab.entwurf is False and ab.aufrufe[-1] == "abschluss", str(ab.aufrufe))
     # Artur 21:10: oberstes Listen-Produkt passt nicht → Beitrag verwerfen, Produkt neu, „Jetzt erstellen“
     ab = Ablauf({"verlinken": [P.ListeFalsch("oberstes Produkt passt nicht")]}, schirm=B.SHOWCASE_LISTE)
     mit_ablauf(ab, d)
     check("Liste falsch → Jetzt erstellen (nicht leeren)", "erstellen" in ab.aufrufe and "leeren" not in ab.aufrufe
           and ab.aufrufe.count("zum_produkt") == 2 and ab.aufrufe.count("verlinken") == 1 and ab.entwurf is False,
           str(ab.aufrufe))
-    # Beitrag verloren (Feed) → ab „+“ neu, Produkt NICHT nochmal
+    # Beitrag verloren (Feed) → Video komplett neu (Artur 17.11.)
     ab = Ablauf({"beschreiben": [P.Stopp("Beschreibungsfeld nicht gefunden")]}, schirm=B.FEED)
     mit_ablauf(ab, d)
-    check("Beitrag verloren: neu ab „+“", ab.aufrufe.count("zum_beitrag") == 2 and ab.aufrufe.count("zum_produkt") == 1
+    check("Beitrag verloren: Video komplett neu", ab.aufrufe.count("zum_beitrag") == 2 and ab.aufrufe.count("zum_produkt") == 2
           and ab.aufrufe.count("cover") == 2, str(ab.aufrufe))
     # Produkt beim Verlinken nicht verfügbar → Entwurf ohne Link
     ab = Ablauf({"verlinken": [P.Entwurf("nicht vorrätig → Entwurf")]})
@@ -563,8 +563,40 @@ def test_ablauf():
     try:
         mit_ablauf(ab, d); ok = False
     except P.Stopp as e:
-        ok = "Wiederaufnahmen" in str(e) and "abschluss" not in ab.aufrufe
-    check("Dauer-Hänger: Abbruch nach 6, nicht gepostet", ok)
+        ok = "2. Versuch" in str(e) and "abschluss" not in ab.aufrufe and ab.aufrufe.count("verlinken") == 2
+    check("Dauer-Hänger: nach 2. Versuch Fehler, nicht gepostet (keine Schleife)", ok, str(ab.aufrufe))
+    # Artur 17.11.: Verbindungswechsel (Kabel ab / WLAN↔USB) mitten im Post → Verbindungswechsel → Beitrag neu
+    class KW:
+        WECHSEL = 0
+        art = "Connected over USB"
+        def steuerung_art(s): return s.art
+    kw = KW(); alt_k = P.seh.kabel; P.seh.kabel = lambda: kw
+    try:
+        P.verbindung_merken(); kw.WECHSEL = 1
+        try:
+            P.verbindung_pruefen(); ok1 = False
+        except P.Verbindungswechsel:
+            ok1 = True
+        P.verbindung_merken(); kw.art = "Connected over Wi-Fi"; P._VB["zuletzt"] = 0
+        try:
+            P.verbindung_pruefen(); ok2 = False
+        except P.Verbindungswechsel:
+            ok2 = True
+        P.verbindung_merken(False); kw.WECHSEL = 5
+        P.verbindung_pruefen(); ok3 = True                       # außerhalb eines Posts: nichts
+    finally:
+        P.seh.kabel = alt_k; P._VB["aktiv"] = False
+    check("Verbindungswechsel: Zähler + WLAN↔USB erkannt, außerhalb Post still", ok1 and ok2 and ok3)
+    # 17.11.: neue Auswahl-Ansicht „Ausgewählt 1“ + „Weiter (1)“ (Foto unbekannt-133429.png, 147-24)
+    tx = [('1:34', 47, 17), ('Ausgewahlt', 289, 65), ('Doppelklick', 188, 650), ('PUTARE SCROLL-RING +', 40, 680),
+          ('00:29', 49, 711), ('AutoCut', 106, 755), ('Weiter (1)', 276, 755)]
+    ok = P.auswahl_weiter(tx, 'PUTARE SCROLL-RING 😍', 29.17) == (276, 755) \
+        and P.auswahl_weiter(tx, 'UNO NO MERCY FÜR 1 CENT 😍', 29.17) is None and P.auswahl_weiter(tx, 'PUTARE SCROLL-RING 😍', 12) is None
+    try:
+        P.auswahl_weiter([x if x[0] != 'Weiter (1)' else ('Weiter (2)', 276, 755) for x in tx], 'PUTARE SCROLL-RING 😍', 29.17); ok = False
+    except P.Sperre:
+        pass
+    check("Auswahl-Ansicht: Weiter (1) nur bei Hook + Länge, 2 gewählt = Sperre, nie AutoCut", ok)
     # Weg 4: Neukunden-Hinweis auch nach dem Leeren (More 7er, 21:05) → „Jetzt erstellen“, kein Verlinken über Listen
     ab = Ablauf()
     alt_schritt = Ablauf.schritt

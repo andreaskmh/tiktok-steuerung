@@ -59,6 +59,10 @@ class WagenLeeren(Stopp):
     """Einkaufswagen geht nicht (Neukunden-Hinweis = liegt schon drin) → ganzen Einkaufswagen leeren, neu hinzufügen."""
 
 
+class Verbindungswechsel(Stopp):
+    """Artur 17.11.2026: Kabel ab / Kabel↔WLAN mitten im Post → Beitrag verwerfen, Video neu."""
+
+
 class Entwurf(Stopp):
     """Produkt nicht verfügbar/vorrätig → dieses Video als Entwurf ohne Link."""
 
@@ -210,10 +214,39 @@ def _lesen_frisch():
     return tx
 
 
+_VB = {"aktiv": False, "wechsel": 0, "art": "", "zuletzt": 0.0}
+
+
+def verbindung_merken(aktiv=True):
+    """Stand der Kabel-Verbindung zu Beginn eines Versuchs merken (Zähler + USB/WLAN)."""
+    k = seh.kabel()
+    _VB.update(aktiv=aktiv and bool(k), wechsel=getattr(k, "WECHSEL", 0) if k else 0, zuletzt=time.time(),
+               art=(k.steuerung_art() if k and hasattr(k, "steuerung_art") else ""))
+
+
+def verbindung_pruefen():
+    """Artur 17.11.2026: „Hänger passiert nur, wenn das Kabel entfernt wird oder sich löst“ / „wenn von Kabel auf WLAN
+    umgeschaltet wird oder andersrum“ → jeder Verbindungswechsel mitten im Post = Verbindungswechsel (Beitrag neu)."""
+    if not _VB["aktiv"]:
+        return
+    k = seh.kabel()
+    if not k:
+        return
+    if getattr(k, "WECHSEL", 0) != _VB["wechsel"]:
+        raise Verbindungswechsel("Kabel-Steuerung neu verbunden")
+    if time.time() - _VB["zuletzt"] > 2.0 and hasattr(k, "steuerung_art"):
+        _VB["zuletzt"] = time.time()
+        art = k.steuerung_art()
+        if art and _VB["art"] and art != _VB["art"]:
+            raise Verbindungswechsel(f"Verbindung gewechselt: {_VB['art']} → {art}")
+        _VB["art"] = art or _VB["art"]
+
+
 def lesen():
     """CAPTCHA: nie selbst lösen, aber auch nicht abbrechen (Artur 13.11.2026: „soll automatisiert gehen“) –
     melden, warten bis Artur es gelöst hat, dann am aktuellen Bildschirm weitermachen."""
     tx = _lesen_frisch()
+    verbindung_pruefen()                                         # 17.11.: Kabel ab / WLAN↔USB → Beitrag neu
     w = _captcha(tx)
     if not w:
         return tx
@@ -1096,8 +1129,8 @@ def produktname_feld_tippen(tx, lab_y):
     Feld keinen Fokus (Belibuy: Name blieb stehen). Getestet: Tipp auf Text → ⌘A → 40× Löschen → tippen = 16/30."""
     # Artur 16.11.2026 19:30: „du klickst das Textfeld am Anfang weg, deswegen kannst du nicht reinschreiben“ – auf
     # „Produkt umbenennen“ ist das Feld schon aktiv (Tastatur offen, siehe Aufnahmen). Dann NICHT tippen, direkt ⌘A/Löschen.
-    if tastatur_offen(tx):
-        log("Produktname-Feld schon aktiv (Tastatur offen) – kein Tipp"); return
+    # 17.11.2026 (147-03): bei schon offener Tastatur kamen ⌘A/Löschen/Tippen nicht an → immer direkt AUF den Namen tippen
+    # (Tipp auf den Text behält/holt den Fokus; nie daneben).
     z = [t for t in tx if lab_y + 35 < t[2] < lab_y + 95 and t[1] < 230 and not re.fullmatch(r"\d{1,2}/30", t[0].strip())
          and "Produktname wird" not in t[0] and "Zeichen wird" not in t[0]]
     if z:
@@ -1287,14 +1320,36 @@ def galerie_kachel(tx, kachel, soll_dauer):
     return letzte[1] - 40, letzte[2] - 50
 
 
+def auswahl_weiter(tx, kachel, soll_dauer):
+    """17.11.2026 (147-24, neue TikTok-Ansicht nach Arturs Umstellung): nach dem Kachel-Tipp „Ausgewählt (1)“ oben rechts,
+    unten Mini-Kachel mit Hook + Länge, rechts „Weiter (1)“, links „AutoCut“ (nie antippen). Reine Funktion: (x, y) von
+    „Weiter (1)“ nur, wenn genau 1 Video gewählt ist UND Mini-Kachel Hook + Länge (±1 s) passen; „Weiter (2+)“ → Sperre."""
+    if not seh.finde("Ausgew", tx, ueber=130):
+        return None
+    w = [t for t in tx if t[2] > 600 and t[1] > 167 and re.match(r"\s*weiter\s*\(\s*\d+\s*\)", t[0].lower())]
+    if not w:
+        return None
+    n = int(re.search(r"\((\s*\d+)", w[0][0]).group(1))
+    if n != 1:
+        raise Sperre(f"Auswahl-Ansicht: {n} Videos ausgewählt – nicht weiter")
+    mini = [(B.dauer_text(t[0]), t[1], t[2]) for t in tx if 600 < t[2] < 740 and B.dauer_text(t[0])]   # Mini-Kachel unten
+    dauer_ok = soll_dauer is None or any(abs(_sek(t[0]) - soll_dauer) <= 1.1 for t in mini)
+    hook_ok = any(_passt(kachel, t[0]) for t in tx if 560 < t[2] < 720)
+    return (w[0][1], w[0][2]) if dauer_ok and hook_ok else None
+
+
 def zum_beitrag(kachel, galerie=None, warten_s=120):
     """Zustandsmaschine „+“ → Beitragsseite (Artur 15.11.2026): jede Runde Bildschirm lesen, genau ein Schritt.
     Hakt etwas, geht es am aktuellen Bildschirm weiter. Video NUR mit passender Länge + Hook (sonst Sperre)."""
     gewaehlt = bestaetigt = nochmal = neu_geoeffnet = False
     seit = vor_ziel = None
     gemeldet = fotos_zurueck = 0
+    unbekannt_seit = None
+    galerie_foto = False
     for _ in range(90):                                          # 16.11.: 90 Runden (Warten jetzt 2 s statt 5 s je Runde)
         z, tx, tabs = lage()
+        if z != B.UNBEKANNT:
+            unbekannt_seit = None
         if z == B.BEITRAG:
             if seh.finde("Vorlage", tx):                         # Artur 13.11.: AutoCut/Vorlage (Musik) am Video
                 raise Sperre("Vorlage/AutoCut am Video (Musik!) – nicht posten")
@@ -1343,6 +1398,13 @@ def zum_beitrag(kachel, galerie=None, warten_s=120):
                     tipp(28, 74, tx, "Galerie zu"); ruhe(1.2); continue            # Kamera-Regel öffnet sie wieder
                 if time.time() - gemeldet > 10:                  # Log höchstens alle 10 s (Kontext sparen)
                     log("keine Kachel mit passender Länge + Hook – Video noch nicht in Fotos, warte"); gemeldet = time.time()
+                    if time.time() - seit > 20 and not galerie_foto:   # 17.11. (147-13): Beleg, was die Galerie zeigt
+                        galerie_foto = True
+                        try:
+                            seh.kabel().foto(str(AUS / f"galerie-{time.strftime('%H%M%S')}.png"))
+                        except Exception:
+                            pass
+                        log(f"Galerie (Längen/Texte): {[(t[0], round(t[1]), round(t[2])) for t in tx if 120 < t[2] < 700][:30]}")
                 time.sleep(2); continue                          # 16.11.: war 5 s – nur Lesen, kein Tipp
             if not (vor_ziel and abs(vor_ziel[0] - ziel[0]) < 4 and abs(vor_ziel[1] - ziel[1]) < 4):
                 vor_ziel = ziel; time.sleep(0.25); continue      # 16.11.: erst tippen, wenn die Kachel in zwei Bildern
@@ -1358,6 +1420,23 @@ def zum_beitrag(kachel, galerie=None, warten_s=120):
             if not (w and w[0] > 167):
                 raise Stopp("Editor: „Weiter“ nicht rechts – AutoCut-Gefahr")
             tipp(w[0], w[1], tx, "Weiter (Editor)"); warte_bildschirm((B.BEITRAG,), 2.0); continue
+        if z == B.UNBEKANNT and gewaehlt:                        # 17.11.2026: neue Auswahl-Ansicht „Ausgewählt 1“ + „Weiter (1)“
+            wa = auswahl_weiter(tx, kachel, _SOLL_DAUER)
+            if wa:
+                if kuerzlich("auswahl-weiter", 3.0):
+                    time.sleep(0.4); continue
+                log("Auswahl-Ansicht: 1 Video, Hook + Länge ✓ → Weiter (1)")
+                tipp(wa[0], wa[1], tx, "Weiter (1)"); merke("auswahl-weiter")
+                warte_bildschirm((B.EDITOR, B.BEITRAG), 2.2); continue
+        if z == B.UNBEKANNT:                                     # 17.11.2026 (147-12/15): nach dem Kachel-Tipp fährt die
+            unbekannt_seit = unbekannt_seit or time.time()       # Vorschau animiert ein → Zwischenbild „unbekannt“. Kein
+            if time.time() - unbekannt_seit < 5:                 # Hänger: bis 5 s nur lesen (kein Tipp), dann erst Stopp
+                time.sleep(0.4); continue                        # (→ Beitrag verwerfen + neu, Regel 17.11.)
+            try:
+                seh.kabel().foto(str(AUS / f"unbekannt-{time.strftime('%H%M%S')}.png"))
+            except Exception:
+                pass
+            log(f"unbekannter Bildschirm 5 s: {[t[0] for t in tx][:12]}")
         raise Stopp(f"unerwarteter Bildschirm „{z}“ auf dem Weg zur Beitragsseite")
     raise Stopp("Beitragsseite nicht erreicht")
 
@@ -2414,19 +2493,25 @@ def ein_video(p, d, entwurf=False, aufr=True):
     pid = muss(d.get("tts_link", "").rstrip("/").split("/")[-1], "keine Produkt-ID (tts_link)")
     F = {"konto": False, "produkt": None, "beitrag": False, "cover": False, "text": False, "link": False,
          "ohne_link": bool(d.get("ausverkauft")), "erstellen_offen": False}
+    neustarts = 0
     for versuch in range(MAX_WIEDERAUFNAHMEN + 1):
         try:
+            verbindung_merken()
             _ablauf(d, F, pid)
+            verbindung_merken(False)
             break
         except (Sperre, Hart):
+            verbindung_merken(False)
             raise
         except (ListeFalsch, WagenLeeren) as e:                  # Artur 15.11. 21:10: „wenn weder Showcase noch
             if F.get("nur_erstellen"):                           # Einkaufswagen gehen, dann Jetzt erstellen“
                 raise Sperre(f"{e} – auch über „Jetzt erstellen“ nicht, nicht verlinkt")
+            verbindung_merken(False)
             log(f"{e} → Showcase/Einkaufswagen gehen nicht → „Jetzt erstellen“ (Video-Methode)")
             zur_hauptseite(abbrechen=True)
             F.update(produkt=None, beitrag=False, cover=False, text=False, link=False, nur_erstellen=True)
         except Entwurf as e:                                     # Artur 13.11.: nicht verfügbar → Entwurf ohne Link
+            verbindung_merken(False)
             log(f"{e} – weiter als Entwurf ohne Link")
             F["ohne_link"] = True
             if F["beitrag"] and not F["link"]:
@@ -2435,12 +2520,20 @@ def ein_video(p, d, entwurf=False, aufr=True):
             F["erstellen_offen"] = False
             if not F["beitrag"]:
                 zur_hauptseite(abbrechen=True)
-        except Exception as e:                                   # Stopp, KabelFehler, Netz … → am Bildschirm weiter
-            if versuch == MAX_WIEDERAUFNAHMEN:
-                raise Stopp(f"{e} (nach {MAX_WIEDERAUFNAHMEN} Wiederaufnahmen)")
+        except Exception as e:                                   # Stopp, KabelFehler, Verbindungswechsel, Netz …
+            # Artur 17.11.2026 (ersetzt „am aktuellen Bildschirm weitermachen“ vom 13.11.): „bei einem Hänger verwirfst
+            # du den post und machst ihn neu, um nicht verwirrt zu werden“ – auch bei Kabel ab / Kabel↔WLAN mitten im
+            # Post. Einmal neu (kein 2. AirDrop, Kachel nach Länge + Hook); scheitert es wieder → Video „fehler“, nächstes.
+            verbindung_merken(False)
+            if neustarts >= 1 or versuch == MAX_WIEDERAUFNAHMEN:
+                raise Stopp(f"{e} – auch im 2. Versuch (Beitrag neu) gescheitert")
+            neustarts += 1
             if type(e).__name__ == "KabelFehler":
                 log(f"Kabel: {e} → Server neu"); seh.kabel().neu_verbinden()
-            fortsetzen_planen(F, str(e)[:90])
+            log(f"Hänger/Verbindungswechsel („{str(e)[:90]}“) → Beitrag verwerfen, Video neu (Artur 17.11.)")
+            zur_hauptseite(abbrechen=True)
+            F.update(produkt=None, beitrag=False, cover=False, text=False, link=False, erstellen_offen=False)
+            _umbenannt = False
     aus = F["ohne_link"]
     test_entwurf = entwurf
     weg = F["produkt"] if not aus else "ohne Link"

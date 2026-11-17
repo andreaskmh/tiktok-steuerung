@@ -15,7 +15,7 @@ import argparse, json, os, pathlib, random, re, shutil, sys
 
 PROJ = pathlib.Path(__file__).resolve().parent.parent
 EIN = PROJ / "uebergabe" / "eingang"
-BUTTONS = ["Wenige verfügbar", "Fast ausverkauft", "Fast vergriffen", "Wenige auf Lager", "Geringer Bestand", "Bald vergriffen"]
+BUTTONS = ["Wenige verfügbar", "Fast ausverkauft", "Fast vergriffen", "Wenige auf Lager", "Geringer Bestand"]  # „Bald vergriffen“ verboten (Artur 15.11.)
 
 
 def name_sicher(s):

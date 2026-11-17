@@ -125,6 +125,9 @@ def bild_alter():
     return _alter
 
 
+WECHSEL = 0                                                     # 17.11.2026: zählt Verbindungswechsel (Neustart, WLAN↔USB)
+
+
 def neu_verbinden():
     """Öffentlich: Server neu starten (Bild eingefroren / Steuerung abgerissen)."""
     _steuerung_neu()
@@ -135,6 +138,8 @@ def _steuerung_neu():
     global _dev, _frame
     import subprocess as sp
     oiu = os.path.expanduser("~/.local/share/open-iphone-use/runtime/venv/bin/open-iphone-use")
+    global WECHSEL
+    WECHSEL += 1                                                 # Artur 17.11.: Wechsel mitten im Post → Beitrag neu
     print("Kabel-Steuerung abgerissen – starte sie neu …", flush=True)
     sp.run([oiu, "stop"], capture_output=True, timeout=30)
     time.sleep(3)
@@ -165,6 +170,8 @@ def auf_usb():
     global _dev, _frame
     if "Wi-Fi" not in steuerung_art():
         return
+    global WECHSEL
+    WECHSEL += 1
     print("Steuerung läuft über WLAN – stelle auf Kabel (USB) um …", flush=True)
     w = pathlib.Path(__file__).resolve().parent / "kabel" / "waechter.py"
     subprocess.run([sys.executable, str(w), "einmal"], capture_output=True, timeout=120)

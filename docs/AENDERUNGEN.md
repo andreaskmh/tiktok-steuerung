@@ -240,3 +240,27 @@
   (`udid`, `airdrop_ziel`) – liegt nur auf dem jeweiligen Mac, nicht im Git. Ohne Datei gilt wie bisher das iPhone 11
   `…C3402E` / „iPhone von Artur (2)“. Umgebungsvariablen `TS_IPHONE_UDID` / `TS_AIRDROP_ZIEL` gehen weiterhin vor.
 - MacBook Pro von Artur: open-iphone-use neu installiert (719bd55), Xcode 27.2, patch_oiu, iPhone 11 `…D3802E` per USB eingebunden.
+
+## 17.11.2026 13:35 – Zwischenbild nach Kachel-Tipp + neue Auswahl-Ansicht (Lauf Video 147)
+- Mit der Regel „Hänger = Beitrag neu“ führte jedes kurz „unbekannte“ Zwischenbild nach dem Kachel-Tipp (Vorschau fährt ein)
+  sofort zum Verwerfen (147-12, 147-15). `zum_beitrag`: „unbekannt“ bis 5 s nur lesen (kein Tipp), erst dann Stopp; Foto
+  `ausgang/unbekannt-HHMMSS.png` + Texte ins Log.
+- Neue TikTok-Ansicht nach der Kachel (seit Arturs Umstellung 17.11.): oben „Ausgewählt 1“, unten Mini-Kachel (Hook + Länge),
+  rechts „Weiter (1)“, links „AutoCut“. `auswahl_weiter()` (rein, getestet): „Weiter (1)“ nur, wenn Mini-Kachel Hook UND Länge
+  (±1 s) passen; „Weiter (2+)“ = Sperre; AutoCut nie. Backups `post_mensch.py.bak-20261117-unbekannt` / `-auswahl`. Tests 203/203.
+
+## 17.11.2026 13:20 – Hänger/Verbindungswechsel = Beitrag verwerfen + neu (Artur, Lauf Video 147)
+- Anlass 147-03: Kabel-Steuerung riss ab (→ WLAN → USB), danach Schleife 6 min auf „Produkt umbenennen“ (Tastatur offen,
+  Eingaben kamen nicht an, roter Knopf verdeckt; Wiederaufnahme „umbenennen → weiter“ endlos). Von Hand fertig gepostet.
+- Artur: „bei einem hänger verwirfst du den post und machst ihn neu“, „Hänger passiert nur wenn das Kabel entfernt wird oder
+  sich löst“, „wenn von Kabel auf WLAN umgeschaltet wird oder andersrum“. KEINE Umbenennen-Retry-Logik („bau das nicht ein“) –
+  ein erster Entwurf davon wurde verworfen (`post_mensch.py.verworfen-20261117-umbenennen`).
+- `kabel.WECHSEL` (+1 bei `_steuerung_neu` und bei USB-Umschaltung in `auf_usb`); `post_mensch.verbindung_merken/pruefen`:
+  in jedem `lesen()` während eines Versuchs, Zähler geändert oder `steuerung_art` USB↔WLAN gewechselt → `Verbindungswechsel`.
+- `ein_video`: jede Stopp/Kabel/Verbindungs-Ausnahme → `zur_hauptseite(abbrechen=True)` (Beitrag verwerfen), F zurück
+  (Produkt, Beitrag, Cover, Text, Link), Video einmal neu (kein 2. AirDrop – liegt außerhalb `ein_video`); 2. Mal → Stopp
+  „auch im 2. Versuch gescheitert“ → Video „fehler“, nächstes. `fortsetzen_planen` wird von `ein_video` nicht mehr benutzt.
+- `produktname_feld_tippen`: immer direkt auf den vorhandenen Namen tippen (auch bei offener Tastatur), dann ⌘A/Löschen/Tippen.
+- `einreichen.py BUTTONS`: „Bald vergriffen“ raus (verboten seit 15.11., 147-01 ging damit raus); offene 147-JSONs umgestellt.
+- Tests 202/202 (angepasst: Hänger → komplett neu; Dauer-Hänger → nach 2. Versuch Fehler; neu: Verbindungswechsel).
+  Backups `*.bak-20261117-wechsel` (post_mensch, kabel, test_posten).
