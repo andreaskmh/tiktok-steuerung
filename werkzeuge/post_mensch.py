@@ -152,8 +152,11 @@ def _feed(tx):
 
 
 def _captcha(tx):
+    return B.captcha_wort(tx)                                    # 17.11.: eine Erkennung für beide (Kategorie-Ausnahme)
     alles = " ".join(t.lower() for t, _, _ in tx)
     alles = re.sub(r"verifiziert\w*", "", alles)   # „Von TikTok verifiziert“ (Shop-Abzeichen) ist kein CAPTCHA
+    alles = re.sub(r"spiele\s*(&|und)\s*puzzles?|puzzles?\s*(&|und)\s*\w+|bestseller[^,]{0,40}|\w*puzzles\b", "", alles)
+    # 17.11.2026 (147-25 UNO): Produktkategorie „Bestseller-Nr. 3 · Spiele & Puzzles“ ist kein CAPTCHA
     return next((w for w in CAPTCHA if w in alles), None)
 
 
@@ -1335,7 +1338,68 @@ def auswahl_weiter(tx, kachel, soll_dauer):
     mini = [(B.dauer_text(t[0]), t[1], t[2]) for t in tx if 600 < t[2] < 740 and B.dauer_text(t[0])]   # Mini-Kachel unten
     dauer_ok = soll_dauer is None or any(abs(_sek(t[0]) - soll_dauer) <= 1.1 for t in mini)
     hook_ok = any(_passt(kachel, t[0]) for t in tx if 560 < t[2] < 720)
+    if not hook_ok:                                              # 17.11. (147-17): Mini-Kachel zeigt Produktbild, Hook-Text
+        mini_text = [t for t in tx if t[1] < 130 and 600 < t[2] < 740 and not B.dauer_text(t[0])]   # unlesbar → reicht
+        hook_ok = not mini_text                                  # die Länge (Kachel war vorher Länge + Hook ✓, Cover-
+                                                                 # Prüfung folgt); fremder lesbarer Text → nein
     return (w[0][1], w[0][2]) if dauer_ok and hook_ok else None
+
+
+FFMPEG = next((x for x in ("/opt/homebrew/bin/ffmpeg", "/usr/local/bin/ffmpeg",
+                             os.path.expanduser("~/Documents/Coding/Editing System 1.1/tools/bin/ffmpeg")) if os.path.exists(x)), "ffmpeg")
+
+
+def dauer_position(tx, hx, hy):
+    """Reine Funktion: Lage des Längen-Labels (unten rechts in der Kachel) zu einem Hook-Text bei (hx, hy):
+    Spalte aus x (3 Spalten, Labels bei ~92/201/313), Zeile = nächste bekannte Label-Zeile unter dem Hook."""
+    sp = min(2, max(0, round((hx - 55) / 111)))
+    zeilen = sorted({round(t[2]) for t in B.dauern(tx)})
+    unter = [y for y in zeilen if y > hy + 15]
+    return 92 + 110.5 * sp, (unter[0] if unter else hy + 98)
+
+
+def dauer_nachlesen(x, y):
+    """17.11.2026 (147-25 UNO): „00:11“ auf hellem Hintergrund liest die OCR im ganzen Bild nicht → Ausschnitt um (x, y)
+    (334×735-Rahmen) 4× vergrößert lesen, erst mit Schwelle (nur reines Weiß = Schrift), sonst roh."""
+    quelle = os.path.join(seh.TMP, "f.png")
+    for filt in ("format=gray,lutyuv=y='if(gte(val\\,245)\\,0\\,255)'", "null"):
+        ziel = os.path.join(seh.TMP, "dauer.png")
+        vf = (f"crop=w=iw*70/334:h=ih*26/735:x=iw*{x - 35:.1f}/334:y=ih*{y - 13:.1f}/735,"
+              f"scale=iw*4:ih*4,{filt}")
+        try:
+            subprocess.run([FFMPEG, "-loglevel", "error", "-y", "-i", quelle, "-vf", vf, ziel], check=True, timeout=10)
+            for z in seh._ocr(ziel).splitlines():
+                d = B.dauer_text(z.partition("\t")[2])
+                if d:
+                    return d
+        except Exception:
+            pass
+    return None
+
+
+def mehrfach_an(y):
+    """Haken „Mehrere auswählen“ rot (an)? Weißer Haken im roten Kreis → mehrere Punkte um den Kreis (Text-Zeile y)."""
+    pts = [(15, y - 7), (18, y - 7), (21, y - 7), (24, y - 1), (12, y - 1), (15, y + 2), (24, y + 2)]
+    rot = [f for f in farben(*pts) if f[0] > 225 and f[1] < 110 and f[2] < 150]
+    return len(rot) >= 4
+
+
+def galerie_kachel_nachlesen(tx, kachel, soll_dauer):
+    """Kachel mit sicherem Hook, deren Länge die OCR nicht gelesen hat → Länge im Ausschnitt nachlesen. Pflicht-Prüfung
+    bleibt: Länge ±1 s UND Hook. → (x, y) zum Antippen oder None."""
+    if soll_dauer is None:
+        return None
+    treffer = []
+    for t in tx:
+        if 120 < t[2] < 650 and _passt(kachel, t[0]):
+            x, y = dauer_position(tx, t[1], t[2])
+            if any(abs(d[1] - x) < 25 and abs(d[2] - y) < 15 for d in B.dauern(tx)):
+                continue                                         # Länge war lesbar (passte nicht) → nicht raten
+            d = dauer_nachlesen(x, y)
+            log(f"Länge im Ausschnitt nachgelesen ({x:.0f},{y:.0f}): {d}")
+            if d and abs(_sek(d) - soll_dauer) <= 1.1:
+                treffer.append((x - 40, y - 50))
+    return max(treffer, key=lambda p: (round(p[1] / 20), p[0])) if treffer else None
 
 
 def zum_beitrag(kachel, galerie=None, warten_s=120):
@@ -1374,7 +1438,18 @@ def zum_beitrag(kachel, galerie=None, warten_s=120):
             w = seh.finde("Weiter", tx, genau=True, unter=600)
             if gewaehlt and w and w[0] > 167:
                 tipp(w[0], w[1], tx, "Weiter"); warte_bildschirm((B.EDITOR, B.BEITRAG), 2.2); continue
+            m = seh.finde("Mehrere auswählen", tx) or seh.finde("Mehrere auswahlen", tx)
+            if m and mehrfach_an(m[1]):                     # 17.11.2026 (Artur: „Claude schaltet aus“): Mehrfach-
+                if not kuerzlich("mehrfach-aus", 3.0):           # Auswahl in der Galerie aus (roter Haken unten links)
+                    tipp(19, m[1], tx, "Mehrere auswählen (aus)"); merke("mehrfach-aus"); ruhe(0.8)
+                    lesen(); log("„Mehrere auswählen“ ausgeschaltet" if not mehrfach_an(m[1]) else
+                                 "„Mehrere auswählen“ noch an")
+                else:
+                    time.sleep(0.4)
+                continue
             ziel = galerie_kachel(tx, kachel, _SOLL_DAUER)
+            if not ziel and seit and time.time() - seit > 4:
+                ziel = galerie_kachel_nachlesen(tx, kachel, _SOLL_DAUER)
             if not ziel:
                 seit = seit or time.time()
                 if time.time() - seit > warten_s:

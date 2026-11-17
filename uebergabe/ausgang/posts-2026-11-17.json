@@ -176,10 +176,111 @@
    "entwurf": false,
    "dauer_s": 100,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "14:01",
+   "account": "andreas.testet",
+   "datei": "Video 147 - 05 Handyhuelle Kristall - V2.mp4",
+   "produkt": "Luxuriöse Handyhülle mit Kristalltextur",
+   "tts_link": "https://shop.tiktok.com/view/product/1729900847886604726",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 118,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "14:03",
+   "account": "andreas.testet",
+   "datei": "Video 147 - 14 ZMGH 65W Ladegeraet - V2.mp4",
+   "produkt": "ZMGH 65W GaN Schnellladegerät",
+   "tts_link": "https://shop.tiktok.com/view/product/1729754211602635185",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 93,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "14:05",
+   "account": "andreas.testet",
+   "datei": "Video 147 - 15 Nike Air Max Plus TN - V3.mp4",
+   "produkt": "NIKE GOLF Nike Air Max Plus",
+   "tts_link": "https://shop.tiktok.com/view/product/1729971570931702416",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 107,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "14:07",
+   "account": "artur.official",
+   "datei": "Video 147 - 08 LYORA Nerion - V1.mp4",
+   "produkt": "LYORA Nerion",
+   "tts_link": "https://shop.tiktok.com/view/product/1729993971024173392",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 116,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "14:10",
+   "account": "artur.official",
+   "datei": "Video 147 - 11 Tunnelblick - V2.mp4",
+   "produkt": "3x Tunnelblick-Set 75mg",
+   "tts_link": "https://shop.tiktok.com/view/product/1729863853486414780",
+   "weg": "erstellen",
+   "entwurf": false,
+   "dauer_s": 182,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "14:12",
+   "account": "artur.official",
+   "datei": "Video 147 - 17 Butter Squishy Glitzer - V1.mp4",
+   "produkt": "Extrem Stretch Butter Squishy",
+   "tts_link": "https://shop.tiktok.com/view/product/1729942908164282374",
+   "weg": "erstellen",
+   "entwurf": false,
+   "dauer_s": 128,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "14:13",
+   "account": "artur.official",
+   "datei": "Video 147 - 19 LYORA Ermis - V2.mp4",
+   "produkt": "LYORA Ermis",
+   "tts_link": "https://shop.tiktok.com/view/product/1729899915342551376",
+   "weg": "ohne Link",
+   "entwurf": true,
+   "dauer_s": 44,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "14:15",
+   "account": "artur.official",
+   "datei": "Video 147 - 21 Tatort Adventskalender - V2.mp4",
+   "produkt": "Tatort Escape Adventskalender",
+   "tts_link": "https://shop.tiktok.com/view/product/1729954254982650611",
+   "weg": "erstellen",
+   "entwurf": false,
+   "dauer_s": 108,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "14:25",
+   "account": "artur.official",
+   "datei": "Video 147 - 26 More Satisbites - V1.mp4",
+   "produkt": "More Nutrition Protein Satisbites",
+   "tts_link": "https://shop.tiktok.com/view/product/1729789489888861050",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 90,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "anduri.official": 8,
-  "ella_robinson2": 8
+  "ella_robinson2": 8,
+  "andreas.testet": 3,
+  "artur.official": 5
  }
 }

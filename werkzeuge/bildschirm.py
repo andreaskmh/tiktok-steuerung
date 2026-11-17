@@ -84,6 +84,8 @@ CAPTCHA_WORTE = ("puzzle", "schieberegler", "captcha", "verifizier", "ziehe den"
 def captcha_wort(tx):
     alles = " ".join(t.lower() for t, _, _ in tx)
     alles = re.sub(r"verifiziert\w*", "", alles)        # „Von TikTok verifiziert“ (Shop-Abzeichen) ist kein CAPTCHA
+    alles = re.sub(r"spiele\s*(&|und)\s*puzzles?|puzzles?\s*(&|und)\s*\w+|bestseller[^,]{0,40}|\w*puzzles\b", "", alles)
+    # 17.11.2026 (147-25 UNO): Kategorie „Bestseller-Nr. 3 · Spiele & Puzzles“ ist kein CAPTCHA
     return next((w for w in CAPTCHA_WORTE if w in alles), None)
 
 

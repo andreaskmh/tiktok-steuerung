@@ -597,6 +597,12 @@ def test_ablauf():
     except P.Sperre:
         pass
     check("Auswahl-Ansicht: Weiter (1) nur bei Hook + Länge, 2 gewählt = Sperre, nie AutoCut", ok)
+    tx = [('Ausgewahlt', 289, 65), ('SALTED', 169, 195), ('weit zichen', 187, 649), ('00:16', 50, 711), ('AutoCut', 107, 755),
+          ('Weiter (1)', 276, 755)]
+    check("Auswahl-Ansicht: Mini-Kachel ohne lesbaren Hook → Länge reicht, fremder Hook nicht",
+          P.auswahl_weiter(tx, 'BUTTER SQUISHY FÜR 1 CENT 😍', 16.03) == (276, 755)
+          and P.auswahl_weiter(tx + [('UNO NO MERCY', 40, 680)], 'BUTTER SQUISHY FÜR 1 CENT 😍', 16.03) is None
+          and P.auswahl_weiter(tx, 'BUTTER SQUISHY FÜR 1 CENT 😍', 12.0) is None)
     # 17.11.: Galerie-Länge „100:29“ (Symbol vor 00:29 mitgelesen) → 00:29; Kachel 147-13 wurde nie erkannt
     tx = [('NOTFALL-KURBELRADIO U', 164, 356), ('100:29', 200, 420), ('SOTASTY ZERO SIRUP U', 53, 356), ('00:19', 91, 419),
           ('NOTFALL-KURBELRADIO U', 55, 582), ('100:29', 89, 645)]
