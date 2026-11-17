@@ -1388,6 +1388,11 @@ def erstellen_route(ausverkauft=False):
         if z in (B.UNBEKANNT, B.LADEN) and unklar < 4:          # 16.11.: Neukunden-Hinweis/Toast liegt kurz über der
             unklar += 1; time.sleep(0.8); continue               # Seite (15.11. 19:48 sofort Stopp → Weg verloren)
         raise Stopp(f"„Jetzt erstellen“-Weg: unerwarteter Bildschirm „{z}“")
+    try:                                                         # 17.11.2026 (148-17 HOTU): Bild + Text sichern
+        foto = AUS / f"erstellen-haenger-{time.strftime('%H%M%S')}.png"; seh.kabel().foto(str(foto))
+        log(f"„Jetzt erstellen“ hängt – Foto {foto.name} – Bildschirm: {bildschirmtext(lesen(), 80)}")
+    except Exception:
+        pass
     raise Stopp("„Jetzt erstellen“-Weg kam nicht zur Kamera")
 
 
