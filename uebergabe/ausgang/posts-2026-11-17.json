@@ -165,10 +165,21 @@
    "entwurf": false,
    "dauer_s": 91,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "13:59",
+   "account": "ella_robinson2",
+   "datei": "Video 147 - 13 Notkurbelradio - V2.mp4",
+   "produkt": "Notkurbelradio",
+   "tts_link": "https://shop.tiktok.com/view/product/1729977058145639150",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 100,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "anduri.official": 8,
-  "ella_robinson2": 7
+  "ella_robinson2": 8
  }
 }

@@ -93,6 +93,8 @@ DAUER = re.compile(r"\d{1,2}:\d{2}")
 def dauer_text(t):
     """„~00:09“, „•00:13“, „-00:13“ (OCR liest Schatten/Punkt mit) → „00:09“; sonst None."""
     t = t.strip().lstrip("~•·-–—$ ").strip()
+    if len(t) == 6 and t[0] in "1lI|!" and t[1:3] == "00" and t[3] == ":":   # 17.11.2026 (147-13): „100:29“ = Zeichen
+        t = t[1:]                                                # vor „00:29“ mitgelesen (Kachel nie erkannt)
     return t if DAUER.fullmatch(t) else None
 
 
