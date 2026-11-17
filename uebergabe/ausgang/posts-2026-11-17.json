@@ -825,12 +825,46 @@
    "entwurf": false,
    "dauer_s": 74,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "22:07",
+   "account": "andreasfastlane",
+   "datei": "Video 148 - 18 Chupa Chups Adventskalender - V1.mp4",
+   "produkt": "Chupa Chups Adventskalender | Weihnachts-Kalender mit 24 Türchen, Lutscher & Kaugummi, Süßigkeiten | geeignet für Kinder und Erwachsene | 1x225g",
+   "tts_link": "https://shop.tiktok.com/view/product/1729954279771904212",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 146,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "22:09",
+   "account": "andreasfastlane",
+   "datei": "Video 148 - 32 ARMONIAS Mantel - V1.mp4",
+   "produkt": "ARMONIAS Paris Damenmantel in Felloptik mit Reverskragen, langen Ärmeln, Taschen und Druckknöpfen für Alltag, Dinner, Partys und besondere Anlässe.",
+   "tts_link": "https://shop.tiktok.com/view/product/1729884421455780372",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 105,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "22:11",
+   "account": "andreasfastlane",
+   "datei": "Video 148 - 48 GreatVita Erdbeeren - V1.mp4",
+   "produkt": "GreatVita | Erdbeeren Gefriergetrocknet | Knusprige Erdbeerscheiben | Ohne Zuckerzusatz | Gefriergetrocknete Früchte | Freeze-Dried Strawberries",
+   "tts_link": "https://shop.tiktok.com/view/product/1729709017358572218",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 84,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "anduri.official": 23,
   "ella_robinson2": 24,
   "andreas.testet": 3,
-  "artur.official": 23
+  "artur.official": 23,
+  "andreasfastlane": 3
  }
 }
