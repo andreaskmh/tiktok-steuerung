@@ -272,6 +272,10 @@ def tipp(x, y, tx=None, was="", abstand=38, zitter=3):
     """Ein Tipp mit Gefahren-Sperre (kein Gefahren-Label im Umkreis) und leicht zufälligem Punkt."""
     tx = lesen() if tx is None else tx
     jetzt = lesen()                                             # 15.11.: vor jedem Tipp frisches Bild (Uhr-Prüfung in lesen)
+    alle = [t for t in jetzt if t[0].strip().lower() in ("alle", "alle auswählen", "alle auswahlen")
+            and abs(t[1] - x) < 45 and abs(t[2] - y) < 25]
+    if alle and "alle" not in (was or "").lower():               # 17.11.2026: in Fotos liegt oben links „Alle“ (alles
+        raise Sperre(f"Gefahren-Sperre: „{alle[0][0]}“ bei {x:.0f},{y:.0f} – {was or 'Tipp'} nicht getippt")   # auswählen!)
     if x < 70 and y < 110 and (_feed(tx) or _feed(jetzt)):
         raise Stopp(f"Gefahren-Sperre: oben links im Feed liegt LIVE – {was or 'Tipp'} nicht getippt")
     if B.erkenne(jetzt) in (B.LIVE, B.SYSTEM):
@@ -2218,19 +2222,26 @@ def album_treffer(tx, ziele):
 
 
 def _ausgewaehlt(tx):
-    m = re.search(r"(\d+)\s+(videos?|objekte?|fotos?|elemente?)\s+ausgew", " ".join(t.lower() for t, _, _ in tx))
-    return int(m.group(1)) if m else None
+    alles = " ".join(t.lower() for t, _, _ in tx)
+    m = re.search(r"(\d+)\s+(videos?|objekte?|fotos?|elemente?)\s+ausgew", alles) \
+        or re.search(r"auswahl\s*\((\d+)\)", alles)                # 17.11.: iOS neu „Auswahl (N) anzeigen“
+    if m:
+        return int(m.group(1))
+    return 0 if re.search(r"objekte\s+ausw[aä]hlen", alles) else None   # Auswahlmodus, nichts gewählt
 
 
 def fotos_sammel_loeschen(videos):
-    """Artur 15.11.2026: statt jedes Video einzeln (langsam): Fotos → „Zuletzt gesichert“ → Auswählen → alle Kacheln des
-    Stapels (Hook + Länge) → Mülleimer → „N Videos löschen“ nur, wenn N = Zahl der angetippten Kacheln (sonst Abbrechen).
-    Gelöschtes bleibt 30 Tage in „Zuletzt gelöscht“."""
+    """Artur 17.11.2026 (Bildschirmaufnahme 14:42, ersetzt den Ablauf vom 15.11.): Fotos → Album „Zuletzt gesichert“ →
+    oben RECHTS „Auswählen“ (oben links steht dann „Alle“ – NIE antippen) → jede Video-Kachel des Stapels (Hook + Länge)
+    genau EINMAL antippen → Papierkorb unten rechts → „N Videos löschen“, nur wenn N = Zähler am iPhone = selbst angetippt.
+    Nichts zwischen letztem Haken und Papierkorb. Gescrollt wird NUR außerhalb des Auswahlmodus (ein Wisch im Auswahlmodus
+    hakt Kacheln an/ab – daher das „an und wieder aus“). Pro Bildschirm ein Durchgang; 3 Bildschirme ohne Treffer → fertig.
+    Gelöschtes bleibt 30 Tage in „Zuletzt gelöscht“. → Anzahl gelöscht."""
     ziele = [_ziel(v) for v in videos]
     app("Fotos")
     for _ in range(8):                                           # → Album „Zuletzt gesichert“
         z, tx, _t = lage()
-        if z == B.FOTOS_ALBUM and seh.finde("Zuletzt gesichert", tx, ueber=140):
+        if seh.finde("Zuletzt gesichert", tx, ueber=140) and (z == B.FOTOS_ALBUM or seh.finde("Objekte", tx, ueber=160)):
             break
         if z == B.FOTOS_VOLLBILD:
             zz = seh.finde("<", tx, ueber=80)
@@ -2241,59 +2252,58 @@ def fotos_sammel_loeschen(videos):
         sm = seh.finde("Sammlungen", tx, unter=650)
         if sm:
             tipp(sm[0], sm[1], tx, "Sammlungen"); ruhe(1.2); continue
-        tipp(30, 57, tx, "Zurück"); ruhe(1.0)
+        tipp(30, 57, tx, "Zurück"); ruhe(1.0)                    # (Sperre greift, falls dort „Alle“ steht)
     else:
         raise Stopp("Fotos: „Zuletzt gesichert“ nicht erreicht")
-    tx = lesen()
-    a = seh.finde("Auswählen", tx, ueber=100) or seh.finde("Auswahlen", tx, ueber=100)
-    muss(a, "Fotos: „Auswählen“ fehlt")
-    tipp(a[0], a[1], tx, "Auswählen"); ruhe(1.0)
-    getippt = 0
-    for runde in range(8):                                       # Album öffnet unten (neueste) → schrittweise hoch
+    geloescht, leer = 0, 0
+    for runde in range(12):
         tx = lesen()
-        for x, y, k in album_treffer(tx, ziele):
-            vorher = _ausgewaehlt(lesen())
-            tipp(x, y, None, f"Kachel {k}"); ruhe(0.4)
-            nachher = _ausgewaehlt(lesen())
-            if vorher is not None and nachher is not None and nachher < vorher:
-                tipp(x, y, None, f"Kachel {k} (wieder an)"); ruhe(0.4); nachher = _ausgewaehlt(lesen())
-            if nachher is None or vorher is None or nachher > vorher:
-                getippt += 1
-        if _ausgewaehlt(lesen()) is None:                        # Zähler nicht lesbar → nicht scrollen (sonst evtl.
-            break                                                # doppelt getippt = wieder abgewählt)
-        K().ziehe(167, 250, 167, 520, 0.4); ruhe(0.9)            # Finger runter = weiter nach oben (ältere)
-    n = _ausgewaehlt(lesen())
-    if not getippt:
-        tipp(*(seh.finde("Abbrechen", lesen()) or (290, 58)), None, "Abbrechen"); return 0
-    for pos in ((300, 688), (296, 684), (310, 690)):             # Mülleimer unten rechts (Auswahl-Leiste)
-        tipp(pos[0], pos[1], None, "Mülleimer"); ruhe(1.0)
+        if _ausgewaehlt(tx) is not None:                         # noch im Auswahlmodus → erst raus (X oben rechts)
+            if (_ausgewaehlt(tx) or 0) > 0:
+                tippe_text(tx, "Auswahl aufheben"); ruhe(0.8); tx = lesen()
+            tipp(298, 57, tx, "X (Auswahl beenden)"); ruhe(1.0); tx = lesen()
+        treffer = album_treffer(tx, ziele)
+        if not treffer:
+            leer += 1
+            if leer >= 3:
+                break
+            K().ziehe(167, 250, 167, 560, 0.4); ruhe(1.0)       # außerhalb des Auswahlmodus: normal hochscrollen
+            continue
+        leer = 0
+        a = seh.finde("Auswählen", tx, genau=True, ueber=100) or seh.finde("Auswahlen", tx, genau=True, ueber=100)
+        muss(a and a[0] > 167, "Fotos: „Auswählen“ oben rechts fehlt")
+        tipp(a[0], a[1], tx, "Auswählen (oben rechts)"); ruhe(1.0)
         tx = lesen()
-        d = [t for t in tx if re.search(r"(\d+)\s+(videos?|objekte?)\s+löschen", t[0].lower())]
-        if d:
-            m = int(re.search(r"(\d+)", d[0][0]).group(1))
-            if m != (n or getippt):
-                tippe_text(tx, "Abbrechen", genau=True)
-                raise Stopp(f"Fotos: Löschen-Dialog nennt {m}, ausgewählt {n or getippt} – abgebrochen")
-            tipp(d[0][1], d[0][2], tx, d[0][0]); ruhe(1.5)
-            log(f"Fotos: {m} Videos gelöscht (Zuletzt gesichert)"); return m
-        if B.erkenne(tx) == B.TEILEN:
-            blatt_runter(250)
-    raise Stopp("Fotos: Mülleimer in der Auswahl nicht gefunden")
+        muss(_ausgewaehlt(tx) == 0, "Fotos: Auswahlmodus nicht leer – nicht weiter")
+        treffer = album_treffer(tx, ziele)                       # Lage im Auswahlmodus frisch (Kacheln stehen gleich)
+        for x, y, k in treffer:                                  # jede Kachel genau EINMAL, keine Kontroll-Tipps
+            tipp(x, y, None, f"Kachel {k}"); ruhe(0.35)
+        tx = lesen(); n = _ausgewaehlt(tx)
+        if n != len(treffer):
+            tippe_text(tx, "Auswahl aufheben")
+            raise Stopp(f"Fotos: {n} ausgewählt, {len(treffer)} angetippt – Auswahl aufgehoben, nichts gelöscht")
+        tipp(290, 686, None, "Papierkorb (unten rechts)"); ruhe(1.0)
+        tx = lesen()
+        d = [t for t in tx if re.search(r"(\d+)\s+(videos?|objekte?|elemente?)\s+löschen", t[0].lower())]
+        if not d:
+            raise Stopp("Fotos: Lösch-Dialog nicht gesehen (Auswahl bleibt)")
+        m = int(re.search(r"(\d+)", d[0][0]).group(1))
+        if m != n:
+            tippe_text(tx, "Abbrechen", genau=True)
+            raise Stopp(f"Fotos: Dialog nennt {m}, ausgewählt {n} – abgebrochen")
+        tipp(d[0][1], d[0][2], tx, d[0][0]); ruhe(1.5)
+        geloescht += m
+        log(f"Fotos: {m} Videos gelöscht (Zuletzt gesichert)")
+    return geloescht
 
 
 def fotos_aufraeumen(videos):
-    """Erst Sammel-Löschen; klappt das nicht, einzeln wie bisher (Hook-Kachel → Vollbild → Mülleimer)."""
+    """Artur 17.11.2026: nur noch Sammel-Löschen in „Zuletzt gesichert“ (nicht einzeln – das Einzel-Löschen über die
+    Mediathek passt nicht mehr zum neuen iOS). Klappt es nicht: Hinweis, Steuer-Chat prüft."""
     try:
-        if fotos_sammel_loeschen(videos):
-            return
+        log(f"Fotos aufgeräumt: {fotos_sammel_loeschen(videos)} gelöscht")
     except Stopp as e:
-        log(f"Hinweis Fotos (Sammel-Löschen): {e} → einzeln")
-    for i, v in enumerate(videos):
-        k = _ziel(v)[0]
-        try:
-            fotos_loeschen(k, oeffnen=(i == 0))
-        except Stopp as e:
-            log(f"Hinweis Fotos ({k}): {e}")
+        log(f"Hinweis Fotos (Sammel-Löschen): {e}")
 
 
 # ---------------------------------------------------------------- Ablauf

@@ -241,6 +241,23 @@
   `…C3402E` / „iPhone von Artur (2)“. Umgebungsvariablen `TS_IPHONE_UDID` / `TS_AIRDROP_ZIEL` gehen weiterhin vor.
 - MacBook Pro von Artur: open-iphone-use neu installiert (719bd55), Xcode 27.2, patch_oiu, iPhone 11 `…D3802E` per USB eingebunden.
 
+## 17.11.2026 14:45 – Galerie, CAPTCHA, Fotos (Lauf Video 147, Rest)
+- **Galerie-Länge „100:29“** (Symbol vor 00:29 mitgelesen) → `bildschirm.dauer_text` macht „00:29“ daraus (147-13 nie erkannt).
+- **Hook ganz oben in der Kachel** (~98 über der Länge) → `galerie_kachel` Fenster 95 → 108 (147-25 UNO; Kachel ~112 hoch).
+- **Länge auf hellem Hintergrund unlesbar** → `galerie_kachel_nachlesen`: Ausschnitt um die Label-Position 4× vergrößert lesen
+  (ffmpeg, Schwelle/roh); nur bei sicherem Hook, Pflicht Länge ±1 s bleibt. Foto `ausgang/galerie-*.png` + Texte ins Log,
+  wenn nach 20 s keine Kachel passt.
+- **„Mehrere auswählen“** in der TikTok-Galerie (seit Arturs Umstellung an) → einmal pro Video aus (`mehrfach_an`, Punkte um
+  den roten Kreis). Auswahl-Ansicht `auswahl_weiter`: Mini-Kachel ohne lesbaren Hook → Länge reicht (fremder Hook nein).
+- **CAPTCHA-Fehlalarm** „Bestseller-Nr. 3 · Spiele & Puzzles“ (UNO) → Kategorie-/Bestseller-Zeilen raus, in `bildschirm.captcha_wort`
+  (post_mensch._captcha nutzt jetzt dieselbe Funktion).
+- **⚠ Fotos „Alle“:** iOS zeigt im Album-Auswahlmodus oben links „Alle“ – genau dort tippte `fotos_loeschen` blind „Zurück“
+  (30,57) → alle 254 Objekte in „Zuletzt gesichert“ ausgewählt (nichts gelöscht, Auswahl aufgehoben). Jetzt: `tipp()` sperrt
+  jeden Tipp neben „Alle“ (außer was=„Alle…“); `_ausgewaehlt` kennt „Auswahl (N) anzeigen“/„Objekte auswählen“ (=0);
+  Sammel-Löschen hebt vorhandene Auswahl auf, startet nur bei 0 und löscht nie mehr als selbst angetippt; Dialog-Zahl muss
+  dem Zähler am iPhone entsprechen. Einzel-Löschen (`fotos_loeschen`, Mediathek) ist mit dem neuen iOS noch nicht angepasst.
+- Tests 206/206. Backups `*.bak-20261117-*` (post_mensch, bildschirm, test_posten).
+
 ## 17.11.2026 13:35 – Zwischenbild nach Kachel-Tipp + neue Auswahl-Ansicht (Lauf Video 147)
 - Mit der Regel „Hänger = Beitrag neu“ führte jedes kurz „unbekannte“ Zwischenbild nach dem Kachel-Tipp (Vorschau fährt ein)
   sofort zum Verwerfen (147-12, 147-15). `zum_beitrag`: „unbekannt“ bis 5 s nur lesen (kein Tipp), erst dann Stopp; Foto

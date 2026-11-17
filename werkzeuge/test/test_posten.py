@@ -516,6 +516,65 @@ def mit_ablauf(ab, d, entwurf=False):
         P.subprocess.run, P.seh.kabel, P.time.sleep = alt_run, alt_k, alt_sleep
 
 
+def _test_fotos_sammel():
+    """17.11.2026 (Arturs Aufnahme): Auswählen oben rechts → jede Kachel EINMAL → Papierkorb → „N Videos löschen“;
+    kein Wisch im Auswahlmodus, nie „Alle“, Abbruch wenn Zähler ≠ angetippt."""
+    album = [('Zuletzt gesichert', 124, 99), ('242 Objekte', 59, 122), ('Auswählen', 290, 57),
+             ('DIKKA TONIE IST ZURÜCK', 54, 420), ('00:15', 92, 532), ('12 GLASSCHÜSSELN', 165, 440), ('00:26', 201, 532),
+             ('FREMDES VIDEO', 276, 440), ('00:20', 313, 532)]
+    def lauf(falsch_zaehlen=False):
+        st = {"auswahl": None, "gewaehlt": set(), "dialog": False, "wisch_in_auswahl": 0, "tipps": [], "geloescht": 0}
+        def bild():
+            tx = [t for t in album if not (st["auswahl"] is not None and t[0] == 'Auswählen')]
+            if st["auswahl"] is not None:
+                n = len(st["gewaehlt"]) + (1 if falsch_zaehlen and st["gewaehlt"] else 0)
+                tx = [t for t in tx if not (B.dauer_text(t[0]) and (round(t[1]) - 40, round(t[2]) - 50) in st["gewaehlt"])]
+                tx += [('Alle', 42, 58), (f'Auswahl ({n}) anzeigen' if n else 'Objekte auswählen', 165, 688)]
+            if st["dialog"]:
+                tx += [(f'{len(st["gewaehlt"])} Videos löschen', 165, 640)]
+            return tx
+        def tipp(x, y, tx=None, was="", **kw):
+            st["tipps"].append(was)
+            if "Alle" == was:
+                raise AssertionError("Alle getippt")
+            if was.startswith("Auswählen"):
+                st["auswahl"] = 0
+            elif was.startswith("Kachel"):
+                k = (round(x), round(y)); st["gewaehlt"] ^= {k}
+            elif was.startswith("Papierkorb"):
+                st["dialog"] = True
+            elif "löschen" in was:
+                st["geloescht"] += len(st["gewaehlt"]); global album
+                st["dialog"] = False; st["auswahl"] = None; st["gewaehlt"] = set(); st["album_leer"] = True
+            elif was.startswith("X"):
+                st["auswahl"] = None; st["gewaehlt"] = set()
+        class KK:
+            def ziehe(s, *a): st["wisch_in_auswahl"] += st["auswahl"] is not None
+        alt = {n: getattr(P, n) for n in ("lesen", "tipp", "app", "lage", "K", "ruhe", "log", "tippe_text")}
+        try:
+            P.lesen = lambda: [] if st.get("album_leer") else bild()
+            P.tipp = tipp
+            P.app = lambda *a: None
+            P.lage = lambda tx=None: (B.FOTOS_ALBUM, bild(), False)
+            P.K = lambda: KK(); P.ruhe = lambda x: None; P.log = lambda m: None
+            P.tippe_text = lambda tx, m, **kw: tipp(0, 0, None, m)
+            ziele = [{"kachel": "DIKKA TONIE IST ZURÜCK 😍", "datei": "x"}, {"kachel": "12 GLASSCHÜSSELN 😍", "datei": "y"}]
+            try:
+                return P.fotos_sammel_loeschen(ziele), st
+            except P.Stopp as e:
+                return str(e), st
+        finally:
+            for n, v in alt.items():
+                setattr(P, n, v)
+    erg, st = lauf()
+    check("Fotos: Auswählen → 2 Kacheln je 1× → Papierkorb → 2 löschen, kein Wisch im Auswahlmodus, nie Alle",
+          erg == 2 and st["wisch_in_auswahl"] == 0 and st["tipps"].count("Kachel DIKKA TONIE IST ZURÜCK 😍") == 1
+          and "Alle" not in st["tipps"], f"{erg} {st['tipps']}")
+    erg, st = lauf(falsch_zaehlen=True)
+    check("Fotos: Zähler ≠ angetippt → Auswahl aufheben, nichts gelöscht",
+          isinstance(erg, str) and st["geloescht"] == 0 and not any(t.startswith("Papierkorb") for t in st["tipps"]), f"{erg} {st['tipps']}")
+
+
 def test_ablauf():
     d = {"datei": "Video 143 - 26 Garnier Hair Food - V2.mp4", "account": "artur.official", "produkt": "Garnier Fructis",
          "tts_link": "https://shop/1729", "kachel": "2 MASKEN FÜR 1,20€?! 😍", "button": "Wenige verfügbar",
@@ -608,6 +667,7 @@ def test_ablauf():
           ('NOTFALL-KURBELRADIO U', 55, 582), ('100:29', 89, 645)]
     tx2 = [('LYORA ERMIS e', 54, 475), ('00:12', 91, 532), ('UNO NO MERCY FÜR 1 CENT U', 54, 545), ('00:11', 92, 644),
            ('TATORT ADVENTSKALENDER •', 164, 474), ('00:22', 201, 532), ('UNO NO MERCY FÜR 1 CENT U', 165, 547), ('00:11', 203, 644)]
+    _test_fotos_sammel()
     check("Galerie: Hook ganz oben in der Kachel (≈98 über der Länge) zählt, Kachel darüber nicht",
           P.galerie_kachel(tx2, 'UNO NO MERCY FÜR 1 CENT 😍', 10.57) == (163, 594)
           and P.galerie_kachel(tx2, 'LYORA ERMIS 😍', 12.4) == (51, 482), str(P.galerie_kachel(tx2, 'UNO NO MERCY FÜR 1 CENT 😍', 10.57)))
