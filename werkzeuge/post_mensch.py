@@ -344,11 +344,38 @@ def verbindung_pruefen():
         _VB["art"] = art or _VB["art"]
 
 
+def bedingungen_abwarten(tx):
+    """18.11.2026 (148-35 Maybelline): Blatt „Nur noch ein Schritt zum Bewerben der Produkte von <Shop>“ = Zustimmung zu
+    den Geschäftsbedingungen des Shops. Das ist eine Zustimmung im Namen des Kontos → die Steuerung tippt „Hinzufügen“
+    NIE selbst. Wie beim CAPTCHA: Mac-Mitteilung an Artur, warten (bis 20 min), bis er „Hinzufügen“ getippt hat, dann am
+    aktuellen Bildschirm weiter. (Vorher als „OK, verstanden“ erkannt – „einverstanden“ im Text – → App-Neustart-Schleife.)"""
+    shop = next((t[0].split(" von ", 1)[1] for t in tx if " von " in t[0] and "bewerben" in t[0].lower()), "dem Shop")
+    print(f"Shop-Bedingungen ({shop}) am iPhone – warte, bis Artur „Hinzufügen“ tippt …", flush=True)
+    try:
+        seh.kabel().foto(str(AUS / f"bedingungen-{time.strftime('%H%M%S')}.png"))
+    except Exception:
+        pass
+    _melden("Shop-Bedingungen am iPhone – bitte selbst „Hinzufügen“ tippen, danach geht es weiter")
+    start = time.time(); letzte = start
+    while time.time() - start < 20 * 60:
+        time.sleep(5)
+        tx = _lesen_frisch()
+        if not B.shop_bedingungen(tx):
+            print(f"Shop-Bedingungen erledigt nach {time.time() - start:.0f} s – weiter", flush=True)
+            ruhe(1.5)
+            return seh.lesen()
+        if time.time() - letzte > 4 * 60:
+            _melden("Shop-Bedingungen warten noch – bitte am iPhone „Hinzufügen“ tippen"); letzte = time.time()
+    raise Hart("Shop-Bedingungen seit 20 min offen – Artur, bitte „Hinzufügen“ tippen, dann neu starten")
+
+
 def lesen():
     """CAPTCHA: nie selbst lösen, aber auch nicht abbrechen (Artur 13.11.2026: „soll automatisiert gehen“) –
     melden, warten bis Artur es gelöst hat, dann am aktuellen Bildschirm weitermachen."""
     tx = _lesen_frisch()
     verbindung_pruefen()                                         # 17.11.: Kabel ab / WLAN↔USB → Beitrag neu
+    if B.shop_bedingungen(tx):
+        return bedingungen_abwarten(tx)
     w = _captcha(tx)
     if not w:
         return tx
@@ -376,8 +403,20 @@ def tipp(x, y, tx=None, was="", abstand=38, zitter=3):
     if alle and "alle" not in (was or "").lower():               # 17.11.2026: in Fotos liegt oben links „Alle“ (alles
         raise Sperre(f"Gefahren-Sperre: „{alle[0][0]}“ bei {x:.0f},{y:.0f} – {was or 'Tipp'} nicht getippt")   # auswählen!)
     if x < 70 and y < 110 and (_feed(tx) or _feed(jetzt)):
-        raise Stopp(f"Gefahren-Sperre: oben links im Feed liegt LIVE – {was or 'Tipp'} nicht getippt")
-    if B.erkenne(jetzt) in (B.LIVE, B.SYSTEM):
+        # 18.11.2026 (148-23/24 artur.official): Kamera fährt animiert über den Feed → Zwischenbild hat Feed-Reiter UND
+        # „Sound hinzufügen“/KAMERA. Dann kurz warten und neu lesen: steht jetzt sicher die Kamera (kein Feed oben), darf
+        # das X oben links („Kamera zu“) getippt werden. Sonst bleibt die Sperre.
+        sicher = False
+        for _ in range(3):
+            time.sleep(0.8)
+            jetzt = lesen()
+            if B.erkenne(jetzt) == B.KAMERA and not _feed(jetzt):
+                sicher = True; break
+        if not sicher:
+            raise Stopp(f"Gefahren-Sperre: oben links im Feed liegt LIVE – {was or 'Tipp'} nicht getippt")
+        log(f"Kamera-Zwischenbild abgewartet – {was or 'Tipp'} oben links ist sicher")
+        tx = jetzt
+    if B.erkenne(jetzt) in (B.LIVE, B.LIVE_WAHL, B.SYSTEM):
         foto = AUS / f"live-{time.strftime('%H%M%S')}.png"           # 15.11.: Beleg, falls Fehlerkennung
         try:
             seh.kabel().foto(str(foto))
@@ -476,6 +515,8 @@ def app(name, erzwingen=False):
             if _ist_app(name):
                 log(f"{name} per Wisch"); return
     home()
+    if B.live_wahl(lesen()):                                     # Blatt bleibt nach Home stehen → erst weg
+        live_wahl_weg()
     s = muss(warte("Suchen", 3, unter=550), "Home-Bildschirm nicht erreicht (Suchen fehlt)")
     tipp(167, s[1], s[2], "Suche")
     ruhe(0.9)
@@ -484,8 +525,41 @@ def app(name, erzwingen=False):
     if not f:                                                    # 13.11.: Text kam mal nicht an → noch einmal
         schnell(name); f = warte(name, 4, genau=True, ueber=330)
     f = muss(f, f"{name} nicht in der Suche")
-    tipp(f[0], f[1] - 20, f[2], name)                            # Symbol über dem Namen
+    # 18.11.2026 (Artur: „wie kommst du immer auf dieses Live-Widget“): In Spotlight steht unter „Toptreffer“ direkt
+    # rechts neben dem TikTok-Symbol der Kurzbefehl „WatchLive“ → ein Tipp dorthin öffnet „What Live do you want to
+    # watch?“. Jetzt: nie in die Treffer tippen, sondern Return = App des Toptreffers öffnen („TikTok — Öffnen“ im Feld).
+    ruhe(0.8); tx = lesen()
+    if spotlight_app_oben(tx, name):
+        K().taste("return"); log(f"{name} per Return (Toptreffer, kein Tipp in die Treffer)")
+    else:
+        f2 = seh.finde(name, tx, genau=True, ueber=330) or (f[0], f[1])
+        nah = [t for t in tx if "live" in t[0].lower() and abs(t[2] - f2[1]) < 60 and abs(t[1] - f2[0]) < 70]
+        muss(not nah, f"Spotlight: „{nah[0][0] if nah else ''}“ zu nah am {name}-Symbol – nicht getippt")
+        tipp(f2[0], f2[1] - 20, tx, name)                       # Symbol über dem Namen
     ruhe(1.4)
+    tx = lesen()
+    if B.live_wahl(tx):
+        log("Kurzbefehl-Blatt „What Live …“ nach dem Öffnen → weg")
+        live_wahl_weg(tx)
+
+
+def spotlight_app_oben(tx, name):
+    """Reine Funktion: Spotlight zeigt „<name> — Öffnen“ im Suchfeld (Return öffnet die App) und der erste Toptreffer
+    ist die App selbst (links, nicht der Kurzbefehl „WatchLive“)."""
+    oeffnen = [t for t in tx if t[2] > 600 and "öffnen" in t[0].lower().replace("offnen", "öffnen")]
+    top = sorted([t for t in tx if t[0].strip() == name and t[2] < 260], key=lambda t: (t[2], t[1]))
+    return bool(oeffnen and top and top[0][1] < 110)
+
+
+def live_wahl_weg(tx=None):
+    """18.11.2026: Blatt „What Live do you want to watch?“ schließen – nur oben über dem Blatt (Statusleiste) tippen,
+    nie eine Zeile (sonst öffnet sich ein LIVE). Wisch nach unten schließt es nicht (am iPhone getestet 16:08)."""
+    for x, y in ((240, 22), (300, 22), (240, 22)):
+        K().tipp(x, y); time.sleep(1.2)
+        if not B.live_wahl(lesen()):
+            log("Kurzbefehl-Blatt „What Live …“ geschlossen (Tipp über dem Blatt)")
+            return True
+    raise Stopp("Blatt „What Live do you want to watch?“ geht nicht weg")
 
 
 # ---------------------------------------------------------------- 1) Account
@@ -666,6 +740,8 @@ def zur_hauptseite(abbrechen=True, max_schritte=16):
             log(f"Bildschirm „{z}“ bleibt – TikTok schließen + neu öffnen"); apps += 1; gleich = 0
             tiktok_schliessen()                                  # 17.11.2026 (Artur): App schließen statt nach vorn
             app("TikTok", erzwingen=True); ruhe(4.0); continue
+        if z == B.LIVE_WAHL:                                     # 18.11.: Kurzbefehl-Blatt „What Live …“ – nie eine Zeile
+            live_wahl_weg(tx); continue
         if dialog_wegmachen(z, tx, abbrechen=abbrechen):
             continue
         if z == B.LIVE:
@@ -2632,8 +2708,12 @@ def produkt_am_beitrag(max_s=12, produkt=""):
 def nicht_vorraetig(tx):
     """Produktseite sagt: nicht vorrätig / ausverkauft / nicht verfügbar → kein Showcase, kein Wagen, kein Link."""
     t = " ".join(x[0].lower() for x in tx)
+    # 18.11.2026 (Artur): „wenn ein Produkt nicht verfügbar ist oder entfernt wurde, bitte nicht nochmal versuchen,
+    # sondern als Entwurf speichern“ → auch „entfernt“/„nicht verfügbar“-Varianten (Entwurf sofort, kein 2. Versuch)
     return any(w in t for w in ("nicht vorrätig", "nicht vorratig", "ausverkauft", "artikel nicht verfügbar",
-                                "produkt nicht verfügbar", "nicht mehr verfügbar"))
+                                "produkt nicht verfügbar", "nicht mehr verfügbar", "nicht verfugbar", "wurde entfernt",
+                                "produkt entfernt", "artikel entfernt", "nicht mehr erhältlich", "nicht erhältlich",
+                                "existiert nicht mehr", "derzeit nicht verfügbar", "ist nicht verfügbar"))
 
 
 def badge_scrollen():

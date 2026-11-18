@@ -13,6 +13,10 @@ import re
 # ---------------------------------------------------------------- Bildschirme
 CAPTCHA = "captcha"
 LIVE = "live"                        # LIVE-Seite / LIVE-Event geöffnet (versehentlich) → nur Wisch zurück
+DLG_BEDINGUNGEN = "dlg_bedingungen"  # 18.11.: „Nur noch ein Schritt zum Bewerben der Produkte von <Shop>“ (Shop-AGB)
+                                     # → nie selbst „Hinzufügen“ (Zustimmung = Artur), melden + warten
+LIVE_WAHL = "live_wahl"              # 18.11.: System-Blatt „What Live do you want to watch?“ (TikTok-Kurzbefehl WatchLive)
+                                     # → nur oben über dem Blatt tippen (Statusleiste), nie eine Zeile
 DLG_VERSTANDEN = "dlg_verstanden"    # „OK, verstanden“ (Produkt nicht verfügbar / nicht hinzugefügt)
 DLG_ZUM_VIDEO = "dlg_zum_video"      # „Produkt zum Video hinzufügen?“ → Hinzufügen
 DLG_VERWERFEN = "dlg_verwerfen"      # „Verwerfen“ / „Neu beginnen“ (Beitrag abbrechen)
@@ -143,11 +147,32 @@ def bilderzaehler(tx):
     return any(re.fullmatch(r"\d{1,2}/\d{1,2}", t.strip()) for t, _, _ in tx)
 
 
+def shop_bedingungen(tx):
+    """Reine Funktion: Blatt „Nur noch ein Schritt zum Bewerben der Produkte von …“ (Zustimmung zu den
+    Geschäftsbedingungen eines Shops) offen. 18.11.2026 (148-35 Maybelline)."""
+    tx = _t(tx)
+    return bool(hat(tx, "Schritt zum Bewerben") or hat(tx, "Nur noch ein Schritt")
+                or (hat(tx, "Geschäftsbedingungen") and hat(tx, "einverstanden")))
+
+
+def live_wahl(tx):
+    """Reine Funktion: Auswahl-Blatt „What Live do you want to watch?“ (following/trending/recommend Live) offen."""
+    tx = _t(tx)
+    return bool(hat(tx, "what live do you want") or (hat(tx, "following Live") and hat(tx, "trending Live"))
+                or (hat(tx, "trending Live") and hat(tx, "recommend Live")))
+
+
 def erkenne(tx, tabs=None):
     """→ Bildschirm-Name. tabs = TikTok-Leiste mit „+“ (Pixel türkis/pink) erkannt (None = unbekannt)."""
     tx = _t(tx)
     if captcha_wort(tx):
         return CAPTCHA
+    # ---- 18.11.2026 (Artur): System-Blatt des TikTok-Kurzbefehls „WatchLive“ (liegt über JEDER App, auch über Home,
+    # bleibt nach Home-Taste stehen) → eigener Bildschirm mit Vorrang, Rückweg = über dem Blatt tippen, nie eine Zeile
+    if live_wahl(tx):
+        return LIVE_WAHL
+    if shop_bedingungen(tx):                                     # vor „verstanden“: „…einverstanden.“ steht im Text
+        return DLG_BEDINGUNGEN
     # ---- Dialoge (liegen über allem)
     if hat(tx, "verstanden"):
         return DLG_VERSTANDEN
@@ -182,7 +207,7 @@ def erkenne(tx, tabs=None):
     if hat(tx, "LIVE-Event") or hat(tx, "Event erstellen") or hat(tx, "Event-Bereich") or hat(tx, "Deine Events") \
        or hat(tx, "nächstes LIVE") or hat(tx, "LIVE-Aufnahme beenden") or hat(tx, "LIVE beenden"):
         return LIVE
-    if (hat(tx, "what live do you want") or hat(tx, "hat dem LIVE") or hat(tx, "trending Live")) and not home_bildschirm(tx):
+    if hat(tx, "hat dem LIVE") and not home_bildschirm(tx):
         return LIVE                                              # 16.11.: TikTok-Widget „What Live …“ auf dem Home-Bildschirm
                                                                  # ist keine LIVE-Seite (getippt wird dort nur unten „Suchen“)
     if hat(tx, "Bei TikTok registrieren") or hat(tx, "Bei TikTok anmelden") or hat(tx, "Melde dich bei TikTok an"):
@@ -260,7 +285,10 @@ def erkenne(tx, tabs=None):
     if hat(tx, "Mehrere auswählen") or (len(dauern(tx)) >= 2 and (hat(tx, "Alle", genau=True) or hat(tx, "Videos", genau=True)
                                                                   or hat(tx, "Zuletzt", ueber=160))):
         return GALERIE
-    if hat(tx, "Sound hinzufügen") or (hat(tx, "KAMERA") and (hat(tx, "VORLAGEN") or hat(tx, "LIVE"))):
+    # 18.11.2026 (148-23/24): Shop-Reiter mit Produkt „SnapBliss Mini-Kamera“ + „LIVE-Auktion“ wurde als Kamera erkannt
+    # (Teilwort) → Rückweg wollte das X oben links tippen (dort LIVE). Jetzt nur die exakten Modus-Wörter unten.
+    if hat(tx, "Sound hinzufügen") or (hat(tx, "KAMERA", genau=True, unter=600)
+                                       and (hat(tx, "VORLAGEN", genau=True) or hat(tx, "LIVE", genau=True, unter=600))):
         return KAMERA
     # ---- TikTok-Hauptseiten
     if hat(tx, "Konto wechseln") or hat(tx, "Konto hinzufügen"):

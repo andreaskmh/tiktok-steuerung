@@ -87,7 +87,7 @@ def test_erkennung():
     hand = [f for f in FAELLE if f["hand"]]
     check("Erkennung: Hand-geprüfte Fälle vorhanden", len(hand) >= 12, str(len(hand)))
     # kritische Einzelfälle
-    check("LIVE-Auswahl erkannt", B.erkenne(fall("20261115-145557")) == B.LIVE)
+    check("LIVE-Auswahl erkannt (Kurzbefehl-Blatt)", B.erkenne(fall("20261115-145557")) == B.LIVE_WAHL)
     check("LIVE-Event-Bereich erkannt", B.erkenne(fall("20261112-164314")) == B.LIVE)
     check("Bewerben-Blatt ist kein LIVE", B.erkenne(fall("20261115-161703")) == B.BEWERBEN)
     check("Beitrag mit Tastatur", B.erkenne(fall("20261115-152413")) == B.BEITRAG)
@@ -911,8 +911,9 @@ def test_szenarien():
               ("recommend Live", 97, 207), ("Shoptester1107", 94, 256), ("Mail", 52, 366), ("Notizen", 128, 366),
               ("Erinnerungen", 205, 366), ("Uhr", 281, 366), ("TV", 52, 448), ("Spiele", 128, 448), ("App Store", 205, 448),
               ("a Suchen", 166, 606)]
-    check("Home mit TikTok-Widget „What Live …“ = Home, nicht LIVE", B.erkenne(widget) == B.HOME)
-    check("echte LIVE-Auswahl ohne Home bleibt LIVE", B.erkenne(widget[:5]) == B.LIVE)
+    # 18.11.2026: das war nie ein Home-Widget, sondern das Kurzbefehl-Blatt (WatchLive) ÜBER dem Home-Bildschirm
+    check("„What Live …“ über Home = Kurzbefehl-Blatt (nicht Home)", B.erkenne(widget) == B.LIVE_WAHL)
+    check("„What Live …“ ohne Home = Kurzbefehl-Blatt", B.erkenne(widget[:5]) == B.LIVE_WAHL)
     check("Produktname-Zeile gelesen", P.feldzeile(um, 307) == "Sf3500 Retro-Handheld-Spielkon", P.feldzeile(um, 307))
 
 
@@ -966,8 +967,82 @@ def test_tempo_16_11():
     check("Liste unbekanntes Produkt → Standard", P.liste_fuer({"tts_link": "x/1"}) == P.SOCIAL1_LISTE)
 
 
+SPOT_TIKTOK = [("4:09", 42, 21), ("Toptreffer", 45, 58), ("TikTok", 57, 147), ("WatchLive", 130, 147), ("Vorschläge", 48, 195),
+               ("TikTok", 70, 231), ("Dateien", 38, 276), ("TikTok", 35, 543), ("Öffne den Feed „Für dich\" bei...", 179, 581),
+               ("Websites", 43, 656), ("TikTok-", 65, 680), ("- Offnen", 121, 680)]           # echtes iPhone 18.11. 16:09
+
+
+def test_live_wahl():
+    """18.11.2026 (Artur: „wie kommst du immer auf dieses Live-Widget“): Spotlight-Kurzbefehl „WatchLive“ neben TikTok."""
+    over_tiktok = [("4:03", 42, 21), ("What Live do you want to watch?", 144, 65), ("following Live", 86, 111),
+                   ("trending Live", 84, 161), ("recommend Live", 96, 209), ("X Shirin X", 82, 258), ("Gratisversand", 174, 586)]
+    for txt in ("Dieses Produkt wurde entfernt", "Artikel nicht verfügbar", "Produkt ist derzeit nicht verfügbar"):
+        check(f"nicht verfügbar/entfernt → Entwurf: {txt}", P.nicht_vorraetig([(txt, 160, 300)]))
+    check("normaler Produkttext ≠ nicht verfügbar", not P.nicht_vorraetig([("Verfügbar in 3 Farben", 160, 300)]))
+    shop = [("_IVE", 24, 59), ("ommunity Berlin Gefolgt Shop Für dich", 164, 59), ("Suchen", 250, 94),
+            ("SnapBliss Mini-Kamera Sch...", 247, 435), ("LIVE-Auktion", 221, 522), ("Jetzt shoppen", 298, 556)]
+    check("Shop-Reiter mit „Mini-Kamera“ + „LIVE-Auktion“ ist keine Kamera", B.erkenne(shop) != B.KAMERA, B.erkenne(shop))
+    cam = [("5:50", 41, 21), ("×", 25, 76), ("d Sound hinzufügen", 167, 78), ("KAMERA", 165, 676), ("LIVE", 311, 676)]
+    check("echte Kamera bleibt Kamera", B.erkenne(cam) == B.KAMERA)
+    agb = [("Informationen zur Werbeaktion", 166, 162), ("Verdiene 0,51 € pro Verkauf", 120, 211),
+           ("Nur noch ein Schritt zum", 166, 410), ("Bewerben der Produkte von", 166, 434), ("Maybelline", 166, 459),
+           ("Durch das Hinzufügen eines Produkts aus dem", 166, 484), ("Geschäftsbedingungen von Maybelline sowie den TikTok", 166, 526),
+           ("einverstanden.", 166, 553), ("Hinzufügen", 166, 665)]
+    check("Shop-Bedingungen-Blatt erkannt (nicht „OK, verstanden“)", B.erkenne(agb) == B.DLG_BEDINGUNGEN, B.erkenne(agb))
+    check("„OK, verstanden“ bleibt Dialog verstanden", B.erkenne([("OK, verstanden", 166, 500)]) == B.DLG_VERSTANDEN)
+    check("Kurzbefehl-Blatt über TikTok = live_wahl", B.erkenne(over_tiktok) == B.LIVE_WAHL)
+    check("Kurzbefehl-Blatt über Home = live_wahl", B.erkenne(fall("20261113-164615")) == B.LIVE_WAHL)
+    check("Kurzbefehl-Blatt ohne Titel (nur Zeilen)", B.live_wahl([("following Live", 86, 111), ("trending Live", 84, 161)]))
+    check("Spotlight: TikTok ist erster Toptreffer + „Öffnen“ → Return", P.spotlight_app_oben(SPOT_TIKTOK, "TikTok"))
+    check("Spotlight ohne „Öffnen“ → kein Return", not P.spotlight_app_oben(SPOT_TIKTOK[:-1], "TikTok"))
+    check("Spotlight: WatchLive vorn → kein Return",
+          not P.spotlight_app_oben([("WatchLive", 57, 147), ("TikTok", 130, 147), ("- Offnen", 121, 680)], "TikTok"))
+    # Rückweg: nur über dem Blatt tippen (y < 40), nie eine Zeile, kein Wisch nötig
+    sim = Sim(B.LIVE_WAHL, {(B.LIVE_WAHL, "tipp:"): B.TIKTOK}, bilder={B.LIVE_WAHL: fall("20261113-164615")})
+    punkte = []
+    alt = sim.tipp
+    def tipp(x, y, tx=None, was="", **kw):
+        punkte.append((x, y)); return alt(x, y, tx, was, **kw)
+    sim.tipp = tipp
+    try:
+        mit_sim(sim, P.zur_hauptseite)
+        check("Kurzbefehl-Blatt: weg per Tipp über dem Blatt", sim.z in (B.FEED, B.PROFIL, B.TIKTOK)
+              and punkte and all(y < 40 for _, y in punkte), f"{punkte} {sim.log}")
+    except Exception as e:
+        check("Kurzbefehl-Blatt: weg per Tipp über dem Blatt", False, f"{e} {sim.log}")
+    # app(): in Spotlight nie in die Treffer tippen, sondern Return
+    seq = [fall("20261115-175231"), SPOT_TIKTOK, SPOT_TIKTOK, SPOT_TIKTOK, beispiel(B.PROFIL)]
+    getan = []
+    class KK:
+        def taste(self, k): getan.append("taste:" + k)
+        def tipp(self, x, y): getan.append(f"K.tipp {x},{y}")
+        def ziehe(self, *a, **k): getan.append("wisch")
+    alt = {n: getattr(P, n) for n in ("lesen", "K", "tipp", "ruhe", "home", "schnell", "_ist_app", "warte", "log")}
+    alt_seh = P.seh.lesen
+    try:
+        P.seh.lesen = lambda *a, **k: seq[0]
+        it = iter(seq); letzt = [seq[0]]
+        def lesen(*a, **k):
+            try: letzt[0] = next(it)
+            except StopIteration: pass
+            return letzt[0]
+        P.lesen = lesen; P.K = lambda: KK(); P.ruhe = lambda *a, **k: None; P.home = lambda: getan.append("home")
+        P.schnell = lambda t: getan.append("tippe:" + t); P._ist_app = lambda *a, **k: False; P.log = lambda m: None
+        P.tipp = lambda x, y, tx=None, was="", **kw: getan.append(f"tipp:{was}@{x:.0f},{y:.0f}")
+        P.warte = lambda m, sek=6, **kw: ((167, 605, seq[0]) if m == "Suchen" else (57, 147, SPOT_TIKTOK))
+        P.app("TikTok", erzwingen=True)
+        check("app(): TikTok per Return, kein Tipp in die Spotlight-Treffer",
+              "taste:return" in getan and not any(g.startswith("tipp:TikTok") for g in getan), str(getan))
+    except Exception as e:
+        check("app(): TikTok per Return", False, f"{e} {getan}")
+    finally:
+        P.seh.lesen = alt_seh
+        for n, v in alt.items():
+            setattr(P, n, v)
+
+
 def main():
-    for t in (test_erkennung, test_sicherungen, test_plan, test_hauptseite, test_zum_beitrag, test_ablauf, test_hauptschleife, test_erstellen_weg, test_szenarien,
+    for t in (test_live_wahl, test_erkennung, test_sicherungen, test_plan, test_hauptseite, test_zum_beitrag, test_ablauf, test_hauptschleife, test_erstellen_weg, test_szenarien,
               test_tempo_16_11):
         try:
             t()
