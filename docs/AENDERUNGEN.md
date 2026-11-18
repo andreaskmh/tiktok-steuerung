@@ -281,6 +281,7 @@
 - `einreichen.py BUTTONS`: „Bald vergriffen“ raus (verboten seit 15.11., 147-01 ging damit raus); offene 147-JSONs umgestellt.
 - Tests 202/202 (angepasst: Hänger → komplett neu; Dauer-Hänger → nach 2. Versuch Fehler; neu: Verbindungswechsel).
   Backups `*.bak-20261117-wechsel` (post_mensch, kabel, test_posten).
+<<<<<<< HEAD
 - 17.11.2026 (Artur): „Provision unklar“ = Badge „Verdiene … pro Verkauf“ wurde kurz nicht angezeigt (TikTok-Bug) – KEIN Ausschlusskriterium. Badge erscheint oft erst nach mehrmaligem Öffnen des Links. stock.py wartet jetzt bis ~8 s. Nur ausdrückliches „nicht provisionsberechtigt“ = Entwurf.
 
 ## 18.11.2026 – „What Live do you want to watch?“ (Artur: „wie kommst du immer auf dieses Live-Widget … sorg dafür, dass es nicht nochmal passiert“)
@@ -296,3 +297,13 @@
 - 18.11. 17:55 (148-23/24 artur.official): Gefahren-Sperre „oben links im Feed liegt LIVE – Kamera zu nicht getippt“ griff im Zwischenbild, während die Kamera über den Feed fährt (Feed-Reiter + „Sound hinzufügen“ gleichzeitig). `tipp()` liest jetzt bis 3× nach 0,8 s neu; nur wenn sicher die Kamera steht (kein Feed oben), wird das X getippt, sonst bleibt die Sperre. Backup `*.bak-20261118-kamerazu`.
 - 18.11. 17:58 – eigentliche Ursache 148-23/24: Shop-Reiter mit Produkt „SnapBliss Mini-Kamera“ + „LIVE-Auktion“ wurde als KAMERA erkannt (Teilwort-Treffer) → Rückweg wollte „Kamera zu“ (X oben links = LIVE) tippen, Sperre griff richtig. KAMERA jetzt nur bei „Sound hinzufügen“ oder exakt „KAMERA“ + „LIVE“/„VORLAGEN“ in der Modus-Leiste unten. Tests 222/223. Backup `bildschirm.py.bak-20261118-minikamera`.
 - 18.11. 18:10 – Shop-Bedingungen-Blatt („Nur noch ein Schritt zum Bewerben der Produkte von Maybelline“, Knopf „Hinzufügen“): wurde als DLG_VERSTANDEN erkannt („einverstanden“) → Neustart-Schleife. Jetzt `B.DLG_BEDINGUNGEN` (`shop_bedingungen`, Vorrang vor „verstanden“); `lesen()` → `bedingungen_abwarten()`: Foto `bedingungen-*.png`, Mac-Mitteilung, warten bis 20 min, bis Artur selbst „Hinzufügen“ tippt (Zustimmung zu AGB wird nie automatisch gegeben), dann weiter am Bildschirm; danach Hart-Stopp. Tests ergänzt. Backups `*.bak-20261118-bedingungen`.
+=======
+
+## 17.11.2026 – Foto-Slideshows posten
+- Neu: `werkzeuge/post_slideshow.py` (nutzt post_mensch.ein_video, ersetzt nur Galerie/Editor/Link-Vorstufe), `werkzeuge/jpg_datum.py` (EXIF-Aufnahmedatum für feste Reihenfolge).
+- Regeln (Artur): Galerie-Tab „Alle“, Mehrere auswählen an; im Editor alle Bilder auf 9:16 (sonst kein „Produkt“ beim Link); Titel leer; Produkt über „Hinzufügen von → Einkaufswagen“; Sound wählt TikTok; Produkt schon im Einkaufswagen → nicht nochmal hinzufügen (`uebergabe/ausgang/wagen.json`).
+- Erster echter Post: Chupa Chups Adventskalender → andreasfastlane, 102 s.
+
+## 18.11.2026 – mehr Hashtags
+- `beschreibung_text`: statt 1 eigenem Hashtag so viele Themen-Hashtags wie erlaubt (max. 5 je Beitrag: bis 30.11. 3 Pflicht + 2 eigene, danach 5). Artur: „lass dir ruhig noch mehr Hashtags zum passenden Thema einfallen, auch bei Videos“.
+>>>>>>> 4cbdcc1 (Posts – MacBook Pro von Artur 18.11.2026 18:57)

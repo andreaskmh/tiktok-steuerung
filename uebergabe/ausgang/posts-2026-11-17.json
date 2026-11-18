@@ -858,6 +858,28 @@
    "entwurf": false,
    "dauer_s": 84,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "23:45",
+   "account": "andreasfastlane",
+   "datei": "Chupa Chups Adventskalender.slides",
+   "produkt": "Chupa Chups Adventskalender | Weihnachts-Kalender mit 24 Türchen, Lutscher & Kaugummi, Süßigkeiten | geeignet für Kinder und Erwachsene | 1x225g",
+   "tts_link": "https://shop.tiktok.com/view/product/1729954279771904212",
+   "weg": "wagen",
+   "entwurf": true,
+   "dauer_s": 103,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "23:47",
+   "account": "andreasfastlane",
+   "datei": "Chupa Chups Adventskalender.slides",
+   "produkt": "Chupa Chups Adventskalender | Weihnachts-Kalender mit 24 Türchen, Lutscher & Kaugummi, Süßigkeiten | geeignet für Kinder und Erwachsene | 1x225g",
+   "tts_link": "https://shop.tiktok.com/view/product/1729954279771904212",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 102,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
@@ -865,6 +887,6 @@
   "ella_robinson2": 24,
   "andreas.testet": 3,
   "artur.official": 23,
-  "andreasfastlane": 3
+  "andreasfastlane": 4
  }
 }

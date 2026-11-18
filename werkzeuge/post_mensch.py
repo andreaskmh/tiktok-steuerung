@@ -1820,7 +1820,7 @@ VERBOTEN = (r"\d+[.,]?\d*\s*(€|euro|eur\b|cent|ct\b)", r"€", r"\beuro\b", r"
             r"reduziert", r"preis", r"wie nie", r"verkauft", r"black friday", r"\bfür\s+\d", r"\bnur\s+\d", r"bestseller",
             r"\bbeste[nrs]?\b", r"wirkt", r"heilt", r"abnehm",
             r"krass", r"wahnsinn", r"unglaublich", r"nie wieder", r"sofort", r"\b100\b", r"schluss mit", r"must.?have",
-            r"geheim", r"trick", r"hack", r"viral", r"jeder braucht", r"musst du", r"lohnt", r"teurer", r"fehler",
+            r"geheim", r"\btrick", r"\bhack",   # 18.11.: nicht in „#strickkleid“ r"viral", r"jeder braucht", r"musst du", r"lohnt", r"teurer", r"fehler",
             r"schnell", r"letzte chance", r"limitiert", r"exklusiv", r"wow", r"!")
 
 
@@ -1886,14 +1886,23 @@ def beschreibung_text(d):
     marken |= {_kn(w) for w in re.findall(r"[A-Za-zÄÖÜäöü]{3,}", d.get("brand", ""))}
     eigen = [h for h in eigen if not any(m and (_kn(h[1:]).startswith(m) or m.startswith(_kn(h[1:]))) for m in marken)
              and _kn(h[1:]) not in {_kn(x) for x in MARKEN_BEKANNT}]
-    tag = eigen[0].lower() if eigen else ""
+    # Artur 18.11.2026: „lass dir ruhig noch mehr Hashtags zum passenden Thema einfallen“ → so viele Themen-Hashtags wie
+    # erlaubt: TikTok nimmt höchstens 5 je Beitrag → bis 30.11. 3 Pflicht + 2 eigene, danach 5 eigene
+    frei = max(0, 5 - len(pfl))
+    # Artur 18.11.2026 (Blaue Haie): Hashtag-Wort steht schon im Text („… halal 500 g“ + „#halal“) → TikTok macht beim
+    # Tippen das Wort im Text zum Hashtag, Beschreibung stimmt nicht → solche Hashtags weglassen
+    im_text = {_kn(w) for w in re.findall(r"[A-Za-zÄÖÜäöüß]{3,}", kurztext(d) or "")}
+    tags = []
+    for h in eigen:
+        h = h.lower()
+        if h not in tags and h not in PFLICHT and _kn(h[1:]) not in im_text:
+            tags.append(h)
+    tags = tags[:frei]
     teile = pfl[:]
-    if tag:
+    for tag in tags:
         teile.insert(random.choice([0, len(teile)]), tag)
     wort = kurztext(d)                                           # Artur 16.11.2026: kurzer, simpler Text vor den Hashtags
     t = " ".join(([wort] if wort else []) + teile)
-    if not pfl:
-        t = " ".join(([wort] if wort else []) + [h.lower() for h in eigen[:3]])
     return t + " "
 
 
@@ -2812,6 +2821,10 @@ def _ablauf(d, F, pid):
                 weg = "erstellen"                                # „stell dir vor, der Neukunden-Hinweis wär gekommen“)
             elif mem.get("geklappt") == "erstellen":
                 weg = "erstellen"
+            elif {"wagen", "showcase"} <= set(mem.get("gescheitert") or []) and not mem.get("geklappt"):
+                # Artur 18.11.2026 (Shark): Einkaufswagen + Showcase gescheitert → „Jetzt erstellen“, auch bei Slideshows
+                log("Einkaufswagen und Showcase schon gescheitert → „Jetzt erstellen“")
+                weg = "erstellen"
             elif "wagen" in mem.get("gescheitert", []) or mem.get("geklappt") == "showcase":
                 weg = showcase_oder_wagen(tx, nur_showcase=True)   # Einkaufswagen ging hier schon nicht
             elif F.get("nur_wagen"):                             # nach dem Leeren: direkt in den Einkaufswagen
@@ -2940,6 +2953,8 @@ def ein_video(p, d, entwurf=False, aufr=True):
     aus = F["ohne_link"]
     test_entwurf = entwurf
     weg = F["produkt"] if not aus else "ohne Link"
+    if weg is None:                                              # 18.11.2026 Shark: ohne Link-Weg „VERÖFFENTLICHT“ gemeldet,
+        raise Stopp("kein Produkt-Weg gesetzt – nicht veröffentlicht")   # war aber nicht online → vorher anhalten
     abschluss(entwurf or aus)
     if F["produkt"] == "erstellen":                              # Szenario 3 (Aufnahme 16.11.): nach dem Speichern steht
         try:                                                     # wieder „Produkt umbenennen“ → Blatt → Produktseite offen →

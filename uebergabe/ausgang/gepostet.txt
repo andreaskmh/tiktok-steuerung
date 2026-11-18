@@ -139,6 +139,7 @@ c8a963b6bed076eddd388a59068554456bdf8b77|Video 148 - 27 Weihnachts-Squishys - V1
 7b970ffd5ee877048794c2714e484e6149825ad4|Video 148 - 18 Chupa Chups Adventskalender - V1.mp4|andreasfastlane|2026-11-17 22:07
 c345f254c9952f3abf78d95e295a397e25356e7c|Video 148 - 32 ARMONIAS Mantel - V1.mp4|andreasfastlane|2026-11-17 22:09
 9efba704834332a89d3f2929d1641538207acb5f|Video 148 - 48 GreatVita Erdbeeren - V1.mp4|andreasfastlane|2026-11-17 22:11
+<<<<<<< HEAD
 779607a11b5f0887d3318dd61c09206a10604cdc|Video 148 - 01 Wrigleys Extra Erdbeere - V2.mp4|anduri.official|2026-11-18 16:16
 173bb84599e904f462de76bccc24657c8aa535da|Video 148 - 03 Saugroboter - V1.mp4|anduri.official|2026-11-18 16:17
 050ffdfd09c9353651e7fc23281810803597dd43|Video 148 - 05 Massiv Zahnstocher - V1.mp4|anduri.official|2026-11-18 16:19
@@ -174,3 +175,52 @@ ba7d8de0336361b61613cf1cad9362846951b30a|Video 148 - 24 Vibrationswecker Armband
 a5ff01738317a76acd4ffcb08f658e98daf510e1|Video 148 - 28 SF3500 Retro-Konsole - V1.mp4|artur.official|2026-11-18 18:01
 ea4e9c3eafd7b5603c8dd2815c2986e41bd564bd|Video 148 - 32 Plüsch-Sofabezug - V2.mp4|artur.official|2026-11-18 18:03
 aba25c9c4e78f0c3289b85eb7d76e46c92582d87|Video 148 - 35 Maybelline Lippen-Duo - V1.mp4|artur.official|2026-11-18 18:13
+=======
+7d51e6a7a664d45ecb9573c474211d6f9bc08848|Chupa Chups Adventskalender.slides|andreasfastlane|2026-11-17 23:47
+6ae9ba67bb438c97337f00af0eca6a57ab832e9a|medicube.slides|andreasfastlane|2026-11-18 00:07
+da3e35cff7681b9baed278504d9a3f66a955aed6|Honig Bourbon-Vanille.slides|andreasfastlane|2026-11-18 00:12
+7e259671151b733332c68dd50a7b728d02cd8b6a|Logitech G29.slides|andreasfastlane|2026-11-18 00:14
+0b3fc6eb45dd788ce0875bcce7b519ca44f739e2|Philips OneBlade Intimate.slides|andreasfastlane|2026-11-18 00:17
+383cc22ec890d18def5b55e4ff35d8217c333298|Probiotikum Gummies.slides|andreasfastlane|2026-11-18 00:22
+508d8cf401e905d411a0c2b8cce8ed7902407d63|Roborock Q7 BF+.slides|andreasfastlane|2026-11-18 00:34
+f4dc8c139ee3aa194473d84aace162929419f4d8|LYORA Ammos.slides|andreasfastlane|2026-11-18 00:41
+57c9a52c65f061af33319a100c70108b04903f45|JOYTUTUS Autoheizung.slides|andreasfastlane|2026-11-18 00:52
+ee037cf542d712276e14e45b56bb20218f6382a6|Shark Luftreiniger.slides|andreasfastlane|2026-11-18 01:10
+71674dc5b4d66d3ab9b082d29c3ae5a3e636697a|Nike Air Max Plus TN.slides|andreasfastlane|2026-11-18 01:12
+2598a39125cc082231837fd2407e770a98aba3f6|ONE MEMORY Parfum-Duo.slides|andreasfastlane|2026-11-18 01:14
+fff14ad33e090385e92f824cd6117f3ca536b895|Patchwork-Stiefel.slides|andreasfastlane|2026-11-18 01:17
+e8ad3440123af7e59432f8c20639ad7dc6757b58|YCZ Parfum-Set.slides|andreasfastlane|2026-11-18 01:20
+34364a3264c17a15cd1e7c0155c9371a2782fb64|S.desmarques Parfum.slides|andreasfastlane|2026-11-18 12:41
+ceda8aa79c37f820fd772345d97c13ad64ef60d7|Naruto Sharingan Shirt.slides|andreasfastlane|2026-11-18 12:47
+6f973a00c7c58a819a6abebb2bb5d7389ea6cc21|Miralina Mix.slides|andreasfastlane|2026-11-18 12:51
+8a2a02f8a03f41c5e2c264fbdbdc2f14344bab43|Blaue Haie.slides|andreasfastlane|2026-11-18 13:03
+10d3b210a80a0442c8d4f2160118fa2e73c22232|Dumpling Adventskalender.slides|andreasfastlane|2026-11-18 13:08
+ff6af7c3365d76a1afe92cd2a5064fca7f9a5b51|Gawfolk Monitor.slides|andreasfastlane|2026-11-18 13:11
+0f8515c218cfa9a8682da07317bc689182a3642f|Coquette Handyhülle.slides|andreasfastlane|2026-11-18 13:17
+a0d66e52b26270367ad9ac9839476e48adfe3a87|Rippstrick-Minikleid.slides|andreasfastlane|2026-11-18 13:21
+993667082cc766abcabfc94b069d1e8c5fe9437d|Roborock Q7 M5.slides|andreasfastlane|2026-11-18 13:26
+fa1a3527c682f873e5970e0762d9a44489401b98|LYORA Nerion.slides|andreasfastlane|2026-11-18 13:29
+5bbf213e0c503b54dc8cd7d460240c7f6c5f89d6|GreatVita Natron.slides|andreasfastlane|2026-11-18 13:31
+1e9484d74c5ea3b42971583b5bff2046b5ace62d|Purelei Tiny Heart.slides|andreasfastlane|2026-11-18 13:41
+2866b99ac6a36629944608391ffd1268e651ced3|Tatort Escape Adventskalender.slides|andreasfastlane|2026-11-18 13:43
+0bcfc979aaa1b6533911ca8c8d35bdfb41ed5a9d|VEXIL Schimmelentferner.slides|andreasfastlane|2026-11-18 13:46
+f456f36c7ee25206847903a598afc67ae84eef0e|Massagekissen.slides|andreasfastlane|2026-11-18 13:48
+89c4d358c60cd62f3eab1f7c17fe305105fa0de3|Wellenspiegel weiss.slides|andreasfastlane|2026-11-18 13:50
+7e02bb9fe7d66067653764ceeac1d835e08bda44|Y2K Techwear Jacke.slides|andreasfastlane|2026-11-18 13:53
+0eb97aaed08a95f87f9cd21d1b40ca4cf8324ddb|Y2K Techwear Jacke 2.slides|andreasfastlane|2026-11-18 13:55
+a483ecd4595a72ee3c49244480efa626adfbe975|Elusa 501 Parfum.slides|andreasfastlane|2026-11-18 13:58
+37671c041838dc85c7981f1ba1f06dd55fe5e350|Burga Nothing Changes Huelle.slides|andreasfastlane|2026-11-18 14:00
+239b492f7e0f87a7c58e25d37eab13d01913b3ed|Acryl-Herz Papa 2.slides|andreasfastlane|2026-11-18 14:03
+0060fd1ed269c398fde77e4d5c36b08e01a02719|Kapuzen-Schleier.slides|andreasfastlane|2026-11-18 14:06
+b75f6f087959a0bd569aea922ef89ce8de6eca93|Wrigleys Extra Erdbeer.slides|andreasfastlane|2026-11-18 14:11
+0c9a1227147845e7c8842d4d3c292d1a62289dea|Saugroboter zwei Buersten.slides|andreasfastlane|2026-11-18 14:14
+6ead27228ddea3fafbf33e6100e312048f5e1b7f|Herz-Deko Mama.slides|andreasfastlane|2026-11-18 14:17
+a3a778e551013e1fae45e449869da036faa448c0|Probiotikum Gummies 2.slides|andreasfastlane|2026-11-18 14:26
+b6040179de52cfefa28feb2be2792007f7f09d39|Inhalo Nasal Stick.slides|andreasfastlane|2026-11-18 14:28
+6989a4f0546a602366ef17323bd522052ad5f431|Christmas Box 2026.slides|andreasfastlane|2026-11-18 14:30
+80533507429108a695ec9b2dd22a3800db9698cf|Video 149 - 01 GTA VI Decke - V1.mp4|ella_robinson2|2026-11-18 18:49
+545e076df03c0fba25261d6da327427770c2dd1f|Video 149 - 02 Wrigleys Extra Spearmint - V2.mp4|ella_robinson2|2026-11-18 18:51
+dc71d8e3adacde9d0f55adba3b4a6b1972789543|Video 149 - 04 Tatort Adventskalender - V1.mp4|ella_robinson2|2026-11-18 18:52
+4ea63788d1140a14330d205d03f220a32e3e2115|Video 149 - 03 GTA 6 Handyhuelle - V1.mp4|andreas.testet|2026-11-18 18:54
+>>>>>>> 4cbdcc1 (Posts – MacBook Pro von Artur 18.11.2026 18:57)
+7d4d04d70e5be41cdf0842d6c91aca7d6f69e10a|Video 149 - 05 Wrigleys Extra Erdbeere - V1.mp4|artur.official|2026-11-18 18:59
