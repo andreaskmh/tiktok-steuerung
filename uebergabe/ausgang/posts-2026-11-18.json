@@ -396,12 +396,34 @@
    "entwurf": false,
    "dauer_s": 86,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "18:11",
+   "account": "artur.official",
+   "datei": "Video 148 - 09 House of Theom Rosy Whisper - V1.mp4",
+   "produkt": "House of Thêom Rosy Whisper",
+   "tts_link": "https://shop.tiktok.com/view/product/1729930626598017897",
+   "weg": "ohne Link",
+   "entwurf": true,
+   "dauer_s": 41,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "18:13",
+   "account": "artur.official",
+   "datei": "Video 148 - 35 Maybelline Lippen-Duo - V1.mp4",
+   "produkt": "Maybelline New York Super Stay 24H Lippenstift",
+   "tts_link": "https://shop.tiktok.com/view/product/1729964381593508620",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 128,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "anduri.official": 13,
   "ella_robinson2": 12,
   "andreas.testet": 2,
-  "artur.official": 7
+  "artur.official": 8
  }
 }
