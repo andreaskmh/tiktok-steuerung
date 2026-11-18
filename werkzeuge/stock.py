@@ -121,7 +121,7 @@ def status_zeile(st):
     if st.get("vorraetig") is False:
         w.append("nicht vorrätig/verfügbar")
     if st.get("provision") is None and st.get("vorraetig") is not False:
-        w.append("Provision unklar")
+        w.append("Provision-Badge nicht gesehen (kein Ausschluss, Link ggf. mehrmals öffnen)")
     return ((" ⚠ " + ", ".join(w)) if w else "") + info
 
 
@@ -179,7 +179,8 @@ def zur_galerie(pid, produkt=None):
         raise Stopp(f"TikTok-Produktseite von {sorted(shop)} nicht erreicht (alte Seite offen?)")
     log("Produktseite passt (Shop gefunden)")
     st = status_neu()
-    for _ in range(8):                                           # Badge „Verdiene … pro Verkauf“ lädt verzögert (~1–3 s)
+    for _ in range(20):                                          # Badge „Verdiene … pro Verkauf“ lädt verzögert (~1–3 s), manchmal
+                                                                 # gar nicht (TikTok-Bug, Artur 17.11.2026) → bis ~8 s warten
         status_lesen(st, tx)
         if st["provision"] is not None:
             break

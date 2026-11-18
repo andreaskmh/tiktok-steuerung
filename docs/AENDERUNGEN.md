@@ -281,3 +281,4 @@
 - `einreichen.py BUTTONS`: „Bald vergriffen“ raus (verboten seit 15.11., 147-01 ging damit raus); offene 147-JSONs umgestellt.
 - Tests 202/202 (angepasst: Hänger → komplett neu; Dauer-Hänger → nach 2. Versuch Fehler; neu: Verbindungswechsel).
   Backups `*.bak-20261117-wechsel` (post_mensch, kabel, test_posten).
+- 17.11.2026 (Artur): „Provision unklar“ = Badge „Verdiene … pro Verkauf“ wurde kurz nicht angezeigt (TikTok-Bug) – KEIN Ausschlusskriterium. Badge erscheint oft erst nach mehrmaligem Öffnen des Links. stock.py wartet jetzt bis ~8 s. Nur ausdrückliches „nicht provisionsberechtigt“ = Entwurf.
