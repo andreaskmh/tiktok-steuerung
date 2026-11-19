@@ -1,0 +1,55 @@
+{
+ "datum": "2026-11-19",
+ "posts": [
+  {
+   "zeit": "23:53",
+   "account": "anduri.official",
+   "datei": "Video 151 - 01 Dr Melaxin Skincare Set - V1.mp4",
+   "produkt": "[Dr.Melaxin Official] 7-Schritte Radiance Korean Skincare Set für Gesi",
+   "tts_link": "https://shop.tiktok.com/view/product/1729921899821766925",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 114,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "23:55",
+   "account": "ella_robinson2",
+   "datei": "Video 151 - 02 Android Tablet - V3.mp4",
+   "produkt": "Android‑Tablet mit 10,1 Zoll, 8 GB RAM (3 GB + 5 GB virtueller Erweite",
+   "tts_link": "https://shop.tiktok.com/view/product/1729817397777177029",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 119,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "23:57",
+   "account": "andreas.testet",
+   "datei": "Video 151 - 03 Wrigleys Extra Kaugummi - V1.mp4",
+   "produkt": "Wrigley's Extra Strawberry Erdbeer Kaugummi Zuckerfrei (30 x 14g) - Fr",
+   "tts_link": "https://shop.tiktok.com/view/product/1729938067308058731",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 120,
+   "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "23:59",
+   "account": "artur.official",
+   "datei": "Video 151 - 20 SONAX ScheibenEnteiser - V1.mp4",
+   "produkt": "SONAX ScheibenEnteiser 750 ml",
+   "tts_link": "https://shop.tiktok.com/view/product/1729693055453928219",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 117,
+   "werkzeug": "post_mensch"
+  }
+ ],
+ "zaehler": {
+  "anduri.official": 1,
+  "ella_robinson2": 1,
+  "andreas.testet": 1,
+  "artur.official": 1
+ }
+}
