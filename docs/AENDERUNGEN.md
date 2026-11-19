@@ -365,3 +365,6 @@
   neu `research.py bildvergleich <land> <wuensche.json>` → Sammelbilder US-Produktbild neben TikTok-Shop-DE- (Social1) und
   Amazon.es-Treffern (wenn aktiv), Claude entscheidet am Bild. Test 4 Produkte 15 s. Treffer haben jetzt Bild-Links.
 - **19.11.2026 (Artur)** – bildvergleich sucht automatisch mit dem kopierten Social1-Produktnamen (Amazon voller Name, Social1 auch gekürzt) plus Zusatzwörtern; Auswahl am Produktbild. Test: Name allein fand bei Social1 nur 1 von 4, mit kurzen deutschen Wörtern 3 von 4.
+  Außerdem: `speichern` (neu direkt per Social1-API, Päckchen zu 50) lief bei 249 Videos in „429 Too many requests“ → Rest in Päckchen
+  zu 15 mit 20 s Pause nachgespeichert, alles drin. Vorschlag: Päckchen kleiner/mit Pause. 1× Social1-„Transcribe“ (Nr 68 US) aus
+  Versehen genutzt, bevor die Regel „nie Transcribe“ in RESEARCH.md stand.
