@@ -368,3 +368,4 @@
   Außerdem: `speichern` (neu direkt per Social1-API, Päckchen zu 50) lief bei 249 Videos in „429 Too many requests“ → Rest in Päckchen
   zu 15 mit 20 s Pause nachgespeichert, alles drin. Vorschlag: Päckchen kleiner/mit Pause. 1× Social1-„Transcribe“ (Nr 68 US) aus
   Versehen genutzt, bevor die Regel „nie Transcribe“ in RESEARCH.md stand.
+- **19.11.2026 (Artur)** – Nach jeder Research werden die Ranglisten (de/us) und die SKRIPTE-Datei immer im Chat angehängt (Tageslauf + geplante Aufgabe).
