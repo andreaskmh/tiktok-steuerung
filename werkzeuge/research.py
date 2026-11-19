@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Tägliche Research auf Social1 (Videos, „Today“ + „Trending“, ohne Kategorie). Safari am Mac, Artur eingeloggt.
 
-  python3 werkzeuge/research.py lesen  <de|us> [--seiten 100]  # alle Seiten lesen → research/<datum>/<land>.json
+  python3 werkzeuge/research.py lesen  <de|us> [--seiten 50]  # alle Seiten lesen → research/<datum>/<land>.json
   python3 werkzeuge/research.py filtern <de|us>                # Vorfilter (Alter, Promis, Beauty, Supplements)
   python3 werkzeuge/research.py blaetter <de|us> [--pro 20]    # Sammelbilder der Kandidaten zum Sortieren
   python3 werkzeuge/research.py speichern <de|us> "<Liste>" <nr> [<nr> ...]   # Videos (Kandidaten-Nr) in Social1-Liste
@@ -1088,7 +1088,7 @@ if __name__ == "__main__":
     befehl, land = a[0], a[1]
     if befehl == "lesen":
         frisch = "--frisch" in a
-        mit_neustart(lesen, land, int(a[a.index("--seiten") + 1]) if "--seiten" in a else 100, frisch)
+        mit_neustart(lesen, land, int(a[a.index("--seiten") + 1]) if "--seiten" in a else 50, frisch)
         land_zurueck()
     elif befehl == "filtern":
         filtern(land)

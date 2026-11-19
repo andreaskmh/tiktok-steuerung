@@ -78,28 +78,6 @@ https://www.tiktok.com/@tsubasa_stv/video/7707949815002434849
 **Skript:** Diese LED-Lichter gehen von allein an, sobald du vorbeiläufst. Bewegungssensor, kein Schalter nötig. Per USB aufladbar, also keine Batterien. Mit Magnet einfach überall anbringen: Treppe, Flur, Kleiderschrank. Warmweißes Licht, nicht grell. Drei Modi zur Auswahl. Perfekt fürs Kinderzimmer, für Oma und Opa oder den Snack um Mitternacht. Gerade im Angebot – unten im Warenkorb im TikTok Shop.
 
 <!-- de-398 -->
-## DE SLIDES Nr 398 · 5 days ago · +99.2K Views · Sprache en · Vintage-Stiefel mit Patchwork-Design und Fleecefutter, rutschfeste Plü
-https://www.tiktok.com/@itz._mariam/video/7708002828261821728
-
-**Original:**
-> I don't want a lot for Christmas There is just one thing I need Don't care about the presents Underneath the Christmas tree I don't need to hang my stockings There upon the fireplace
-
-**Hook:** Diese Stiefel sehen aus wie vom Vintage-Markt – und sind innen kuschelig warm.
-
-**Skript:** Schau dir das Patchwork-Design an, jedes Stück wirkt einzigartig. Innen komplett mit Fleece gefüttert, also warme Füße den ganzen Winter. Die Sohle ist rutschfest, auch wenn's draußen glatt wird. Passt zu Jeans, Leggings oder Kleid. Gerade im Angebot im TikTok Shop – unten im Warenkorb.
-
-<!-- de-338 -->
-## DE SLIDES Nr 338 · 6 days ago · +79.2K Views · Sprache en · Y2K Techwear Kapuzenjacke für Herren, sportliche Freizeitjacke, Outdoo
-https://www.tiktok.com/@produktwolf/video/7707597920438095126
-
-**Original:**
-> How are you not freezing in that windbreaker? I'm dying over here. Because it's not just a windbreaker. Look inside. Wait, that's fleece? Even in the hood? Yeah. And before you steal mine, I got you one too. You actually brought me a jacket? You always say you're not cold, then five minutes later you're trying to steal my jacket. Okay, fair. Oh my god, this is so soft. Better? Way better. Where'd you get these? TikTok shop. You actually get two for the price of one in stores. You actually get two for the price of one in stores.
-
-**Hook:** „Wie frierst du in der dünnen Jacke nicht?“ – Weil sie nicht dünn ist.
-
-**Skript:** Sieht aus wie eine normale Windjacke im Techwear-Look. Aber schau mal rein: komplett Fleece, sogar in der Kapuze. Außen sportlich, innen richtig warm und weich. Und bevor du dir meine klaust: Ich hab dir direkt eine mitbestellt. Die gibt's im TikTok Shop, gerade im Angebot. Unten im Warenkorb.
-
-<!-- us-68 -->
 ## US QUALITY Nr 68 · Today · +600.9K Views · Sprache es · VIPfree Cooling Memory Neck Pillow, Adjustable Ergonomic Memory Foam N
 https://www.tiktok.com/@dimi.yt/video/7709394329630002462
 
@@ -177,24 +155,6 @@ https://www.tiktok.com/@1_motivated_dad/video/7709329678389087502
 **Skript:** Die meisten haben tausend Fotos auf dem Handy und drucken nie eins aus. Mit dem KODAK Dock Plus steckst du das Handy einfach drauf, wählst ein Foto aus und drückst auf Drucken. Kurz warten, und du hast ein 10x15-Foto, laminiert und wischfest. So kann sie ihre Lieblingsmomente endlich in die Hand nehmen. Gerade im Angebot im TikTok Shop – unten im Warenkorb.
 
 <!-- de-889 -->
-## DE SLIDES Nr 889 · Today · +47.3K Views · Sprache en · [medicube Offizieller Shop] Black Friday Exklusiv: Rundum-Pflegeset | 
-https://www.tiktok.com/@morabackup5/video/7709808643289484576
-
-**Original:**
-> It's time, baby If it won't be, if it won't be If it won't be, if it won't be
-
-**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Black Friday bei Medicube – das Set kostet gerade fast nichts“).
-
-<!-- de-1046 -->
-## DE SLIDES Nr 1046 · Today · +38.9K Views · Sprache es · Tatort Escape Adventskalender: Krimi-Rätsel in 24 Teilen
-https://www.tiktok.com/@socialmediacreations/video/7709800899677261089
-
-**Original:**
-> y ahora dónde está ella ella como ninguna dime dime baby cómo hacer que tu boca
-
-**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Der Adventskalender für alle, die Krimis lieben 🔎“).
-
-<!-- de-456 -->
 ## DE SLIDES Nr 456 · Yesterday · +739.2K Views · Sprache en · Probiotikum Gummibonbons für Frauen | Intimflora & pH‑Wert ausgleichen
 https://www.tiktok.com/@shadowluna_twins/video/7709469954403257632
 
@@ -289,15 +249,6 @@ https://www.tiktok.com/@klickguru/video/7709561280343870753
 **DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Der Schmuck-Adventskalender, den sich jede wünscht“).
 
 <!-- de-701 -->
-## DE SLIDES Nr 701 · Yesterday · +63.3K Views · Sprache en · Probiotikum Gummibonbons für Frauen | Intimflora & pH‑Wert ausgleichen
-https://www.tiktok.com/@diegotestet/video/7709554551967321376
-
-**Original:**
-> Can't hear them no, cause I Every day, every day, every day I ain't gonna die I ain't gonna die Ain't gonna die I ain't gonna die I ain't gonna die And die It's out to the side I ain't gonna die I ain't gonna die I ain't gonna die I ain't gonna die I ain't gonna die Cause I've just stopped I ain't gonna die I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by Side to side Yeah, yeah, yeah Baby, baby, roll my bike Baby, roll my dead bike You give it to me Every time Side to side
-
-**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Darüber redet keiner – aber jede Frau sollte das kennen“).
-
-<!-- de-595 -->
 ## DE SLIDES Nr 595 · Yesterday · +78.1K Views · Sprache en · 【DealsFürDich】VEVOR Dieseltemperator 5–8 kW, 12 V/24 V Alles‑in‑Einem 
 https://www.tiktok.com/@dorianlebt/video/7709557718830353696
 
@@ -316,15 +267,6 @@ https://www.tiktok.com/@morabackup5/video/7709450140615970080
 **DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Zwei Gerichte gleichzeitig fertig – die Ninja DualZone ist im Angebot“).
 
 <!-- de-749 -->
-## DE SLIDES Nr 749 · Yesterday · +57.8K Views · Sprache en · Flanellen-Decke mit GTA V & GTA VI-Print, weich und warm, Anti-Pilling
-https://www.tiktok.com/@kloster_industries/video/7709439654335876384
-
-**Original:**
-> I'm in need of one thing and it's running through my brain Let that bitch go cause she breaking windows I'm saying to Joe, well don't do these niggas not have shame Yeah girl she a whore, but you show her like she gold
-
-**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Für jeden, der auf GTA 6 wartet 🎮 – die Decke gibt’s wirklich“).
-
-<!-- de-572 -->
 ## DE SLIDES Nr 572 · Yesterday · +86.2K Views · Sprache en · Probiotikum Gummibonbons für Frauen | Intimflora & pH‑Wert ausgleichen
 https://www.tiktok.com/@morabackup5/video/7709444203587079456
 
@@ -334,66 +276,6 @@ https://www.tiktok.com/@morabackup5/video/7709444203587079456
 **DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Das hätte ich früher wissen müssen“).
 
 <!-- de-819 -->
-## DE SLIDES Nr 819 · Yesterday · +52K Views · Sprache en · ONE MEMORY NOIR/AURA Damenparfum 30 ml x 2 | Elegantes Geschenkset | F
-https://www.tiktok.com/@produktwolf/video/7709539334197693718
-
-**Original:**
-> Babe, you smell way too good to leave me like this then give me a reason to stay Wait, what perfume is that my car still smells like you? Girl he texted before I even made it inside come here. Let me smell It's aura by one memory noir comes in the set too, okay? Yeah, I'd fold to send me the link girl. They're both in the orange cart I
-
-**DEUTSCH:**
-**Hook:** „Du riechst viel zu gut, um jetzt einfach zu gehen.“
-**Skript:** „Welches Parfüm ist das? Mein Auto riecht immer noch nach dir.“ – Text: „Er hat geschrieben, bevor ich überhaupt zu Hause war.“ – Freundin: „Komm her, lass mal riechen.“ – „Das ist Aura von One Memory, Noir gibt’s im Set dazu.“ – „Schick mir sofort den Link.“ – „Beide liegen im orangenen Einkaufswagen.“
-
-<!-- de-851 -->
-## DE SLIDES Nr 851 · Yesterday · +49.8K Views · Sprache en · 【Black Friday】 Sweatpants für Herren mit lockerem Schnitt im casualen 
-https://www.tiktok.com/@produktwolf/video/7709530188253613344
-
-**Original:**
-> I said I wanted to pray, I wasn't really able to be a part, baby, to me, I said it. No, I don't want a lifeboat for Christmas, this is all I'm asking for. I just want to see my baby, say it right outside my door.
-
-**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Die bequemste Jogginghose für den Winter – Black-Friday-Preis“).
-
-<!-- de-704 -->
-## DE SLIDES Nr 704 · Yesterday · +63.2K Views · Sprache en · More Nutrition Protein Milkyccino mit Koffein
-https://www.tiktok.com/@shadowluna_twins/video/7709429659259194646
-
-**Original:**
-> vaccinations vaccinations Thank you.
-
-**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Text wie im Original: „Bevor du fragst: Nein, kein Tippfehler – der Milkyccino kostet gerade nur ein paar Cent“).
-
-<!-- de-681 -->
-## DE SLIDES Nr 681 · Yesterday · +64.8K Views · Sprache en · Y2K Techwear Kapuzenjacke für Herren, sportliche Freizeitjacke, Outdoo
-https://www.tiktok.com/@mrshoppa1/video/7709513667909258529
-
-**Original:**
-> I just let it go, let it go Oh na-na-na-na-na-na No, I don't care no more, care no more Oh na-na-na-na-na-na So go on, let me know, let me know Put your hands up na-na-na-na Baby, nothing's gonna stop us tonight Cause I'm good, I'm feeling alright Baby, I'm gonna have the best fucking night of my life Now wherever it takes me, I'm never alive Baby, don't you know I'm good, yeah, I'm feeling alright
-
-**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Techwear-Jacke, die aussieht wie 200 € – kostet aber einen Bruchteil“).
-
-<!-- de-837 -->
-## DE SLIDES Nr 837 · Yesterday · +51K Views · Sprache ar · Set Sitzbezüge fürs Auto, geeignet für 5‑platzige Modelle, Sitzbezüge 
-https://www.tiktok.com/@97harith/video/7709615025563995425
-
-**Original:**
-> مستحيل السريع السريع عفش سيارة وبيه هواي الوان بس بس 17 يورو بالمحلات او كانت سعره اكثر من 60 او 70 يورو اليوم تاخذ بس بس 17 يورو واصل حجبها بيتك رابط الشراء اسفل في الفيديو
-
-**DEUTSCH:**
-**Hook:** „Unmöglich – Sitzbezüge fürs ganze Auto für nur 17 €!“
-**Skript:** „Gibt’s in ganz vielen Farben. Im Laden zahlst du dafür 60 bis 70 €, heute nur 17 € – direkt zu dir nach Hause geliefert. Link ist unten im Video.“
-
-<!-- de-807 -->
-## DE BOF+SLIDES Nr 807 · 2 days ago · +53.1K Views · Sprache fa · NaturElan Bakterienkulturen & Ballaststoff-Enzym-Komplex, 2 x 60 Kapse
-https://www.tiktok.com/@faim.210/video/7709222065945054496
-
-**Original:**
-> صدای میده تا نمیشنوی مشکل داری تیر تمیاری میگی جور میشم یا چیز درست نخوردم دگه دفع خوب میشم نه خیر وقتی که غذا میخوری تشناب میدهوی یا شکمت مثل با قانه واره بیرون میبارای باد میکنه یا بادت میره و بسای بدبوی میته ای علامه هایی از ایسته که میدهت وزش خوب نیست وز میدهت با دو از ای کپسول جور میکنی پس برا دو مایت میشه از شرکت آلمانی هسته ای جایی نیسته که مثال از چین یا از دیگر جایی بیایه ای در آلمان در لبا جور شده و در آلمان میفروشندش برا دو مایت میشه ای که هسته پوبیوتی که هسته 23 بکتیغین شدیم داخلش هست ای دیگه هسته ملتی بلاشتاف کمپلیکس هسته بس سدر هسته در تکتاک شاب خریده این مردم و نتیجه خوب گرفتین و وضعشان پس خوب شده بدون ترس نان میخورند تو هم میتونی در ثبت نانجی سفارش پتی غمت بخو فرار نکو از مشکل
-
-**DEUTSCH:**
-**Hook:** „Dein Bauch macht Geräusche und du denkst, du hast nur was Falsches gegessen? Falsch.“
-**Skript:** „Blähungen, Druck im Bauch, unangenehme Gerüche – das sind Zeichen, dass deine Verdauung nicht rund läuft. Ich nehme dafür diese Kapseln mit Bakterienkulturen und Ballaststoffen. Von einer deutschen Firma, hier in Deutschland hergestellt – nicht irgendwas aus China. Gerade im Angebot, Link unten.“ (Keine Heilversprechen.)
-
-<!-- us-450 -->
 ## US SLIDES Nr 450 · Yesterday · +516.6K Views · Sprache en · Just a Few Things I Love About You Mom + Dad Personalized Meaningful G
 https://www.tiktok.com/@iluvdealz/video/7709345068204789005
 
@@ -403,15 +285,6 @@ https://www.tiktok.com/@iluvdealz/video/7709345068204789005
 **DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Wenn du deine Eltern liebst…“ – personalisiertes Buch „Ein paar Dinge, die ich an dir liebe“ zum Ausfüllen).
 
 <!-- us-911 -->
-## US SLIDES Nr 911 · Yesterday · +128.4K Views · Sprache en · Dickies Classic Bib Overalls,Durable Comfort, Utility Storage, Wide Le
-https://www.tiktok.com/@grind2hardosha/video/7709546887942098206
-
-**Original:**
-> Spent months in the corner, just me and my back I'm used to this, I'm numb to that I know I just gotta adapt, ayy Let's wait on your Spotify rap The messages you about to send on the 16th Please don't hit send on none of that There's no need to check what the temperature is You know what it is if you double back Should've put another blade in my back Should've stood over and double tap Bank, but y'all need a duffel bag What is the offer they said? What did they put on the table? What does that say on that paper? Fuck that, they gotta double that, triple that Fuck is the bitches at? Yo, the chef too Michelin Come to the 6th and we dipping you boys like a christenin' Kevin Hart Lincoln, he shook, I'ma put you in sticky predicaments Killie might come take a stick off a pussy like they was transitionin' I'm fightin' the man, I suin' a rapper, you boys not listenin' Ah, your boyfriend a fisherman, that's just a word in the industry Don't mean to be in your business I'm talkin' spicy, hot, sizzlin' Don't stick around if you visitin' Yeah, what is the offer they said?
-
-**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Robuste Arbeitslatzhose – so günstig wie nie“). Idee für DE: Arbeitskleidung als Slideshow.
-
-<!-- us-491 -->
 ## US SLIDES Nr 491 · Yesterday · +331.7K Views · Sprache en · Men's Santa Claus Fleece-Lined Windbreaker, White Long Cardigan with F
 https://www.tiktok.com/@metrowardrobe/video/7709346586240797983
 
@@ -495,17 +368,6 @@ https://www.tiktok.com/@pauramis/video/7709098353065299213
 **DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Das Weihnachtsmann-Outfit für Männer, die keinen Bock auf Pullover haben“).
 
 <!-- us-762 -->
-## US SLIDES Nr 762 · 2 days ago · +148.4K Views · Sprache en · Crossover Bundle Dedicated Deck Card Game - 90s & 00s Pop, Country Mus
-https://www.tiktok.com/@chelseaballjones/video/7709146361358224653
-
-**Original:**
-> Jody Messina flips a coin and it lands on Heads. Where's she going? Heads Carolina. Yes! Should have been a cowboy. Toby Keith said that California is full of three, what three things? Whiskey, women, and gold. Yeah. Yeah. Yeah! Oh, yes. George Stratts said that she can hang his note in a picture frame above what? Mantle. Mantle. Mantle. Mantle. Yeah! That's two! Any man of mine. Shania says you gotta shimmy, shake, and what else? Shake, let the heart break. Let the earthquake. Let the earthquake. Let the earthquake. I said heartbreak.
-
-**DEUTSCH:**
-**Hook:** „Stell dir dieses Spiel beim Familienabend vor.“
-**Skript:** Quizkarten mit deutschen Schlagern/90er-Hits vorlesen: „Wohin fährt Helene, wenn sie atemlos ist?“ – alle rufen die Antwort. Idee: Party-Kartenspiel mit Musikfragen, Familie lacht und rät. (Für DE: deutsche Lieder statt Country.)
-
-<!-- us-550 -->
 ## US SLIDES Nr 550 · 2 days ago · +231.3K Views · Sprache es · 3-Pack Men's High-Neck Fleece-Lined Shirts, Winter Thermal Compression
 https://www.tiktok.com/@jonatanm13/video/7708933711131053325
 
@@ -515,33 +377,6 @@ https://www.tiktok.com/@jonatanm13/video/7708933711131053325
 **DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Spanisches Lied. Hook: „Früh raus bei Minusgraden – oder mit Fleece innen drin?“ – Vorher/Nachher-Bild).
 
 <!-- us-569 -->
-## US SLIDES Nr 569 · 2 days ago · +209.6K Views · Sprache en · Western Style Bull Skull Navajo Geometric Print Hoodie for Men, Vintag
-https://www.tiktok.com/@cassian_0122/video/7709091819769924877
-
-**Original:**
-> He's from Texas, I can tell by the way he's still stepping round the room And judging by the smile that's written on his face There's nothing I can do to him Oh yeah, it doesn't take a crystal ball to see A cowboy always finds a way to leave Drinking Jack all by myself He's choosing Texas, I can tell Drinking Jack all by myself He's choosing Texas, I can tell Come on, baby
-
-**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Der Western-Hoodie, nach dem alle fragen 🤠“).
-
-<!-- us-838 -->
-## US SLIDES Nr 838 · 2 days ago · +139K Views · Sprache en · Just A Few Things I Love About You (Okay, A Lot) Romantic Couples Fill
-https://www.tiktok.com/@iluvdealz/video/7709013438235725070
-
-**Original:**
-> I bumped into you by a half-stance, probably wouldn't even know who I am, but if I whispered your own name, I'd better still be your spark. Back when I was gasoline, this old tattoo had ran away, didn't care what your mama think, but your name on my arm. Baby, is it spring or is it summer? The guitar sound, don't beat that drum. You hear sometime late at night on your radio, even though you're a million miles away, you're here born in A.P.S.A. and we lived on the glory day so long ago. When you think about me, do you think about Seventeen? Do you think about my OG? Think about the stars in the sky, but in that old melody, sound like a memory, like a soundtrack to a July Saturday night. Oh, spring steam. Oh, spring steam.
-
-**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Hab beim Ausfüllen geheult…“ – Buch „Ein paar Dinge, die ich an dir liebe“ für den Partner).
-
-<!-- us-768 -->
-## US SLIDES Nr 768 · 2 days ago · +147.9K Views · Sprache en · Men's Fall Winter Hooded Sweatshirt, Spider Print, Drawstring & Kangar
-https://www.tiktok.com/@noahblake_k/video/7709079288456301837
-
-**Original:**
-> Hi, I'm Peter Parker. And a while back I was bitten by a radioactive spider and got superpowers. I've used my powers to help the city and stop a lot of people who wanted to hurt it. Okay, let's do this one last time, yeah? For real this time, this is it. My name is Miles Morales. I was bitten by a radioactive spider, and for like two days, I've been the one and only spider.
-
-**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Spider-Man-Ton aus dem Film; Hook: „Für alle, die immer noch Spider-Man-Fans sind 🕷️“).
-
-<!-- us-26 -->
 ## US QUALITY Nr 26 · 3 days ago · +1M Views · Sprache en · REDTIGER F17 4K 3-Channel Dash Cam with 5GHz WiFi GPS, 64GB Card, 2160
 https://www.tiktok.com/@ericabaileyb_/video/7708641929021558030
 

@@ -1,6 +1,6 @@
 # Research auf Social1 (täglich, 7 / 13 / 19 Uhr)
 
-Arturs Vorgaben (19.11.2026). Erst Deutschland, dann USA. Immer „Today“ + „Trending“, keine Kategorie, keine Produktsuche, bis Seite 100 (Artur 19.11.).
+Arturs Vorgaben (19.11.2026). Erst Deutschland, dann USA. Immer „Today“ + „Trending“, keine Kategorie, keine Produktsuche, bis Seite 50 (Artur 19.11. abends, 100 war zu viel).
 Werkzeug: `werkzeuge/research.py`, Regeln `werkzeuge/research_regeln.json`, Ablage `uebergabe/research/<JJJJ-MM-TT>/`.
 Geplante Aufgabe „tiktok-research-taeglich“ (Claude-App, Auto-Modus) führt den Tageslauf unten aus.
 
@@ -95,8 +95,8 @@ Artur schickt seine eigene Research (Listen/Bildschirmaufnahme). Video für Vide
   Wahrscheinlichkeit hoch ist (andere Marke, Versand Übersee). **Reine US-Marken** (z. B. die Firma auf Platz 1 der US-Rangliste)
   nicht nehmen. Wichtige Konzepte: **Staubsauger, Nass-/Trockensauger-Vergleiche, Klone/Dupes, Videos, in denen das Produkt
   präsentiert wird.** `SLIDES USA`: auch Video-Ideen für neue Slideshows, die man auf neue Ideen in DE anwenden kann.
-- Danach alle Listen (DE + USA, 19.11.) nach den Regeln überarbeiten. Arturs Listen: `eigene BOF 19.11.26 DE`,
-  `eigene slides 19.11.26 DE`, `reactions 19.11.26` und seine USA-Listen (Namen per getVideoLists).
+- Danach alle Listen (DE + USA, 19.11.) nach den Regeln überarbeiten. Arturs Listen: `eigene BOF 19.11.2026`,
+  `eigene slides 19.11.2026 DE`, `reactions 19.11.26` (unsere heißen `BOF DE 19.11.2026` / `SLIDES DE 19.11.2026`) und seine USA-Listen (Namen per getVideoLists).
 
 **Umgesetzt 19.11.2026 spät:**
 - **Sortierung:** Social1 zeigt eine Liste in Hinzufüge-Reihenfolge, das **zuerst** Hinzugefügte steht **oben**. `sortieren` legt deshalb

@@ -384,3 +384,12 @@
   Entferntes = erledigt, gemacht.json + aus unseren Listen). `filtern us` lässt Slideshows trotz Beauty/Supplement drin (SLIDES USA
   = Format-Ideen). USA-Regeln aus Arturs Listen in docs/RESEARCH.md „Gelernt“, Quality USA ausgedünnt. Tageslauf + Prompt der
   geplanten Aufgabe angepasst (Schritt 0 Abgleich, Reactions-Liste, Sortier-Richtung, US-Regeln).
+
+- **19.11.2026** – Neu `docs/ANALYSE.md`: Weg zu Einnahmen/Partnerbestellungen und Excel-Export erkundet (andrucha, iPhone 15 Pro Max), Export-Summen = Täglicher Umsatz geprüft. Grundlage für die Morgen-/Abend-Analyse (Artur).
+
+## 19.11.2026 (abends) – Research nur bis Seite 50 (Artur)
+- research.py `lesen`: Standard 50 Seiten statt 100 (Artur: 100 ist zu viel). RESEARCH.md + Auftrag der täglichen Aufgabe angepasst.
+- Heutige Listen (BOF DE, SLIDES DE, Reactions DE, SLIDES USA, Quality USA 19.11.2026): Videos, die nur auf Seite 51–100 standen, entfernt
+  (Sicherungen in uebergabe/research/2026-11-19/sicherung-*), Ranglisten + SKRIPTE neu.
+- Listennamen festgehalten: unsere = „BOF DE …“/„SLIDES DE …“, Arturs = „eigene BOF …“/„eigene slides … DE“.
+- Tägliche Aufgabe „tiktok-research-taeglich“ ist an (7/13/19 Uhr).
