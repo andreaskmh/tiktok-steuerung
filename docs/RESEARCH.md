@@ -33,7 +33,9 @@ Erster Lauf des Tages ohne `--frisch`, weitere Läufe am selben Tag mit `--frisc
 1. `lesen us [--frisch]`, `filtern us`, `blaetter us --neu`
 2. Sortieren: `"SLIDES"` oder `"QUALITY?"` (Kandidat) in `us-sortiert.json`, Rest in `us-nein.json`.
 3. Für jeden `QUALITY?`: Produktnamen (Social1, englisch) in 1–3 kurze Suchwörter übersetzen (Gattung, z. B. „Nass Trockensauger“, „heated jacket“)
-   → `python3 werkzeuge/research.py de-suche <suchwort>` (TikTok Shop DE über Social1, Land DE, Bestseller zuerst).
+   → alle Suchwörter in eine Datei (eine Zeile pro Wort) und **auf einmal** prüfen:
+   `python3 werkzeuge/research.py de-suche --datei <woerter.txt>` (TikTok Shop DE über Social1 direkt, Bestseller zuerst, ~1–2 s/Wort).
+   Einzeln geht auch: `de-suche <suchwort>`.
    Gibt es das Produkt oder etwas Ähnliches/andere Marke → `"QUALITY"`, sonst in `us-nein.json` („nicht in DE“). Treffer (Name, id, verkauft)
    in `us-quality.json` notieren (`{"nr": {"de_produkt": …, "de_id": …, "amazon": ASIN}}`).
 4. Nur für `QUALITY`: Amazon.es suchen (`amazon <spanisches/englisches Suchwort>`), passendstes Produkt (gute Bewertungen, Preis passt) →
@@ -66,11 +68,16 @@ Artur schickt seine eigene Research (Listen/Bildschirmaufnahme). Video für Vide
 - 19.11.: Parfüm darf rein. Sketche/Vergleiche und reine Vorführungen ohne Gesicht gehören in BOF DE.
 
 ## Technik
-- research.py nutzt ein eigenes Safari-Fenster (Social1-Videoseite `social1.ai/?…`), DE-Check ein eigenes (`social1.ai/products`), Amazon ein eigenes.
-  Die Listen-Tabs von post_mensch (`saved-videos/…`) werden nie angefasst. Land wird nach jedem Lauf auf DE zurückgestellt.
-- Klicks immer per `setTimeout`; hängt der Tab, schließt research.py ihn selbst und macht weiter (fortsetzbar).
+- **Seit 19.11.2026 spricht research.py direkt mit Social1** (Server-Aktionen der Webseite, im eingeloggten Safari-Fenster ausgeführt –
+  keine Cookies, keine Klicks): Lesen = `getTopVideos` (100 Seiten DE in ~2 Min. statt ~40), Speichern = `addVideoToList` gebündelt
+  (prüft die echte Liste, legt fehlende Listen per `createVideoList` an), DE-Check = `searchProducts`. Die Aktions-IDs liest das
+  Werkzeug bei jedem Lauf aus den Programmdateien von Social1 (sie ändern sich bei Updates); findet es sie nicht → STOPP „Social1 umgebaut?“.
+- Social1 liefert pro Video auch `slideshow` / `ki` (Social1-Einstufung) und `time_posted`; die Sammelbilder zeigen „SLIDE“ / „KI“ an.
+- research.py nutzt sein eigenes Safari-Fenster (Social1-Videoseite `social1.ai/?…`) und für Amazon ein eigenes. Die Listen-Tabs von
+  post_mensch (`saved-videos/…`) werden nie angefasst. Die Region wird bei jedem Aufruf mitgegeben (kein Umstellen mehr nötig).
+- Alte Klick-Wege bleiben als Reserve: `speichern_klick`, Sicherung `werkzeuge/research.py.bak-20261119-direkt`.
 
-## Direkter Weg zu Social1 (Untersuchung 19.11.2026, Artur: „schneller“) – Stand
+## Direkter Weg zu Social1 (Untersuchung 19.11.2026, Artur: „schneller“) – eingebaut, Notizen
 Social1 ist eine Next.js-Seite; Speichern läuft über **Server-Aktionen** (POST auf die aktuelle Seiten-URL, Header
 `Accept: text/x-component`, `next-action: <id>`, `next-router-state-tree`, `x-deployment-id`; Body = JSON-Array). Mitgeschnitten
 per fetch-Hook im Safari-Tab (Aktions-IDs ändern sich bei jedem Social1-Update → zur Laufzeit neu ermitteln, nicht fest einbauen):
@@ -80,8 +87,12 @@ per fetch-Hook im Safari-Tab (Aktions-IDs ändern sich bei jedem Social1-Update 
 - **Listen holen** (`0031ae1a8160653183a350a3d6af68883aa113bc11`): `[]` → alle Listen mit `_id`, `name`
 - **Eine Liste holen** (`40ce278ef0cb2208c4bf937eb78aee80e14306455b`): `[listId]` → Videos der Liste (inkl. timePosted)
 - Neue Liste anlegen: noch nicht mitgeschnitten. Listen-ID BOF DE 19.11.2026 = `6afe48ed035d76b7459d173f`.
-- **Seiten lesen:** Die Videos stehen NICHT im RSC-Seitenpayload (`/?page=N` mit `RSC: 1` hat keine Video-IDs); sie werden
+- **Seiten lesen (gelöst):** `getTopVideos({limit:12, page:<ab 0>, region:"de"|"us"})`; Standard = Today + Trending (geprüft gegen die
+  Seite). Weitere Felder: tsStart/tsEnd, performanceFilter, sortBy, isSlideshow, isAi, category, lang. Antwort `results[]`, `has_more`.
+- **DE-Check (gelöst):** `searchProducts({query, region:"de"})` → product_name, units_sold, gmv, price_value …
+- Früher: Die Videos stehen NICHT im RSC-Seitenpayload (`/?page=N` mit `RSC: 1` hat keine Video-IDs); sie werden
   nachgeladen. Ein fetch-Hook nach dem Laden sah beim Klick auf Seite „2“ keine Anfrage (Next nutzt evtl. eine früh gemerkte
   fetch-Referenz). Nächster Versuch: in den JS-Chunks nach `createServerReference(` suchen (Aktions-ID + Name, z. B. getVideos)
   oder XMLHttpRequest/`performance`-Einträge prüfen; Argumente (Region, Seite, Zeitraum, Performance) aus dem Chunk ablesen.
-- Auffällig: Übersicht zeigte „BOF DE 19.11.2026 – 317 videos“, mitgeschrieben waren 332 → per „Liste holen“ prüfen, was fehlt.
+- Geprüft 19.11.: Durch das Klick-Speichern fehlten in BOF DE 25 protokollierte Videos → 22 direkt nachgetragen (Liste 363),
+  1 ohne Video-Nummer, 2 nicht mehr unter den Kandidaten. SLIDES DE war vollständig.

@@ -352,3 +352,8 @@
   3 Versuche; Sprache kommt von Whisper. `research.py skripte` nutzt das, Ablage `<land>-transkripte/<nr>.json`. Test DE Top 3: 4× Deutsch erkannt.
 - **19.11.2026 (Artur)** – Research liest bis Seite 100 statt 50.
 - **19.11.2026 (Artur)** – Social1-Server-Aktionen fürs Speichern/Entfernen/Listen mitgeschnitten (docs/RESEARCH.md „Direkter Weg“), noch nicht eingebaut.
+- **19.11.2026 (Artur: „schneller“)** – research.py spricht direkt mit Social1 (Server-Aktionen im Safari-Fenster, IDs werden zur
+  Laufzeit aus den Social1-Programmdateien gelesen): `lesen` = getTopVideos gebündelt (100 Seiten DE 1200 Videos in 1:43 Min.),
+  `speichern` = addVideoToList gebündelt + Abgleich mit der echten Liste + Liste anlegen per createVideoList, `de-suche` =
+  searchProducts (neu `--datei` für viele Wörter, ~1,4 s/Wort), `messen` ebenfalls direkt. Neue Felder slideshow/ki/time_posted,
+  Sammelbilder zeigen SLIDE/KI. BOF DE: 22 beim Klick-Speichern verlorene Videos nachgetragen. Sicherung `research.py.bak-20261119-direkt`.

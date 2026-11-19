@@ -7,6 +7,7 @@
   python3 werkzeuge/research.py speichern <de|us> "<Liste>" <nr> [<nr> ...]   # Videos (Kandidaten-Nr) in Social1-Liste
   python3 werkzeuge/research.py rangliste <de|us>              # Punkte + Platzierung der einsortierten Videos
   python3 werkzeuge/research.py de-suche <suchwort>             # gibt es das im TikTok Shop DE? (Social1-Produkte, Bestseller)
+  python3 werkzeuge/research.py de-suche --datei <woerter.txt>  # viele Suchwörter auf einmal (eine Zeile pro Wort)
   python3 werkzeuge/research.py amazon <suchwort>               # Amazon.es-Suche (nur lesen)
   python3 werkzeuge/research.py wagen <ASIN>                    # in den Amazon.es-Einkaufswagen (nie kaufen)
   python3 werkzeuge/research.py skripte <de|us> [--top 30]      # Transkripte Top je Liste → fremdsprachige in „SKRIPTE <datum>.md“
@@ -133,6 +134,123 @@ def alter_tage(s):
     return n * {"day": 1, "week": 7, "month": 30, "year": 365}[m.group(2)]
 
 
+# ---- Direkter Weg zu Social1 (19.11.2026): Server-Aktionen statt Klicks -------------------------------------------------
+# Die Webseite ruft intern Next.js-Server-Aktionen auf (POST, Header „next-action: <id>“, Body = JSON-Array der Argumente).
+# Die IDs ändern sich bei Social1-Updates → werden bei jedem Lauf aus den geladenen JS-Dateien gelesen (Name → ID).
+AKTIONEN = {}
+JS_AKTIONEN = r"""(()=>{window.__s1akt=null;const js=[...new Set(performance.getEntriesByType('resource').map(e=>e.name)
+ .filter(n=>n.includes('/_next/static/chunks/')&&n.includes('.js')))];
+ Promise.all(js.map(u=>fetch(u).then(r=>r.text()).catch(e=>''))).then(ts=>{const a={};for(const t of ts)
+ for(const m of t.matchAll(/createServerReference\)?\("([0-9a-f]{40,44})"[^)]{0,60}"([A-Za-z0-9_$]+)"/g))a[m[2]]=m[1];
+ window.__s1akt=JSON.stringify(a)});return js.length})()"""
+
+
+def aktionen_laden(pflicht=("getTopVideos", "getVideoLists", "addVideoToList", "getVideoListDetail", "createVideoList")):
+    research_fenster()
+    for runde in range(2):
+        safari(JS_AKTIONEN)
+        for _ in range(30):
+            time.sleep(0.5)
+            r = safari("window.__s1akt||''")
+            if r:
+                AKTIONEN.update(json.loads(r))
+                break
+        if all(n in AKTIONEN for n in pflicht):
+            return AKTIONEN
+        gehe("https://www.social1.ai/?page=1")            # Videoseite lädt alle nötigen Programmteile
+        time.sleep(8)
+    sys.exit(f"STOPP Social1: Aktionen nicht gefunden ({[n for n in pflicht if n not in AKTIONEN]}) – Social1 umgebaut?")
+
+
+def s1(name, *args, warte=45):
+    """Server-Aktion im Research-Fenster aufrufen und die Antwort (Zeile „1:{…}“) als Objekt zurückgeben."""
+    if name not in AKTIONEN:
+        aktionen_laden()
+    schluessel = f"k{time.time_ns()}"
+    body = json.dumps(list(args), ensure_ascii=False)
+    start = safari(f"""(()=>{{window.__s1=window.__s1||{{}};const k={json.dumps(schluessel)};window.__s1[k]=null;
+fetch(location.pathname,{{method:'POST',headers:{{'Accept':'text/x-component','next-action':{json.dumps(AKTIONEN[name])},
+'Content-Type':'text/plain;charset=UTF-8'}},body:{json.dumps(body)}}}).then(r=>r.text().then(t=>window.__s1[k]=JSON.stringify({{s:r.status,t}})))
+.catch(e=>window.__s1[k]=JSON.stringify({{s:0,t:String(e)}}));return 1}})()""")
+    if start not in ("1", "1.0"):
+        raise RuntimeError(f"Social1 {name}: Befehl startete nicht in Safari ({start[:80]!r})")
+    for _ in range(warte * 4):
+        time.sleep(0.25)
+        r = safari(f"(()=>{{const v=(window.__s1||{{}})[{json.dumps(schluessel)}];if(v)delete window.__s1[{json.dumps(schluessel)}];return v||''}})()")
+        if r:
+            a = json.loads(r)
+            zeile = next((l for l in a["t"].split("\n") if l.startswith("1:")), None)
+            if a["s"] != 200 or zeile is None:
+                if a["s"] in (404, 500) and "Server action" in a["t"]:
+                    AKTIONEN.clear()                         # Social1 wurde aktualisiert → IDs neu lesen, einmal wiederholen
+                    return s1(name, *args, warte=warte)
+                raise RuntimeError(f"Social1 {name}: Status {a['s']} {a['t'][:200]}")
+            return json.loads(zeile[2:])
+    raise Haenger()
+
+
+def s1_viele(name, argliste, parallel=4, warte=600):
+    """Dieselbe Server-Aktion für viele Argument-Listen auf einmal (im Browser, je `parallel` gleichzeitig) → Antworten in Reihenfolge."""
+    if not argliste:
+        return []
+    if name not in AKTIONEN:
+        aktionen_laden()
+    schluessel = f"v{time.time_ns()}"
+    start = safari(f"""(()=>{{window.__s1=window.__s1||{{}};const k={json.dumps(schluessel)};const L={json.dumps(argliste, ensure_ascii=False)};
+const out=new Array(L.length);let i=0;window.__s1[k+'_n']=0;
+const eins=async()=>{{while(i<L.length){{const j=i++;try{{const r=await fetch(location.pathname,{{method:'POST',headers:{{'Accept':'text/x-component',
+'next-action':{json.dumps(AKTIONEN[name])},'Content-Type':'text/plain;charset=UTF-8'}},body:JSON.stringify(L[j])}});const t=await r.text();
+const z=t.split(String.fromCharCode(10)).find(l=>l.startsWith('1:'));out[j]=r.status==200&&z?z.slice(2):JSON.stringify({{error:'Status '+r.status}});}}
+catch(e){{out[j]=JSON.stringify({{error:String(e)}})}};window.__s1[k+'_n']++;}}}};
+Promise.all(Array.from({{length:{parallel}}},eins)).then(()=>window.__s1[k]=JSON.stringify(out));return 1}})()""")
+    if start not in ("1", "1.0"):
+        raise RuntimeError(f"Social1 {name}: Befehl startete nicht in Safari ({start[:80]!r})")
+    for _ in range(warte * 2):
+        time.sleep(0.5)
+        r = safari(f"(()=>{{const v=(window.__s1||{{}})[{json.dumps(schluessel)}];if(v)delete window.__s1[{json.dumps(schluessel)}];return v||''}})()")
+        if r:
+            return [json.loads(x) for x in json.loads(r)]
+    raise Haenger()
+
+
+def _kurz(x, euro=False):
+    """1600000 → '1.6M', 979300 → '979.3K' (wie auf der Social1-Seite)."""
+    x = float(x or 0)
+    for grenze, e in ((1e9, "B"), (1e6, "M"), (1e3, "K")):
+        if x >= grenze:
+            t = f"{x / grenze:.1f}".rstrip("0").rstrip(".") + e
+            break
+    else:
+        t = f"{x:.0f}"
+    return ("€" if euro else "") + t
+
+
+def _alter_text(ts):
+    try:
+        tage = (HEUTE - date.fromisoformat(ts[:10])).days
+    except (TypeError, ValueError):
+        return ""
+    return "Today" if tage <= 0 else "Yesterday" if tage == 1 else f"{tage} days ago"
+
+
+def karte_aus_api(v):
+    """Ein Video aus getTopVideos in dasselbe Format wie früher JS_KARTEN (filtern/blaetter/rangliste bleiben gleich)."""
+    p = v.get("product_data") or {}
+    return {"rang": str(v.get("ranking", "")), "plus_views": _kurz(v.get("view_gain")), "feuer": False, "ad": bool(v.get("is_ad")),
+            "produkt": p.get("name", ""), "produkt_id": str(v.get("product_id") or p.get("product_id") or ""),
+            "produkt_bild": p.get("img_url", ""), "video_id": str(v.get("video_id", "")), "vorschau": v.get("thumbnail", ""),
+            "creator": v.get("handle", ""), "alter": _alter_text(v.get("time_posted")), "gmv": _kurz(v.get("med_gmv_revenue"), True),
+            "views": _kurz(v.get("views")), "likes": _kurz(v.get("likes")), "kommentare": _kurz(v.get("comments")),
+            "zuwachs": _kurz(v.get("view_gain")), "time_posted": v.get("time_posted", ""), "slideshow": bool(v.get("is_slideshow")),
+            "ki": bool(v.get("is_ai")), "preis": p.get("price_display", ""), "shop": v.get("shop_name", "")}
+
+
+def top_videos(land, seite):
+    """Seite (ab 1) der Social1-Videoliste „Today“ + „Trending“ direkt holen → (karten, has_more)."""
+    d = s1("getTopVideos", {"limit": 12, "page": seite - 1, "region": land}).get("data") or {}
+    return [karte_aus_api(v) for v in d.get("results") or []], bool(d.get("has_more"))
+
+
 def land_setzen(land):
     gehe("https://www.social1.ai/")
     time.sleep(4)
@@ -145,33 +263,36 @@ def land_setzen(land):
 
 
 def lesen(land, seiten, frisch=False):
+    """Alle Seiten direkt über Social1 lesen (getTopVideos, kein Blättern/Klicken mehr; ~1 s pro Seite)."""
     ORDNER.mkdir(parents=True, exist_ok=True)
     ziel = ORDNER / f"{land}.json"
     if frisch and ziel.exists():                              # weiterer Lauf am selben Tag: alten Stand aufheben, neu lesen
         ziel.rename(ORDNER / f"{land}-{time.strftime('%H%M')}.json")
     daten = json.loads(ziel.read_text()) if ziel.exists() else {"land": land, "datum": HEUTE.isoformat(), "seiten": {}}
-    land_setzen(land)
-    for s in range(1, seiten + 1):
-        if str(s) in daten["seiten"]:
-            continue
-        gehe(f"https://www.social1.ai/?page={s}")
-        karten, erwartet = [], str((s - 1) * 12 + 1)
-        for _ in range(30):
-            time.sleep(1)
-            try:
-                karten = json.loads(safari(JS_KARTEN) or "[]")
-            except json.JSONDecodeError:
-                karten = []
-            if karten and karten[0]["rang"] == erwartet and all(k["video_id"] for k in karten):
+    aktionen_laden()
+    offen = [s for s in range(1, seiten + 1) if str(s) not in daten["seiten"]]
+    ende = False
+    for i in range(0, len(offen), 20):                         # 20 Seiten auf einmal (im Browser, 4 gleichzeitig)
+        teil = offen[i:i + 20]
+        antworten = s1_viele("getTopVideos", [[{"limit": 12, "page": s - 1, "region": land}] for s in teil])
+        for s, a in zip(teil, antworten):
+            d = a.get("data") or {}
+            karten = [karte_aus_api(v) for v in d.get("results") or []]
+            if not karten:
+                print(f"Seite {s}: keine Videos mehr → Ende")
+                ende = True
                 break
-        if not karten or karten[0]["rang"] != erwartet:
-            print(f"Seite {s}: keine Videos mehr → Ende")
-            break
-        for k in karten:
-            k["seite"] = s
-        daten["seiten"][str(s)] = karten
+            for k in karten:
+                k["seite"] = s
+            daten["seiten"][str(s)] = karten
+            if not d.get("has_more"):
+                print(f"Seite {s}: letzte Seite")
+                ende = True
+                break
         ziel.write_text(json.dumps(daten, ensure_ascii=False, indent=1))
-        print(f"Seite {s}: {len(karten)} Videos (#{karten[0]['rang']}–#{karten[-1]['rang']})", flush=True)
+        print(f"Seiten bis {teil[-1]} gelesen", flush=True)
+        if ende:
+            break
     alle = [k for s in daten["seiten"].values() for k in s]
     print(f"FERTIG lesen {land.upper()}: {len(alle)} Videos auf {len(daten['seiten'])} Seiten")
 
@@ -274,7 +395,8 @@ def blaetter(land, pro, nur_neu=False):
         teil = kand[b * pro:(b + 1) * pro]
         args = []
         for k in teil:
-            args += [str(bilder / f"{k['video_id']}.jpg"), f"{k['nr']} · {k['alter'].replace(' ago', '')}"]
+            marke = " · SLIDE" if k.get("slideshow") else " · KI" if k.get("ki") else ""   # Social1-Einstufung
+            args += [str(bilder / f"{k['video_id']}.jpg"), f"{k['nr']} · {k['alter'].replace(' ago', '')}{marke}"]
         aus = ORDNER / f"{land}-blatt-{'neu-' if nur_neu else ''}{b + 1:02d}.jpg"
         subprocess.run([str(BLATT), str(aus), "5", *args], check=True)
         print(f"{aus.name}: Nr {teil[0]['nr']}–{teil[-1]['nr']}")
@@ -295,7 +417,73 @@ def _dialog_zu(knopf):
     safari(f"(()=>{{const d={DLG}; const b=d&&[...d.querySelectorAll('button')].find(b=>b.innerText.trim()=='{knopf}'); if(b) setTimeout(()=>b.click(),0); return 1}})()")
 
 
+def liste_id(name, anlegen=True):
+    """ID einer Social1-Videoliste per Namen (exakt); fehlt sie, direkt anlegen."""
+    def suchen():
+        ls = (s1("getVideoLists").get("data") or {}).get("lists") or []
+        return [l["_id"] for l in ls if l.get("name") == name]
+    ids = suchen()
+    if len(ids) > 1:
+        sys.exit(f"STOPP: Liste „{name}“ gibt es {len(ids)}× – Artur fragen, welche")
+    if ids:
+        return ids[0]
+    if not anlegen:
+        return None
+    s1("createVideoList", name)
+    ids = suchen()
+    if not ids:
+        sys.exit(f"STOPP: Liste „{name}“ ließ sich nicht anlegen")
+    print(f"Neue Liste angelegt: {name}")
+    return ids[0]
+
+
+def listen_videos(lid):
+    return [v.get("videoId") for v in ((s1("getVideoListDetail", lid).get("data") or {}).get("list") or {}).get("videos") or []]
+
+
+def video_paket(k):
+    """Datenpaket für addVideoToList (wie es die Social1-Seite schickt)."""
+    ts = k.get("time_posted") or ""
+    if not ts:                                                 # alte Lesung ohne Datum: aus „N days ago“ schätzen
+        from datetime import timedelta
+        ts = (HEUTE - timedelta(days=min(alter_tage(k.get("alter")), 365))).isoformat() + " 12:00:00"
+    return {"videoId": k["video_id"], "isAd": 1 if k.get("ad") else 0, "description": None, "handle": k["creator"],
+            "timePosted": ts, "product": {"productId": k["produkt_id"], "name": k["produkt"], "priceDisplay": k.get("preis", ""),
+                                          "imgUrl": k["produkt_bild"]}}
+
+
 def speichern(land, liste, nummern):
+    """Videos (Kandidaten-Nr) direkt in die Social1-Liste legen (addVideoToList). Schon enthaltene werden übersprungen
+    (prüft die echte Liste in Social1, nicht nur unser Protokoll)."""
+    kand = {k["nr"]: k for k in json.loads((ORDNER / f"{land}-kandidaten.json").read_text())}
+    log = ORDNER / f"gespeichert-{liste}.json"
+    fertig = set(json.loads(log.read_text())) if log.exists() else set()
+    aktionen_laden()
+    lid = liste_id(liste)
+    drin = set(listen_videos(lid))
+    neu = 0
+    offen = [kand[int(nr)] for nr in nummern if kand[int(nr)]["video_id"] and kand[int(nr)]["video_id"] not in drin]
+    for i in range(0, len(offen), 50):                         # in Päckchen zu 50, Protokoll nach jedem Päckchen
+        teil = offen[i:i + 50]
+        for k, r in zip(teil, s1_viele("addVideoToList", [[lid, video_paket(k)] for k in teil])):
+            if r.get("error") or (isinstance(r.get("data"), dict) and r["data"].get("error")):
+                print(f"Nr {k['nr']}: Fehler {str(r)[:120]}")
+                continue
+            drin.add(k["video_id"])
+            fertig.add(k["video_id"])
+            neu += 1
+        log.write_text(json.dumps(sorted(fertig)))
+        print(f"… {min(i + 50, len(offen))}/{len(offen)}", flush=True)
+    for nr in nummern:
+        if not kand[int(nr)]["video_id"]:
+            print(f"Nr {nr}: ohne Video-Nummer → übersprungen")
+    echt = set(listen_videos(lid))
+    fehlt = [n for n in nummern if kand[int(n)]["video_id"] not in echt]
+    print(f"FERTIG speichern {liste}: {neu} neu, Liste hat jetzt {len(echt)} Videos" + (f", FEHLEN {fehlt[:10]}" if fehlt else ""))
+
+
+def speichern_klick(land, liste, nummern):
+    """ALT (bis 19.11.2026): Speichern per Klick im Dialog – nur noch Reserve."""
     kand = {k["nr"]: k for k in json.loads((ORDNER / f"{land}-kandidaten.json").read_text())}
     log = ORDNER / f"gespeichert-{liste}.json"
     fertig = set(json.loads(log.read_text())) if log.exists() else set()
@@ -399,26 +587,35 @@ JS_PRODUKTE = r"""JSON.stringify([...document.querySelectorAll('tr')].map(r=>{co
  return {name:t[0], shop:t[1], preis:t[2], gmv:t[3], views:t[4], videos:t[5], verkauft:t[6]||'', id:(i.src.match(/products\/(\d+)/)||[])[1]||''};}).filter(Boolean))"""
 
 
-def de_suche(suchwort, n=5):
-    """Gibt es das Produkt (oder ein ähnliches) im TikTok Shop DE? Social1-Produktsuche mit Land DE, Bestseller zuerst."""
-    import urllib.parse
-    _doc_js(S1P, "localStorage.setItem('selectedRegion','de');1", S1P)
-    _doc_gehe(S1P, f"{S1P}?q={urllib.parse.quote_plus(suchwort)}", 8)
-    erg = []
-    for _ in range(10):
-        try:
-            erg = json.loads(_doc_js(S1P, JS_PRODUKTE, S1P) or "[]")
-        except json.JSONDecodeError:
-            erg = []
-        if erg:
-            break
-        time.sleep(1)
-    erg.sort(key=lambda p: zahl(p["verkauft"]), reverse=True)
-    for p in erg[:n]:
+def _de_treffer(roh, n):
+    erg = [{"name": p.get("product_name", ""), "shop": p.get("shop_name", ""), "preis": f"€{p.get('price_value', 0):.2f}".replace(".", ","),
+            "gmv": _kurz(p.get("gmv"), True), "verkauft": str(p.get("units_sold") or 0), "id": str(p.get("product_id", ""))}
+           for p in ((roh.get("data") or {}).get("results") or [])]
+    erg.sort(key=lambda p: int(p["verkauft"]), reverse=True)
+    return erg[:n]
+
+
+def _de_zeigen(suchwort, erg):
+    print(f"== {suchwort}")
+    for p in erg:
         print(f"{p['verkauft']:>6} verkauft | {p['preis']:>8} | {p['name'][:90]} | id {p['id']}")
     if not erg:
         print("NICHTS in DE gefunden")
-    return erg[:n]
+
+
+def de_suche(suchwort, n=5):
+    """Gibt es das Produkt (oder ein ähnliches) im TikTok Shop DE? Direkt über Social1 (searchProducts, Region DE), Bestseller zuerst."""
+    aktionen_laden()
+    erg = _de_treffer(s1("searchProducts", {"query": suchwort, "region": "de"}), n)
+    _de_zeigen(suchwort, erg)
+    return erg
+
+
+def de_suche_viele(woerter, n=5):
+    """Viele Suchwörter auf einmal (eine Zeile pro Wort in einer Datei) – für den USA-Check."""
+    aktionen_laden()
+    for w, roh in zip(woerter, s1_viele("searchProducts", [[{"query": w, "region": "de"}] for w in woerter])):
+        _de_zeigen(w, _de_treffer(roh, n))
 
 
 AMZ = "https://www.amazon.es"
@@ -563,26 +760,15 @@ def sperre_aktiv():
 
 
 def messen():
-    """Stündlich (launchd): Seite 1 DE + US lesen und protokollieren → erkennen, wann Social1 seine Zahlen erneuert."""
+    """Stündlich (launchd): Seite 1 DE + US direkt lesen und protokollieren → erkennen, wann Social1 seine Zahlen erneuert."""
     if sperre_aktiv():
         return print("Research läuft gerade – Messung ausgelassen")
     sperre_setzen()
     zeile = {"zeit": time.strftime("%Y-%m-%d %H:%M")}
-    try:
-        for land in ("de", "us"):
-            land_setzen(land)
-            karten = []
-            for _ in range(20):
-                time.sleep(1)
-                try:
-                    karten = json.loads(safari(JS_KARTEN) or "[]")
-                except json.JSONDecodeError:
-                    karten = []
-                if karten and karten[0]["rang"] == "1" and all(k["video_id"] for k in karten):
-                    break
-            zeile[land] = [[k["video_id"], k["plus_views"], k["views"]] for k in karten]
-    finally:
-        land_zurueck()
+    aktionen_laden()
+    for land in ("de", "us"):
+        karten, _ = top_videos(land, 1)
+        zeile[land] = [[k["video_id"], k["plus_views"], k["views"]] for k in karten]
     with MESSUNG.open("a") as f:
         f.write(json.dumps(zeile) + "\n")
     print(f"Messung {zeile['zeit']}: DE {len(zeile.get('de', []))}, US {len(zeile.get('us', []))}")
@@ -635,6 +821,9 @@ if __name__ == "__main__":
         sys.exit()
     if a[:1] == ["messung"]:
         messung_auswerten()
+        sys.exit()
+    if a[:2] == ["de-suche", "--datei"]:                      # eine Zeile pro Suchwort
+        mit_neustart(de_suche_viele, [w.strip() for w in pathlib.Path(a[2]).read_text().splitlines() if w.strip()])
         sys.exit()
     if a[:1] == ["de-suche"]:
         mit_neustart(de_suche, " ".join(a[1:]))
