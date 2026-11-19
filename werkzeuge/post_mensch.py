@@ -2318,6 +2318,10 @@ const b=[...d.querySelectorAll('button')].find(b=>b.innerText.trim()=='Close'); 
     if r2 != "ok":
         if r2 == "keine-checkbox":
             _safari(js3_zu, liste_id)                            # Dialog nicht offen stehen lassen
+            # 18.11.2026 (Video 148, Liste „bof 2“ → „BOF“ umbenannt): veraltete Seite zeigt im Dialog GAR KEINE Listen
+            # → einmal neu laden und wiederholen (gleiche Listen-ID, nur der Name ist neu)
+            if _runde == 0:
+                _liste_oeffnen(liste_id); return social1_abhaken(pid, liste_id, 1)
         return r2
     r3 = "warte"
     for _ in range(8):                                           # 16.11.: Haken-Wechsel abwarten statt fester 0,8 s
@@ -2357,7 +2361,7 @@ def social1_warten():
 NV_LISTE = "nicht verfügbar"   # Artur 16.11.2026: eigene Social1-Liste für ausverkaufte/nicht provisionsberechtigte Produkte
 
 
-def social1_verschieben(pid, liste_id=None, ziel=NV_LISTE):
+def social1_verschieben(pid, liste_id=None, ziel=NV_LISTE, _runde=0):
     """Vorbild-Video des Produkts aus der ausgewählten Liste in die Liste „nicht verfügbar“ verschieben (Lesezeichen →
     Haken bei „nicht verfügbar“ setzen, fehlt die Liste: „Create new list“ → Haken der Arbeitsliste raus → Done)."""
     liste_id = liste_id or SOCIAL1_LISTE
@@ -2368,7 +2372,21 @@ if(!k) return 'nicht-in-liste'; k.querySelector('button[title="Save to list"]').
         _liste_oeffnen(liste_id); r = _safari(js, liste_id)
     if r != "auf":
         return r
-    time.sleep(1.2)
+    # 18.11.2026: Dialog-Listen laden verzögert / veraltete Seite zeigt keine Listen → nie „Create new list“ auf einem
+    # leeren Dialog (so entstanden heute zwei leere Listen „nicht verfügbar“). Warten, bis Checkboxen da sind, sonst neu laden.
+    anz = "0"
+    for _ in range(12):
+        time.sleep(0.5)
+        anz = _safari("(()=>{const d=document.querySelector('[data-slot=dialog-content]');"
+                      "return d?String(d.querySelectorAll('button[role=checkbox]').length):'kein-dialog'})()", liste_id)
+        if anz.isdigit() and int(anz) > 0:
+            break
+    if not (anz.isdigit() and int(anz) > 0):
+        _safari(r"""(()=>{const d=document.querySelector('[data-slot=dialog-content]'); if(!d) return 'zu';
+const b=[...d.querySelectorAll('button')].find(b=>b.innerText.trim()=='Close'); if(b) b.click(); return 'zu'})()""", liste_id)
+        if _runde == 0:
+            _liste_oeffnen(liste_id); return social1_verschieben(pid, liste_id, ziel, _runde=1)
+        return "verschieben: Dialog ohne Listen"
     such = r"""(()=>{const d=document.querySelector('[data-slot=dialog-content]'); if(!d) return 'kein-dialog';
 const c=[...d.querySelectorAll('button[role=checkbox]')].find(c=>c.nextElementSibling&&c.nextElementSibling.innerText.trim()=='ZIEL');
 if(!c) return 'fehlt'; if(c.getAttribute('aria-checked')!='true') c.click(); return 'ok'})()""".replace("ZIEL", ziel)
@@ -2394,6 +2412,9 @@ const ok=(!c||c.getAttribute('aria-checked')=='false')&&n&&n.getAttribute('aria-
 const b=[...d.querySelectorAll('button')].find(b=>b.innerText.trim()==(ok?'Done':'Close')); if(b) b.click(); return ok?'nach „ZIEL“ verschoben':'nicht-verschoben'})()""".replace("LID", liste_id).replace("ZIEL", ziel)
     r = _safari(js4, liste_id)
     _liste_oeffnen(liste_id)
+    if r.startswith("nach"):                                     # 18.11.2026: Haken der Arbeitsliste blieb trotz „ok“
+        r2 = social1_abhaken(pid, liste_id)                      # stehen (Video 148: 09/12/27) → gezielt nachziehen
+        r += f" + Arbeitsliste: {r2}"
     return r
 
 
@@ -2593,6 +2614,10 @@ def fotos_sammel_loeschen(videos):
         tipp(290, 686, None, "Papierkorb (unten rechts)"); ruhe(1.0)
         tx = lesen()
         d = [t for t in tx if re.search(r"(\d+)\s+(videos?|objekte?|elemente?)\s+löschen", t[0].lower())]
+        # 18.11.2026 (Video 148): bei genau EINER Auswahl heißt der Knopf ohne Zahl „Video löschen“ → zählt als 1
+        e = [t for t in tx if re.fullmatch(r"(video|objekt|element)\s+löschen", t[0].lower().strip())]
+        if not d and e and n == 1:
+            d = [("1 " + e[0][0], e[0][1], e[0][2])]
         if not d:
             raise Stopp("Fotos: Lösch-Dialog nicht gesehen (Auswahl bleibt)")
         m = int(re.search(r"(\d+)", d[0][0]).group(1))

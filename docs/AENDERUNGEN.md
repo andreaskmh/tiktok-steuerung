@@ -281,7 +281,6 @@
 - `einreichen.py BUTTONS`: „Bald vergriffen“ raus (verboten seit 15.11., 147-01 ging damit raus); offene 147-JSONs umgestellt.
 - Tests 202/202 (angepasst: Hänger → komplett neu; Dauer-Hänger → nach 2. Versuch Fehler; neu: Verbindungswechsel).
   Backups `*.bak-20261117-wechsel` (post_mensch, kabel, test_posten).
-<<<<<<< HEAD
 - 17.11.2026 (Artur): „Provision unklar“ = Badge „Verdiene … pro Verkauf“ wurde kurz nicht angezeigt (TikTok-Bug) – KEIN Ausschlusskriterium. Badge erscheint oft erst nach mehrmaligem Öffnen des Links. stock.py wartet jetzt bis ~8 s. Nur ausdrückliches „nicht provisionsberechtigt“ = Entwurf.
 
 ## 18.11.2026 – „What Live do you want to watch?“ (Artur: „wie kommst du immer auf dieses Live-Widget … sorg dafür, dass es nicht nochmal passiert“)
@@ -297,7 +296,6 @@
 - 18.11. 17:55 (148-23/24 artur.official): Gefahren-Sperre „oben links im Feed liegt LIVE – Kamera zu nicht getippt“ griff im Zwischenbild, während die Kamera über den Feed fährt (Feed-Reiter + „Sound hinzufügen“ gleichzeitig). `tipp()` liest jetzt bis 3× nach 0,8 s neu; nur wenn sicher die Kamera steht (kein Feed oben), wird das X getippt, sonst bleibt die Sperre. Backup `*.bak-20261118-kamerazu`.
 - 18.11. 17:58 – eigentliche Ursache 148-23/24: Shop-Reiter mit Produkt „SnapBliss Mini-Kamera“ + „LIVE-Auktion“ wurde als KAMERA erkannt (Teilwort-Treffer) → Rückweg wollte „Kamera zu“ (X oben links = LIVE) tippen, Sperre griff richtig. KAMERA jetzt nur bei „Sound hinzufügen“ oder exakt „KAMERA“ + „LIVE“/„VORLAGEN“ in der Modus-Leiste unten. Tests 222/223. Backup `bildschirm.py.bak-20261118-minikamera`.
 - 18.11. 18:10 – Shop-Bedingungen-Blatt („Nur noch ein Schritt zum Bewerben der Produkte von Maybelline“, Knopf „Hinzufügen“): wurde als DLG_VERSTANDEN erkannt („einverstanden“) → Neustart-Schleife. Jetzt `B.DLG_BEDINGUNGEN` (`shop_bedingungen`, Vorrang vor „verstanden“); `lesen()` → `bedingungen_abwarten()`: Foto `bedingungen-*.png`, Mac-Mitteilung, warten bis 20 min, bis Artur selbst „Hinzufügen“ tippt (Zustimmung zu AGB wird nie automatisch gegeben), dann weiter am Bildschirm; danach Hart-Stopp. Tests ergänzt. Backups `*.bak-20261118-bedingungen`.
-=======
 
 ## 17.11.2026 – Foto-Slideshows posten
 - Neu: `werkzeuge/post_slideshow.py` (nutzt post_mensch.ein_video, ersetzt nur Galerie/Editor/Link-Vorstufe), `werkzeuge/jpg_datum.py` (EXIF-Aufnahmedatum für feste Reihenfolge).
@@ -306,4 +304,27 @@
 
 ## 18.11.2026 – mehr Hashtags
 - `beschreibung_text`: statt 1 eigenem Hashtag so viele Themen-Hashtags wie erlaubt (max. 5 je Beitrag: bis 30.11. 3 Pflicht + 2 eigene, danach 5). Artur: „lass dir ruhig noch mehr Hashtags zum passenden Thema einfallen, auch bei Videos“.
->>>>>>> 4cbdcc1 (Posts – MacBook Pro von Artur 18.11.2026 18:57)
+
+## 18.11.2026 19:00 – Social1-Abhaken („keine-checkbox“ bei allen 148-Videos)
+- Ursache: Artur hat die Liste „bof 2“ in „BOF“ umbenannt (gleiche ID 6afc676e…). Der offene Safari-Tab war veraltet; der „Save to list“-Dialog zeigte dort GAR KEINE Listen → `keine-checkbox`. Nach Neuladen sind alle Listen da.
+- `social1_abhaken`: bei `keine-checkbox` Dialog zu, Liste neu laden, einmal wiederholen.
+- `social1_verschieben`: wartet bis 6 s, bis der Dialog Checkboxen hat; leerer Dialog → neu laden + einmal wiederholen, NIE „Create new list“ auf leerem Dialog (so entstanden heute zwei leere Listen „nicht verfügbar“ – eine ist leer, Artur kann sie löschen). Nach dem Verschieben wird der Haken der Arbeitsliste gezielt per `social1_abhaken` entfernt (blieb sonst stehen).
+- `social1-bof-2.json` → Listenname „BOF“, Kopie `social1-BOF.json`. Test „Tatort → BOF“ angepasst. Tests 225/225.
+- Nachgeholt: 35 gepostete Videos aus BOF abgehakt, 09/12/27 nach „nicht verfügbar“ (3) und aus BOF raus. In BOF bleibt nur SONAX (Social1-Nr 10, nicht gedreht). Backups `*.bak-20261118-social1`.
+- 18.11. 18:30 – Fotos-Sammel-Löschen: bei genau 1 ausgewähltem Video heißt der Knopf „Video löschen“ (ohne Zahl) → wurde nicht erkannt („Lösch-Dialog nicht gesehen“, Auswahl blieb). Jetzt = 1, nur wenn auch genau 1 ausgewählt. Backup `*.bak-20261118-einzelvideo`.
+- **19.11.2026** – Neu: Research-System (`werkzeuge/research.py`, Regeln in `werkzeuge/research_regeln.json`, Sammelbild-Werkzeug
+  `werkzeuge/blatt.swift`, Doku `docs/RESEARCH.md`). Liest Social1-Videos (Today/Trending) Seite für Seite über `?page=N`,
+  Land über `localStorage.selectedRegion` (de/us), Vorfilter (Alter, Promis, Beauty, Supplements), Sammelbilder zum Sortieren,
+  Speichern in Social1-Listen (Dialog-Methode wie `social1_verschieben`), Rangliste mit Punkten. Warum: Artur will tägliche
+  automatische Research (DE: BOF + Slides, USA: Slides + Quality).
+- **19.11.2026** – research.py: Klicks in Safari immer per `setTimeout(()=>…click(),0)` – ein direkter Klick auf „Save to list“
+  ließ den Tab einfrieren (AppleEvent-Zeitüberschreitung, nur Tab schließen half). Liste anlegen braucht längere Pausen
+  (Feld 1,5 s, Create bis 8 s auf Haken warten). Speichern sucht ein Video auch auf Nachbarseiten (Ränge verschieben sich).
+- **19.11.2026** – rtk 1.2.0 (github.com/rtk-ai/rtk) nach `~/.local/bin` installiert und als Bash-Hook in
+  `~/.claude/settings.json` eingetragen (`rtk init -g`, Sicherung: gibt es nicht, Datei war neu). Kürzt Ausgaben von git/ls/grep/tail,
+  damit Claude weniger Kontext verbraucht. Unsere Python-/zsh-Werkzeuge bleiben unberührt; `tail` auf Logs zeigt STOPP-Zeilen weiter vollständig.
+  Abschalten: Hook-Eintrag aus `~/.claude/settings.json` löschen. Gilt nur auf diesem MacBook (2. MacBook separat installieren).
+- **19.11.2026** – research.py: hängender Safari-Tab wird erkannt (25-s-Zeitlimit) → Social1-Tab schließen, neu öffnen, Ablauf
+  fortsetzen (`mit_neustart`, nur wenn vorne wirklich Social1 ist). Fehler beim Anlegen neuer Listen behoben (fehlende Zuweisung).
+  Erster Lauf DE: 600 gelesen, 408 Kandidaten, `BOF DE 19.11.2026` 121 Videos, `SLIDES DE 19.11.2026` 31 Videos
+  (5 inzwischen aus der Rangliste gerutscht). Research-Bilder per .gitignore nicht im Repo.

@@ -18,3 +18,6 @@ vmaus/*.pkg
 !uebergabe/ausgang/posts-*.json
 !uebergabe/ausgang/stapel-*.json
 !vmaus/Karabiner-DriverKit-VirtualHIDDevice-8.8.0.pkg
+# Research: Vorschaubilder/Sammelbilder nicht ins Repo (groß, jederzeit neu ladbar)
+uebergabe/research/*/*-bilder/
+uebergabe/research/*/*.jpg

@@ -962,8 +962,9 @@ def test_tempo_16_11():
     check("Liste aus social1_link", P.liste_fuer({"social1_link": "https://www.social1.ai/saved-videos/6afb1c70204ef09999b79488"})
           == "6afb1c70204ef09999b79488")
     if (P.AUS / "social1-bof.json").exists():
-        check("Liste per Produkt (Tatort → bof)", P.liste_fuer({"tts_link": "https://shop.tiktok.com/view/product/1729954254982650611"})
-              == "6afb1c70204ef09999b79488", P.liste_fuer({"tts_link": "https://shop.tiktok.com/view/product/1729954254982650611"}))
+        # 18.11.2026: Tatort steht inzwischen in „bof“ UND in „BOF“ (früher „bof 2“, 6afc676e…) → neueste Liste gewinnt
+        check("Liste per Produkt (Tatort → BOF)", P.liste_fuer({"tts_link": "https://shop.tiktok.com/view/product/1729954254982650611"})
+              in ("6afc676e088c9ec8eccfb4d2", "6afb1c70204ef09999b79488"), P.liste_fuer({"tts_link": "https://shop.tiktok.com/view/product/1729954254982650611"}))
     check("Liste unbekanntes Produkt → Standard", P.liste_fuer({"tts_link": "x/1"}) == P.SOCIAL1_LISTE)
 
 
