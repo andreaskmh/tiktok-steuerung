@@ -9,6 +9,7 @@
   python3 werkzeuge/research.py de-suche <suchwort>             # gibt es das im TikTok Shop DE? (Social1-Produkte, Bestseller)
   python3 werkzeuge/research.py amazon <suchwort>               # Amazon.es-Suche (nur lesen)
   python3 werkzeuge/research.py wagen <ASIN>                    # in den Amazon.es-Einkaufswagen (nie kaufen)
+  python3 werkzeuge/research.py skripte <de|us> [--top 30]      # Transkripte Top je Liste → fremdsprachige in „SKRIPTE <datum>.md“
   python3 werkzeuge/research.py skript <de|us> <nr>             # Transkript (Social1 „Transcribe“) speichern
   python3 werkzeuge/research.py messen                         # stündlich (launchd): Seite 1 DE+US protokollieren
   python3 werkzeuge/research.py messung                        # Auswertung: wann aktualisiert Social1?
@@ -185,14 +186,41 @@ def treffer(woerter, name):
     return next((w for w in woerter if re.search(r"(?<![a-zäöüß])" + re.escape(w.strip()) + (r"(?![a-zäöüß])" if w.endswith(" ") else ""), name)), None)
 
 
+def frueher_gespeichert():
+    """Alle Videos, die an früheren Tagen schon in einer Research-Liste gelandet sind (egal ob inzwischen nachgemacht und
+    aus der Liste entfernt) → kommen nie ein zweites Mal rein. Gleiches Produkt mit anderem Video (neue Hook) bleibt erlaubt."""
+    ids = set()
+    for f in (PROJ / "uebergabe" / "research").glob("*/gespeichert-*.json"):
+        if f.parent.name != HEUTE.isoformat():
+            ids |= set(json.loads(f.read_text()))
+    return ids
+
+
+def gepostete_produkte():
+    """Produkt-IDs, die Artur schon gepostet hat (posts-*.json) → in der Rangliste als „schon gemacht“ markiert."""
+    ids = set()
+    for f in (PROJ / "uebergabe" / "ausgang").glob("posts-*.json"):
+        try:
+            for p in json.loads(f.read_text()).get("posts", []):
+                m = re.search(r"product/(\d+)", p.get("tts_link", ""))
+                if m:
+                    ids.add(m.group(1))
+        except (json.JSONDecodeError, AttributeError):
+            pass
+    return ids
+
+
 def filtern(land):
     raus, rein, gesehen = [], [], set()
+    frueher = frueher_gespeichert()
     for k in alle_videos(land):
         name, cr, tage = k["produkt"].lower(), k["creator"].lower(), alter_tage(k["alter"])
         k["tage"] = tage
         grund = ""
         if k["video_id"] in gesehen:
             grund = "doppelt"
+        elif k["video_id"] in frueher:
+            grund = "schon an früherem Tag in einer Liste"
         elif tage > REGELN["max_alter_tage"][land]:
             grund = f"zu alt ({k['alter']})"
         elif any(p in cr for p in REGELN["promis"]):
@@ -228,7 +256,7 @@ def blaetter(land, pro, nur_neu=False):
     kand = json.loads((ORDNER / f"{land}-kandidaten.json").read_text())
     if nur_neu:                                               # nur noch nicht einsortierte Kandidaten
         sort = ORDNER / f"{land}-sortiert.json"
-        fertig = set(json.loads(sort.read_text())) | set(json.loads((ORDNER / f"{land}-nein.json").read_text())
+        fertig = set(json.loads(sort.read_text()) if sort.exists() else []) | set(json.loads((ORDNER / f"{land}-nein.json").read_text())
                                                       if (ORDNER / f"{land}-nein.json").exists() else [])
         kand = [k for k in kand if str(k["nr"]) not in fertig] if sort.exists() else kand
     if not kand:
@@ -429,11 +457,13 @@ def amazon_wagen(asin):
     return ok == "ja"
 
 
-def skript(land, nr):
-    """„Transcribe“ von Social1 für ein Video holen → research/<datum>/<land>-skripte/<nr>-original.txt (Claude schreibt daraus Deutsch)."""
+def skript(land, nr, land_schon=False):
+    """ACHTUNG: verbraucht Social1-Credits – nur auf Arturs ausdrücklichen Wunsch benutzen.
+    „Transcribe“ von Social1 für ein Video holen → research/<datum>/<land>-skripte/<nr>-original.txt (Claude schreibt daraus Deutsch)."""
     kand = {k["nr"]: k for k in json.loads((ORDNER / f"{land}-kandidaten.json").read_text())}
     k = kand[int(nr)]
-    land_setzen(land)
+    if not land_schon:
+        land_setzen(land)
     for s in (k["seite"], k["seite"] + 1, k["seite"] - 1, k["seite"] + 2):
         if s < 1:
             continue
@@ -459,8 +489,61 @@ setTimeout(()=>b.click(),0); return 'ok'}})()""")
     print(f"Nr {nr}: Transkript {len(text)} Zeichen → {ziel.name}/{nr}-original.txt")
 
 
-SPERRE = PROJ / "uebergabe" / "research" / ".laeuft"
-MESSUNG = PROJ / "uebergabe" / "research" / "messung.jsonl"
+DEUTSCH = set("""der die das und ist nicht ich du er sie wir ihr es ein eine einen dem den des mit für auf zu von im in ist sind war hab habe hast hat
+noch nur auch aber oder wie was wenn dann so ja nein mal schon jetzt hier da kann kannst muss müsst gibt euch mir dich dir mein dein sein
+ihr unser einfach wirklich heute alle diese dieser dieses gerade richtig kostet euro cent""".split())
+
+
+def ist_deutsch(text):
+    w = re.findall(r"[a-zäöüß]+", text.lower())
+    return len(w) >= 8 and sum(x in DEUTSCH for x in w) / len(w) >= 0.12
+
+
+def skripte(land, top=30):
+    """Lokale Transkripte (werkzeuge/transkript.py: yt-dlp + Whisper, KEINE Social1-Credits) für die Top-Videos jeder Liste.
+    Fremdsprachige (alles außer Deutsch, auch Englisch) → Tagesdatei „SKRIPTE <datum>.md“ mit Original + Platzhalter „DEUTSCH:“,
+    den Claude danach ausfüllt. Deutsch gesprochene und Videos ohne Sprache: kein Skript."""
+    sort = json.loads((ORDNER / f"{land}-sortiert.json").read_text())
+    kand = {str(k["nr"]): k for k in json.loads((ORDNER / f"{land}-kandidaten.json").read_text())}
+    gesp = set()
+    for f in ORDNER.glob("gespeichert-*.json"):
+        gesp |= set(json.loads(f.read_text()))
+    ordner = ORDNER / f"{land}-transkripte"
+    auswahl = []
+    for art in sorted({a for a in sort.values() if not a.endswith("?")}):
+        nrn = [n for n, a in sort.items() if a == art and n in kand and kand[n]["video_id"] in gesp]
+        auswahl += sorted(nrn, key=lambda n: punkte(kand[n]), reverse=True)[:top]
+    link = lambda k: f"https://www.tiktok.com/@{k['creator']}/video/{k['video_id']}"
+    fehlen = [x for n in auswahl if not (ordner / f"{n}.json").exists() for x in (n, link(kand[n]))]
+    if fehlen:
+        venv = pathlib.Path.home() / ".tiktok-research" / "venv" / "bin" / "python"
+        subprocess.run([str(venv), str(PROJ / "werkzeuge" / "transkript.py"), str(ordner), *fehlen])
+    datei = ORDNER / f"SKRIPTE {HEUTE.strftime('%d.%m.%Y')}.md"
+    text = datei.read_text() if datei.exists() else f"# Skripte {HEUTE.strftime('%d.%m.%Y')} – nur fremdsprachige Videos\n"
+    neu, deutsch = 0, 0
+    for n in sorted(auswahl, key=lambda n: punkte(kand[n]), reverse=True):
+        f = ordner / f"{n}.json"
+        if not f.exists():
+            continue
+        t = json.loads(f.read_text())
+        orig, sprache = t.get("text", ""), t.get("sprache", "")
+        k, marke = kand[n], f"<!-- {land}-{n} -->"
+        if sprache == "de":
+            deutsch += 1
+        if len(orig) < 30 or sprache in ("de", "") or marke in text:
+            continue
+        text += (f"\n{marke}\n## {land.upper()} {sort[n]} Nr {n} · {k['alter']} · +{k['plus_views']} Views · Sprache {sprache} · {k['produkt'][:70]}\n"
+                 f"{link(k)}\n\n**Original:**\n> {orig[:1500]}\n\n**DEUTSCH:** _(Claude schreibt: Hook + Skript)_\n")
+        neu += 1
+    datei.write_text(text)
+    print(f"FERTIG skripte {land.upper()}: {len(auswahl)} geprüft, {deutsch} deutsch, {neu} neue fremdsprachige → {datei.name}")
+
+
+# Sperre + Messung liegen außerhalb von ~/Documents: die stündliche Messung (launchd) darf dort nicht lesen/schreiben (macOS-Schutz)
+# und läuft aus einer Kopie in ~/.tiktok-research/ (werkzeuge/research-messen-installieren.sh nach Änderungen erneut ausführen).
+HEIM = pathlib.Path.home() / ".tiktok-research"
+SPERRE = HEIM / ".laeuft"
+MESSUNG = HEIM / "messung.jsonl"
 
 
 def sperre_setzen():
@@ -529,11 +612,14 @@ def punkte(k):
 def rangliste(land):
     sort = json.loads((ORDNER / f"{land}-sortiert.json").read_text())   # {"nr": "BOF"|"SLIDES"|"QUALITY", ...}
     kand = {str(k["nr"]): k for k in json.loads((ORDNER / f"{land}-kandidaten.json").read_text())}
+    gemacht = gepostete_produkte()
     zeilen = sorted(((punkte(kand[n]), n, art) for n, art in sort.items() if n in kand and not art.endswith("?")), reverse=True)
     aus = [f"# Rangliste {land.upper()} {HEUTE.strftime('%d.%m.%Y')}", "",
            "| Platz | Punkte | Liste | Alter | +Views | Produkt | Creator | Link |", "|---|---|---|---|---|---|---|---|"]
     for i, (p, n, art) in enumerate(zeilen, 1):
         k = kand[n]
+        if k["produkt_id"] in gemacht:
+            art += " (Produkt schon gepostet)"
         aus.append(f"| {i} | {p} | {art} | {k['alter']} | {k['plus_views']} | {k['produkt'][:50]} | @{k['creator']} | "
                    f"https://www.tiktok.com/@{k['creator']}/video/{k['video_id']} |")
     f = ORDNER / f"{land}-rangliste.md"
@@ -575,6 +661,8 @@ if __name__ == "__main__":
     elif befehl == "speichern":
         mit_neustart(speichern, land, a[2], " ".join(a[3:]).split())
         land_zurueck()
+    elif befehl == "skripte":
+        skripte(land, int(a[a.index("--top") + 1]) if "--top" in a else 30)
     elif befehl == "skript":
         mit_neustart(skript, land, a[2])
         land_zurueck()

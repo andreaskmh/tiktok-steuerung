@@ -335,3 +335,18 @@
   Neu: `de-suche` (TikTok Shop DE über Social1-Produkte, Bestseller zuerst), `amazon`/`wagen` (Amazon.es, nur Einkaufswagen),
   `skript` (Transcribe), `messen`/`messung` (stündlich per launchd `de.tiktoksteuerung.research-messen`, Plist in werkzeuge/).
   Geplante Aufgabe „tiktok-research-taeglich“ 7/13/19 Uhr (Claude-App, Auto-Modus) → Tageslauf in docs/RESEARCH.md.
+- **19.11.2026 13:20** – Stündliche Messung lief nicht („Operation not permitted“: launchd darf ~/Documents nicht lesen). Messung läuft
+  jetzt aus einer Kopie in `~/.tiktok-research/` (`werkzeuge/research-messen-installieren.sh`), Sperre + Messdaten liegen auch dort.
+- **19.11.2026 (Artur)** – Kein Video zweimal: `filtern` wirft Videos raus, die an einem früheren Tag schon in einer Research-Liste
+  waren (auch wenn sie nach dem Posten aus der Liste entfernt wurden). Gleiches Produkt mit neuem Video/neuer Hook bleibt erlaubt.
+  Rangliste markiert Produkte, die schon gepostet wurden (posts-*.json).
+- **19.11.2026 13:50 (geplanter Lauf)** – `blaetter --neu` stürzte ab, wenn es noch keine `<land>-sortiert.json` gab (erster USA-Lauf) →
+  fehlende Datei zählt jetzt als leer. Hinweis: bei Mac-Überlast (Load ~50) bricht `lesen` zu früh mit „keine Videos mehr“ ab →
+  einfach nochmal `lesen` ohne `--frisch` starten, setzt fort.
+- **19.11.2026 (Artur)** – Skripte nur für fremdsprachige Videos (auch Englisch): `research.py skripte <land>` holt Transkripte der
+  Top 30 je Liste, erkennt Deutsch (Wortliste) und sammelt die übrigen in `uebergabe/research/<datum>/SKRIPTE <datum>.md`;
+  Claude schreibt die deutschen Skripte hinein und hängt die Datei nach jeder Research im Chat an.
+- **19.11.2026 (Artur)** – Kein Social1-„Transcribe“ (kostet Credits): `skripte` ausgesetzt, bis lokale Spracherkennung läuft.
+- **19.11.2026 (Artur)** – Lokale Transkripte statt Social1-Transcribe: `werkzeuge/transkript.py` (yt-dlp + mlx-whisper large-v3-turbo
+  + imageio-ffmpeg in `~/.tiktok-research/venv`, Artur hat die Installation erlaubt). Kleinstes MP4 laden (Nur-Ton gab 403),
+  3 Versuche; Sprache kommt von Whisper. `research.py skripte` nutzt das, Ablage `<land>-transkripte/<nr>.json`. Test DE Top 3: 4× Deutsch erkannt.

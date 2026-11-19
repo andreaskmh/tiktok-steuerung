@@ -13,12 +13,12 @@ Geplante Aufgabe „tiktok-research-taeglich“ (Claude-App, Auto-Modus) führt 
 | `Quality USA <datum>` | Jemand hat das Produkt echt und zeigt es (auch Vergleiche, Dupes/„Doppelgänger“), **nur wenn es das Produkt oder etwas Ähnliches/andere Marke im TikTok Shop DE gibt** (egal ob Versand Übersee) | wie oben; Produkt in DE in keiner Form vorhanden |
 
 - DE: Videos höchstens 1 Woche alt. USA: älter ist ok (Deutsche setzen langsam um), Sprache egal, nicht verfügbare Videos überspringen.
-- Produkte, die schon öfter viral waren, mit **anderer Hook** wieder aufnehmen.
+- Produkte, die schon öfter viral waren, mit **anderer Hook** wieder aufnehmen. Dasselbe Video kommt nie zweimal (auch nicht nach dem Nachmachen/Abhaken); Rangliste markiert „Produkt schon gepostet“.
 - Ersetzbare Produkte (Hosen, T-Shirts, Staubsauger, Nass-/Trockensauger …) zählen als „gibt es in DE“.
 - Today/Yesterday haben bei Umsetzung und Produktbestellung absoluten Vorrang (Rangliste).
 
 ## Tageslauf (Befehle aus dem Projektordner; lange Schritte im Hintergrund, nur letzte Zeilen lesen)
-Vorher: kein Posten-Stapel aktiv (`pgrep -f post_mensch.py`), keine Sperre `uebergabe/research/.laeuft` mit lebender PID.
+Vorher: kein Posten-Stapel aktiv (`pgrep -f post_mensch.py`), keine Sperre `~/.tiktok-research/.laeuft` mit lebender PID.
 Erster Lauf des Tages ohne `--frisch`, weitere Läufe am selben Tag mit `--frisch` (liest alles neu, alte Nummern bleiben).
 
 **Deutschland**
@@ -39,8 +39,17 @@ Erster Lauf des Tages ohne `--frisch`, weitere Läufe am selben Tag mit `--frisc
 4. Nur für `QUALITY`: Amazon.es suchen (`amazon <spanisches/englisches Suchwort>`), passendstes Produkt (gute Bewertungen, Preis passt) →
    `wagen <ASIN>`. **Nie kaufen, nie zur Kasse, nie „Comprar ya“.** Captcha/Login → STOPP, Artur.
 5. `speichern us "SLIDES USA <datum>" …` und `speichern us "Quality USA <datum>" …`, dann `rangliste us`.
-6. Deutsche Skripte: für die Top 5 Quality-Videos (Today/Yesterday zuerst) `skript us <nr>` → Original-Transkript; daraus ein deutsches
-   Skript schreiben (`us-skripte/<nr>-deutsch.md`: Hook in 1 Satz, dann Ablauf in kurzen Sätzen, wie man es in DE sagt, nicht wörtlich).
+6. (weiter mit „Skripte“ unten)
+
+**Skripte (nach DE und USA, Artur 19.11.)**
+- **Nie Social1-„Transcribe“ benutzen (kostet Credits, Artur 19.11.).** Transkripte macht `werkzeuge/transkript.py` lokal:
+  yt-dlp lädt das Video, Whisper (mlx, M1) erkennt Text + Sprache (~5 s/Video). Einrichtung in `~/.tiktok-research/venv`.
+  Altersbeschränkte Videos („Log in for access“) werden übersprungen – nie Browser-Cookies verwenden.
+- `python3 werkzeuge/research.py skripte de` und `… skripte us` (Top 30 je Liste, kein Safari nötig).
+- Nur **fremdsprachige** Videos (auch Englisch) bekommen ein Skript, deutsch gesprochene nicht. Sie stehen in
+  `uebergabe/research/<datum>/SKRIPTE <TT.MM.JJJJ>.md`. Jeden Platzhalter „**DEUTSCH:** _(Claude schreibt…)_“ ersetzen durch
+  **Hook:** (1 Satz) + **Skript:** (kurze Sätze, so wie man es in DE sagt, nicht wörtlich übersetzt, Preis/Deal-Logik an DE anpassen).
+- Die Datei am Ende **im Chat anhängen** (SendUserFile).
 
 ## Rangliste (Punkte)
 Frische (Today 100, Yesterday 85, 2 Tage 55 … 7 Tage 12, danach weniger) + Tempo (+Views, log) + Creator-Umsatz (log)
@@ -48,7 +57,7 @@ Frische (Today 100, Yesterday 85, 2 Tage 55 … 7 Tage 12, danach weniger) + Tem
 
 ## Zeiten
 Start 7 / 13 / 19 Uhr. Stündliche Messung (`research.py messen`, launchd `de.tiktoksteuerung.research-messen`) protokolliert Seite 1
-DE+US in `uebergabe/research/messung.jsonl`; nach 2–3 Tagen `research.py messung` auswerten und die Zeiten auf die Social1-Aktualisierung legen.
+DE+US in `~/.tiktok-research/messung.jsonl` (läuft aus einer Kopie dort, nach Änderungen an research.py `zsh werkzeuge/research-messen-installieren.sh`); nach 2–3 Tagen `research.py messung` auswerten und die Zeiten auf die Social1-Aktualisierung legen.
 
 ## Lernen
 Artur schickt seine eigene Research (Listen/Bildschirmaufnahme). Video für Video vergleichen, Unterschiede mit Grund hier unter „Gelernt“ eintragen.
