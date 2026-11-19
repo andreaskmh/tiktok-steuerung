@@ -72,6 +72,21 @@ DE+US in `~/.tiktok-research/messung.jsonl` (läuft aus einer Kopie dort, nach �
 Artur schickt seine eigene Research (Listen/Bildschirmaufnahme). Video für Video vergleichen, Unterschiede mit Grund hier unter „Gelernt“ eintragen.
 
 ### Gelernt
+**Arturs Rückmeldung 19.11. abends (noch umzusetzen, siehe docs/STAND.md):**
+- **Verstoß-Risiko-Filter weg** (erledigt: aus).
+- **Promis nicht mehr wegwerfen:** Promi-Videos (ChristianWolf, SinanMovez …), auf die wir reagieren, kommen in eine eigene Liste
+  **`Reactions DE <datum>`**.
+- **Schon Gemachtes:** Artur entfernt erledigte Videos aus seinen Listen (Haken raus). Abgleich: was in seinen Listen fehlt, aber
+  bei uns steht, ist erledigt → aus unseren Listen entfernen und dauerhaft als „gemacht“ merken (nie wieder aufnehmen, auch künftig).
+- **Sortierung in Social1 wirkt nicht:** In der Social1-Ansicht steht die Liste nicht in Ranglisten-Reihenfolge (Alter durcheinander)
+  → prüfen, wonach Social1 die Listenansicht wirklich sortiert (evtl. eigenes Datum beim ersten Hinzufügen / timePosted).
+- **USA:** Artur hat 39 Quality-Videos, wir 249 – viel zu viele. Nur Produkte, die es im TikTok Shop DE gibt oder bei denen die
+  Wahrscheinlichkeit hoch ist (andere Marke, Versand Übersee). **Reine US-Marken** (z. B. die Firma auf Platz 1 der US-Rangliste)
+  nicht nehmen. Wichtige Konzepte: **Staubsauger, Nass-/Trockensauger-Vergleiche, Klone/Dupes, Videos, in denen das Produkt
+  präsentiert wird.** `SLIDES USA`: auch Video-Ideen für neue Slideshows, die man auf neue Ideen in DE anwenden kann.
+- Danach alle Listen (DE + USA, 19.11.) nach den Regeln überarbeiten. Arturs Listen: `eigene BOF 19.11.26 DE`,
+  `eigene slides 19.11.26 DE`, `reactions 19.11.26` und seine USA-Listen (Namen per getVideoLists).
+
 **Abgleich mit Arturs eigener Research (19.11.2026, Deutschland, bis Seite 50) – gilt für DE, USA wird später überarbeitet:**
 - **Alter:** Was eine Woche alt ist, fliegt raus (DE nur bis 6 Tage). Videos in älteren Listen, die 7 Tage alt werden, werden gelöscht.
 - **BOF – Vorrang haben zwei Formate:** (1) klassisch: Bild/Green-Screen über dem Kopf, die Person redet über das Produkt;
@@ -81,7 +96,7 @@ Artur schickt seine eigene Research (Listen/Bildschirmaufnahme). Video für Vide
 - **Beauty:** Nicht nehmen, wenn das Produkt nur benutzt und das Ergebnis gezeigt wird (z. B. Wimpern, Haare) – das lässt sich nicht
   als BOF nachstellen. **Nehmen, wenn über das Produkt geredet wird, vor allem über den Preis** – auch wenn es dabei angewendet
   und Vorher/Nachher gezeigt wird. Vorrang: die Person redet nur über das Produkt (auf ein eigenes BOF übertragbar).
-- **Verstoß-Risiko → nie (alle Länder, auch übersetzte Videos):** Heilversprechen, Rücken-/Nacken-/sonstige Schmerzen, Haare
+- **(AUFGEHOBEN 19.11. abends – Artur überarbeitet Skripte selbst; Filter aus, `verstoss_risiko_aktiv: false`)** ~~Verstoß-Risiko → nie:~~ Heilversprechen, Rücken-/Nacken-/sonstige Schmerzen, Haare
   (Wachstum, Ausfall, Färben), riskanter Beauty-Kram (Anti-Aging, Falten, Akne, Cellulite …). Filter `verstoss_risiko` in
   research_regeln.json; was der Produktname nicht verrät, beim Sichten aussortieren.
 - **Supplements sind in DE ok** (15 in Arturs BOF-Liste), „keine Supplements“ gilt nur für USA.

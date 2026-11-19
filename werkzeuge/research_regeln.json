@@ -131,7 +131,7 @@
     "us"
   ],
   "_beauty": "Artur 19.11.: in DE Beauty nicht pauschal raus – rein, wenn über das Produkt/den Preis geredet wird (Sichtprüfung).",
-  "_verstoss": "Artur 19.11.: Heilversprechen, Schmerzen/Rücken, Haare, riskanter Beauty-Kram → raus (alle Länder, auch übersetzte Videos).",
+  "_verstoss": "Artur 19.11. abends: Verstoß-Risiko-Filter AUS – Skripte überarbeitet Artur selbst. Liste bleibt nur zur Info.",
   "verstoss_risiko": [
     "rückenschmerz",
     "rücken schmerz",
@@ -189,5 +189,6 @@
   "supplement_filter_laender": [
     "us"
   ],
-  "_supplement": "Artur 19.11. (Abgleich): in DE sind Supplements ok (15 in seiner BOF-Liste); riskante fängt verstoss_risiko."
+  "_supplement": "Artur 19.11. (Abgleich): in DE sind Supplements ok (15 in seiner BOF-Liste); riskante fängt verstoss_risiko.",
+  "verstoss_risiko_aktiv": false
 }

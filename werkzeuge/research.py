@@ -349,7 +349,7 @@ def filtern(land):
             grund = f"zu alt ({k['alter']})"
         elif any(p in cr for p in REGELN["promis"]):
             grund = "Promi"
-        elif w := treffer(REGELN.get("verstoss_risiko", []), name):
+        elif REGELN.get("verstoss_risiko_aktiv", True) and (w := treffer(REGELN.get("verstoss_risiko", []), name)):
             grund = f"Verstoß-Risiko ({w})"
         elif land in REGELN.get("supplement_filter_laender", ["de", "us"]) and (w := treffer(REGELN["supplements"], name)):
             grund = f"Supplement ({w})"

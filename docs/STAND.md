@@ -1,14 +1,17 @@
 # Stand & nächste Schritte
 
-## Research (Stand 19.11.2026 ~03:30) – Doku `docs/RESEARCH.md`, Werkzeug `werkzeuge/research.py`
-- DE 19.11. fertig: `BOF DE 19.11.2026` (332), `SLIDES DE 19.11.2026` (31), Rangliste `uebergabe/research/2026-11-19/de-rangliste.md`.
-- USA: Befehle gebaut (de-suche, amazon, wagen, skript), `lesen us` + `filtern us` laufen/liefen im Hintergrund (Log `us-lesen.log`).
-  **Nächster Schritt:** Tageslauf USA ab Schritt „blaetter us --neu“ (docs/RESEARCH.md) einmal komplett testen: SLIDES USA / Quality USA,
-  DE-Check, Amazon.es (Artur ist in Safari bei Amazon.es NICHT eingeloggt → Wagen nur Sitzung; Login macht Artur), `wagen` + `skript`
-  erstmals live prüfen, deutsche Skripte Top 5.
-- Geplante Aufgabe „tiktok-research-taeglich“ 7/13/19 Uhr; stündliche Messung per launchd seit 19.11. ~03:30 → nach 2–3 Tagen
-  `research.py messung` auswerten, Zeiten anpassen, Messung abschalten (`launchctl unload ~/Library/LaunchAgents/de.tiktoksteuerung.research-messen.plist`).
-- Artur schickt heute seine eigene Research → vergleichen, Regeln in RESEARCH.md „Gelernt“.
+## Research (Stand 19.11.2026 ~17:30) – Doku `docs/RESEARCH.md` (zuerst „Gelernt“ lesen!), Werkzeug `werkzeuge/research.py`
+- research.py spricht direkt mit Social1 (Server-Aktionen, siehe RESEARCH.md „Technik“): lesen, speichern, de-suche, bildvergleich,
+  sortieren. Amazon aus (`amazon_aktiv: false`). Geplante Aufgabe „tiktok-research-taeglich“ 7/13/19 Uhr; Ranglisten + SKRIPTE werden angehängt.
+- **Nächste Aufgabe (Artur 19.11. abends):** Punkte unter „Arturs Rückmeldung 19.11. abends“ in RESEARCH.md umsetzen:
+  1. Reactions-Liste für Promis (`Reactions DE <datum>`), Promi-Filter → Liste statt raus.
+  2. Abgleich mit Arturs überarbeiteten Listen: was er entfernt hat = erledigt → bei uns entfernen + dauerhaft merken (neue Datei, z. B.
+     `uebergabe/research/gemacht.json`, filtern wirft diese Videos immer raus).
+  3. Sortierung in Social1 klären (Ansicht ist nicht in Ranglisten-Reihenfolge) – testen, wonach Social1 sortiert.
+  4. USA neu sortieren: strenger (Arturs 39 vs. unsere 249), US-only-Marken raus, Konzepte Staubsauger/Nass-Trocken/Klone/Präsentation.
+  5. DE + USA Listen 19.11. danach überarbeiten (entfernen per removeVideosFromList, ergänzen per speichern), Ranglisten neu.
+  Social1 bremst bei vielen Anfragen (429) – nie eine ganze Liste auf einmal leeren.
+- Stündliche Messung läuft (launchd, `~/.tiktok-research/`), nach 2–3 Tagen `research.py messung` auswerten.
 
 ## Älter (12.11.2026)
 
