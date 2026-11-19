@@ -361,3 +361,6 @@
   „deaktiviert“, auch für den laufenden 13-Uhr-Lauf). Amazon trotzdem auf den direkten Weg umgebaut: Suche + Einkaufswagen als
   Anfragen im Amazon-Fenster (keine Seitenwechsel/Klicks), nur Formular „In den Einkaufswagen“, Captcha → STOPP. Getestet: Suche
   2 Wörter 6 s, Formularprüfung 2 s (`--pruefen`); echtes Einlegen noch nicht getestet (deaktiviert).
+- **19.11.2026 (Artur)** – Bildersuche nur bei TikTok Shop + Amazon.es (kein Google Lens – Testfenster wieder geschlossen):
+  neu `research.py bildvergleich <land> <wuensche.json>` → Sammelbilder US-Produktbild neben TikTok-Shop-DE- (Social1) und
+  Amazon.es-Treffern (wenn aktiv), Claude entscheidet am Bild. Test 4 Produkte 15 s. Treffer haben jetzt Bild-Links.

@@ -8,6 +8,7 @@
   python3 werkzeuge/research.py rangliste <de|us>              # Punkte + Platzierung der einsortierten Videos
   python3 werkzeuge/research.py de-suche <suchwort>             # gibt es das im TikTok Shop DE? (Social1-Produkte, Bestseller)
   python3 werkzeuge/research.py de-suche --datei <woerter.txt>  # viele Suchwörter auf einmal (eine Zeile pro Wort)
+  python3 werkzeuge/research.py bildvergleich <land> <wuensche.json>  # {"nr":["wort",…]} → Sammelbilder US-Bild vs. TikTok-Shop-DE/Amazon-Treffer
   python3 werkzeuge/research.py amazon <suchwort>               # Amazon.es-Suche (nur lesen)
   python3 werkzeuge/research.py wagen <ASIN>                    # in den Amazon.es-Einkaufswagen (nie kaufen)
   python3 werkzeuge/research.py skripte <de|us> [--top 30]      # Transkripte Top je Liste → fremdsprachige in „SKRIPTE <datum>.md“
@@ -589,7 +590,8 @@ JS_PRODUKTE = r"""JSON.stringify([...document.querySelectorAll('tr')].map(r=>{co
 
 def _de_treffer(roh, n):
     erg = [{"name": p.get("product_name", ""), "shop": p.get("shop_name", ""), "preis": f"€{p.get('price_value', 0):.2f}".replace(".", ","),
-            "gmv": _kurz(p.get("gmv"), True), "verkauft": str(p.get("units_sold") or 0), "id": str(p.get("product_id", ""))}
+            "gmv": _kurz(p.get("gmv"), True), "verkauft": str(p.get("units_sold") or 0), "id": str(p.get("product_id", "")),
+            "bild": p.get("product_image_url", "")}
            for p in ((roh.get("data") or {}).get("results") or [])]
     erg.sort(key=lambda p: int(p["verkauft"]), reverse=True)
     return erg[:n]
@@ -648,7 +650,8 @@ for(const w of W){{const t=await (await fetch('/s?k='+encodeURIComponent(w),{{cr
  out.push([...d.querySelectorAll('div[data-component-type="s-search-result"]')].filter(x=>x.dataset.asin&&!/Patrocinado/.test(x.innerText||x.textContent))
   .slice(0,12).map(x=>({{asin:x.dataset.asin,titel:((x.querySelector('h2')||{{}}).textContent||'').trim(),
    preis:((x.querySelector('.a-price .a-offscreen')||{{}}).textContent||'').trim(),
-   bewertungen:((x.querySelector('[aria-label*="valoraciones"],[aria-label*="calificaciones"],a[href*="customerReviews"] span')||{{}}).textContent||'').trim()}})));
+   bewertungen:((x.querySelector('[aria-label*="valoraciones"],[aria-label*="calificaciones"],a[href*="customerReviews"] span')||{{}}).textContent||'').trim(),
+   bild:((x.querySelector('img.s-image')||{{}}).src||'')}})));
  await new Promise(r=>setTimeout(r,800));}}
 return JSON.stringify({{erg:out}});"""
     r = json.loads(_amz_async(js, warte=30 + 10 * len(woerter)))
@@ -707,6 +710,63 @@ return JSON.stringify({{titel,drin,antwort_ok:/Añadido a la cesta|Agregado a la
         return print(f"{asin}: Formular ok → {r['ziel'][:70]} | {len(r['felder'])} Felder: {', '.join(r['felder'][:12])} | {r['titel'][:60]}")
     print(f"{asin}: {'IM EINKAUFSWAGEN' if r.get('drin') else 'unklar – im Einkaufswagen nicht gefunden'} | {r.get('titel','')[:80]}")
     return bool(r.get("drin"))
+
+
+def bildvergleich(land, datei, pro_blatt=4):
+    """Bildvergleich (Artur 19.11.: Bildersuche nur bei TikTok Shop + Amazon.es, kein Google): je Kandidat die Suchwörter aus
+    `datei` (JSON {"nr": ["wort", …]}) im TikTok Shop DE (Social1 searchProducts) und – wenn aktiv – auf Amazon.es suchen,
+    dann Sammelbild: Zeile = US-Produktbild + Top-Treffer (TT1… = TikTok Shop DE nach Verkäufen, AZ1… = Amazon.es).
+    Claude entscheidet am Bild: gleich / ähnlich / gibt's nicht. Treffer-Liste: <land>-vergleich.json."""
+    wuensche = json.loads(pathlib.Path(datei).read_text())
+    kand = {str(k["nr"]): k for k in json.loads((ORDNER / f"{land}-kandidaten.json").read_text())}
+    aktionen_laden()
+    paare = [(nr, w) for nr, ws in wuensche.items() for w in (ws if isinstance(ws, list) else [ws])]
+    antworten = s1_viele("searchProducts", [[{"query": w, "region": "de"}] for _, w in paare])
+    tt = {}
+    for (nr, w), roh in zip(paare, antworten):
+        for p in _de_treffer(roh, 6):
+            if p["id"] not in {x["id"] for x in tt.setdefault(nr, [])}:
+                tt[nr].append(p)
+    az = {}
+    if REGELN.get("amazon_aktiv", True):
+        erst = {nr: (ws if isinstance(ws, list) else [ws])[0] for nr, ws in wuensche.items()}
+        for nr, erg in zip(erst, amazon_suche_viele(list(erst.values()), 3)):
+            az[nr] = erg
+    bilder = ORDNER / f"{land}-vergleich-bilder"
+    bilder.mkdir(exist_ok=True)
+
+    def laden(url, name):
+        f = bilder / f"{name}.jpg"
+        if url and not f.exists():
+            try:
+                urllib.request.urlretrieve(url, f)
+            except Exception:
+                pass
+        return str(f)
+
+    ergebnis, zeilen = {}, []
+    for nr in wuensche:
+        k = kand.get(str(nr))
+        if not k:
+            continue
+        tts = sorted(tt.get(nr, []), key=lambda p: int(p["verkauft"]), reverse=True)[:4 if not az else 3]
+        azs = az.get(nr, [])[:5 - 1 - len(tts)]
+        zeile = [(laden(k["produkt_bild"], f"us-{nr}"), f"Nr {nr} US")]
+        zeile += [(laden(p["bild"], f"tt-{p['id']}"), f"TT{i} {p['verkauft']}x") for i, p in enumerate(tts, 1)]
+        zeile += [(laden(p.get("bild"), f"az-{p['asin']}"), f"AZ{i} {p['preis']}") for i, p in enumerate(azs, 1)]
+        zeile += [("", "")] * (5 - len(zeile))
+        zeilen.append(zeile)
+        ergebnis[nr] = {"us": k["produkt"], "tiktok": {f"TT{i}": p for i, p in enumerate(tts, 1)},
+                        "amazon": {f"AZ{i}": p for i, p in enumerate(azs, 1)}}
+    (ORDNER / f"{land}-vergleich.json").write_text(json.dumps(ergebnis, ensure_ascii=False, indent=1))
+    if not BLATT.exists():
+        subprocess.run(["zsh", str(PROJ / "werkzeuge" / "build.sh")], check=True)
+    for b in range(math.ceil(len(zeilen) / pro_blatt)):
+        args = [x for z in zeilen[b * pro_blatt:(b + 1) * pro_blatt] for paar in z for x in paar]
+        aus = ORDNER / f"{land}-vergleich-{b + 1:02d}.jpg"
+        subprocess.run([str(BLATT), str(aus), "5", *args], check=True)
+        print(f"{aus.name}: Nr {', '.join(list(wuensche)[b * pro_blatt:(b + 1) * pro_blatt])}")
+    print(f"FERTIG bildvergleich {land.upper()}: {len(zeilen)} Produkte → {land}-vergleich.json")
 
 
 def skript(land, nr, land_schon=False):
@@ -912,6 +972,8 @@ if __name__ == "__main__":
     elif befehl == "speichern":
         mit_neustart(speichern, land, a[2], " ".join(a[3:]).split())
         land_zurueck()
+    elif befehl == "bildvergleich":
+        mit_neustart(bildvergleich, land, a[2])
     elif befehl == "skripte":
         skripte(land, int(a[a.index("--top") + 1]) if "--top" in a else 30)
     elif befehl == "skript":

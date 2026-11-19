@@ -38,6 +38,11 @@ Erster Lauf des Tages ohne `--frisch`, weitere Läufe am selben Tag mit `--frisc
    Einzeln geht auch: `de-suche <suchwort>`.
    Gibt es das Produkt oder etwas Ähnliches/andere Marke → `"QUALITY"`, sonst in `us-nein.json` („nicht in DE“). Treffer (Name, id, verkauft)
    in `us-quality.json` notieren (`{"nr": {"de_produkt": …, "de_id": …, "amazon": ASIN}}`).
+   **Bildvergleich (Artur 19.11., Pflicht):** Bildersuche nur bei TikTok Shop und Amazon.es, **nie Google/Lens**. Für alle `QUALITY?`
+   2–3 **kurze** Gattungswörter je Produkt (Social1 sucht wörtlich; lange Wörter finden nichts) in `wuensche.json` (`{"nr": ["wort", …]}`)
+   → `python3 werkzeuge/research.py bildvergleich us wuensche.json` → Sammelbilder `us-vergleich-XX.jpg` (Zeile = US-Bild + TT1… TikTok
+   Shop DE nach Verkäufen + AZ1… Amazon.es, wenn aktiv). Am Bild entscheiden: gleich / ähnlich-andere Marke → `QUALITY` mit gewähltem
+   TT/AZ in `us-quality.json` (Treffer-Details in `us-vergleich.json`), sonst `us-nein.json`. Echte Foto-Suche gibt es nur in den Apps.
 4. **Zurzeit deaktiviert (Artur 19.11.: `amazon_aktiv: false` in research_regeln.json – Schritt auslassen).** Nur für `QUALITY`: Amazon.es suchen (`amazon <spanisches/englisches Suchwort>`), passendstes Produkt (gute Bewertungen, Preis passt) →
    `wagen <ASIN>`. **Nie kaufen, nie zur Kasse, nie „Comprar ya“.** Captcha/Login → STOPP, Artur.
 5. `speichern us "SLIDES USA <datum>" …` und `speichern us "Quality USA <datum>" …`, dann `rangliste us`.
