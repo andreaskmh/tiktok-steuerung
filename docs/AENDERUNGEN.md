@@ -351,3 +351,4 @@
   + imageio-ffmpeg in `~/.tiktok-research/venv`, Artur hat die Installation erlaubt). Kleinstes MP4 laden (Nur-Ton gab 403),
   3 Versuche; Sprache kommt von Whisper. `research.py skripte` nutzt das, Ablage `<land>-transkripte/<nr>.json`. Test DE Top 3: 4× Deutsch erkannt.
 - **19.11.2026 (Artur)** – Research liest bis Seite 100 statt 50.
+- **19.11.2026 (Artur)** – Social1-Server-Aktionen fürs Speichern/Entfernen/Listen mitgeschnitten (docs/RESEARCH.md „Direkter Weg“), noch nicht eingebaut.

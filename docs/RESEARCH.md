@@ -69,3 +69,19 @@ Artur schickt seine eigene Research (Listen/Bildschirmaufnahme). Video für Vide
 - research.py nutzt ein eigenes Safari-Fenster (Social1-Videoseite `social1.ai/?…`), DE-Check ein eigenes (`social1.ai/products`), Amazon ein eigenes.
   Die Listen-Tabs von post_mensch (`saved-videos/…`) werden nie angefasst. Land wird nach jedem Lauf auf DE zurückgestellt.
 - Klicks immer per `setTimeout`; hängt der Tab, schließt research.py ihn selbst und macht weiter (fortsetzbar).
+
+## Direkter Weg zu Social1 (Untersuchung 19.11.2026, Artur: „schneller“) – Stand
+Social1 ist eine Next.js-Seite; Speichern läuft über **Server-Aktionen** (POST auf die aktuelle Seiten-URL, Header
+`Accept: text/x-component`, `next-action: <id>`, `next-router-state-tree`, `x-deployment-id`; Body = JSON-Array). Mitgeschnitten
+per fetch-Hook im Safari-Tab (Aktions-IDs ändern sich bei jedem Social1-Update → zur Laufzeit neu ermitteln, nicht fest einbauen):
+- **Hinzufügen** (19.11.: `600257693932abc498c5df86eb9d6bab714907eddc`): `[listId, {videoId, isAd:0|1, description:null, handle,
+  timePosted:"JJJJ-MM-TT hh:mm:ss", product:{productId, name, priceDisplay:"", imgUrl}}]`
+- **Entfernen** (`60c2803ebd4f09b1ff11ae8cd3a72d63b28d469282`): `[listId, [videoId, …]]` (mehrere auf einmal)
+- **Listen holen** (`0031ae1a8160653183a350a3d6af68883aa113bc11`): `[]` → alle Listen mit `_id`, `name`
+- **Eine Liste holen** (`40ce278ef0cb2208c4bf937eb78aee80e14306455b`): `[listId]` → Videos der Liste (inkl. timePosted)
+- Neue Liste anlegen: noch nicht mitgeschnitten. Listen-ID BOF DE 19.11.2026 = `6afe48ed035d76b7459d173f`.
+- **Seiten lesen:** Die Videos stehen NICHT im RSC-Seitenpayload (`/?page=N` mit `RSC: 1` hat keine Video-IDs); sie werden
+  nachgeladen. Ein fetch-Hook nach dem Laden sah beim Klick auf Seite „2“ keine Anfrage (Next nutzt evtl. eine früh gemerkte
+  fetch-Referenz). Nächster Versuch: in den JS-Chunks nach `createServerReference(` suchen (Aktions-ID + Name, z. B. getVideos)
+  oder XMLHttpRequest/`performance`-Einträge prüfen; Argumente (Region, Seite, Zeitraum, Performance) aus dem Chunk ablesen.
+- Auffällig: Übersicht zeigte „BOF DE 19.11.2026 – 317 videos“, mitgeschrieben waren 332 → per „Liste holen“ prüfen, was fehlt.
