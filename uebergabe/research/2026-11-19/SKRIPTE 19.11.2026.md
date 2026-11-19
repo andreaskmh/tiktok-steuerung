@@ -23,28 +23,6 @@ https://www.tiktok.com/@lilshopping007/video/7709226585135598880
 **Skript:** Das ist der MERACH Stepper mit Lenker. Du stellst ihn ins Wohnzimmer und kletterst einfach los, während Netflix läuft. Der Lenker gibt dir Halt, das LCD-Display zeigt dir Zeit, Schritte und Kalorien. Stabil gebaut, trägt bis 300 Pfund. Kein Abo, kein Anfahrtsweg, keine Ausreden mehr. Gerade im Angebot – findest du unten im Warenkorb im TikTok Shop.
 
 <!-- de-59 -->
-## DE BOF Nr 59 · Yesterday · +373.6K Views · Sprache ar · 【Black Friday】GOKOCO GF1081 Automatischer Aromatherapie-Diffusor – Luf
-https://www.tiktok.com/@ahmadundnoor/video/7709264249276681505
-
-**Original:**
-> هذا الموديل كببيل إياه على إزبالي ولا تجي بيه على البيت غالي وبصرف بطاريات بهذا الجهاز الحلو طبعاً به أربع درجات كل ما تزيدي كل ما يظل ينطي عطور طبعاً أربعة كثير واحد بكفي بتيجي معاه كل هاي المجموعة من العطور هاي العطور كلها بتيجي معاها بتقدري أنت تزيدي عليهم تقدري تنقصي حسب أنت شو طالبي هاي حالياً موجود على التيك توك شوب رابط الشراء بالسليل أورنج سلام
-
-**Hook:** Dein Zuhause riecht nach Hotel-Lobby – und du musst nichts dafür machen.
-
-**Skript:** Das ist der GOKOCO Aroma-Diffusor. Läuft automatisch, ganz ohne Kabelsalat. Du hast vier Stufen – ehrlich, eine reicht meistens schon. Und schau mal, die ganzen Duftöle sind direkt mit dabei. Du kannst mehr oder weniger nehmen, ganz wie du magst. Gerade zum Black Friday im Angebot im TikTok Shop – Link unten im Warenkorb.
-
-<!-- de-122 -->
-## DE BOF Nr 122 · Yesterday · +256.0K Views · Sprache ru · Avenido Kekskugelkrocher XL AV 3090, leistungsstark, 1600 W, für 24 Pc
-https://www.tiktok.com/@zali_shop/video/7709260210342202657
-
-**Original:**
-> А вы знали, что сейчас в тикток-шоп можно приобрести просто огромную орешницу для нашего вкуснейшего десерта из детства орешки с вареной сгущенкой и орехами? Ссылку прикрепляю в нижнем левом углу у меня на видео. Сейчас на черную пятницу действует классная скидка, поэтому если вы хотели, искали орешницу, берите эту, не задумывайтесь, она очень классная.
-
-**Hook:** Kennst du noch Nussplätzchen mit Karamellfüllung von früher? Die machst du jetzt ganz einfach selbst.
-
-**Skript:** Das ist der Avenido Kekskugel-Bäcker in XL. 1600 Watt, und du machst 24 Stück auf einmal. Teig rein, zuklappen, ein paar Minuten warten, fertig. Dann mit Karamell oder Nusscreme füllen – wie bei Oma. Gerade zum Black Friday im Angebot im TikTok Shop. Wenn du so ein Teil gesucht hast: nimm den hier. Unten im Warenkorb.
-
-<!-- de-211 -->
 ## DE SLIDES Nr 211 · 3 days ago · +128.4K Views · Sprache en · 【Black Friday】Klappbarer Push-Up-Board für tragbares Training – stabil
 https://www.tiktok.com/@warenwelt1/video/7708474169398218017
 
@@ -191,17 +169,6 @@ https://www.tiktok.com/@cano.deals/video/7709539705402019104
 **DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Der Adventskalender für Gym-Leute – 24 Türchen Protein“).
 
 <!-- de-170 -->
-## DE BOF Nr 170 · Yesterday · +162.3K Views · Sprache sq · COSORI Edelstahl-Dörrautomat – ohne Kunststoffkontakt, energiesparend 
-https://www.tiktok.com/@bigshala1/video/7709361153633209633
-
-**Original:**
-> Anje uke di Uke kimin e në rën Po mishin nuk e rën Edhe one Nuk e kam menën verru Kështu që në pasë rënë A i kumush edhe një anë zanë këtu Se nuk e më posë mish Ma shumë tre kila janë Kështu në mirë Mëcina është Pej kategorisë matë modhe Kështu që mësë eleni pa morë Shtrajt është Nuk është lirë Po kualiteti Kushtënë Nuk mundi me morë Jo përshemë dhe nisenë Të mirë Me pes më të erë Kjo është tjetër kategori Keni edhe matë lira Kështu në video tjera Keni tjetër matë finë Kjo është Kjo është Pri e të të mirë Na që ty kemë Dhe më njohë 2, 3, kodër 5 rena Shkula Ty qitë në vend vretin Edhe Po tja boj me bismila Pëtë elshuë E nesë të mbrome Me e me talohit Që ka thonë zuti E o qesë Mishin e perën Tash kjo përmel shumë shumë let Këtu e kemë temperaturë Që muna me lungë Sot duim Unë e lohë Sot duim Edhe ku hën pesmaturë Edhe start Tash këto E merë E o bërën Ndikun ku dëndi Unë e qëtë gjithë E lohë Rëmë në këngat Linkun e kini mja Më në bëkë shola Kushtu në dhe pli E lë mërë nëse kjo është Te i përë mjërë Kalu shumë i mjërë Respekt e krytve Kalu shumë i mjërë
-
-**DEUTSCH:**
-**Hook:** „Ich mach mein Trockenfleisch jetzt selbst – drei Kilo Fleisch, und das Teil schafft alles auf einmal.“
-**Skript:** „Das ist ein Dörrautomat komplett aus Edelstahl, kein Plastik am Essen. Fleisch in Streifen, Gewürze drauf, Temperatur einstellen, Start – fertig. Ist nicht der billigste, aber die Qualität merkst du sofort. Spart Strom und das Ergebnis ist richtig gut. Link ist unten.“
-
-<!-- de-515 -->
 ## DE SLIDES Nr 515 · Yesterday · +162.2K Views · Sprache en · Shark PowerLite Akku-Staubsauger
 https://www.tiktok.com/@morabackup5/video/7709511092485066017
 
@@ -285,6 +252,15 @@ https://www.tiktok.com/@iluvdealz/video/7709345068204789005
 **DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Wenn du deine Eltern liebst…“ – personalisiertes Buch „Ein paar Dinge, die ich an dir liebe“ zum Ausfüllen).
 
 <!-- us-911 -->
+## US SLIDES Nr 911 · Yesterday · +128.4K Views · Sprache en · Dickies Classic Bib Overalls,Durable Comfort, Utility Storage, Wide Le
+https://www.tiktok.com/@grind2hardosha/video/7709546887942098206
+
+**Original:**
+> Spent months in the corner, just me and my back I'm used to this, I'm numb to that I know I just gotta adapt, ayy Let's wait on your Spotify rap The messages you about to send on the 16th Please don't hit send on none of that There's no need to check what the temperature is You know what it is if you double back Should've put another blade in my back Should've stood over and double tap Bank, but y'all need a duffel bag What is the offer they said? What did they put on the table? What does that say on that paper? Fuck that, they gotta double that, triple that Fuck is the bitches at? Yo, the chef too Michelin Come to the 6th and we dipping you boys like a christenin' Kevin Hart Lincoln, he shook, I'ma put you in sticky predicaments Killie might come take a stick off a pussy like they was transitionin' I'm fightin' the man, I suin' a rapper, you boys not listenin' Ah, your boyfriend a fisherman, that's just a word in the industry Don't mean to be in your business I'm talkin' spicy, hot, sizzlin' Don't stick around if you visitin' Yeah, what is the offer they said?
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Robuste Arbeitslatzhose – so günstig wie nie“). Idee für DE: Arbeitskleidung als Slideshow.
+
+<!-- us-491 -->
 ## US SLIDES Nr 491 · Yesterday · +331.7K Views · Sprache en · Men's Santa Claus Fleece-Lined Windbreaker, White Long Cardigan with F
 https://www.tiktok.com/@metrowardrobe/video/7709346586240797983
 
@@ -368,6 +344,17 @@ https://www.tiktok.com/@pauramis/video/7709098353065299213
 **DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Das Weihnachtsmann-Outfit für Männer, die keinen Bock auf Pullover haben“).
 
 <!-- us-762 -->
+## US SLIDES Nr 762 · 2 days ago · +148.4K Views · Sprache en · Crossover Bundle Dedicated Deck Card Game - 90s & 00s Pop, Country Mus
+https://www.tiktok.com/@chelseaballjones/video/7709146361358224653
+
+**Original:**
+> Jody Messina flips a coin and it lands on Heads. Where's she going? Heads Carolina. Yes! Should have been a cowboy. Toby Keith said that California is full of three, what three things? Whiskey, women, and gold. Yeah. Yeah. Yeah! Oh, yes. George Stratts said that she can hang his note in a picture frame above what? Mantle. Mantle. Mantle. Mantle. Yeah! That's two! Any man of mine. Shania says you gotta shimmy, shake, and what else? Shake, let the heart break. Let the earthquake. Let the earthquake. Let the earthquake. I said heartbreak.
+
+**DEUTSCH:**
+**Hook:** „Stell dir dieses Spiel beim Familienabend vor.“
+**Skript:** Quizkarten mit deutschen Schlagern/90er-Hits vorlesen: „Wohin fährt Helene, wenn sie atemlos ist?“ – alle rufen die Antwort. Idee: Party-Kartenspiel mit Musikfragen, Familie lacht und rät. (Für DE: deutsche Lieder statt Country.)
+
+<!-- us-550 -->
 ## US SLIDES Nr 550 · 2 days ago · +231.3K Views · Sprache es · 3-Pack Men's High-Neck Fleece-Lined Shirts, Winter Thermal Compression
 https://www.tiktok.com/@jonatanm13/video/7708933711131053325
 
@@ -377,6 +364,33 @@ https://www.tiktok.com/@jonatanm13/video/7708933711131053325
 **DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Spanisches Lied. Hook: „Früh raus bei Minusgraden – oder mit Fleece innen drin?“ – Vorher/Nachher-Bild).
 
 <!-- us-569 -->
+## US SLIDES Nr 569 · 2 days ago · +209.6K Views · Sprache en · Western Style Bull Skull Navajo Geometric Print Hoodie for Men, Vintag
+https://www.tiktok.com/@cassian_0122/video/7709091819769924877
+
+**Original:**
+> He's from Texas, I can tell by the way he's still stepping round the room And judging by the smile that's written on his face There's nothing I can do to him Oh yeah, it doesn't take a crystal ball to see A cowboy always finds a way to leave Drinking Jack all by myself He's choosing Texas, I can tell Drinking Jack all by myself He's choosing Texas, I can tell Come on, baby
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Der Western-Hoodie, nach dem alle fragen 🤠“).
+
+<!-- us-838 -->
+## US SLIDES Nr 838 · 2 days ago · +139K Views · Sprache en · Just A Few Things I Love About You (Okay, A Lot) Romantic Couples Fill
+https://www.tiktok.com/@iluvdealz/video/7709013438235725070
+
+**Original:**
+> I bumped into you by a half-stance, probably wouldn't even know who I am, but if I whispered your own name, I'd better still be your spark. Back when I was gasoline, this old tattoo had ran away, didn't care what your mama think, but your name on my arm. Baby, is it spring or is it summer? The guitar sound, don't beat that drum. You hear sometime late at night on your radio, even though you're a million miles away, you're here born in A.P.S.A. and we lived on the glory day so long ago. When you think about me, do you think about Seventeen? Do you think about my OG? Think about the stars in the sky, but in that old melody, sound like a memory, like a soundtrack to a July Saturday night. Oh, spring steam. Oh, spring steam.
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Hab beim Ausfüllen geheult…“ – Buch „Ein paar Dinge, die ich an dir liebe“ für den Partner).
+
+<!-- us-768 -->
+## US SLIDES Nr 768 · 2 days ago · +147.9K Views · Sprache en · Men's Fall Winter Hooded Sweatshirt, Spider Print, Drawstring & Kangar
+https://www.tiktok.com/@noahblake_k/video/7709079288456301837
+
+**Original:**
+> Hi, I'm Peter Parker. And a while back I was bitten by a radioactive spider and got superpowers. I've used my powers to help the city and stop a lot of people who wanted to hurt it. Okay, let's do this one last time, yeah? For real this time, this is it. My name is Miles Morales. I was bitten by a radioactive spider, and for like two days, I've been the one and only spider.
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Spider-Man-Ton aus dem Film; Hook: „Für alle, die immer noch Spider-Man-Fans sind 🕷️“).
+
+<!-- us-26 -->
 ## US QUALITY Nr 26 · 3 days ago · +1M Views · Sprache en · REDTIGER F17 4K 3-Channel Dash Cam with 5GHz WiFi GPS, 64GB Card, 2160
 https://www.tiktok.com/@ericabaileyb_/video/7708641929021558030
 

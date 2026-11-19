@@ -1,6 +1,6 @@
 # Research auf Social1 (täglich, 7 / 13 / 19 Uhr)
 
-Arturs Vorgaben (19.11.2026). Erst Deutschland, dann USA. Immer „Today“ + „Trending“, keine Kategorie, keine Produktsuche, bis Seite 50 (Artur 19.11. abends, 100 war zu viel).
+Arturs Vorgaben (19.11.2026). Erst Deutschland, dann USA. Immer „Today“ + „Trending“, keine Kategorie, keine Produktsuche, gelesen bis Seite 100; BOF DE + SLIDES DE nehmen nur Videos bis Seite 50, Reactions DE, SLIDES USA, Quality USA bis Seite 100 (Artur 19.11. abends, `SEITEN_MAX` in research.py).
 Werkzeug: `werkzeuge/research.py`, Regeln `werkzeuge/research_regeln.json`, Ablage `uebergabe/research/<JJJJ-MM-TT>/`.
 Geplante Aufgabe „tiktok-research-taeglich“ (Claude-App, Auto-Modus) führt den Tageslauf unten aus.
 
@@ -24,7 +24,8 @@ Erster Lauf des Tages ohne `--frisch`, weitere Läufe am selben Tag mit `--frisc
 
 **0. Gemacht-Abgleich (vor jedem Lauf):** `python3 werkzeuge/research.py gemacht-abgleich` vergleicht Arturs eigene Listen
 (`eigene …`, `reactions …`) mit der letzten Momentaufnahme (`~/.tiktok-research/artur-listen.json`): was dort fehlt, hat Artur
-erledigt → in `gemacht.json` und aus unseren Listen. Danach wird die neue Momentaufnahme gespeichert. Arturs Listen nie ändern.
+erledigt → in `gemacht.json` und aus unseren Listen. **Seit 19.11. abends zählt nur `eigene BOF …`:** alles darin + was er dort rausnimmt = gemacht
+(er arbeitet nur seine BOF-Liste ab). Seine anderen Listen (Slides, Reactions, USA, neue Idee) zählen nicht. Danach wird die neue Momentaufnahme gespeichert. Arturs Listen nie ändern.
 
 **Deutschland**
 1. `python3 werkzeuge/research.py lesen de [--frisch]`

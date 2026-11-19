@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Tägliche Research auf Social1 (Videos, „Today“ + „Trending“, ohne Kategorie). Safari am Mac, Artur eingeloggt.
 
-  python3 werkzeuge/research.py lesen  <de|us> [--seiten 50]  # alle Seiten lesen → research/<datum>/<land>.json
+  python3 werkzeuge/research.py lesen  <de|us> [--seiten 100]  # alle Seiten lesen → research/<datum>/<land>.json
   python3 werkzeuge/research.py filtern <de|us>                # Vorfilter (Alter, Promis, Beauty, Supplements)
   python3 werkzeuge/research.py blaetter <de|us> [--pro 20]    # Sammelbilder der Kandidaten zum Sortieren
   python3 werkzeuge/research.py speichern <de|us> "<Liste>" <nr> [<nr> ...]   # Videos (Kandidaten-Nr) in Social1-Liste
@@ -340,21 +340,33 @@ def aus_liste_entfernen(liste, ids, paeckchen=20):
 
 
 ARTUR_STAND = pathlib.Path.home() / ".tiktok-research" / "artur-listen.json"
+# Bis welche Social1-Seite eine Liste Videos nimmt (Artur 19.11. abends): BOF/SLIDES DE nur bis 50, Rest bis 100 (gelesen wird bis 100).
+SEITEN_MAX = {"BOF DE": 50, "SLIDES DE": 50}
+
+
+def seiten_max(liste):
+    return next((n for p, n in SEITEN_MAX.items() if liste.startswith(p)), 100)
+
+
 UNSERE = re.compile(r"^(BOF DE|SLIDES DE|Reactions DE|SLIDES USA|Quality USA) \d\d\.\d\d\.\d{4}$")
 
 
 def gemacht_abgleich():
-    """Arturs eigene Listen (eigene …, reactions …, neue Idee …) mit der letzten Momentaufnahme vergleichen: was er entfernt hat,
-    ist erledigt → gemacht.json + aus unseren Listen (Artur 19.11.). Arturs Listen werden nur gelesen, nie geändert."""
+    """Arturs „eigene BOF …“-Listen: alles darin + was er seit der letzten Momentaufnahme entfernt hat, ist erledigt (seine anderen
+    Listen zählen nicht, Artur 19.11. abends) → gemacht.json + aus unseren Listen (Artur 19.11.). Arturs Listen werden nur gelesen, nie geändert."""
     aktionen_laden()
     ls = (s1("getVideoLists").get("data") or {}).get("lists") or []
-    artur = [l for l in ls if re.match(r"^(eigene|reactions|neue idee)", l.get("name", ""))]
+    artur = [l for l in ls if re.match(r"^(eigene|reactions|neue idee)", l.get("name", ""), re.I) and not UNSERE.match(l.get("name", ""))]
     jetzt = {l["_id"]: {"name": l["name"], "videos": listen_videos(l["_id"])} for l in artur}
     alt = json.loads(ARTUR_STAND.read_text()) if ARTUR_STAND.exists() else {}
     weg = set()
     for lid, l in jetzt.items():
+        if not re.match(r"^eigene bof", l["name"], re.I):     # Artur 19.11.: abgearbeitet wird nur „eigene BOF …“, sonst nichts
+            continue
+        weg |= set(l["videos"])                                # was dort steht, macht er selbst
         if lid in alt:
-            weg |= set(alt[lid]["videos"]) - set(l["videos"])
+            weg |= set(alt[lid]["videos"]) - set(l["videos"])  # was er dort rausgenommen hat, ist erledigt
+    weg -= gemacht()
     if weg:
         gemacht_merken(weg)
         for l in ls:
@@ -532,6 +544,11 @@ def speichern(land, liste, nummern):
     lid = liste_id(liste)
     drin = set(listen_videos(lid))
     neu = 0
+    grenze = seiten_max(liste)
+    zu_weit = [nr for nr in nummern if kand[int(nr)].get("seite", 0) > grenze]
+    if zu_weit:
+        print(f"{len(zu_weit)} Videos von Seite > {grenze} → nicht in {liste}: {zu_weit[:10]}")
+    nummern = [nr for nr in nummern if nr not in zu_weit]
     offen = [kand[int(nr)] for nr in nummern if kand[int(nr)]["video_id"] and kand[int(nr)]["video_id"] not in drin]
     for i in range(0, len(offen), 50):                         # in Päckchen zu 50, Protokoll nach jedem Päckchen
         teil = offen[i:i + 50]
@@ -1088,7 +1105,7 @@ if __name__ == "__main__":
     befehl, land = a[0], a[1]
     if befehl == "lesen":
         frisch = "--frisch" in a
-        mit_neustart(lesen, land, int(a[a.index("--seiten") + 1]) if "--seiten" in a else 50, frisch)
+        mit_neustart(lesen, land, int(a[a.index("--seiten") + 1]) if "--seiten" in a else 100, frisch)
         land_zurueck()
     elif befehl == "filtern":
         filtern(land)

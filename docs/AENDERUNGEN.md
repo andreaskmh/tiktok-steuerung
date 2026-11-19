@@ -393,3 +393,6 @@
   (Sicherungen in uebergabe/research/2026-11-19/sicherung-*), Ranglisten + SKRIPTE neu.
 - Listennamen festgehalten: unsere = „BOF DE …“/„SLIDES DE …“, Arturs = „eigene BOF …“/„eigene slides … DE“.
 - Tägliche Aufgabe „tiktok-research-taeglich“ ist an (7/13/19 Uhr).
+- Nachtrag (Artur): gelesen wird wieder bis Seite 100; `SEITEN_MAX` in research.py: BOF DE + SLIDES DE nur bis Seite 50 (speichern lässt
+  Weiteres weg), Reactions DE + USA bis 100 → heute 44 Videos in Reactions DE/SLIDES USA zurückgelegt. `gemacht-abgleich`: nur Arturs
+  `eigene BOF …` zählt (Inhalt + Rausgenommenes = gemacht), seine anderen Listen nicht (er arbeitet nur die BOF-Liste ab).
