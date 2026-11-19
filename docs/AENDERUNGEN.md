@@ -377,3 +377,10 @@
 - **19.11.2026 abends (Artur)** – Social1-Ansicht sortiert nach Hinzufüge-Reihenfolge, zuerst Hinzugefügtes OBEN → `sortieren`
   umgedreht. Neu `uebergabe/research/gemacht.json` (131 von Artur erledigte = aus seinen Listen entfernte Videos; filtern wirft sie
   raus), aus BOF DE 88 / SLIDES DE 11 entfernt. Promis → Kandidaten für „Reactions DE <datum>“ (`<land>-promis.txt`) statt raus.
+- **19.11.2026 (spät)** – Research nach Arturs Abgleich überarbeitet: DE-Kandidaten (629 neu) einsortiert (Slideshow/KI → SLIDES,
+  KI mit Reden zusätzlich BOF, Promis → neue Liste `Reactions DE 19.11.2026`, Rest per Sammelbild), 17 alte Sketch-/Vergleichs-BOF
+  und alle Videos ab 7 Tagen aus den DE-Listen, alle DE-Listen nach Rangliste sortiert (Platz 1 zuerst eingelegt = oben).
+  Neu: `research.py gemacht-abgleich` (Arturs eigene Listen gegen Momentaufnahme `~/.tiktok-research/artur-listen.json` →
+  Entferntes = erledigt, gemacht.json + aus unseren Listen). `filtern us` lässt Slideshows trotz Beauty/Supplement drin (SLIDES USA
+  = Format-Ideen). USA-Regeln aus Arturs Listen in docs/RESEARCH.md „Gelernt“, Quality USA ausgedünnt. Tageslauf + Prompt der
+  geplanten Aufgabe angepasst (Schritt 0 Abgleich, Reactions-Liste, Sortier-Richtung, US-Regeln).

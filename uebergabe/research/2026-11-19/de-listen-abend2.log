@@ -1,0 +1,16 @@
+SLIDES DE 19.11.2026: 0 aus Sicherung nachgelegt
+… 50/261
+… 100/261
+… 150/261
+… 200/261
+… 250/261
+FERTIG sortieren SLIDES DE 19.11.2026: 261/261 Videos, Platz 1 oben (Sicherung sicherung-SLIDES DE 19.11.2026-190834.json)
+Neue Liste angelegt: Reactions DE 19.11.2026
+… 33/33
+FERTIG speichern Reactions DE 19.11.2026: 33 neu, Liste hat jetzt 33 Videos
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-andreask-Documents-Coding-TikTok-Steuerung/c2149a0e-9967-4460-af5c-c307a4fb15ee/scratchpad/de_weiter.py", line 32, in <module>
+    sicher_sortieren("Reactions DE 19.11.2026")
+  File "/private/tmp/claude-501/-Users-andreask-Documents-Coding-TikTok-Steuerung/c2149a0e-9967-4460-af5c-c307a4fb15ee/scratchpad/de_weiter.py", line 17, in sicher_sortieren
+    sich = max(glob.glob(str(O / f"sicherung-{liste}-*.json")), key=os.path.getmtime)
+ValueError: max() arg is an empty sequence

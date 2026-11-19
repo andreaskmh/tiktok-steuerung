@@ -1,0 +1,39 @@
+BOF DE 19.11.2026: soll 480, drin 274, raus 77
+  entfernt 77
+… 50/286
+… 100/286
+… 150/286
+… 200/286
+… 250/286
+… 286/286
+FERTIG speichern BOF DE 19.11.2026: 286 neu, Liste hat jetzt 483 Videos
+… 50/483
+… 100/483
+… 150/483
+… 200/483
+… 250/483
+… 300/483
+… 350/483
+… 400/483
+… 450/483
+FERTIG sortieren BOF DE 19.11.2026: 483/483 Videos, Platz 1 oben (Sicherung sicherung-BOF DE 19.11.2026-184028.json)
+SLIDES DE 19.11.2026: soll 261, drin 25, raus 7
+  entfernt 7
+… 50/243
+… 100/243
+… 150/243
+… 200/243
+… 243/243
+FERTIG speichern SLIDES DE 19.11.2026: 243 neu, Liste hat jetzt 261 Videos
+… 50/261
+… 100/261
+… 150/261
+… 200/261
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-andreask-Documents-Coding-TikTok-Steuerung/c2149a0e-9967-4460-af5c-c307a4fb15ee/scratchpad/de_listen.py", line 22, in <module>
+    r.sortieren("de", liste)
+  File "/Users/andreask/Documents/Coding/TikTok-Steuerung/werkzeuge/research.py", line 553, in sortieren
+    
+  File "/Users/andreask/Documents/Coding/TikTok-Steuerung/werkzeuge/research.py", line 191, in s1
+    return json.loads(zeile[2:])
+research.Haenger

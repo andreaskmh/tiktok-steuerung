@@ -132,39 +132,6 @@ https://www.tiktok.com/@a1motifs/video/7709392973095652622
 
 **Skript:** Das ist der KODAK Dock Plus Fotodrucker. Funktioniert per Dock oder Bluetooth. Die Fotos kommen in 10x15, laminiert und wischfest. Perfekt als Weihnachtsgeschenk für alle, die tausend Fotos auf dem Handy haben und nie welche drucken. 50 Blatt sind direkt dabei. Gerade im Angebot im TikTok Shop – ich verlink ihn dir unten im Warenkorb.
 
-<!-- us-52 -->
-## US QUALITY Nr 52 · Today · +660.4K Views · Sprache en · Christmas Snowman Paper Towel Holder, Festive Christmas Tree Design, D
-https://www.tiktok.com/@jamiethisyoujeffries/video/7709357569998916878
-
-**Original:**
-> I got influenced by an AI ad. I thought this was going to look different. Look, it's like a little, like, board. That's not really what this looks like. It's so cute. It's a little paper towel roll holder. But, like, I thought it was going to be a little bit different. It's hard to tell sometimes.
-
-**Hook:** Der süßeste Küchenrollenhalter, den ich je gesehen hab.
-
-**Skript:** Ein Schneemann mit kleinem Tannenbaum – und in der Mitte steckt einfach deine Küchenrolle. Sofort Weihnachtsstimmung in der Küche, ohne dass du was umdekorieren musst. Ehrlich: Live sieht er ein bisschen anders aus als auf manchen Bildern, aber genau das macht ihn so charmant. Gerade im Angebot im TikTok Shop – unten im Warenkorb.
-
-<!-- us-217 -->
-## US QUALITY Nr 217 · Today · +275.7K Views · Sprache en · SEESE Turbo Jet Leaf Blower,Cordless Leaf Blower, Violent Turbo Fan, P
-https://www.tiktok.com/@bom_jackji4/video/7709462941824797983
-
-**Original:**
-> No matter what your budget is, I recommend everyone get one of these. It's on a massive Black Friday clearance sale right now. You guys know I test all kinds of viral TikTok shop products to see if they're actually worth your money. Now this right here is the viral handheld blower. Honestly, it makes my yard look like I just hired a professional landscaper to take care of it a few days ago. This tool was still $100 and everyone thought it was too expensive. Yesterday, the price dropped to $50. Good thing you didn't buy it then, because now it's even more heavily discounted and comes with free shipping. After mowing your lawn, you should really stop struggling with those old-fashioned cleaning tools. They just take up too much time and effort. All you have to do is point it at the grass clippings and pull the trigger. Check this out. It also works great for all kinds of everyday cleanup jobs. Whether it's dust on your furniture, leaves in your yard, or debris on your sidewalk, you can just grab it and go. No more struggling to drag that bulky leaf blower out of the garage. And this is the brand new 1000 gram version, with an upgraded battery that lasts way longer than the old models. It also comes with a brand new carrying case, plus a charger, earplugs, and everything you need. Black Friday deals are seriously good right now. Whether you're getting one for yourself, or as a gift for someone else, it's a great choice. I've left the shopping link right below the video.
-
-**Hook:** Dein Garten sieht danach aus, als wäre gerade der Gärtner da gewesen.
-
-**Skript:** Das ist der SEESE Turbo-Jet-Laubbläser, kabellos und klein genug für eine Hand. Aber schau mal, was der für Luft macht. Nach dem Rasenmähen einmal drüber, und Blätter, Gras und Staub sind weg. Auch für Terrasse, Einfahrt oder das Auto. Kein Kabel, kein Benzin. Gerade zum Black Friday richtig reduziert im TikTok Shop – unten im Warenkorb.
-
-<!-- us-196 -->
-## US QUALITY Nr 196 · Yesterday · +301.0K Views · Sprache en · RAPOLL Large Taba Handmade Silicone Squeeze Toy - Cartoon Stress Relie
-https://www.tiktok.com/@baylendooley/video/7709287880073432351
-
-**Original:**
-> Look what just came in the mail. I wanna use it. I'm opening it for you. I'm opening it for you. I'm so excited. Goddamn mama! Smack it ass. Look at it. It's your favorite, I can't eat. Huh? That's me. Look at it. Smack that ass. Tip it, tip it, tap it, tap it, tap it, just reach it. Anyways, I hope you like it.
-
-**Hook:** Das ist das seltsamste und befriedigendste Ding, das ich diese Woche bekommen hab.
-
-**Skript:** Ein handgemachtes Squeeze-Spielzeug aus Silikon im Cartoon-Look. Drücken, kneten, zusammenquetschen – und es geht immer wieder in Form zurück. Fühlt sich richtig gut an in der Hand, perfekt für nebenbei am Schreibtisch. Und ehrlich, als Geschenk sorgt das garantiert für Lacher. Gerade im Angebot im TikTok Shop – unten im Warenkorb.
-
 <!-- us-21 -->
 ## US QUALITY Nr 21 · Yesterday · +1.2M Views · Sprache en · WIKICO 4K Digital Camera for Photography & Content Creators - 64MP, 3-
 https://www.tiktok.com/@itsjaydendo/video/7709031798528904479
@@ -175,50 +142,6 @@ https://www.tiktok.com/@itsjaydendo/video/7709031798528904479
 **Hook:** Wer hat seiner Freundin das bessere Geschenk gemacht?
 
 **Skript:** Die eine Kamera filmt nur in 1080p, der Akku ist schnell leer und es gibt keinen Selfie-Bildschirm. Die nächste hat zwar 4K, aber für jedes Foto musst du die SD-Karte rausnehmen und alles über den Laptop schieben. Und dann die hier: die WIKICO 4K Digitalkamera. 64 Megapixel, Klappdisplay für Selfies und Vlogs, und sie ist sogar günstiger. Perfekt für Content Creator oder als Geschenk. Gerade im Angebot – unten im Warenkorb im TikTok Shop.
-
-<!-- us-107 -->
-## US QUALITY Nr 107 · Yesterday · +440.3K Views · Sprache en · REDTIGER A3 3 Channel WiFi Dash Cam Front and Rear Inside with 32G SD 
-https://www.tiktok.com/@redtigerdashcam/video/7709083876206955806
-
-**Original:**
-> I'm gonna get a fucking key, and I need to get a car, and then I'm gonna start getting shit with the Civic going. But I still want, I want to get the engine in the Civic as soon as possible. For real? That's step one, that shit's easy. What? What did he say? What? Throw that bitch in there. Oh yeah? That easy. So easy. Is that? Ha ha ha ha ha! You're doing pretty tight. You've got a fucking big blood. That'd be on the way home. Take a fucking 12 hour nap. Yeah, like actually it's a bunch of fun. Dude, we could literally like rebuild my whole fucking car in that time. Yep. Tyler! You
-
-**Hook:** Im Auto passiert so viel – und du hast es nie auf Video.
-
-**Skript:** Das ist die REDTIGER A3 Dashcam mit drei Kameras: vorne, hinten und innen. Du siehst also alles rund ums Auto. Per WLAN schaust du die Videos direkt auf dem Handy an, ohne Karte rausnehmen. Eine 32-GB-SD-Karte ist schon dabei. Einmal anbringen und vergessen. Gerade im Angebot im TikTok Shop – unten im Warenkorb.
-
-<!-- us-308 -->
-## US QUALITY Nr 308 · Yesterday · +218.8K Views · Sprache es · Kids Cooking Sets Real Pink Play Mini Kitchen, Safe Real Food Making K
-https://www.tiktok.com/@carlita.familia/video/7709323129616600351
-
-**Original:**
-> Le compré a Katie su cocinita para que aprenda a cocinar. ¿No se te va a quemar el agua también? Ya se me quemó. Le compré esta ollita a la cocinera de la casa. Ya saben quién es. Un regalo bien bonito para Navidad, para un cumpleaños. Para las niñas que les encanta estar en la cocina, miren. Esta está perfecta. Cocina de verdad y trae este para que no se vayan a quemar, para que no toquen lo caliente de la estufa. Tiene aquí varios niveles. Miren aquí, le pueden bajar. Si no aquí la apagamos, le pueden bajar. Aquí se pueden hacer unos huevitos, un espagueti, unos pancakes. Y trae todo esto, miren qué bonito. Tiene su termito, tiene su tablita. Trae de todo, de todo lo que uno necesita para la cocina. Trae sus platitos, trae pasta para hacer unas arepitas. Uy no. Esta, esta está bien bonita. Así que si tienes algún cumpleaños. Uy, también trae su mandil. Trae su guante. Trae estas para que se las pongan los bracitos. Y si brinca esto, pues no se queme. Ay no. Que si tienes un cumpleaños o no sabes qué regalar en Navidad, regálale esta. Está bien chula. Adiós.
-
-**Hook:** Ich hab meiner Kleinen eine Mini-Küche gekauft – und da wird wirklich gekocht.
-
-**Skript:** Das ist ein Kinder-Kochset in Rosa, aber keine Spielküche zum Nur-so-tun. Damit kann man echte Mini-Gerichte machen: kleine Spiegeleier, Pfannkuchen, Spaghetti. Die Hitze lässt sich regeln und es gibt einen Schutz, damit die Kids nichts Heißes anfassen. Mit dabei: Töpfchen, Brettchen und ganz viel Zubehör. Natürlich immer mit Mama oder Papa daneben. Ein super Geschenk zu Weihnachten oder zum Geburtstag. Gerade im Angebot – unten im Warenkorb im TikTok Shop.
-
-<!-- us-17 -->
-## US QUALITY Nr 17 · Yesterday · +1.2M Views · Sprache en · LED Firecracker Fairy String Lights, 65.6ft 600 LEDs / 164ft 1500 LEDs
-https://www.tiktok.com/@hadrianl20/video/7709088495431666957
-
-**Original:**
-> A few layers of these lights make such a difference. Then I framed the window. So cozy. Around the doorway and tree, they make everything feel warmer. And on snowy nights, coming home feels a little more special.
-
-**Hook:** Ein paar Lichterketten – und dein Zuhause fühlt sich komplett anders an.
-
-**Skript:** Das sind LED-Lichterketten mit ganz vielen kleinen Lichtern, gibt's in 20 oder 50 Metern. Ich hab sie ums Fenster gelegt, um die Tür und um den Baum. Sofort warm und gemütlich. Und wenn's draußen schneit und du nach Hause kommst, ist das einfach ein besonderes Gefühl. Gerade im Angebot im TikTok Shop – unten im Warenkorb.
-
-<!-- us-183 -->
-## US QUALITY Nr 183 · Yesterday · +323.9K Views · Sprache en · Comfrt | Après Ski Hoodie – Mega | CloudTouch Fleece Hoodie With Ski C
-https://www.tiktok.com/@jordyn_gunderson/video/7709215615105486110
-
-**Original:**
-> A snowboard and ski hoodie from comfort. Look at this thing. Are you actually joking? Please pause this video and make sure they even have your size before I get your hopes up. Because these are limited edition and projected to sell out by the end of the day. And once she's gone, I'm not sure if they're going to come back with this one. Because it's a very like unique print that I've never seen before. Like I cannot make this up. That is so cute. Makes me want to go on a snowboarding trip like right now. It has that fleece on the inside and it's a little bit thicker and heavier material. Which is perfect for the winter weather or the snow and anything like that. You can wear it straight up or layer it underneath your winter jacket. Even like this hoodie over black leggings, some white sneakers. Like it's going to look so clean. I'm 5'2". I got a medium in the hoodie for reference. And then I'm wearing a size small in the pants. They definitely fit oversized and baggy. If you don't like that, you could size down. I'm sorry if I'm the one who got your hopes up and you're seeing this way too late. But if you want help with sizing at all, feel free to drop your height in the comments and I can help you out.
-
-**Hook:** Schau dir diesen Hoodie an – ist das dein Ernst?
-
-**Skript:** Das ist der Après-Ski-Hoodie von Comfrt. Rundherum kleine Skifahrer und Snowboarder als Print, so was hab ich noch nie gesehen. Innen Fleece, etwas dicker und schwerer – perfekt für den Winter. Macht direkt Lust auf Skiurlaub. Ist limitiert, also schau am besten gleich, ob deine Größe noch da ist. Im TikTok Shop, unten im Warenkorb.
 
 <!-- us-163 -->
 ## US QUALITY Nr 163 · Yesterday · +350.3K Views · Sprache en · Insignia - 24 Class IPS FHD 144Hz Monitor with AMD FreeSync (HDMI, VGA
@@ -231,72 +154,6 @@ https://www.tiktok.com/@dangdeals/video/7709009535008066846
 
 **Skript:** Das ist ein 24-Zoll-Gaming-Monitor mit Full HD und 144 Hertz. Schau dir die Bildqualität an. Super dünn, und der Standfuß lässt sich ganz einfach anstecken und verstellen. Mit FreeSync für flüssiges Bild beim Zocken. 144 Hertz waren früher richtig teuer – gerade ist er im Angebot. Ich leg dir den Link unten in den Warenkorb.
 
-<!-- us-80 -->
-## US QUALITY Nr 80 · Yesterday · +546.7K Views · Sprache en · SAKERPLUS Rechargeable Work Light, 3000LM COB LED Magnetic Mechanic Li
-https://www.tiktok.com/@feloniahanser/video/7709019818480979231
-
-**Original:**
-> If you're about to buy him another Christmas gift that's just going to sit in a drawer, don't. If he's always fixing something, working on his car, or spending time in the garage, this is something he'll actually use. And with Black Friday deals already starting, it's a pretty good time to grab one. This little work light puts out up to 1,500 lumens and lights up dark, hard-to-reach spots fast. It has a built-in magnet, adjusts up to 180 degrees, rotates 360, and has three brightness settings, a flashlight mode, and a hook, so you can keep both hands free. There's also a battery indicator on the back, and it charges with Type-C. It's great for working on the car, camping, fishing, off-roading, or pretty much anywhere you need extra light. It's compact, easy to keep around, and one of those tools that ends up getting used way more than you expect. If the Black Friday deal is still down there, check it out before the price changes.
-
-**Hook:** Bevor du ihm wieder ein Geschenk kaufst, das nur in der Schublade liegt – schau dir das hier an.
-
-**Skript:** Wenn er ständig was repariert, am Auto schraubt oder in der Garage ist, benutzt er das hier wirklich. Die SAKERPLUS Arbeitsleuchte ist richtig hell und leuchtet auch dunkle Ecken sofort aus. Mit Magnet zum Anheften, um 180 Grad kippbar, 360 Grad drehbar, drei Helligkeitsstufen, Taschenlampen-Modus und ein Haken – so hast du beide Hände frei. Akku-Anzeige hinten, geladen wird per USB-C. Auch top fürs Camping oder Angeln. Gerade im Black-Friday-Angebot – unten im Warenkorb im TikTok Shop.
-
-<!-- us-106 -->
-## US QUALITY Nr 106 · Yesterday · +443.8K Views · Sprache en · Comfrt | Après Ski Colorblock Hoodie – Mega | CloudTouch Fleece Hoodie
-https://www.tiktok.com/@colebeckham_/video/7709228814039076126
-
-**Original:**
-> Just released in one of their cleanest hoodies up to date. This is Comfort's brand new color block hoodie, a part of their brand new collection Ski Club. They actually did release in two different colorways, but these are very limited edition. And once these things do sell out, they will not be coming back. You got that solid white color block around the chest and around the arms. The Word of Pray embroidered is a really nice touch. But you also got the embroidered Comfort Ski Club logo right there underneath as well too. These are still made of that super thick, super high quality material. That are as soft on the outside as they are on the inside. They are made to fit slightly oversized. So whatever size you wear in Comfort hoodies, I would go ahead and get them in these. I'm actually 6'3", 226 pounds. I wanted mine to fit a little bit more oversized. So I've sized up to a 2X and it fits incredible. But if you wanted to go ahead and grab this color or the white and the red one, I would go ahead and do so now. Comfort went ahead and put these as part of a pretty big sale they got going on. So these are selling out pretty quick. So if you wanted to go ahead and grab one but have no idea what size to get, let me know your height and your weight in the comments down below and I'll be sure to help you out.
-
-**Hook:** Einer der cleansten Hoodies, die Comfrt je rausgebracht hat.
-
-**Skript:** Das ist der neue Colorblock-Hoodie aus der Après-Ski-Kollektion von Comfrt. Weiße Blöcke an Brust und Ärmeln, dazu das gestickte Ski-Club-Logo – richtig schönes Detail. Das Material ist dick, hochwertig und innen wie außen super weich. Fällt leicht oversized. Limitierte Auflage, also lieber nicht zu lange warten. Im TikTok Shop, unten im Warenkorb.
-
-<!-- us-117 -->
-## US QUALITY Nr 117 · Yesterday · +416.0K Views · Sprache en · Comfrt | Après Ski Hoodie – Mega | CloudTouch Fleece Hoodie With Ski C
-https://www.tiktok.com/@colebeckham_/video/7709216373691436319
-
-**Original:**
-> I have honestly never seen a hoodie like this before. Brand Comfort just came out with a brand new collection called the Comfort Ski Club. I really hope that your size is not completely sold out by the time you're seeing this. It's almost as if this hoodie is made of snow and you're the mountain and all these little people are skiing and snowboarding down you. It is a 360 design going around the entire hoodie, even to the point where people are actually skiing and snowboarding inside of your kangaroo pouch. You have that embroidered Comfort logo right there that says Comfort Ski Club, and it is still made of that super thick, super high quality material that Comfort is known for. These are actually made to fit slightly oversized, so whatever size you normally wear in Comfort hoodies, I would go ahead and stick with that sizing. For size reference, I'm 6'3", 226 pounds. I actually went ahead and sized up to a 2X because I like my hoodies to fit more oversized and it fits incredible. Comfort went ahead and put these as part of a pretty big sale they got going on right now. The sizes are already starting to disappear, so if you wanted to go ahead and grab this brand new Comfort Ski Club hoodie, and if you wanted to go ahead and grab the matching pair of straight leg sweatpants to go with it, I would go ahead and do so now because with these being limited edition only around for the holidays, once this does sell out, it will not be coming back. And if you actually need help with 
-
-**Hook:** So einen Hoodie hast du garantiert noch nie gesehen.
-
-**Skript:** Das ist der Après-Ski-Hoodie von Comfrt. Das Design geht einmal komplett rundherum: kleine Leute, die an dir runterfahren – sogar in der Bauchtasche sind Skifahrer drin. Vorne das gestickte Ski-Club-Logo. Und wie immer bei Comfrt: dickes, weiches Material, richtig gemütlich. Limitiert, schau also gleich nach deiner Größe. Im TikTok Shop, unten im Warenkorb.
-
-<!-- us-143 -->
-## US QUALITY Nr 143 · Yesterday · +377.7K Views · Sprache en · Women's Striped 2 Piece Matching Set, Open Back Long Sleeve Top & Draw
-https://www.tiktok.com/@karsynmeyering/video/7708981944393993485
-
-**Original:**
-> So I save you if you save me I was overwhelmed that I had enough and I found you Oh, I was no doubt, stressed out
-
-**Hook:** Das Outfit, das bequem ist und trotzdem aussieht, als hättest du dir richtig Mühe gegeben.
-
-**Skript:** Ein gestreiftes Zweiteiler-Set: Oberteil mit Langarm und offenem Rücken, dazu eine Hose mit Kordelzug. Einfach anziehen und du bist fertig gestylt. Zu Hause, beim Kaffee mit Freundinnen oder im Urlaub. Fühlt sich an wie ein Schlafanzug, sieht aber richtig gut aus. Gerade im Angebot im TikTok Shop – unten im Warenkorb.
-
-<!-- us-226 -->
-## US QUALITY Nr 226 · Yesterday · +267.6K Views · Sprache en · Comfrt | Après Ski Hoodie – Mega | CloudTouch Fleece Hoodie With Ski C
-https://www.tiktok.com/@sydneyyallisonn/video/7709213437942975774
-
-**Original:**
-> Baby get moving, why keep your feeble hopes alive? What are you proving? You've got the dream, but not the drive.
-
-**Hook:** Dieser Hoodie macht dir sofort Lust auf die Piste.
-
-**Skript:** Das ist der Après-Ski-Hoodie von Comfrt. Rundherum kleine Skifahrer und Snowboarder als Print, vorne das gestickte Ski-Club-Logo. Innen weiches Fleece, dick und warm – perfekt für kalte Tage oder die Hütte nach dem Skifahren. Limitierte Kollektion. Im TikTok Shop, unten im Warenkorb.
-
-<!-- us-27 -->
-## US QUALITY Nr 27 · Yesterday · +990.1K Views · Sprache en · Comfrt | Rockies Full-Zip Jacket | Plush High-Pile Fleece Zip Up With 
-https://www.tiktok.com/@katieandnovaa/video/7709211898180275486
-
-**Original:**
-> No, because this might actually be the best thing comfort has ever dropped This is their brand new rockies full zip sherpa jacket in the color winter elk It's limited edition and it just like screams winter christmas nostalgic vibes so warm and thick It's such good quality and it's even included in their black friday sale So I got this for such a good price throw this on with sweatpants or leggings and some boots and you have the easiest cute outfit Like I will be wearing this to run errands to go grab coffee with friends this winter I love this mock neck design and the sherpa is actually on the inside of the mock neck too So it keeps your neck super warm also has pockets on both sides that's fleece lined inside So it will keep your hands warm in the winter too and then a zipper pocket here on the chest I fit my whole hand in here. Like it's huge. You can fit your phone your keys your wallet And this is like the cutest brand i've ever seen and it has super soft micro fleece on the inside So it's just as soft on the inside and outside for size reference. I'm wearing a size small It definitely runs oversized perfect for like layering for the winter and five green height 120 pounds And it's the perfect length to wear it with leggings This might be one of those drops that sells out the same exact day it launches. So if you want it just run
-
-**Hook:** Das ist vielleicht das Beste, was Comfrt je rausgebracht hat.
-
-**Skript:** Die neue Rockies Full-Zip Jacke mit Teddy-Fleece in der Farbe Winter Elk. Sieht aus wie Winter und Weihnachten in einem. Richtig dick und warm, super Qualität. Dazu Jogginghose oder Leggings und Boots – und du hast das easy Winter-Outfit für Einkaufen oder Kaffee. Der Stehkragen ist innen auch mit Teddy-Fleece, hält den Hals warm. Taschen auf beiden Seiten. Gerade im Black-Friday-Angebot im TikTok Shop – unten im Warenkorb.
-
 <!-- us-171 -->
 ## US QUALITY Nr 171 · Yesterday · +342.9K Views · Sprache en · 【Valentine Gift】Frameo WiFi Digital Photo Frame, Real-time Photo Trans
 https://www.tiktok.com/@lalababyy22/video/7708970582410300702
@@ -307,17 +164,6 @@ https://www.tiktok.com/@lalababyy22/video/7708970582410300702
 **Hook:** „Was schenkst du Mama zu Weihnachten?“ – Das hier.
 
 **Skript:** Ein digitaler Bilderrahmen von Frameo. Einstecken, QR-Code scannen und Fotos oder Videos direkt vom Handy hochladen. Hochkant oder quer, mit Uhrzeit und Wetter. Das Beste: Familie und Freunde können von überall Bilder schicken, und die tauchen sofort bei Mama auf. Super einfach, auch für Oma und Opa. Gerade im Angebot im TikTok Shop – unten im Warenkorb.
-
-<!-- us-47 -->
-## US QUALITY Nr 47 · Yesterday · +702.5K Views · Sprache en · VOOTIK 55-In-1 Magnetic Screwdriver Set, Precision Tools for Home Repa
-https://www.tiktok.com/@everyday.sanctuar/video/7709014160712928525
-
-**Original:**
-> All right, do you have a man or somebody that's really hard to buy for in your life? Let me tell you why you need one of these. So this is one I just ordered, but we already have one, and this is something I use all the time. It is a Rubik's Cube-shaped 55-in-1 screwdriver. It includes bits for phones, tablets, game consoles, household appliances, glasses, cameras, and everyday home repairs. It also comes with pry tools, small wrenches, cutting tools, nut drivers, and a handle with a super strong magnet. The handle can be extended, shortened, or configured into an L-shape, giving you better reach, more control, and extra torque. No more digging through your entire toolbox just to find one tiny bit. If your husband or dad is obsessed with little gadgets like this, Christmas is just around the corner, so grab one while it's on sale and surprise him with it.
-
-**Hook:** Du hast jemanden, dem man nichts schenken kann? Dann pass auf.
-
-**Skript:** Das ist ein 55-in-1-Schraubendreher-Set im Zauberwürfel-Look. Bits für Handy, Tablet, Konsole, Brille, Kamera und alles im Haushalt. Dazu Hebelwerkzeuge, kleine Schlüssel und ein Griff mit starkem Magnet. Den Griff kannst du verlängern, kürzen oder zum L knicken – mehr Reichweite, mehr Kraft. Nie wieder den ganzen Werkzeugkasten durchwühlen. Wir benutzen unseren ständig. Gerade im Angebot – unten im Warenkorb im TikTok Shop.
 
 <!-- us-315 -->
 ## US QUALITY Nr 315 · Yesterday · +214.9K Views · Sprache en · KODAK Dock Plus 4x6'' Photo Printer, 50 Sheets, Docking & Bluetooth Sm
@@ -330,35 +176,610 @@ https://www.tiktok.com/@1_motivated_dad/video/7709329678389087502
 
 **Skript:** Die meisten haben tausend Fotos auf dem Handy und drucken nie eins aus. Mit dem KODAK Dock Plus steckst du das Handy einfach drauf, wählst ein Foto aus und drückst auf Drucken. Kurz warten, und du hast ein 10x15-Foto, laminiert und wischfest. So kann sie ihre Lieblingsmomente endlich in die Hand nehmen. Gerade im Angebot im TikTok Shop – unten im Warenkorb.
 
-<!-- us-199 -->
-## US QUALITY Nr 199 · Yesterday · +294.2K Views · Sprache en · Merry Christmas Nukka Pinky Sweatshirt, Funny Friday Movie Christmas G
-https://www.tiktok.com/@crus.shop8/video/7708968719938063629
+<!-- de-889 -->
+## DE SLIDES Nr 889 · Today · +47.3K Views · Sprache en · [medicube Offizieller Shop] Black Friday Exklusiv: Rundum-Pflegeset | 
+https://www.tiktok.com/@morabackup5/video/7709808643289484576
 
 **Original:**
-> Merry Christmas! Merry Christmas! Merry Christmas, Jingle Bell! Hey! Hey, good to see you, baby! Hey, man, I feel good!
+> It's time, baby If it won't be, if it won't be If it won't be, if it won't be
 
-**Hook:** Der Weihnachtspulli, bei dem jeder Filmfan sofort grinst.
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Black Friday bei Medicube – das Set kostet gerade fast nichts“).
 
-**Skript:** Pinker Sweater mit „Merry Christmas“ und einem lustigen Print, der auf eine bekannte Filmszene anspielt. Weich, gemütlich und perfekt für die Weihnachtsfeier oder den Filmabend mit Freunden. Garantiert ein Gesprächsthema. Gerade im Angebot im TikTok Shop – unten im Warenkorb.
-
-<!-- us-244 -->
-## US QUALITY Nr 244 · Yesterday · +255.9K Views · Sprache en · 2026 Christmas Mini Squishies 24-Day Advent Calendar, Dumpling Squeeze
-https://www.tiktok.com/@corporatetocreator/video/7709130463138303245
+<!-- de-1046 -->
+## DE SLIDES Nr 1046 · Today · +38.9K Views · Sprache es · Tatort Escape Adventskalender: Krimi-Rätsel in 24 Teilen
+https://www.tiktok.com/@socialmediacreations/video/7709800899677261089
 
 **Original:**
-> We got the mystery dumpling advent calendar, 24 days of Christmas, and we're going to open it up with you. Day one, very cute. Day two, very cute. Cute. Okay, that one's really, I'm getting the cute one. Should we open them all for you? I think we should. That way they know what they're buying. Day five, six, same one as three, I believe. Day seven, these are all 24 dumplings that came with advent calendar. Hopefully this helps you if you've thought about buying it. Merry Christmas. Ho, ho, ho.
+> y ahora dónde está ella ella como ninguna dime dime baby cómo hacer que tu boca
 
-**Hook:** 24 Tage, 24 kleine Squishy-Teigtaschen – wir machen den Adventskalender für dich auf.
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Der Adventskalender für alle, die Krimis lieben 🔎“).
 
-**Skript:** Das ist der Mini-Squishy-Adventskalender. Hinter jedem Türchen ein kleines Dumpling zum Drücken. Tag eins: süß. Tag zwei: auch süß. Ein paar sind doppelt, damit du weißt, was dich erwartet. Und hier sind alle 24 auf einen Blick. Perfekt für Kids oder alle, die Squishies lieben. Gerade im Angebot im TikTok Shop – unten im Warenkorb.
-
-<!-- us-430 -->
-## US QUALITY Nr 430 · Yesterday · +170.0K Views · Sprache en · Comfrt | Rockies Full-Zip Jacket | Plush High-Pile Fleece Zip Up With 
-https://www.tiktok.com/@gavinbeckham_/video/7709212144214068493
+<!-- de-456 -->
+## DE SLIDES Nr 456 · Yesterday · +739.2K Views · Sprache en · Probiotikum Gummibonbons für Frauen | Intimflora & pH‑Wert ausgleichen
+https://www.tiktok.com/@shadowluna_twins/video/7709469954403257632
 
 **Original:**
-> If you see your size in the new limited edition teddy zip-up from comfort, I would grab it while you can because I'm telling you this will be gone by tonight and it's probably never going to come back because it is insanely limited edition. We all know how fast comfort's teddy zip-ups went when they first released and now giving us this beautiful limited edition elkwood color. I know it's going to be gone faster. Loving the visual that it gives you when looking at it in all the contrast and colors. This design is absolutely perfect. I just hope that you're able to get it before it's gone forever. If you need help with sizing, just let me know down below.
+> I'm in need of one thing and it's running through my brain Let that bitch go, cause she breaking windows I'm saying to Joel, don't do these niggas not have shame Your girl, she a whore, but you show her like she gold Look at how she tree and sun, time don't use a tender month When you call, she do not come, that is not your whore I don't think he knows, what a shame, he's a whore Acting like she likes him for that money He's a flock of flock of all my guys arrive Cause they all shout as shout as if I wanna pop this bottle Then I'ma pop that bottle Lying with a fine ass model, she wanna ride this saddle I can see you don't want battle, your voice it shakes and rattles I'm in need of one thing and it's running through my brain Let that bitch go, cause she breaking windows I'm saying to Joel, don't do these niggas not have shame Your girl, she a whore, but you show her like she gold Why do all these bitches keep on shooting?
 
-**Hook:** Wenn du deine Größe bei dieser Jacke noch siehst, würde ich nicht lange überlegen.
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Das nehme ich jeden Morgen – und es kostet gerade nur ein paar Cent“).
 
-**Skript:** Das ist die limitierte Rockies Teddy-Zip-Jacke von Comfrt in der Farbe Elkwood. Die ersten Teddy-Jacken von Comfrt waren schnell weg, und diese Farbe ist richtig schön – die Kontraste sehen live noch besser aus. Super weich, dick und warm für den Winter. Wenn du Hilfe bei der Größe brauchst, schreib's in die Kommentare. Im TikTok Shop, unten im Warenkorb.
+<!-- de-478 -->
+## DE SLIDES Nr 478 · Yesterday · +336.9K Views · Sprache en · Gawfolk flacher Gaming Monitor mit 24 Zoll, 200 Hz Bildwiederholfreque
+https://www.tiktok.com/@deal_vault/video/7709478387538038049
+
+**Original:**
+> No change, I can't change, I can't change, I can't change, but I'm here in my mold. I can't hear in my mold, but I'm a million different people.
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „200 Hz Gaming-Monitor für unter 100 € – warum hat mir das keiner gesagt?“).
+
+<!-- de-490 -->
+## DE SLIDES Nr 490 · Yesterday · +234.9K Views · Sprache en · Wrigley's Extra Strawberry Erdbeer Kaugummi Zuckerfrei (30 x 14g) - Fr
+https://www.tiktok.com/@benfastlane/video/7709410071490366752
+
+**Original:**
+> I wonder if you know how they live in Tokyo If you say that you mean it then you know you have to go I say, I will do that I say, I will do that I say, I will do that I will do that I will do that I will do that BDS da buceta pra bandido Basta de aventura, de correr perigo Fudei entorpecida dentro do carro Duvido que tua mãe te criou pra isso Saindo pra BDS da buceta pra bandido Fecha o teto do BID, vem ter esse banco agora Bota esse feitão pra fora, cavalo enquanto ova fora Meu carro, bicho ele é silêncio, ao favor Tu chama a Xota, mas também tem a XJ Queridinha da cocota, vai! Fode no BID, Fode no Ford no BID Vai! Fode no BID, você tinha criminosa Vai! Fode no BID, Fode no Ford no BID Vai! Fode no BID, com os menorzinho da XJ Vai! Fode no BID, Fode no Ford no BID Vai! Fode no BID, você tinha criminosa Vai! Fode no BID, Fode no Ford no BID, vai! Fode no BID, Fode no Ford no BID, vai! Fode no BID, o cuz menorzinho da XJ Fode no BID, vai! Fode no BID, vai! Fode no BID, vai! Fode no BID Fode no BID Fode no BID Fode no BID Fode no BID Fode no BID Fode no BID Fode no BID
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Kaugummi für 1 Cent?! Black Friday auf TikTok Shop“).
+
+<!-- de-518 -->
+## DE SLIDES Nr 518 · Yesterday · +158.1K Views · Sprache en · Myprotein Adventskalender 2026
+https://www.tiktok.com/@cano.deals/video/7709539705402019104
+
+**Original:**
+> It's not what I'm used to Just wanna try it on I'm curious for you Got my attention I kissed a girl, but I did The taste of her cherry justice I kissed a girl just to try it I hope my boyfriend don't mind it It sounds so right, it sounds so right Don't mean I'm in love to lie I kissed a girl, but I did I did
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Der Adventskalender für Gym-Leute – 24 Türchen Protein“).
+
+<!-- de-170 -->
+## DE BOF Nr 170 · Yesterday · +162.3K Views · Sprache sq · COSORI Edelstahl-Dörrautomat – ohne Kunststoffkontakt, energiesparend 
+https://www.tiktok.com/@bigshala1/video/7709361153633209633
+
+**Original:**
+> Anje uke di Uke kimin e në rën Po mishin nuk e rën Edhe one Nuk e kam menën verru Kështu që në pasë rënë A i kumush edhe një anë zanë këtu Se nuk e më posë mish Ma shumë tre kila janë Kështu në mirë Mëcina është Pej kategorisë matë modhe Kështu që mësë eleni pa morë Shtrajt është Nuk është lirë Po kualiteti Kushtënë Nuk mundi me morë Jo përshemë dhe nisenë Të mirë Me pes më të erë Kjo është tjetër kategori Keni edhe matë lira Kështu në video tjera Keni tjetër matë finë Kjo është Kjo është Pri e të të mirë Na që ty kemë Dhe më njohë 2, 3, kodër 5 rena Shkula Ty qitë në vend vretin Edhe Po tja boj me bismila Pëtë elshuë E nesë të mbrome Me e me talohit Që ka thonë zuti E o qesë Mishin e perën Tash kjo përmel shumë shumë let Këtu e kemë temperaturë Që muna me lungë Sot duim Unë e lohë Sot duim Edhe ku hën pesmaturë Edhe start Tash këto E merë E o bërën Ndikun ku dëndi Unë e qëtë gjithë E lohë Rëmë në këngat Linkun e kini mja Më në bëkë shola Kushtu në dhe pli E lë mërë nëse kjo është Te i përë mjërë Kalu shumë i mjërë Respekt e krytve Kalu shumë i mjërë
+
+**DEUTSCH:**
+**Hook:** „Ich mach mein Trockenfleisch jetzt selbst – drei Kilo Fleisch, und das Teil schafft alles auf einmal.“
+**Skript:** „Das ist ein Dörrautomat komplett aus Edelstahl, kein Plastik am Essen. Fleisch in Streifen, Gewürze drauf, Temperatur einstellen, Start – fertig. Ist nicht der billigste, aber die Qualität merkst du sofort. Spart Strom und das Ergebnis ist richtig gut. Link ist unten.“
+
+<!-- de-515 -->
+## DE SLIDES Nr 515 · Yesterday · +162.2K Views · Sprache en · Shark PowerLite Akku-Staubsauger
+https://www.tiktok.com/@morabackup5/video/7709511092485066017
+
+**Original:**
+> It's time, baby If it won't be, if it won't be If it won't be, if it won't be
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Den Shark gibt’s gerade zum halben Preis“).
+
+<!-- de-556 -->
+## DE SLIDES Nr 556 · Yesterday · +96.4K Views · Sprache en · ONE MEMORY NOIR/AURA Damenparfum 30 ml x 2 | Elegantes Geschenkset | F
+https://www.tiktok.com/@produktwolf/video/7709544096725044502
+
+**Original:**
+> I'm sitting with Leon. You sit with Ben, okay? Wait, is that your perfume? Yeah. Is it too much? Babe, I'm trying to behave. My car still smells like you. I want to see you again. Just us this time. I put you onto that perfume and you stole my date? Get Noir and Aura together in the orange cart, babe.
+
+**DEUTSCH:**
+**Hook:** „Bin mit Leon da, du mit Ben, okay?“ – „Moment… ist das dein Parfüm?“
+**Skript:** Freundin: „Zu viel?“ – Er: „Mein Auto riecht immer noch nach dir.“ – „Ich will dich wiedersehen. Nur wir zwei.“ – Freundin: „Ich hab dir das Parfüm gezeigt und du klaust mir mein Date?“ – Text am Ende: „Noir & Aura gibt’s im Set – unten im Einkaufswagen.“
+
+<!-- de-597 -->
+## DE SLIDES Nr 597 · Yesterday · +77.8K Views · Sprache en · 【VEVOR Sommersale】VEVOR Dieselanheizgerät, 8 kW, DC 12–24 V, schnelles
+https://www.tiktok.com/@einfachsarah1/video/7709485026685111584
+
+**Original:**
+> I'm out. I'm out. I'm out. I'm out. I'm out.
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Standheizung für die Garage – 8 kW für einen Bruchteil vom Preis“).
+
+<!-- de-530 -->
+## DE SLIDES Nr 530 · Yesterday · +130.7K Views · Sprache en · Handgefertigter Häkelblumenstrauß mit künstlichen Rosen, 1 Strauß – Ge
+https://www.tiktok.com/@elisesahin/video/7709511777171557664
+
+**Original:**
+> Oh no I don't need you but I miss you from here And oh it's hard to see you when I wish you were right here Oh it's hard to leave you when I get you everywhere
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Blumen, die nie verwelken – gehäkelt 🌹“).
+
+<!-- de-565 -->
+## DE SLIDES Nr 565 · Yesterday · +88K Views · Sprache en · Purelei Classic Adventskalender Schmuck aus Edelstahl in Gold, Silber 
+https://www.tiktok.com/@klickguru/video/7709561280343870753
+
+**Original:**
+> Baby, please come home Let's sing and deck the hall But it's not like Christmas at all I remember when you were here And all the fun we had last year Pretty lights on a tree I'm watching shine You should be here with me Baby, please come home Let's sing and deck the hall It's not like Christmas at all I remember when you were here And all the fun we had last year Oh, if there was
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Der Schmuck-Adventskalender, den sich jede wünscht“).
+
+<!-- de-701 -->
+## DE SLIDES Nr 701 · Yesterday · +63.3K Views · Sprache en · Probiotikum Gummibonbons für Frauen | Intimflora & pH‑Wert ausgleichen
+https://www.tiktok.com/@diegotestet/video/7709554551967321376
+
+**Original:**
+> Can't hear them no, cause I Every day, every day, every day I ain't gonna die I ain't gonna die Ain't gonna die I ain't gonna die I ain't gonna die And die It's out to the side I ain't gonna die I ain't gonna die I ain't gonna die I ain't gonna die I ain't gonna die Cause I've just stopped I ain't gonna die I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by I've been there all by Side to side Yeah, yeah, yeah Baby, baby, roll my bike Baby, roll my dead bike You give it to me Every time Side to side
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Darüber redet keiner – aber jede Frau sollte das kennen“).
+
+<!-- de-595 -->
+## DE SLIDES Nr 595 · Yesterday · +78.1K Views · Sprache en · 【DealsFürDich】VEVOR Dieseltemperator 5–8 kW, 12 V/24 V Alles‑in‑Einem 
+https://www.tiktok.com/@dorianlebt/video/7709557718830353696
+
+**Original:**
+> I mean where the fuck should I really even start? I got hoes that I'm keeping in the dark I got my niggas cross the street living large Thinking back to the fact that they dead Thought my raps wasn't faxed Said they sat with the bars I got two phones, one need a charge Yeah, they twins, I can tell they ass apart I got big packs coming on the way I got big stacks coming out the same I got Lil Max with me, he the way It's a big gap between us and the game In the next life, I'm trying to stay paid When I die, I put my money in the grave When I die, I put my money in the grave I really gotta put a couple niggas in their place When they just left every nigga in a race I really might have a niggas with all my face
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Werkstatt im Winter? Diese Diesel-Heizung ist gerade im Angebot“).
+
+<!-- de-544 -->
+## DE SLIDES Nr 544 · Yesterday · +108.2K Views · Sprache en · Ninja DualZone 7,6-l-Heißluftfritteuse mit 2 Schubladen – Schwarz
+https://www.tiktok.com/@morabackup5/video/7709450140615970080
+
+**Original:**
+> It's time, baby If it won't be, if it won't be If it won't be, if it won't be
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Zwei Gerichte gleichzeitig fertig – die Ninja DualZone ist im Angebot“).
+
+<!-- de-749 -->
+## DE SLIDES Nr 749 · Yesterday · +57.8K Views · Sprache en · Flanellen-Decke mit GTA V & GTA VI-Print, weich und warm, Anti-Pilling
+https://www.tiktok.com/@kloster_industries/video/7709439654335876384
+
+**Original:**
+> I'm in need of one thing and it's running through my brain Let that bitch go cause she breaking windows I'm saying to Joe, well don't do these niggas not have shame Yeah girl she a whore, but you show her like she gold
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Für jeden, der auf GTA 6 wartet 🎮 – die Decke gibt’s wirklich“).
+
+<!-- de-572 -->
+## DE SLIDES Nr 572 · Yesterday · +86.2K Views · Sprache en · Probiotikum Gummibonbons für Frauen | Intimflora & pH‑Wert ausgleichen
+https://www.tiktok.com/@morabackup5/video/7709444203587079456
+
+**Original:**
+> I got lost in your eyes I can't do a while when I think you're gonna leave me But I know I tried I know I tried How you gonna leave me now? Can't you be the leader now? I can't do a while when I think you're gonna leave me But I know I tried How you gonna leave me now? Can't you be the leader now? Can you remember a human life? It was to where we'd energize Fly in the sand and visualize like it's Seventy-five again We are the people We are the people
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Das hätte ich früher wissen müssen“).
+
+<!-- de-819 -->
+## DE SLIDES Nr 819 · Yesterday · +52K Views · Sprache en · ONE MEMORY NOIR/AURA Damenparfum 30 ml x 2 | Elegantes Geschenkset | F
+https://www.tiktok.com/@produktwolf/video/7709539334197693718
+
+**Original:**
+> Babe, you smell way too good to leave me like this then give me a reason to stay Wait, what perfume is that my car still smells like you? Girl he texted before I even made it inside come here. Let me smell It's aura by one memory noir comes in the set too, okay? Yeah, I'd fold to send me the link girl. They're both in the orange cart I
+
+**DEUTSCH:**
+**Hook:** „Du riechst viel zu gut, um jetzt einfach zu gehen.“
+**Skript:** „Welches Parfüm ist das? Mein Auto riecht immer noch nach dir.“ – Text: „Er hat geschrieben, bevor ich überhaupt zu Hause war.“ – Freundin: „Komm her, lass mal riechen.“ – „Das ist Aura von One Memory, Noir gibt’s im Set dazu.“ – „Schick mir sofort den Link.“ – „Beide liegen im orangenen Einkaufswagen.“
+
+<!-- de-851 -->
+## DE SLIDES Nr 851 · Yesterday · +49.8K Views · Sprache en · 【Black Friday】 Sweatpants für Herren mit lockerem Schnitt im casualen 
+https://www.tiktok.com/@produktwolf/video/7709530188253613344
+
+**Original:**
+> I said I wanted to pray, I wasn't really able to be a part, baby, to me, I said it. No, I don't want a lifeboat for Christmas, this is all I'm asking for. I just want to see my baby, say it right outside my door.
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Die bequemste Jogginghose für den Winter – Black-Friday-Preis“).
+
+<!-- de-704 -->
+## DE SLIDES Nr 704 · Yesterday · +63.2K Views · Sprache en · More Nutrition Protein Milkyccino mit Koffein
+https://www.tiktok.com/@shadowluna_twins/video/7709429659259194646
+
+**Original:**
+> vaccinations vaccinations Thank you.
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Text wie im Original: „Bevor du fragst: Nein, kein Tippfehler – der Milkyccino kostet gerade nur ein paar Cent“).
+
+<!-- de-681 -->
+## DE SLIDES Nr 681 · Yesterday · +64.8K Views · Sprache en · Y2K Techwear Kapuzenjacke für Herren, sportliche Freizeitjacke, Outdoo
+https://www.tiktok.com/@mrshoppa1/video/7709513667909258529
+
+**Original:**
+> I just let it go, let it go Oh na-na-na-na-na-na No, I don't care no more, care no more Oh na-na-na-na-na-na So go on, let me know, let me know Put your hands up na-na-na-na Baby, nothing's gonna stop us tonight Cause I'm good, I'm feeling alright Baby, I'm gonna have the best fucking night of my life Now wherever it takes me, I'm never alive Baby, don't you know I'm good, yeah, I'm feeling alright
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Techwear-Jacke, die aussieht wie 200 € – kostet aber einen Bruchteil“).
+
+<!-- de-837 -->
+## DE SLIDES Nr 837 · Yesterday · +51K Views · Sprache ar · Set Sitzbezüge fürs Auto, geeignet für 5‑platzige Modelle, Sitzbezüge 
+https://www.tiktok.com/@97harith/video/7709615025563995425
+
+**Original:**
+> مستحيل السريع السريع عفش سيارة وبيه هواي الوان بس بس 17 يورو بالمحلات او كانت سعره اكثر من 60 او 70 يورو اليوم تاخذ بس بس 17 يورو واصل حجبها بيتك رابط الشراء اسفل في الفيديو
+
+**DEUTSCH:**
+**Hook:** „Unmöglich – Sitzbezüge fürs ganze Auto für nur 17 €!“
+**Skript:** „Gibt’s in ganz vielen Farben. Im Laden zahlst du dafür 60 bis 70 €, heute nur 17 € – direkt zu dir nach Hause geliefert. Link ist unten im Video.“
+
+<!-- de-807 -->
+## DE BOF+SLIDES Nr 807 · 2 days ago · +53.1K Views · Sprache fa · NaturElan Bakterienkulturen & Ballaststoff-Enzym-Komplex, 2 x 60 Kapse
+https://www.tiktok.com/@faim.210/video/7709222065945054496
+
+**Original:**
+> صدای میده تا نمیشنوی مشکل داری تیر تمیاری میگی جور میشم یا چیز درست نخوردم دگه دفع خوب میشم نه خیر وقتی که غذا میخوری تشناب میدهوی یا شکمت مثل با قانه واره بیرون میبارای باد میکنه یا بادت میره و بسای بدبوی میته ای علامه هایی از ایسته که میدهت وزش خوب نیست وز میدهت با دو از ای کپسول جور میکنی پس برا دو مایت میشه از شرکت آلمانی هسته ای جایی نیسته که مثال از چین یا از دیگر جایی بیایه ای در آلمان در لبا جور شده و در آلمان میفروشندش برا دو مایت میشه ای که هسته پوبیوتی که هسته 23 بکتیغین شدیم داخلش هست ای دیگه هسته ملتی بلاشتاف کمپلیکس هسته بس سدر هسته در تکتاک شاب خریده این مردم و نتیجه خوب گرفتین و وضعشان پس خوب شده بدون ترس نان میخورند تو هم میتونی در ثبت نانجی سفارش پتی غمت بخو فرار نکو از مشکل
+
+**DEUTSCH:**
+**Hook:** „Dein Bauch macht Geräusche und du denkst, du hast nur was Falsches gegessen? Falsch.“
+**Skript:** „Blähungen, Druck im Bauch, unangenehme Gerüche – das sind Zeichen, dass deine Verdauung nicht rund läuft. Ich nehme dafür diese Kapseln mit Bakterienkulturen und Ballaststoffen. Von einer deutschen Firma, hier in Deutschland hergestellt – nicht irgendwas aus China. Gerade im Angebot, Link unten.“ (Keine Heilversprechen.)
+
+<!-- us-450 -->
+## US SLIDES Nr 450 · Yesterday · +516.6K Views · Sprache en · Just a Few Things I Love About You Mom + Dad Personalized Meaningful G
+https://www.tiktok.com/@iluvdealz/video/7709345068204789005
+
+**Original:**
+> I sing to you, I circle you I circle you I circle you If I'm gonna lose you either way If I'm gonna lose you either way
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Wenn du deine Eltern liebst…“ – personalisiertes Buch „Ein paar Dinge, die ich an dir liebe“ zum Ausfüllen).
+
+<!-- us-911 -->
+## US SLIDES Nr 911 · Yesterday · +128.4K Views · Sprache en · Dickies Classic Bib Overalls,Durable Comfort, Utility Storage, Wide Le
+https://www.tiktok.com/@grind2hardosha/video/7709546887942098206
+
+**Original:**
+> Spent months in the corner, just me and my back I'm used to this, I'm numb to that I know I just gotta adapt, ayy Let's wait on your Spotify rap The messages you about to send on the 16th Please don't hit send on none of that There's no need to check what the temperature is You know what it is if you double back Should've put another blade in my back Should've stood over and double tap Bank, but y'all need a duffel bag What is the offer they said? What did they put on the table? What does that say on that paper? Fuck that, they gotta double that, triple that Fuck is the bitches at? Yo, the chef too Michelin Come to the 6th and we dipping you boys like a christenin' Kevin Hart Lincoln, he shook, I'ma put you in sticky predicaments Killie might come take a stick off a pussy like they was transitionin' I'm fightin' the man, I suin' a rapper, you boys not listenin' Ah, your boyfriend a fisherman, that's just a word in the industry Don't mean to be in your business I'm talkin' spicy, hot, sizzlin' Don't stick around if you visitin' Yeah, what is the offer they said?
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Robuste Arbeitslatzhose – so günstig wie nie“). Idee für DE: Arbeitskleidung als Slideshow.
+
+<!-- us-491 -->
+## US SLIDES Nr 491 · Yesterday · +331.7K Views · Sprache en · Men's Santa Claus Fleece-Lined Windbreaker, White Long Cardigan with F
+https://www.tiktok.com/@metrowardrobe/video/7709346586240797983
+
+**Original:**
+> Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh All the bands now I'm about to buy a chain If the cubits talking to me I might get up out my lane Just in black, but we spinning so we never feel the shame Gotta light up when we do it so we don't gotta feel the pain All the bands now I'm about to buy a chain If the cubits talking to me I might get up out my lane Just in black
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Wenn der Weihnachtsmann Stil hat 🎅“ – Weihnachtsjacke als Outfit-Slideshow).
+
+<!-- us-6 -->
+## US QUALITY Nr 6 · 2 days ago · +3.3M Views · Sprache en · 【Valentine Gift】Frameo WiFi Digital Photo Frame, Real-time Photo Trans
+https://www.tiktok.com/@emacshops/video/7708938608190803231
+
+**Original:**
+> Fellas, we are not guessing what to get her for Christmas this year. This is a digital picture frame that can store all y'all cutest videos or photos all on the same slideshow. The best part is all you have to do to get the photos on here, send them directly from your phone. And these can be displayed long ways and sideways and they always gonna have the weather and the time at the top. And there's a bunch of different settings so she can even control the timing of the slideshow. Now this is one of those Christmas gifts that sells out every year because you can literally gift it to anybody. And it's Black Friday season, so everybody's shopping. So if you want to get yours while it's still that Black Friday price, I'll try to put a link right there. But there's no promises because these prices can change literally every single day.
+
+**DEUTSCH:**
+**Hook:** „Jungs, dieses Jahr raten wir nicht, was wir ihr zu Weihnachten schenken.“
+**Skript:** „Das ist ein digitaler Bilderrahmen – alle eure süßesten Fotos und Videos laufen hier als Slideshow. Das Beste: Du schickst die Bilder einfach vom Handy direkt drauf. Geht hochkant und quer, oben stehen immer Uhrzeit und Wetter. Gibt’s in mehreren Farben und gerade im Black-Friday-Angebot.“
+
+<!-- us-455 -->
+## US SLIDES Nr 455 · 2 days ago · +478.7K Views · Sprache en · Comfrt | Après Ski Hoodie – Mega | CloudTouch Fleece Hoodie With Ski C
+https://www.tiktok.com/@jerseykolasa/video/7709219265622134029
+
+**Original:**
+> It's the most wonderful time of the year With the kids jingle belling and everyone telling you be of good cheer It's the most wonderful time of the year It's the hap-happiest season of all
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Neue Ski-Kollektion – der kuscheligste Hoodie des Winters“).
+
+<!-- us-490 -->
+## US SLIDES Nr 490 · 2 days ago · +334.7K Views · Sprache en · Cute Energy Drink Stuffed Animal - 22cm High, 10cm Wide Simulation Bev
+https://www.tiktok.com/@natesdealss/video/7709154089803779359
+
+**Original:**
+> Ring-a-ling-a-ding-a-ding Ring-a-ling-a-ding-a-ding Ring-a-ling-a-ding-a-ding Our cheeks are nice and rosy and comfy and cozy Are we? Ring-a-ling-a-ding-a-ding We'll snuggle up together like birds off a feather would be Ring-a-ling-a-ding-a-ding Let's take a drone before us and sing a chorus or two Ring-a-ling-a-ding-a-ding It's lovely weather, boys may ride together with you Ring-a-ling-a-ding-a-ding Ring-a-ling-a-ding-a-ding-a-ding Ring-a-ling-a-ding-a-ding-a-ding Ring-a-ling-a-ding-a-ding-a-ding Ring-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding-a-ding
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Ich hab ihr den Energy-Drink als Kuscheltier geschenkt 🥤“).
+
+<!-- us-445 -->
+## US SLIDES Nr 445 · 2 days ago · +592.3K Views · Sprache en · Men's Christmas Hawaiian Shirt, Short Sleeve Button Down, Retro Xmas P
+https://www.tiktok.com/@sunht556/video/7709152501601258765
+
+**Original:**
+> Wanna be a baller, shot caller, 20-inch braids on the end baller Caller, get laid tonight, switch the roadside, got spent with hot Now hit the highway, makin' money, don't fly away But it's gotta be a better way, better way, better way But I wonder when you're drinkin' if you find yourself thinkin' about That boy from East Tennessee, I know we both know better But we still set forever in the night Seven summers ago, in Southern comfort where we No more just young girl who knows Back in the years, another river Slippin' on a sector with me, does it ever make it sad? No That was seven summers ago Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Das Weihnachtshemd für die Firmenfeier“).
+
+<!-- us-498 -->
+## US SLIDES Nr 498 · 2 days ago · +310.6K Views · Sprache en · Cute Energy Drink Stuffed Animal - 22cm High, 10cm Wide Simulation Bev
+https://www.tiktok.com/@jonybateman/video/7709282890386902285
+
+**Original:**
+> You I just want you on my own More than you could ever know Make my wish come true All I want for Christmas is you You, baby Oh, I won't ask for much this Christmas I won't even wish for snow And I just wanna keep on waiting Oh, I need the mistletoe I won't even wish for snow
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Chat-Slideshow: „Schatz, kannst du mir BITTE das Kuscheltier holen?“ – Kontostand 10,67 € – „Babe, das ist mehr als genug“).
+
+<!-- us-457 -->
+## US SLIDES Nr 457 · 2 days ago · +465.9K Views · Sprache en · FEPPO Food Warming Mat, Upgrade High-tech Heating System, Fast Full Su
+https://www.tiktok.com/@lukasgreyy/video/7709238140015217934
+
+**Original:**
+> It's beginning to look a lot like Christmas Everywhere you go Take a look at the 5 and 10 It's glistening once again With candy canes and silver lanes that glow
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Nichts ist schlimmer, als stundenlang zu kochen und dann wird alles kalt“ – Warmhaltematte).
+
+<!-- us-466 -->
+## US SLIDES Nr 466 · 2 days ago · +420.5K Views · Sprache en · Men's Santa Claus Fleece-Lined Windbreaker, White Long Cardigan with F
+https://www.tiktok.com/@justin_fashion/video/7709161555887197471
+
+**Original:**
+> Focus on the process, not the praise Not the likes, not the wins, not the rates Don't stress what I can't control I train my habits, I train my soul No shortcuts, no emotion, no mess I trust the work, I do my best The future's built by how I show it I focus on the process again Today When fear talks loud about the end I bring my focus back to the present This rep, this breath, this choice right now That's where power lives, not somehow Dreams collapse when people wait The process moves when you act with faith I don't need guarantees to proceed I just need discipline to repeat Focus on the process, that's the key Not who I'll be, but who I choose to be
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Wenn du an Weihnachten anders auftreten willst“).
+
+<!-- us-473 -->
+## US SLIDES Nr 473 · 2 days ago · +385.6K Views · Sprache en · Men's Halloween Skeleton Print Hoodie and Pants Set, Party Cosplay, Ca
+https://www.tiktok.com/@pauramis/video/7709098353065299213
+
+**Original:**
+> Oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh Rockin' around the Christmas tree at the Christmas party hop Mistletoe hung where you can see every couple tries to stop Rockin' around the Christmas tree let the Christmas spirit ring Later we'll have some pumpkin pie and we'll do some caroling You will get a sentimental feeling when you hear The voices singing let's be jolly neck The halls with my arms of party rockin' around the Christmas tree Have a happy holiday Everyone dancing merrily in the new old-fashioned way Oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh-oh
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Das Weihnachtsmann-Outfit für Männer, die keinen Bock auf Pullover haben“).
+
+<!-- us-762 -->
+## US SLIDES Nr 762 · 2 days ago · +148.4K Views · Sprache en · Crossover Bundle Dedicated Deck Card Game - 90s & 00s Pop, Country Mus
+https://www.tiktok.com/@chelseaballjones/video/7709146361358224653
+
+**Original:**
+> Jody Messina flips a coin and it lands on Heads. Where's she going? Heads Carolina. Yes! Should have been a cowboy. Toby Keith said that California is full of three, what three things? Whiskey, women, and gold. Yeah. Yeah. Yeah! Oh, yes. George Stratts said that she can hang his note in a picture frame above what? Mantle. Mantle. Mantle. Mantle. Yeah! That's two! Any man of mine. Shania says you gotta shimmy, shake, and what else? Shake, let the heart break. Let the earthquake. Let the earthquake. Let the earthquake. I said heartbreak.
+
+**DEUTSCH:**
+**Hook:** „Stell dir dieses Spiel beim Familienabend vor.“
+**Skript:** Quizkarten mit deutschen Schlagern/90er-Hits vorlesen: „Wohin fährt Helene, wenn sie atemlos ist?“ – alle rufen die Antwort. Idee: Party-Kartenspiel mit Musikfragen, Familie lacht und rät. (Für DE: deutsche Lieder statt Country.)
+
+<!-- us-550 -->
+## US SLIDES Nr 550 · 2 days ago · +231.3K Views · Sprache es · 3-Pack Men's High-Neck Fleece-Lined Shirts, Winter Thermal Compression
+https://www.tiktok.com/@jonatanm13/video/7708933711131053325
+
+**Original:**
+> La nieve estaba cayendo, los pinos se congelaban En el risco del madroño unas armas apuntaban Solo las plumas de nieve, aquellas miras nublaban Se oyó el viejir de un novio que venía con la manada Y los cascos de un caballo del señor que las arreaba
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Spanisches Lied. Hook: „Früh raus bei Minusgraden – oder mit Fleece innen drin?“ – Vorher/Nachher-Bild).
+
+<!-- us-569 -->
+## US SLIDES Nr 569 · 2 days ago · +209.6K Views · Sprache en · Western Style Bull Skull Navajo Geometric Print Hoodie for Men, Vintag
+https://www.tiktok.com/@cassian_0122/video/7709091819769924877
+
+**Original:**
+> He's from Texas, I can tell by the way he's still stepping round the room And judging by the smile that's written on his face There's nothing I can do to him Oh yeah, it doesn't take a crystal ball to see A cowboy always finds a way to leave Drinking Jack all by myself He's choosing Texas, I can tell Drinking Jack all by myself He's choosing Texas, I can tell Come on, baby
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Der Western-Hoodie, nach dem alle fragen 🤠“).
+
+<!-- us-838 -->
+## US SLIDES Nr 838 · 2 days ago · +139K Views · Sprache en · Just A Few Things I Love About You (Okay, A Lot) Romantic Couples Fill
+https://www.tiktok.com/@iluvdealz/video/7709013438235725070
+
+**Original:**
+> I bumped into you by a half-stance, probably wouldn't even know who I am, but if I whispered your own name, I'd better still be your spark. Back when I was gasoline, this old tattoo had ran away, didn't care what your mama think, but your name on my arm. Baby, is it spring or is it summer? The guitar sound, don't beat that drum. You hear sometime late at night on your radio, even though you're a million miles away, you're here born in A.P.S.A. and we lived on the glory day so long ago. When you think about me, do you think about Seventeen? Do you think about my OG? Think about the stars in the sky, but in that old melody, sound like a memory, like a soundtrack to a July Saturday night. Oh, spring steam. Oh, spring steam.
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Hab beim Ausfüllen geheult…“ – Buch „Ein paar Dinge, die ich an dir liebe“ für den Partner).
+
+<!-- us-768 -->
+## US SLIDES Nr 768 · 2 days ago · +147.9K Views · Sprache en · Men's Fall Winter Hooded Sweatshirt, Spider Print, Drawstring & Kangar
+https://www.tiktok.com/@noahblake_k/video/7709079288456301837
+
+**Original:**
+> Hi, I'm Peter Parker. And a while back I was bitten by a radioactive spider and got superpowers. I've used my powers to help the city and stop a lot of people who wanted to hurt it. Okay, let's do this one last time, yeah? For real this time, this is it. My name is Miles Morales. I was bitten by a radioactive spider, and for like two days, I've been the one and only spider.
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Spider-Man-Ton aus dem Film; Hook: „Für alle, die immer noch Spider-Man-Fans sind 🕷️“).
+
+<!-- us-26 -->
+## US QUALITY Nr 26 · 3 days ago · +1M Views · Sprache en · REDTIGER F17 4K 3-Channel Dash Cam with 5GHz WiFi GPS, 64GB Card, 2160
+https://www.tiktok.com/@ericabaileyb_/video/7708641929021558030
+
+**Original:**
+> I feel like a fill up the arena I'm tanked up, you trying to get your face blown All right y'all ask me all the time in my videos what dash cam I use I use the red tiger f17 dash cam I have a link below. It's on a flash Black Friday sale And I mean people are crazy out here, okay? I don't know why anybody would be driving without a dash cam Gotta protect yourself gotta protect your car Every single clip that I post is from my red tiger dash cam I download it straight onto my phone from the app super easy crispy clear quality So click the link below get your very own red tiger f17 dash cam
+
+**DEUTSCH:**
+**Hook:** „Ihr fragt mich in jedem Video, welche Dashcam ich benutze.“
+**Skript:** „Es ist die REDTIGER mit drei Kameras – vorne, innen, hinten, 4K. Link ist unten, sie ist gerade im Black-Friday-Angebot. Die Leute fahren wie verrückt. Ich verstehe nicht, wie man ohne Dashcam fahren kann. Schütz dich und dein Auto – jeder Clip, den ich poste, kommt von genau dieser Kamera.“
+
+<!-- us-464 -->
+## US SLIDES Nr 464 · 3 days ago · +436.4K Views · Sprache en · Dickies Short Sleeve Coveralls, Men's Sleeve Workwear,Lightweight Desi
+https://www.tiktok.com/@grind2hardosha/video/7708568594061249805
+
+**Original:**
+> Baby can you hear my call? Is it not enough? Don't wanna, don't wanna fall You know I need you I can't do it on my own Every day some new shit Beefing with my bitch right now but life's still lit Riding down the strip, half a million dollar whip Five M's for the kid for ice like this Everything I want to hear, I scrap them off the list Ask about me, word around the town, I'm a pimp Ho won't get my heart, I'm putting you down, I'm not a simp Big ol' G, I'm him Park the back, the lamb, and then go GLE, I'm tripping Catch a nigga at Blam, Drift Gang, we ain't nothing like them Only nigga you know that rap come through the rack, no tick Hustler got them racks back, man, my pockets will stack with lint All blue harnesses look like flapjacks, Nassin Duffel in my knapsack Out on back, go check my track record, nigga shit
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Harter Arbeitsanzug – kostet aber fast nichts“).
+
+<!-- us-23 -->
+## US QUALITY Nr 23 · 3 days ago · +1.2M Views · Sprache en · SYMINO Ergonomic Faux Fur Gaming Sofa Chair - Video Game Chair for Gam
+https://www.tiktok.com/@dbon973/video/7708583479017032974
+
+**Original:**
+> My daddy's rich. My daddy's poor. Who got the better chair? I can go up and down and it can recline a little bit. I don't know what chair can't go up and down. And my chair can go all the way back. Not to mention it also has a leg rest. Okay cool, yours can go back a little farther. Mine was on a flash sale and it was only like $2.50. $2.50? Mine's on a Black Friday sale for way cheaper. Okay, well that one's huge. It probably took forever to set up. Mine only took like an hour. An hour's a joke. I've never even set up a chair and this took me 25 minutes. Okay, well this one's so comfortable I can sit in it for like an hour but then my butt starts to go numb. You've got to be kidding me. An hour? I've literally slept in this thing. You're telling me this one's cheaper, it's easier to set up, it's more comfortable and it can recline more? Yes. I guess I'll leave the sale to it right down here if you guys want to check it out but the orange shopping cart is not going to last long.
+
+**DEUTSCH:**
+**Hook:** „Mein Papa ist reich, mein Papa ist arm – wer hat den besseren Stuhl?“
+**Skript:** Zwei sitzen nebeneinander: „Meiner geht hoch und runter und lehnt sich ein bisschen zurück.“ – „Welcher Stuhl kann nicht hoch und runter? Meiner geht ganz nach hinten und hat eine Fußstütze.“ – „Okay, deiner geht weiter zurück. Aber meiner war im Angebot.“ – „Meiner ist im Black-Friday-Sale noch günstiger.“ (Sketch – nur übernehmen, wenn Artur ihn nachspielen will; sonst selbst über den Kunstfell-Gaming-Stuhl reden.)
+
+<!-- us-109 -->
+## US QUALITY Nr 109 · 3 days ago · +848K Views · Sprache en · Shark WandVac Cordless Handheld Vacuum - WV201/WV205
+https://www.tiktok.com/@_thekayrenee/video/7708919749442374943
+
+**Original:**
+> Now why would shark wait to drop the most aesthetic wand back on Black Friday? Of course they would. When I have the gold one. I use this for everything. Dog hair. It's got goldfish in there because I have kids. This is probably one of my most used products. And if you got it, bro, look at the prices that people are getting this at. Quite literally paid triple for this. That aesthetic chocolate walnut. Y'all better hurry up and get it because that walnut one is going to go. Because that's the one I would have bought if I would have waited. So good luck. And congrats to those that waited to get this. Because now you get it for cheaper and you get a pretty color. And shark, don't ever do that again.
+
+**DEUTSCH:**
+**Hook:** „Warum bringt Shark ausgerechnet jetzt den schönsten Handstaubsauger raus?“
+**Skript:** „Ich benutze den für alles – Hundehaare, Krümel von den Kindern im Auto. Ist eins meiner meistbenutzten Teile. Und schaut euch an, für welchen Preis den die Leute gerade bekommen – ich hab ehrlich das Dreifache bezahlt. Holt ihn euch, solange das Angebot läuft.“
+
+<!-- us-443 -->
+## US SLIDES Nr 443 · 3 days ago · +636.8K Views · Sprache en · Just a Few Things I Love About You Mom Fill-In The Blank Book Gift for
+https://www.tiktok.com/@iluvdealz/video/7708861054566092046
+
+**Original:**
+> But my ultimate inspiration comes from my best friend, the dazzling woman from whom I received my name and my life's blood, Lorelei Gilmore. Girl, hang in there. My mother never gave me any idea that I could do whatever I wanted to do or be whomever I wanted to be. She filled our house with love and fun and books and music, unflagging in her efforts to give me role models from Jane Austen to Eudora Welty to Patti Smith. As she guided me through these incredible 18 years, I don't know if she ever realized that the person I most wanted to be was her.
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Wenn du deine Mama liebst…“ – Ausfüllbuch als Geschenk, Bilder von Mutter & Tochter).
+
+<!-- us-238 -->
+## US QUALITY Nr 238 · 3 days ago · +595.6K Views · Sprache en · NOCO Boost X GBX155 4250A Jump Starter for 10.0L Gasoline and 8.0L Die
+https://www.tiktok.com/@dylanstiktokfinds/video/7708598147827649806
+
+**Original:**
+> And this is why you wait for Black Friday, because Noco just put their GBX-155 on sale for the lowest price it's ever been. And this is their big boy, the one that can jump a semi. It's a 12-volt 4250 amp that can jump up to a 10-liter gas or an 8-liter diesel, but I've seen it jump a lot more. It has really nice heavy-duty anti-spark clamps with reverse polarity protection, a flashlight on the front with a ton of different modes that you can cycle through, as well as two USB-A ports and a USB-C port so you can charge additional devices with this if needed. Now, Noco hardly ever puts these on sale, and at that price, they're gonna sell out quick. So if you want to grab one before they're gone, I'll leave a link for it in the bottom left of the video.
+
+**DEUTSCH:**
+**Hook:** „Genau deswegen wartet man auf Black Friday.“
+**Skript:** „Die große Starthilfe ist gerade so günstig wie noch nie. 12 Volt, über 4000 Ampere – startet Benziner bis 10 Liter und Diesel bis 8 Liter, ich hab sie schon an viel Größerem gesehen. Richtig stabile Klemmen mit Funkenschutz und Verpolungsschutz, vorne eine Taschenlampe. Wenn du so was noch nicht im Auto hast: jetzt.“
+
+<!-- us-130 -->
+## US QUALITY Nr 130 · 3 days ago · +492.3K Views · Sprache en · 2-in-1 Galaxy Projector Night Light, USB Interface, Dual-Mode Starry S
+https://www.tiktok.com/@deps3/video/7708623103814913293
+
+**Original:**
+> I'm a forgotten kid. Bro, just shut up. We know you're gonna do I'm a forgotten kid, I'm a tolerated kid, and I'm a spoiled kid. We know that thing doesn't even look like a sunset, so just get that garbage out of here, bruh. Well, anyways, I'm a normal kid, and I got a wave projector. And I'm a spoiled kid, and I got a galaxy projector. Which is better? Well, my wave projector looks absolutely amazing, and it works by using this spinning plate, although this thing does tend to make quite a bit of noise. Okay, a lot of noise. I can hear it from over here. It also doesn't cover my whole room, but it was cheap, so I guess that's a plus. Well, my galaxy projector also looks absolutely amazing, and borderline covers more of my room, but this thing's quality is literally insane. I got a bunch of designs though, so let me throw another one for y'all real quick. Just like this. And holy crap, the quality on this thing is absolutely insane. The main reason for that is simply because it has a rotatable focus up here, so you can always dial it in. It also doubles as a normal night lamp when it's not in the galaxy mode, and using this part here, you can literally angle this thing whatever way you want. Some of these also have color in them, and some of them are glass, which is just another reason it's super high quality. And this thing is super cheap, and it even goes on sale a bunch too, so if y'all want to check it out, I'll leave a link right down there if there's some left.
+
+**DEUTSCH:**
+**Hook:** „Ich bin das vergessene Kind, ich das normale, ich das verwöhnte.“
+**Skript:** Sketch mit drei Geschwistern: Das normale Kind hat einen Wellen-Projektor, das verwöhnte einen Sternenhimmel-Projektor – „Welcher ist besser?“ Beide anschalten, Zimmer leuchtet. (Sketch – für BOF lieber nur den Projektor zeigen und darüber reden.)
+
+<!-- us-127 -->
+## US QUALITY Nr 127 · 3 days ago · +501.7K Views · Sprache es · Sf3500 Retro Handheld Game Console, Portable Gaming Media Player, Clas
+https://www.tiktok.com/@lifegoodssharing/video/7708616036681092382
+
+**Original:**
+> Se volvieron a bajar el precio de la consola gaming portable con más de 20 mil juegos. Y es esta que te viene con juegos Play 1, PC, Game Boy, Game Boy Advance, Game Boy Colors, Nintendo 64, Arcade, PC, Namco, Capcom. Todo lo tienes aquí con triple descuento. Gratis en tres días. Cupones de TikTok Shopping. ¿Garantía? Lo mejor es que a ese precio conviene llevarse dos. Pícale al carrito online y metes dos consolas en tu orden. Una, dos. Activa la oferta Flash. Te vas a la sección de pagos TikTok. Te baja el precio y te regalan el envío gratis en tres días. Aquí vas a poder jugar Dragon Ball Metal Surfer, Tekken, Street Fighter, todo. Antes que sumo, no se agoten. Tu regalo navideño perfecto está en este carrito naranja. Pícale, mira por ti misma.
+
+**DEUTSCH:**
+**Hook:** „Sie haben den Preis von der Handheld-Konsole schon wieder gesenkt.“
+**Skript:** „Über 20.000 Spiele drauf – PlayStation 1, Game Boy, Game Boy Advance, Nintendo 64, Arcade und mehr. Alles in einem Gerät, mit Rabatt und schneller Lieferung. Bei dem Preis lohnt es sich direkt zwei zu nehmen – eins verschenkst du. Ab in den Einkaufswagen.“
+
+<!-- us-281 -->
+## US QUALITY Nr 281 · 3 days ago · +240.8K Views · Sprache en · Acer - Predator 27 QD-OLED QHD 240Hz 0.03ms FreeSync Premium Gaming Mo
+https://www.tiktok.com/@hydrojtreviews/video/7708821022572662047
+
+**Original:**
+> This is the most affordable OLED monitor you can get here on TikTok. The Acer Predator 27-inch 240Hz OLED that comes in at 1440p, and the visuals on this monitor look so insane with the True Blacks. And since it is QD OLED instead of Wo-LED, it's really going to deliver those more vivid and punchy colors. Whether you use this thing for Photoshop or Premiere Pro or, of course, gaming, you're really going to be able to experience those graphics at the highest level. But unfortunately, OLEDs are prone to burning, so it deterred me from purchasing one for a long time because most of them go for over like $500, but the Predator goes for under $320, and it has pixel cleaning too, so you don't even have to worry about that. With Best Buy being on TikTok Shop now, this was the obvious choice because it's already so affordable, but with Black Friday rolling around, there's bound to be a bunch of deals and coupons and whatnot, so if you still see the link down below, it does mean you can get your hands on this.
+
+**DEUTSCH:**
+**Hook:** „Das ist der günstigste OLED-Monitor, den du gerade auf TikTok bekommst.“
+**Skript:** „27 Zoll, 240 Hertz, 1440p – und das Schwarz ist wirklich schwarz. Die Farben knallen richtig. Egal ob Gaming, Bildbearbeitung oder Videoschnitt – das ist eine komplett andere Liga. Gerade im Angebot, Link unten.“
+
+<!-- us-557 -->
+## US SLIDES Nr 557 · 3 days ago · +220.3K Views · Sprache en · Dickies Menswear Midweight Fleece Hoodie - Classic Kangaroo Pocket, Ut
+https://www.tiktok.com/@rrrgoods/video/7708821438509223198
+
+**Original:**
+> There is freedom within, there is freedom without, try to catch the deluge in a paper cup.
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Gründe, warum mein Mann diesen Hoodie in 6 Farben hat (außer dem Preis)“).
+
+<!-- us-544 -->
+## US SLIDES Nr 544 · 3 days ago · +236.1K Views · Sprache en · 2026 Dumpling Squishy Advent Calendar - Unisex Kids Squishies Toys, 24
+https://www.tiktok.com/@plumshoppin/video/7708672971207920910
+
+**Original:**
+> AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Chat-Slideshow: „Ich kann mir den Dumpling-Kalender nicht leisten“ – Kontostand 10 € – „Mädel, der kostet mit Gutscheinen fast nichts“).
+
+<!-- us-147 -->
+## US QUALITY Nr 147 · 3 days ago · +332.3K Views · Sprache en · 4D Shoe Cloud Insoles for Men Women, Soft Memory Foam Orthotic Shoe In
+https://www.tiktok.com/@1kchubbss/video/7708587041537183007
+
+**Original:**
+> hey for all my new amazon hires y'all need to listen up y'all gonna see real fast the managers don't play about sitting down soon as you sit down they already on your ass and after my first week at amazon my feet were killing me that's why i had to switch over to the new cloud insoles they got special parts for your feet really be hurting that it literally feels like you're walking on a pillow it's perfect for all my warehouse and blue collar guys since black friday's coming up they running a crazy sale on these right now so if y'all need some i'ma lead that orange shopping cart down below while still in that black friday sale
+
+**DEUTSCH:**
+**Hook:** „An alle, die neu im Lager oder auf der Arbeit stehen müssen: hört kurz zu.“
+**Skript:** „Nach meiner ersten Woche haben mir die Füße so weh getan. Deshalb hab ich auf diese Cloud-Einlegesohlen gewechselt. Die haben extra Polster genau da, wo es weh tut – es fühlt sich an, als würdest du auf einem Kissen laufen. Perfekt für lange Schichten.“
+
+<!-- us-201 -->
+## US QUALITY Nr 201 · 3 days ago · +359.5K Views · Sprache en · Portable Retro Video Handheld Games Console, 3.5-Inch Joystick with 50
+https://www.tiktok.com/@trailrnqx2u/video/7708752228420553997
+
+**Original:**
+> It has 1,000 games and doesn't require an internet connection, so your child doesn't have to be online. Because honestly, the internet nowadays isn't very reliable. It also plays music and videos. You can even load movies onto it and take it with you anyway. Actually, I bought it as a gift for my nephew, and he loved it. This might be the best gift you can give your child right now. I'll leave it for you at the orange shopping cart.
+
+**DEUTSCH:**
+**Hook:** „1000 Spiele – und dein Kind braucht kein Internet dafür.“
+**Skript:** „Läuft komplett offline, also ist dein Kind nicht im Internet unterwegs. Spielt auch Musik und Videos ab, du kannst sogar Filme draufladen und überall mitnehmen. Ich hab sie meinem Neffen geschenkt und er liebt sie. Das ist gerade eins der besten Geschenke für Kinder – liegt unten im Einkaufswagen.“
+
+<!-- us-429 -->
+## US QUALITY Nr 429 · 3 days ago · +185.6K Views · Sprache es · 【Black Friday】VEVOR Auto-Feed Drain Cleaning Machine (Tool Upgrade), 1
+https://www.tiktok.com/@gentepilas/video/7708868315824917791
+
+**Original:**
+> A la gran, ¿y para qué la rentaste si hasta mañana se va a limpiar el drenaje? No, y no está listo, me dijeron que ahora pues... Estamos instalando gabinetes. Falta para instalar los gabinetes. Ahora, si gastaste, es tu problema rentarla por dos días. No, hombre, mira, eso es lo bueno, que ahorita ya no tengo que preocuparme de estar rentando, porque mira, compré la máquina para destapar ese drenaje que no se podía. ¿La compraste? Pues si solo la usamos unas cinco veces al año nomás. Imagínate, cuatro a cinco veces la usamos durante un año, pagando 125, más de 500 dólares. Imagínate, pagaste más de dos mil o algo así. No, no, no, lo que lo rentaba en un año me la conseguí. Mira, ahora tenemos nuestra propia máquina para destapar todos los drenajes. No me vas a decir que te costó menos de... Claro que sí, es más, ayúdenme a bajarla, porque esta es la grandota, ya ves que la pequeña no aguantaba. Con mucho cuidado que está pesada. A ver. Pónganla ahí. Esta es una máquina, mira, que me conseguí para destapar los drenajes. ¿Y qué marca es esta? Esta es de la marca Bevor, de la marca de las herramientas que tenemos. Ese toilet está lleno de no sé qué tanto le pusieron, pero mira, con esta de acá la vamos a poder destapar sin ningún problema. Yo pensé que la habías rentado, no, hombre. Antes la rentaba, pero ahorita, mira, me la compré y mira, esta está perfecta, porque es la grande que va a destapar ese drenaje de cuatro pulgadas, mira, y es bien fácil de llevarla, mira. Entonces 
+
+**DEUTSCH:**
+**Hook:** „Warum hast du die Maschine gemietet, wenn der Abfluss erst morgen gemacht wird?“
+**Skript:** „Musst du nicht mehr – ich hab mir die Rohrreinigungsmaschine einfach selbst gekauft. Jetzt kann ich jeden verstopften Abfluss sofort frei machen, ohne jedes Mal Miete zu zahlen. Hat sich nach einem Einsatz schon gelohnt.“
+
+<!-- us-5 -->
+## US QUALITY Nr 5 · 4 days ago · +2.9M Views · Sprache en · 【BEDLORE】Bamboo Cooling Mattress Topper with Fitted Sheet, Thick Luxur
+https://www.tiktok.com/@spearshops/video/7708531833830509837
+
+**Original:**
+> Did I really just spend $5,000 on a new mattress? I know y'all like, I know you fucking lying. But when you get tired of tossing and turning all night, waking up, sweating, and even sore sometimes, you gotta do something. And I'm talking something like 3 inches of thick, plush material that you literally sink right into. That luxury hotel bed feeling, like you're sleeping on a cloud. And the best part about it, I really didn't have to spend $5,000 on a new mattress. After seeing the 5 star reviews on this Bedlord Bamboo mattress topper, I said what else I got to lose? And man, this thing is gas. A solid 10 out of 10. Bamboo material gives it that cooling feel. And the topper is built right into a fitted sheet, so it don't move or shift throughout the night. Right now, they're on a massive Black Friday sale. So I left that link on the video before that price goes back up.
+
+**DEUTSCH:**
+**Hook:** „Hab ich gerade wirklich 5000 € für eine neue Matratze ausgegeben?“
+**Skript:** „Nein – aber wenn du keine Lust mehr hast, dich nachts zu wälzen, zu schwitzen und morgens verspannt aufzuwachen, musst du was tun. Das hier ist eine 7 cm dicke Matratzenauflage, in der du richtig versinkst. Fühlt sich an wie im Luxushotel, als würdest du auf einer Wolke schlafen. Und das Beste: kostet nur einen Bruchteil einer neuen Matratze.“
+
+<!-- us-168 -->
+## US QUALITY Nr 168 · 4 days ago · +354.1K Views · Sprache es · Merach Rocking Stepper Ski Machine with 3D Motion Stepper Design Side 
+https://www.tiktok.com/@vanessa..montoya/video/7708454532744842526
+
+**Original:**
+> moviendo la cadera moviendo la cadera
+
+**DEUTSCH:** Nur Musik/Liedtext – kein Sprech-Skript nötig. Gleiche Bilder/Musik nehmen, nur den Text auf den Bildern auf Deutsch schreiben (Hook: „Training, das sich wie Skifahren anfühlt – zu Hause“).
+
+<!-- us-33 -->
+## US QUALITY Nr 33 · 4 days ago · +946.4K Views · Sprache en · ZNP Z06 AI Voice Translator for Travel Business | 165 Languages | Real
+https://www.tiktok.com/@chasingdealz/video/7708246920958856479
+
+**Original:**
+> If half your crew speak Spanish and you don't, or if they speak English, then something like this is going to be super useful. This is a two-way AI translator with 165 languages that can actually speak them using your own voice. Its main benefit is allowing for incredibly easy two-way communication. For example, after you hit that microphone, if you said cut these boards into eight feet, and the guy you're talking to said todos os solos estos, all of them or just these. So it takes the language you're both saying, automatically translating to the opposite, keeping the conversation nice and smooth and completely hands-free, unlike a phone where you have to keep switching back and forth. It also has a customizable front, so you can give it some personality, with a magnetic back, so you can put it on your shirt, your phone, or put it on your lanyard so it's out of the way, and it charges right on the side with a UBS cable. It works completely offline with no subscription, and even though there's already so many languages to choose from on here, if you want to make sure they have yours, feel free to comment what it is down there, and I can let you know before you buy. Whether it's for working at your job or a trip overseas, something like this will make such a great gift. The only problem is with how good the holiday sale is right now, they don't have a lot of these left, but if they happen to still be in stock, I'll go ahead and leave the link to them right down there.
+
+**DEUTSCH:**
+**Hook:** „Die Hälfte deiner Leute spricht eine andere Sprache als du? Dann brauchst du das.“
+**Skript:** „Das ist ein KI-Übersetzer für beide Richtungen, 165 Sprachen, und er spricht sogar mit deiner eigenen Stimme. Du drückst aufs Mikrofon, sagst ‚Schneid die Bretter auf zwei Meter‘ – und dein Gegenüber hört es sofort in seiner Sprache. Auf der Baustelle, im Urlaub, im Geschäft – Gold wert.“
+
+<!-- us-60 -->
+## US QUALITY Nr 60 · 4 days ago · +620.6K Views · Sprache en · ECOFLOW DELTA 3 Classic Portable Power Station with 160 or 220W Solar 
+https://www.tiktok.com/@be.lush/video/7708544761623252238
+
+**Original:**
+> Refrigerator, lights, internet, CPAP, and I got these two for my phone. Wow, that's a lot. If I were you, I'd be taking it seriously. Yeah, I am. I got one of these. Lights, fridge, internet, phones, and that thing can do all of it. 1800 watt and 3600 watt peak so it can handle all your big appliances. You can even plug your microwave into it if you need to. How do you plan on charging those? Well, I'm just keeping them fully charged so when something does happen, I'll have full batteries and ready to go. Why, how do you charge yours? Yeah, and when those batteries died, you're screwed. With this, it can get to 80% in under two hours. Okay, that is cool, but on cloudy days, you're in the same boat as I am. Not true either. Now, I did have to get this separately, but this hooks up to my truck battery and so I turn my truck on and it'll charge this to 80% in under two hours. EcoFlow even makes a smart generator you can plug it into and it'll charge it to 80% in under two hours. Okay, even if it can do all of that, I know EcoFlow is really expensive and that thing's like a thousand dollars. Maybe normally, but if you check that link down there, EcoFlow is running a really good deal on them right now, making them way more affordable. The only problem is the sale that they're running on these is just for a limited time and with everything that's been going on, they've been selling like crazy. So if you still see the link at the bottom of the video, you can get one before they're a
+
+**DEUTSCH:**
+**Hook:** „Kühlschrank, Licht, Internet und das Handy – alles läuft beim Stromausfall weiter.“
+**Skript:** „Das kann diese Powerstation alles gleichzeitig. 1800 Watt, 3600 Watt Spitze – du kannst sogar die Mikrowelle anschließen. Laden geht über die Steckdose oder mit einem Solarpanel. Wenn du für den Blackout vorsorgen willst: das ist das Teil.“
+
+<!-- us-44 -->
+## US QUALITY Nr 44 · 4 days ago · +784.9K Views · Sprache en · FEPPO Food Warming Mat, Upgrade High-tech Heating System, Fast Full Su
+https://www.tiktok.com/@freya10460/video/7708181548532600077
+
+**Original:**
+> If you don't want your family eating cold food this holiday season, you need to check out this new 2026 extra large warming mat I just picked up. It heats up in literally 10 seconds and it goes all the way up to 212 degrees Fahrenheit. The bottom is fully insulated, so it won't ruin your table. The best part, it's made of flexible food grade silicone, so you can put literally anything on it. When you're done, roll it up and toss it in a drawer. Takes up zero space. It's currently on sale at an insane price. Moms, you can finally enjoy a warm roast chicken all night long. Grab yours now.
+
+**DEUTSCH:**
+**Hook:** „Wenn deine Familie an den Feiertagen nicht kalt essen soll, schau dir das an.“
+**Skript:** „Die neue extra große Warmhaltematte – heizt in 10 Sekunden auf, bis 100 Grad. Unten isoliert, also macht sie den Tisch nicht kaputt. Aus flexiblem Lebensmittel-Silikon, du kannst alles draufstellen. Danach einfach zusammenrollen und wegräumen.“
+
+<!-- us-90 -->
+## US QUALITY Nr 90 · 4 days ago · +552K Views · Sprache en · WIKICO 4K Digital Camera for Photography & Content Creators - 64MP, 3-
+https://www.tiktok.com/@kaleyreed_/video/7708510607116340494
+
+**Original:**
+> Moms of teenage girls that want to absolutely crush gift giving this year. This is the digital camera you're going to want to get that won't break the bank. It does have the flip up selfie screen so they can take selfies as a flash for the nighttime photos. And when it's time to get the pictures from the camera to your phone, all they have to do is scan this QR code and they'll go directly to their phone. This thing even does slow-mo, time-lapse, and it obviously takes videos. It even has a few different filters to put it on. The only thing is these have gone super quick around Christmas time in the past. If you want to see if they're still in stock in the color that you want, I'll try and link it.
+
+**DEUTSCH:**
+**Hook:** „Mamas von Teenie-Mädchen, die dieses Jahr beim Geschenk alles richtig machen wollen.“
+**Skript:** „Das ist die Digitalkamera, die nicht arm macht. Hat einen Klapp-Bildschirm für Selfies und Blitz für Nachtfotos. Und um die Bilder aufs Handy zu bekommen, scannen sie einfach den QR-Code – zack, alles drauf. Gerade im Angebot.“
+
+<!-- us-31 -->
+## US QUALITY Nr 31 · 6 days ago · +905.6K Views · Sprache en · Ninja French Door Premier Air Fryer, Convection Oven, Toaster - FO101
+https://www.tiktok.com/@mikaylanogueira/video/7707693185639697678
+
+**Original:**
+> No offense to this company, but this toaster oven fucking sucks, okay? Is it aesthetically beautiful? Yes. But aesthetics don't fucking matter if you're not gonna air fry my fucking chicken nuggets to perfection. So let's open my new one. And this shit is the size of me. This is not an ad. I bought this shit myself at Tag It, okay? This is the Ninja French Door Premiere. It looks so fucking nice, and apparently it preheats in 60 seconds. I genuinely think this is a beautiful toaster oven, but the amount of time this takes to preheat is actually insane. I can't stand it, and it doesn't cook things evenly. So I don't give a fuck that it's aesthetic. I'm getting rid of it. I will be donating it to someone, so if you want it, let me know. Now we're opening the Ninja. Has some pans on top. This thing is huge. I went with the beautiful black onyx. Wow, this is gorgeous. I don't need no man. I can lift this shit myself. Okay, maybe this is a hot take, but I actually think this is more aesthetic than the Our Place one. Like, this shit looks fucking nice. And I am obsessed with the French doors. And they open so smoothly, it's crazy. You get this, and you also get an air fry rack. Turn it on just out of curiosity. This shit is so fucking nice. So you can bake, air fry, roast, whole roast, dehydrate, broil, toast, bagel pizza, and reheat. That's nice, man. The light on the inside is so bright. Wow. This is fucking... This is the nicest toaster oven I've ever had. Zero regrets. Hate you
+
+**DEUTSCH:**
+**Hook:** „Nichts gegen die Firma – aber dieser Toaster-Ofen ist einfach schlecht.“
+**Skript:** „Ja, er sieht schön aus. Aber Optik bringt nichts, wenn meine Chicken Nuggets nicht knusprig werden. Also packen wir den neuen aus – und der ist fast so groß wie ich. Keine Werbung, selbst gekauft. Heißluftfritteuse und Backofen mit Flügeltüren in einem – und das Teil liefert.“
+
+<!-- us-311 -->
+## US QUALITY Nr 311 · 4 days ago · +357K Views · Sprache en · EF ECOFLOW DELTA 3 Classic Portable Power Station with 160/220W Solar 
+https://www.tiktok.com/@urtechdaddy/video/7708273020254653726
+
+**Original:**
+> Everybody keeps saying you got to prepare for 90 days. If you want to keep your refrigerator running without the grid for 90 days, then what you're going to need is the EcoFlow Delta 3 Classic plus the 220 watt panel. Now, when I was testing the panels, I was getting about 200 watts of power going into my Delta 3 Classic, which is absolutely fantastic because I could keep my fridge running while charging my power bank. And if you didn't have the solar panels, the Delta 3 Classic will keep your fridge running anywhere from 8 to 12 hours, depending on your fridge. Some use a little less power and some require a lot more power. I'm actually going to purchase another 220 watt panel, which you can pair together to plug into your Delta 3 Classic just in case for those cloudy days. Delta 3 Classic is absolutely perfect if you live in an apartment, but if you want to run multiple appliances and you live in a big home, you're definitely going to need something a lot bigger than this. Please be safe and protect yourself because you are not going to be able to depend on your neighbors because when the desperate times hit, the only person you can count on is you. And lucky for you, the Delta 3 Classic is on a Black Friday sale. I'll let you that link down below.
+
+**DEUTSCH:**
+**Hook:** „Alle sagen, man soll für den Ernstfall vorsorgen – aber wie hältst du deinen Kühlschrank ohne Strom am Laufen?“
+**Skript:** „Mit dieser Powerstation plus Solarpanel. Beim Test kamen rund 200 Watt rein – genug, um den Kühlschrank laufen zu lassen und nebenbei noch die Powerbank zu laden. Für Stromausfall, Camping oder Garten.“
+
+<!-- us-119 -->
+## US QUALITY Nr 119 · 4 days ago · +534K Views · Sprache en · SEESE Cordless Snow Shovel, 21V Battery Snow Blower with 2 × 3.6Ah Bat
+https://www.tiktok.com/@newborn1452/video/7708304544400231693
+
+**Original:**
+> Morning, sir. Want some help with that? I just need to get to my mailbox. I'll pay you for it. No way, sir. Neighbors look out for each other. Keep your money. You good? All right. Go ahead. When I lowered the price, you didn't buy. When I offered free shipping, you still said it was too expensive. Well, guess what? This Black Friday, you can get it at cost with free shipping. Seriously, whoever invented this deserves a raise. If you're still clearing snow one shovel full at a time, or struggling with a big, heavy snowblower, take a look at this. It's a compact, cordless, electric snow shovel. Just turn it on and gently push it into the snow. It throws the snow right off to the side so you don't have to keep bending over and shoveling. See this adjustment knob? You can control which direction the snow gets thrown, keeping it away from areas you've already cleared. It's perfect for driveways, sidewalks, porches, patios, and even tight spaces where big snowblowers can't easily fit. No gas, no cords, and no bulky machine taking up your storage space. Just push it forward and let it do the work. It's so much easier than spending your whole morning outside in the cold shoveling snow. The Black Friday deals are officially live, so click the link below and grab yours while the discount and free shipping are still available.
+
+**DEUTSCH:**
+**Hook:** „Morgen! Brauchen Sie Hilfe?“ – „Ich will nur zu meinem Briefkasten.“
+**Skript:** Nachbar schiebt mit der Akku-Schneeschaufel in Sekunden den Weg frei: „Kein Geld, Nachbarn helfen sich.“ – Dann Text/Voice: „Als der Preis runterging, hast du nicht gekauft. Mit gratis Versand war’s dir noch zu teuer. Jetzt zum Black Friday gibt’s sie fast zum Einkaufspreis.“

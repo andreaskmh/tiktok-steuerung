@@ -14,6 +14,7 @@
   python3 werkzeuge/research.py wagen <ASIN>                    # in den Amazon.es-Einkaufswagen (nie kaufen)
   python3 werkzeuge/research.py skripte <de|us> [--top 30]      # Transkripte Top je Liste → fremdsprachige in „SKRIPTE <datum>.md“
   python3 werkzeuge/research.py skript <de|us> <nr>             # Transkript (Social1 „Transcribe“) speichern
+  python3 werkzeuge/research.py gemacht-abgleich               # Arturs Listen vs. letzte Momentaufnahme → Erledigtes in gemacht.json
   python3 werkzeuge/research.py messen                         # stündlich (launchd): Seite 1 DE+US protokollieren
   python3 werkzeuge/research.py messung                        # Auswertung: wann aktualisiert Social1?
 
@@ -338,6 +339,33 @@ def aus_liste_entfernen(liste, ids, paeckchen=20):
     return len(weg)
 
 
+ARTUR_STAND = pathlib.Path.home() / ".tiktok-research" / "artur-listen.json"
+UNSERE = re.compile(r"^(BOF DE|SLIDES DE|Reactions DE|SLIDES USA|Quality USA) \d\d\.\d\d\.\d{4}$")
+
+
+def gemacht_abgleich():
+    """Arturs eigene Listen (eigene …, reactions …, neue Idee …) mit der letzten Momentaufnahme vergleichen: was er entfernt hat,
+    ist erledigt → gemacht.json + aus unseren Listen (Artur 19.11.). Arturs Listen werden nur gelesen, nie geändert."""
+    aktionen_laden()
+    ls = (s1("getVideoLists").get("data") or {}).get("lists") or []
+    artur = [l for l in ls if re.match(r"^(eigene|reactions|neue idee)", l.get("name", ""))]
+    jetzt = {l["_id"]: {"name": l["name"], "videos": listen_videos(l["_id"])} for l in artur}
+    alt = json.loads(ARTUR_STAND.read_text()) if ARTUR_STAND.exists() else {}
+    weg = set()
+    for lid, l in jetzt.items():
+        if lid in alt:
+            weg |= set(alt[lid]["videos"]) - set(l["videos"])
+    if weg:
+        gemacht_merken(weg)
+        for l in ls:
+            if UNSERE.match(l.get("name", "")):
+                n = aus_liste_entfernen(l["name"], weg)
+                if n:
+                    print(f"{l['name']}: {n} erledigte raus")
+    ARTUR_STAND.write_text(json.dumps(jetzt, ensure_ascii=False))
+    print(f"FERTIG gemacht-abgleich: {len(artur)} Artur-Listen, {len(weg)} neu erledigt, gemacht.json hat {len(gemacht())}")
+
+
 def frueher_gespeichert():
     """Alle Videos, die an früheren Tagen schon in einer Research-Liste gelandet sind (egal ob inzwischen nachgemacht und
     aus der Liste entfernt) → kommen nie ein zweites Mal rein. Gleiches Produkt mit anderem Video (neue Hook) bleibt erlaubt."""
@@ -382,6 +410,8 @@ def filtern(land):
             k["promi"] = True                                 # Artur 19.11.: Promis → Liste „Reactions DE <datum>“, nicht raus
         elif REGELN.get("verstoss_risiko_aktiv", True) and (w := treffer(REGELN.get("verstoss_risiko", []), name)):
             grund = f"Verstoß-Risiko ({w})"
+        elif k.get("slideshow") and land == "us":
+            pass                                              # Artur 19.11.: SLIDES USA = Format-Ideen, Produkt egal (auch Beauty)
         elif land in REGELN.get("supplement_filter_laender", ["de", "us"]) and (w := treffer(REGELN["supplements"], name)):
             grund = f"Supplement ({w})"
         elif land in REGELN.get("beauty_filter_laender", ["de", "us"]) and (w := treffer(REGELN["beauty"], name)):
@@ -1028,6 +1058,9 @@ if __name__ == "__main__":
         sys.exit()
     if a[:1] == ["messung"]:
         messung_auswerten()
+        sys.exit()
+    if a[:1] == ["gemacht-abgleich"]:
+        mit_neustart(gemacht_abgleich)
         sys.exit()
     if a[:2] == ["de-suche", "--datei"]:                      # eine Zeile pro Suchwort
         mit_neustart(de_suche_viele, [w.strip() for w in pathlib.Path(a[2]).read_text().splitlines() if w.strip()])
