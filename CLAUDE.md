@@ -7,7 +7,7 @@ kurz und verständlich, Fachbegriffe nur wenn nötig.
 
 ## Abgrenzung
 
-- Eigenes Projekt, **getrennt vom Editing-System** (`~/Documents/Coding/Editing System 1.1`, stammt von
+- Eigenes Projekt, **getrennt vom Editing-System** (`~/Documents/Coding/Editing System 1.5`, stammt von
   Nicolas Damerius, kuendigedeineneditor.de). Kopplung mit Nicolas abgeklärt (Artur, 09.11.2026).
 - Das Editing System ruft nur unsere Befehle auf (Brücke dort: `eigene/TIKTOK-STEUERUNG.md`): `social1.py` (Social1-Liste → Produkt-IDs, Zuordnung
   macht Claude selbst), `stock.py` (Stock in dessen `Belege/`), `einreichen.py` (Video + JSON nach `uebergabe/eingang/`), `eingang.py freigeben|posten`.
