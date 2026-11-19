@@ -310,6 +310,34 @@ def treffer(woerter, name):
     return next((w for w in woerter if re.search(r"(?<![a-zäöüß])" + re.escape(w.strip()) + (r"(?![a-zäöüß])" if w.endswith(" ") else ""), name)), None)
 
 
+GEMACHT = PROJ / "uebergabe" / "research" / "gemacht.json"
+
+
+def gemacht():
+    """Videos, die Artur schon umgesetzt hat (aus seinen Listen entfernt / abgehakt) → nie wieder in eine Liste (Artur 19.11.)."""
+    return set(json.loads(GEMACHT.read_text())) if GEMACHT.exists() else set()
+
+
+def gemacht_merken(ids):
+    g = gemacht() | set(ids)
+    GEMACHT.write_text(json.dumps(sorted(g), indent=0))
+    return g
+
+
+def aus_liste_entfernen(liste, ids, paeckchen=20):
+    """Videos aus einer Social1-Liste nehmen – vorher Sicherung, in kleinen Päckchen (Social1 bremst sonst)."""
+    lid = liste_id(liste, anlegen=False)
+    if not lid:
+        return 0
+    videos = ((s1("getVideoListDetail", lid).get("data") or {}).get("list") or {}).get("videos") or []
+    (ORDNER / f"sicherung-{liste}-{time.strftime('%H%M%S')}.json").write_text(json.dumps(videos, ensure_ascii=False, indent=1))
+    weg = [v["videoId"] for v in videos if v["videoId"] in set(ids)]
+    for i in range(0, len(weg), paeckchen):
+        s1("removeVideosFromList", lid, weg[i:i + paeckchen])
+        time.sleep(1)
+    return len(weg)
+
+
 def frueher_gespeichert():
     """Alle Videos, die an früheren Tagen schon in einer Research-Liste gelandet sind (egal ob inzwischen nachgemacht und
     aus der Liste entfernt) → kommen nie ein zweites Mal rein. Gleiches Produkt mit anderem Video (neue Hook) bleibt erlaubt."""
@@ -337,18 +365,21 @@ def gepostete_produkte():
 def filtern(land):
     raus, rein, gesehen = [], [], set()
     frueher = frueher_gespeichert()
+    schon = gemacht()
     for k in alle_videos(land):
         name, cr, tage = k["produkt"].lower(), k["creator"].lower(), alter_tage(k["alter"])
         k["tage"] = tage
         grund = ""
         if k["video_id"] in gesehen:
             grund = "doppelt"
+        elif k["video_id"] in schon:
+            grund = "schon gemacht (gemacht.json)"
         elif k["video_id"] in frueher:
             grund = "schon an früherem Tag in einer Liste"
         elif tage > REGELN["max_alter_tage"][land]:
             grund = f"zu alt ({k['alter']})"
         elif any(p in cr for p in REGELN["promis"]):
-            grund = "Promi"
+            k["promi"] = True                                 # Artur 19.11.: Promis → Liste „Reactions DE <datum>“, nicht raus
         elif REGELN.get("verstoss_risiko_aktiv", True) and (w := treffer(REGELN.get("verstoss_risiko", []), name)):
             grund = f"Verstoß-Risiko ({w})"
         elif land in REGELN.get("supplement_filter_laender", ["de", "us"]) and (w := treffer(REGELN["supplements"], name)):
@@ -368,6 +399,10 @@ def filtern(land):
             k["neu"] = True
     rein.sort(key=lambda k: k["nr"])
     (ORDNER / f"{land}-kandidaten.json").write_text(json.dumps(rein, ensure_ascii=False, indent=1))
+    promis = [str(k["nr"]) for k in rein if k.get("promi")]
+    (ORDNER / f"{land}-promis.txt").write_text(" ".join(promis))   # → speichern <land> "Reactions DE <datum>" "$(cat …)"
+    if promis:
+        print(f"Promis (Reactions): {len(promis)} → {land}-promis.txt")
     (ORDNER / f"{land}-raus.json").write_text(json.dumps(raus, ensure_ascii=False, indent=1))
     gruende = {}
     for k in raus:
@@ -488,8 +523,8 @@ def speichern(land, liste, nummern):
 
 
 def sortieren(land, liste):
-    """Social1-Liste in Ranglisten-Reihenfolge bringen (Platz 1 oben). Social1 zeigt zuletzt Hinzugefügtes oben → vom
-    schlechtesten bis Platz 1: jedes Video einzeln raus und sofort wieder rein (nie mehr als 1 Video gleichzeitig weg).
+    """Social1-Liste in Ranglisten-Reihenfolge bringen (Platz 1 oben). Social1 zeigt zuerst Hinzugefügtes oben → von Platz 1
+    abwärts: jedes Video einzeln raus und sofort wieder rein (landet am Ende; nie mehr als 1 Video gleichzeitig weg).
     Vorher Sicherung der Liste als Datei; am Ende Abgleich, Fehlende werden aus der Sicherung nachgelegt."""
     kand = {k["video_id"]: k for k in json.loads((ORDNER / f"{land}-kandidaten.json").read_text())}
     aktionen_laden()
@@ -505,8 +540,10 @@ def sortieren(land, liste):
         p["product"] = {f: (v.get("product") or {}).get(f, "") for f in ("productId", "name", "priceDisplay", "imgUrl")}
         pakete.append(p)
     rang = lambda p: punkte(kand[p["videoId"]]) if p["videoId"] in kand else -1
-    reihe = sorted(pakete, key=rang)                           # schlechtester zuerst → Platz 1 zuletzt = oben
-    jetzt = [v.get("videoId") for v in videos]                 # schon richtig sortierter Teil am Ende wird nicht angefasst
+    # Geprüft 19.11. abends: Social1 zeigt die Liste in Hinzufüge-Reihenfolge, das ZUERST Hinzugefügte steht OBEN
+    # (= Reihenfolge von getVideoListDetail). Also Platz 1 zuerst einlegen, Unbekannte (ohne Kandidat) ans Ende.
+    reihe = sorted(pakete, key=rang, reverse=True)
+    jetzt = [v.get("videoId") for v in videos]                 # schon richtig sortierter Anfang wird nicht angefasst
     soll = [p["videoId"] for p in reihe]
     k = 0
     while k < len(soll) and jetzt[:k + 1] == soll[:k + 1]:

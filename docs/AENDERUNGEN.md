@@ -374,3 +374,6 @@
   pauschal raus, neu `verstoss_risiko` (Heilversprechen, Schmerzen, Haare, Anti-Aging … – alle Länder). Befund: alte Klick-Lesung
   hatte Foto-Slideshows verschluckt (67 Slides fehlten). Neu `research.py sortieren` (Social1-Liste = Ranglisten-Reihenfolge):
   erster Versuch verlor wegen Social1-Bremse 180 Videos kurz – komplett wiederhergestellt, jetzt einzeln + 429-Wiederholung.
+- **19.11.2026 abends (Artur)** – Social1-Ansicht sortiert nach Hinzufüge-Reihenfolge, zuerst Hinzugefügtes OBEN → `sortieren`
+  umgedreht. Neu `uebergabe/research/gemacht.json` (131 von Artur erledigte = aus seinen Listen entfernte Videos; filtern wirft sie
+  raus), aus BOF DE 88 / SLIDES DE 11 entfernt. Promis → Kandidaten für „Reactions DE <datum>“ (`<land>-promis.txt`) statt raus.
