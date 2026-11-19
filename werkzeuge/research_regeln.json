@@ -7,7 +7,7 @@
     "christian.wolf"
   ],
   "max_alter_tage": {
-    "de": 7,
+    "de": 6,
     "us": 60
   },
   "supplements": [
@@ -126,5 +126,68 @@
     "periode"
   ],
   "amazon_aktiv": false,
-  "_amazon": "Artur 19.11.2026: Amazon erstmal deaktiviert (amazon/wagen melden nur „deaktiviert“). Wieder an: true."
+  "_amazon": "Artur 19.11.2026: Amazon erstmal deaktiviert (amazon/wagen melden nur „deaktiviert“). Wieder an: true.",
+  "beauty_filter_laender": [
+    "us"
+  ],
+  "_beauty": "Artur 19.11.: in DE Beauty nicht pauschal raus – rein, wenn über das Produkt/den Preis geredet wird (Sichtprüfung).",
+  "_verstoss": "Artur 19.11.: Heilversprechen, Schmerzen/Rücken, Haare, riskanter Beauty-Kram → raus (alle Länder, auch übersetzte Videos).",
+  "verstoss_risiko": [
+    "rückenschmerz",
+    "rücken schmerz",
+    "schmerzlinder",
+    "schmerzen",
+    "nackenschmerz",
+    "kopfschmerz",
+    "migräne",
+    "ischias",
+    "arthrose",
+    "arthritis",
+    "gelenkschmerz",
+    "haltungskorrektur",
+    "haltungstrainer",
+    "posture",
+    "back pain",
+    "pain relief",
+    "neck pain",
+    "sciatica",
+    "heilt",
+    "heilung",
+    "linderung",
+    "lindert",
+    "therapie",
+    "therapy",
+    "entzündung",
+    "haarausfall",
+    "haarwachstum",
+    "hair growth",
+    "hair loss",
+    "haarfärbe",
+    "haarfarbe",
+    "glatze",
+    "anti-aging",
+    "anti aging",
+    "falten",
+    "wrinkle",
+    "akne",
+    "acne",
+    "pickel",
+    "cellulite",
+    "schlankheit",
+    "fettverbrenn",
+    "detox",
+    "hämorrhoid",
+    "inkontinenz",
+    "blutdruck",
+    "blutzucker",
+    "diabet",
+    "schlafapnoe",
+    "schnarch",
+    "tinnitus",
+    "krampfadern"
+  ],
+  "supplement_filter_laender": [
+    "us"
+  ],
+  "_supplement": "Artur 19.11. (Abgleich): in DE sind Supplements ok (15 in seiner BOF-Liste); riskante fängt verstoss_risiko."
 }

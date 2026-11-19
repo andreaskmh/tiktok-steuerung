@@ -5,6 +5,7 @@
   python3 werkzeuge/research.py filtern <de|us>                # Vorfilter (Alter, Promis, Beauty, Supplements)
   python3 werkzeuge/research.py blaetter <de|us> [--pro 20]    # Sammelbilder der Kandidaten zum Sortieren
   python3 werkzeuge/research.py speichern <de|us> "<Liste>" <nr> [<nr> ...]   # Videos (Kandidaten-Nr) in Social1-Liste
+  python3 werkzeuge/research.py sortieren <de|us> "<Liste>"     # Social1-Liste in Ranglisten-Reihenfolge (Platz 1 oben)
   python3 werkzeuge/research.py rangliste <de|us>              # Punkte + Platzierung der einsortierten Videos
   python3 werkzeuge/research.py de-suche <suchwort>             # gibt es das im TikTok Shop DE? (Social1-Produkte, Bestseller)
   python3 werkzeuge/research.py de-suche --datei <woerter.txt>  # viele Suchwörter auf einmal (eine Zeile pro Wort)
@@ -199,8 +200,9 @@ def s1_viele(name, argliste, parallel=4, warte=600):
     schluessel = f"v{time.time_ns()}"
     start = safari(f"""(()=>{{window.__s1=window.__s1||{{}};const k={json.dumps(schluessel)};const L={json.dumps(argliste, ensure_ascii=False)};
 const out=new Array(L.length);let i=0;window.__s1[k+'_n']=0;
-const eins=async()=>{{while(i<L.length){{const j=i++;try{{const r=await fetch(location.pathname,{{method:'POST',headers:{{'Accept':'text/x-component',
-'next-action':{json.dumps(AKTIONEN[name])},'Content-Type':'text/plain;charset=UTF-8'}},body:JSON.stringify(L[j])}});const t=await r.text();
+const eins=async()=>{{while(i<L.length){{const j=i++;try{{let r,t;for(let v=0;v<6;v++){{r=await fetch(location.pathname,{{method:'POST',headers:{{'Accept':'text/x-component',
+'next-action':{json.dumps(AKTIONEN[name])},'Content-Type':'text/plain;charset=UTF-8'}},body:JSON.stringify(L[j])}});t=await r.text();
+if(r.status!=429&&!t.includes('Too many requests'))break;await new Promise(x=>setTimeout(x,5000*(v+1)));}}
 const z=t.split(String.fromCharCode(10)).find(l=>l.startsWith('1:'));out[j]=r.status==200&&z?z.slice(2):JSON.stringify({{error:'Status '+r.status}});}}
 catch(e){{out[j]=JSON.stringify({{error:String(e)}})}};window.__s1[k+'_n']++;}}}};
 Promise.all(Array.from({{length:{parallel}}},eins)).then(()=>window.__s1[k]=JSON.stringify(out));return 1}})()""")
@@ -347,9 +349,11 @@ def filtern(land):
             grund = f"zu alt ({k['alter']})"
         elif any(p in cr for p in REGELN["promis"]):
             grund = "Promi"
-        elif w := treffer(REGELN["supplements"], name):
+        elif w := treffer(REGELN.get("verstoss_risiko", []), name):
+            grund = f"Verstoß-Risiko ({w})"
+        elif land in REGELN.get("supplement_filter_laender", ["de", "us"]) and (w := treffer(REGELN["supplements"], name)):
             grund = f"Supplement ({w})"
-        elif w := treffer(REGELN["beauty"], name):
+        elif land in REGELN.get("beauty_filter_laender", ["de", "us"]) and (w := treffer(REGELN["beauty"], name)):
             grund = f"Beauty ({w})"
         gesehen.add(k["video_id"])
         (raus if grund else rein).append({**k, "grund": grund} if grund else k)
@@ -481,6 +485,47 @@ def speichern(land, liste, nummern):
     echt = set(listen_videos(lid))
     fehlt = [n for n in nummern if kand[int(n)]["video_id"] not in echt]
     print(f"FERTIG speichern {liste}: {neu} neu, Liste hat jetzt {len(echt)} Videos" + (f", FEHLEN {fehlt[:10]}" if fehlt else ""))
+
+
+def sortieren(land, liste):
+    """Social1-Liste in Ranglisten-Reihenfolge bringen (Platz 1 oben). Social1 zeigt zuletzt Hinzugefügtes oben → vom
+    schlechtesten bis Platz 1: jedes Video einzeln raus und sofort wieder rein (nie mehr als 1 Video gleichzeitig weg).
+    Vorher Sicherung der Liste als Datei; am Ende Abgleich, Fehlende werden aus der Sicherung nachgelegt."""
+    kand = {k["video_id"]: k for k in json.loads((ORDNER / f"{land}-kandidaten.json").read_text())}
+    aktionen_laden()
+    lid = liste_id(liste, anlegen=False)
+    if not lid:
+        sys.exit(f"STOPP: Liste „{liste}“ gibt es nicht")
+    videos = ((s1("getVideoListDetail", lid).get("data") or {}).get("list") or {}).get("videos") or []
+    sich = ORDNER / f"sicherung-{liste}-{time.strftime('%H%M%S')}.json"
+    sich.write_text(json.dumps(videos, ensure_ascii=False, indent=1))
+    pakete = []
+    for v in videos:
+        p = {f: v.get(f) for f in ("videoId", "isAd", "description", "handle", "timePosted")}
+        p["product"] = {f: (v.get("product") or {}).get(f, "") for f in ("productId", "name", "priceDisplay", "imgUrl")}
+        pakete.append(p)
+    rang = lambda p: punkte(kand[p["videoId"]]) if p["videoId"] in kand else -1
+    reihe = sorted(pakete, key=rang)                           # schlechtester zuerst → Platz 1 zuletzt = oben
+    jetzt = [v.get("videoId") for v in videos]                 # schon richtig sortierter Teil am Ende wird nicht angefasst
+    soll = [p["videoId"] for p in reihe]
+    k = 0
+    while k < len(soll) and jetzt[:k + 1] == soll[:k + 1]:
+        k += 1
+    for n, p in enumerate(reihe[k:], 1):
+        s1("removeVideosFromList", lid, [p["videoId"]])
+        r = s1("addVideoToList", lid, p)
+        if r.get("error"):
+            time.sleep(10)
+            r = s1("addVideoToList", lid, p)
+        if n % 50 == 0:
+            print(f"… {n}/{len(reihe) - k}", flush=True)
+    echt = set(listen_videos(lid))
+    fehlt = [p for p in reihe if p["videoId"] not in echt]
+    for p in fehlt:
+        s1("addVideoToList", lid, p)
+    echt = listen_videos(lid)
+    print(f"FERTIG sortieren {liste}: {len(echt)}/{len(pakete)} Videos, Platz 1 oben (Sicherung {sich.name})")
+    return echt
 
 
 def speichern_klick(land, liste, nummern):
@@ -982,6 +1027,9 @@ if __name__ == "__main__":
     elif befehl == "speichern":
         mit_neustart(speichern, land, a[2], " ".join(a[3:]).split())
         land_zurueck()
+    elif befehl == "sortieren":
+        sperre_setzen()
+        sortieren(land, a[2])
     elif befehl == "bildvergleich":
         mit_neustart(bildvergleich, land, a[2])
     elif befehl == "skripte":

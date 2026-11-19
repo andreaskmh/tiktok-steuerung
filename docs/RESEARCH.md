@@ -27,7 +27,8 @@ Erster Lauf des Tages ohne `--frisch`, weitere Läufe am selben Tag mit `--frisc
 3. `python3 werkzeuge/research.py blaetter de --neu` → Sammelbilder `de-blatt-neu-XX.jpg` ansehen (Nr + Alter oben links).
    Pro Nr entscheiden und in `de-sortiert.json` ergänzen (`{"nr": "BOF"|"SLIDES"}`), Abgelehnte in `de-nein.json` (`{"nr": "Grund"}`).
 4. `python3 werkzeuge/research.py speichern de "BOF DE <datum>" "<nr nr …>"` und dasselbe für `"SLIDES DE <datum>"`
-5. `python3 werkzeuge/research.py rangliste de`
+5. `python3 werkzeuge/research.py rangliste de`, dann `sortieren de "BOF DE <datum>"` und `sortieren de "SLIDES DE <datum>"`
+   (Social1-Liste in Ranglisten-Reihenfolge, Platz 1 oben; einzeln raus/rein, nie die ganze Liste auf einmal)
 
 **USA**
 1. `lesen us [--frisch]`, `filtern us`, `blaetter us --neu`
@@ -71,9 +72,42 @@ DE+US in `~/.tiktok-research/messung.jsonl` (läuft aus einer Kopie dort, nach �
 Artur schickt seine eigene Research (Listen/Bildschirmaufnahme). Video für Video vergleichen, Unterschiede mit Grund hier unter „Gelernt“ eintragen.
 
 ### Gelernt
+**Abgleich mit Arturs eigener Research (19.11.2026, Deutschland, bis Seite 50) – gilt für DE, USA wird später überarbeitet:**
+- **Alter:** Was eine Woche alt ist, fliegt raus (DE nur bis 6 Tage). Videos in älteren Listen, die 7 Tage alt werden, werden gelöscht.
+- **BOF – Vorrang haben zwei Formate:** (1) klassisch: Bild/Green-Screen über dem Kopf, die Person redet über das Produkt;
+  (2) faceless: die Person filmt das Produkt und zeigt es mit den Händen.
+- **Vergleichsvideos und Sketche: nein.** Ausnahme: Sketche mit sehr hoher Viralität, bei denen Artur einfach selbst über das
+  Produkt reden kann (Sketch muss nicht nachgespielt werden).
+- **Beauty:** Nicht nehmen, wenn das Produkt nur benutzt und das Ergebnis gezeigt wird (z. B. Wimpern, Haare) – das lässt sich nicht
+  als BOF nachstellen. **Nehmen, wenn über das Produkt geredet wird, vor allem über den Preis** – auch wenn es dabei angewendet
+  und Vorher/Nachher gezeigt wird. Vorrang: die Person redet nur über das Produkt (auf ein eigenes BOF übertragbar).
+- **Verstoß-Risiko → nie (alle Länder, auch übersetzte Videos):** Heilversprechen, Rücken-/Nacken-/sonstige Schmerzen, Haare
+  (Wachstum, Ausfall, Färben), riskanter Beauty-Kram (Anti-Aging, Falten, Akne, Cellulite …). Filter `verstoss_risiko` in
+  research_regeln.json; was der Produktname nicht verrät, beim Sichten aussortieren.
+- **Supplements sind in DE ok** (15 in Arturs BOF-Liste), „keine Supplements“ gilt nur für USA.
+- **Technik-Befund:** Die alte Klick-Lesung hat Foto-Slideshows fast komplett verschluckt (kein Vorschaubild → keine Video-Nummer →
+  als „doppelt“ verworfen): 67 von Arturs Slides fehlten deshalb. Seit der direkten Lesung (getTopVideos) sind sie drin.
+- **Handy-Videos, die auf dem Handy-Bildschirm den Preis zeigen** (gefilmt, nicht animiert) → **kein SLIDES**, sondern **BOF**
+  (weil gesprochen wird).
+- **SLIDES – Arten (alle rein):**
+  - *Normale Slideshows* (erkennbare Bildfolgen): werden teils komplett übernommen, nur der Text wird geändert. Bei „Prominenten“-
+    Slideshows (Gesichter, Texte, Nachrichten, WhatsApp-Verläufe u. Ä.) immer komplett übernehmen, nur Text ändern.
+  - *KI-Videos*: daraus eigene Slideshows (ChatGPT + Claude) – entweder neu nach der Idee (andere Gesichter, Trend setzen) oder
+    komplett übernommen und in eine Slideshow umgewandelt (Trend folgen).
+  - *Creator-Gesicht als animierter Cartoon* in der Slideshow → gleiches Konzept, aber mit unseren eigenen Gesichtern.
+  - *Normale Videos nur mit Musik*, in denen sich eine Person zeigt oder das Produkt präsentiert (z. B. Frau zeigt Kleid, sagt nichts)
+    → daraus eine animierte Cartoon-Slideshow mit eigener (per ChatGPT erstellter) Person.
+  - Regel: höchstens 5 Bilder pro Slideshow.
+- **Beides (BOF + SLIDES):** Produkt im KI-Video-Stil präsentiert UND es wird sinngemäß darüber gesprochen → in beide Listen.
+- **Reihenfolge in Social1** soll der Rangliste entsprechen (Platz 1 oben): `research.py sortieren` (Social1 zeigt zuletzt
+  Hinzugefügtes oben).
+
 - 19.11.: Parfüm darf rein. Sketche/Vergleiche und reine Vorführungen ohne Gesicht gehören in BOF DE.
 
 ## Technik
+- **Social1 bremst** bei vielen schnellen Anfragen („Too many requests“, 429): s1_viele wartet und versucht es bis zu 6× erneut.
+  Am 19.11. gingen beim ersten Sortier-Versuch (alles raus, alles rein) 180 von 362 BOF-Videos kurz verloren → aus der
+  Sicherung vollständig wiederhergestellt; seitdem sortiert `sortieren` nur noch einzeln (raus + sofort rein) mit Sicherungsdatei.
 - **Seit 19.11.2026 spricht research.py direkt mit Social1** (Server-Aktionen der Webseite, im eingeloggten Safari-Fenster ausgeführt –
   keine Cookies, keine Klicks): Lesen = `getTopVideos` (100 Seiten DE in ~2 Min. statt ~40), Speichern = `addVideoToList` gebündelt
   (prüft die echte Liste, legt fehlende Listen per `createVideoList` an), DE-Check = `searchProducts`. Die Aktions-IDs liest das

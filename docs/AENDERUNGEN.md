@@ -369,3 +369,8 @@
   zu 15 mit 20 s Pause nachgespeichert, alles drin. Vorschlag: Päckchen kleiner/mit Pause. 1× Social1-„Transcribe“ (Nr 68 US) aus
   Versehen genutzt, bevor die Regel „nie Transcribe“ in RESEARCH.md stand.
 - **19.11.2026 (Artur)** – Nach jeder Research werden die Ranglisten (de/us) und die SKRIPTE-Datei immer im Chat angehängt (Tageslauf + geplante Aufgabe).
+- **19.11.2026 (Artur, Abgleich DE)** – Regeln aus Arturs eigener Research in docs/RESEARCH.md „Gelernt“ (Formate BOF/SLIDES, Beauty nur
+  mit Reden/Preis, keine Vergleiche/Sketche, Handy-Preis-Videos = BOF, max. 6 Tage). Filter: Beauty + Supplements nur noch in USA
+  pauschal raus, neu `verstoss_risiko` (Heilversprechen, Schmerzen, Haare, Anti-Aging … – alle Länder). Befund: alte Klick-Lesung
+  hatte Foto-Slideshows verschluckt (67 Slides fehlten). Neu `research.py sortieren` (Social1-Liste = Ranglisten-Reihenfolge):
+  erster Versuch verlor wegen Social1-Bremse 180 Videos kurz – komplett wiederhergestellt, jetzt einzeln + 429-Wiederholung.
