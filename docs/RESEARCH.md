@@ -1,27 +1,62 @@
-# Research auf Social1 (täglich)
+# Research auf Social1 (täglich, 7 / 13 / 19 Uhr)
 
-Arturs Vorgaben vom 19.11.2026. Ablauf: erst Deutschland, dann USA. Immer „Today“ + „Trending“, keine Kategorie, bis Seite 50.
+Arturs Vorgaben (19.11.2026). Erst Deutschland, dann USA. Immer „Today“ + „Trending“, keine Kategorie, keine Produktsuche, bis Seite 50.
+Werkzeug: `werkzeuge/research.py`, Regeln `werkzeuge/research_regeln.json`, Ablage `uebergabe/research/<JJJJ-MM-TT>/`.
+Geplante Aufgabe „tiktok-research-taeglich“ (Claude-App, Auto-Modus) führt den Tageslauf unten aus.
 
-## Befehle (`werkzeuge/research.py`, Ablage `uebergabe/research/<JJJJ-MM-TT>/`)
-1. `lesen de` – alle Seiten lesen (im Hintergrund, fortsetzbar)
-2. `filtern de` – raus: älter als 7 Tage (DE), Promis, Beauty, Supplements (`research_regeln.json`); Rest = Kandidaten mit Nr
-3. `blaetter de` – Sammelbilder (20 Vorschaubilder je Bild, Nr + Alter) → Claude sortiert in `de-sortiert.json`
-   (`{"nr": "BOF" | "SLIDES" | "QUALITY"}`)
-4. `speichern de "BOF DE 19.11.2026" <nr …>` – in die Social1-Liste (legt sie bei Bedarf an)
-5. `rangliste de` – Punkte und Platzierung → `de-rangliste.md`
+## Was in welche Liste (Datum immer TT.MM.JJJJ von heute)
+| Liste | Was rein | Was nie |
+|---|---|---|
+| `BOF DE <datum>` | Jemand spricht übers Produkt, Sketche („Armer/Reicher Freund“, IQ-Vergleiche), Vergleiche, Tier-Lists, Green-Screen-Deals, **auch reine Vorführungen ohne Gesicht**, Parfüm ist ok | Promis (ChristianWolf, SinanMovez), Supplements, Make-up/Haare/Wimpern/Hautpflege, reine Körper-/Po-Videos |
+| `SLIDES DE <datum>` | Slideshows (Fotos/Screenshots mit Text, Produktbilder mit Pfeil/Preis), **KI-animierte Videos** (Pixar-Stil, Skelette, Grafiken) | wie oben |
+| `SLIDES USA <datum>` | Slideshows + KI-animierte Videos, deren Idee man auf andere Produkte übertragen kann | Beauty/Frauenprodukte, Supplements, Titten/Ärsche |
+| `Quality USA <datum>` | Jemand hat das Produkt echt und zeigt es (auch Vergleiche, Dupes/„Doppelgänger“), **nur wenn es das Produkt oder etwas Ähnliches/andere Marke im TikTok Shop DE gibt** (egal ob Versand Übersee) | wie oben; Produkt in DE in keiner Form vorhanden |
 
-## Listen
-- DE: `BOF DE <datum>` (jemand spricht übers Produkt, keine Promis), `SLIDES DE <datum>` (Slideshows + KI-animierte Videos)
-- USA: `SLIDES USA <datum>` (übertragbar auf andere Produkte), `Quality USA <datum>` (Produkt wird echt gezeigt, auch
-  Vergleiche/Dupes; nur wenn es das Produkt – oder ein ähnliches/anderer Marke – im TikTok Shop DE gibt → dann Amazon.es
-  suchen und in den Einkaufswagen legen, nie kaufen)
-- Nie: Beauty/Frauenprodukte, Supplements, nackte Haut (USA). Fremdsprachige US-Videos sind ok. Nicht verfügbare Videos überspringen.
+- DE: Videos höchstens 1 Woche alt. USA: älter ist ok (Deutsche setzen langsam um), Sprache egal, nicht verfügbare Videos überspringen.
+- Produkte, die schon öfter viral waren, mit **anderer Hook** wieder aufnehmen.
+- Ersetzbare Produkte (Hosen, T-Shirts, Staubsauger, Nass-/Trockensauger …) zählen als „gibt es in DE“.
+- Today/Yesterday haben bei Umsetzung und Produktbestellung absoluten Vorrang (Rangliste).
+
+## Tageslauf (Befehle aus dem Projektordner; lange Schritte im Hintergrund, nur letzte Zeilen lesen)
+Vorher: kein Posten-Stapel aktiv (`pgrep -f post_mensch.py`), keine Sperre `uebergabe/research/.laeuft` mit lebender PID.
+Erster Lauf des Tages ohne `--frisch`, weitere Läufe am selben Tag mit `--frisch` (liest alles neu, alte Nummern bleiben).
+
+**Deutschland**
+1. `python3 werkzeuge/research.py lesen de [--frisch]`
+2. `python3 werkzeuge/research.py filtern de`
+3. `python3 werkzeuge/research.py blaetter de --neu` → Sammelbilder `de-blatt-neu-XX.jpg` ansehen (Nr + Alter oben links).
+   Pro Nr entscheiden und in `de-sortiert.json` ergänzen (`{"nr": "BOF"|"SLIDES"}`), Abgelehnte in `de-nein.json` (`{"nr": "Grund"}`).
+4. `python3 werkzeuge/research.py speichern de "BOF DE <datum>" "<nr nr …>"` und dasselbe für `"SLIDES DE <datum>"`
+5. `python3 werkzeuge/research.py rangliste de`
+
+**USA**
+1. `lesen us [--frisch]`, `filtern us`, `blaetter us --neu`
+2. Sortieren: `"SLIDES"` oder `"QUALITY?"` (Kandidat) in `us-sortiert.json`, Rest in `us-nein.json`.
+3. Für jeden `QUALITY?`: Produktnamen (Social1, englisch) in 1–3 kurze Suchwörter übersetzen (Gattung, z. B. „Nass Trockensauger“, „heated jacket“)
+   → `python3 werkzeuge/research.py de-suche <suchwort>` (TikTok Shop DE über Social1, Land DE, Bestseller zuerst).
+   Gibt es das Produkt oder etwas Ähnliches/andere Marke → `"QUALITY"`, sonst in `us-nein.json` („nicht in DE“). Treffer (Name, id, verkauft)
+   in `us-quality.json` notieren (`{"nr": {"de_produkt": …, "de_id": …, "amazon": ASIN}}`).
+4. Nur für `QUALITY`: Amazon.es suchen (`amazon <spanisches/englisches Suchwort>`), passendstes Produkt (gute Bewertungen, Preis passt) →
+   `wagen <ASIN>`. **Nie kaufen, nie zur Kasse, nie „Comprar ya“.** Captcha/Login → STOPP, Artur.
+5. `speichern us "SLIDES USA <datum>" …` und `speichern us "Quality USA <datum>" …`, dann `rangliste us`.
+6. Deutsche Skripte: für die Top 5 Quality-Videos (Today/Yesterday zuerst) `skript us <nr>` → Original-Transkript; daraus ein deutsches
+   Skript schreiben (`us-skripte/<nr>-deutsch.md`: Hook in 1 Satz, dann Ablauf in kurzen Sätzen, wie man es in DE sagt, nicht wörtlich).
 
 ## Rangliste (Punkte)
-Frische (Today 100, Yesterday 85, 2 Tage 55 … 7 Tage 12) + Tempo (+Views) + Creator-Umsatz + Likes/Kommentare pro View
-+ 🔥-Bonus. Today/Yesterday haben bei der Umsetzung immer Vorrang.
+Frische (Today 100, Yesterday 85, 2 Tage 55 … 7 Tage 12, danach weniger) + Tempo (+Views, log) + Creator-Umsatz (log)
++ Likes/Kommentare pro View + 🔥-Bonus. Ausgabe `<land>-rangliste.md`.
 
-## Offen
-- Zeiten: Social1-Aktualisierung erst messen (2–3 Tage), Start-Vermutung 7 / 13 / 19 Uhr.
-- USA-Ablauf (Produktcheck DE, Amazon.es), deutsche Skripte über „Transcribe“.
-- Lernen: Arturs Listen mit meinen vergleichen, Gründe als Regeln hier eintragen.
+## Zeiten
+Start 7 / 13 / 19 Uhr. Stündliche Messung (`research.py messen`, launchd `de.tiktoksteuerung.research-messen`) protokolliert Seite 1
+DE+US in `uebergabe/research/messung.jsonl`; nach 2–3 Tagen `research.py messung` auswerten und die Zeiten auf die Social1-Aktualisierung legen.
+
+## Lernen
+Artur schickt seine eigene Research (Listen/Bildschirmaufnahme). Video für Video vergleichen, Unterschiede mit Grund hier unter „Gelernt“ eintragen.
+
+### Gelernt
+- 19.11.: Parfüm darf rein. Sketche/Vergleiche und reine Vorführungen ohne Gesicht gehören in BOF DE.
+
+## Technik
+- research.py nutzt ein eigenes Safari-Fenster (Social1-Videoseite `social1.ai/?…`), DE-Check ein eigenes (`social1.ai/products`), Amazon ein eigenes.
+  Die Listen-Tabs von post_mensch (`saved-videos/…`) werden nie angefasst. Land wird nach jedem Lauf auf DE zurückgestellt.
+- Klicks immer per `setTimeout`; hängt der Tab, schließt research.py ihn selbst und macht weiter (fortsetzbar).

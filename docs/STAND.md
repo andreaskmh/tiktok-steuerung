@@ -1,4 +1,16 @@
-# Stand & nächste Schritte (zuletzt 12.11.2026)
+# Stand & nächste Schritte
+
+## Research (Stand 19.11.2026 ~03:30) – Doku `docs/RESEARCH.md`, Werkzeug `werkzeuge/research.py`
+- DE 19.11. fertig: `BOF DE 19.11.2026` (332), `SLIDES DE 19.11.2026` (31), Rangliste `uebergabe/research/2026-11-19/de-rangliste.md`.
+- USA: Befehle gebaut (de-suche, amazon, wagen, skript), `lesen us` + `filtern us` laufen/liefen im Hintergrund (Log `us-lesen.log`).
+  **Nächster Schritt:** Tageslauf USA ab Schritt „blaetter us --neu“ (docs/RESEARCH.md) einmal komplett testen: SLIDES USA / Quality USA,
+  DE-Check, Amazon.es (Artur ist in Safari bei Amazon.es NICHT eingeloggt → Wagen nur Sitzung; Login macht Artur), `wagen` + `skript`
+  erstmals live prüfen, deutsche Skripte Top 5.
+- Geplante Aufgabe „tiktok-research-taeglich“ 7/13/19 Uhr; stündliche Messung per launchd seit 19.11. ~03:30 → nach 2–3 Tagen
+  `research.py messung` auswerten, Zeiten anpassen, Messung abschalten (`launchctl unload ~/Library/LaunchAgents/de.tiktoksteuerung.research-messen.plist`).
+- Artur schickt heute seine eigene Research → vergleichen, Regeln in RESEARCH.md „Gelernt“.
+
+## Älter (12.11.2026)
 
 **Zuerst lesen:** `CLAUDE.md` → `docs/ABLAUF.md` → `docs/ACCOUNTS.md`. Memory: upload-speed-regeln, produkt-immer-ueber-social1.
 

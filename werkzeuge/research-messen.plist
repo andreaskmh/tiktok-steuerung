@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Stündliche Social1-Messung (research.py messen). Einschalten: launchctl load ~/Library/LaunchAgents/de.tiktoksteuerung.research-messen.plist
+     Ausschalten: launchctl unload … (nach 2–3 Tagen, wenn die Zeiten feststehen) -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>de.tiktoksteuerung.research-messen</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/python3</string>
+    <string>/Users/andreask/Documents/Coding/TikTok-Steuerung/werkzeuge/research.py</string>
+    <string>messen</string>
+  </array>
+  <key>StartCalendarInterval</key><dict><key>Minute</key><integer>5</integer></dict>
+  <key>StandardOutPath</key><string>/Users/andreask/Documents/Coding/TikTok-Steuerung/uebergabe/research/messen.log</string>
+  <key>StandardErrorPath</key><string>/Users/andreask/Documents/Coding/TikTok-Steuerung/uebergabe/research/messen.log</string>
+</dict>
+</plist>

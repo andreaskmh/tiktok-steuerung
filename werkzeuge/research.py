@@ -6,6 +6,12 @@
   python3 werkzeuge/research.py blaetter <de|us> [--pro 20]    # Sammelbilder der Kandidaten zum Sortieren
   python3 werkzeuge/research.py speichern <de|us> "<Liste>" <nr> [<nr> ...]   # Videos (Kandidaten-Nr) in Social1-Liste
   python3 werkzeuge/research.py rangliste <de|us>              # Punkte + Platzierung der einsortierten Videos
+  python3 werkzeuge/research.py de-suche <suchwort>             # gibt es das im TikTok Shop DE? (Social1-Produkte, Bestseller)
+  python3 werkzeuge/research.py amazon <suchwort>               # Amazon.es-Suche (nur lesen)
+  python3 werkzeuge/research.py wagen <ASIN>                    # in den Amazon.es-Einkaufswagen (nie kaufen)
+  python3 werkzeuge/research.py skript <de|us> <nr>             # Transkript (Social1 „Transcribe“) speichern
+  python3 werkzeuge/research.py messen                         # stündlich (launchd): Seite 1 DE+US protokollieren
+  python3 werkzeuge/research.py messung                        # Auswertung: wann aktualisiert Social1?
 
 Fortsetzbar: `lesen` überspringt fertige Seiten, `speichern` merkt sich Gespeichertes.
 Ablage: uebergabe/research/<JJJJ-MM-TT>/ (de.json, de-kandidaten.json, de-blatt-01.jpg, de-sortiert.json …)
@@ -40,10 +46,28 @@ class Haenger(Exception):
     """Social1-Tab antwortet nicht mehr (AppleEvent-Zeitüberschreitung) → Tab neu, Schritt wiederholen."""
 
 
+# Research arbeitet nur im eigenen Social1-Fenster (Video-Seite, nie die Listen-Tabs von post_mensch „saved-videos/…“).
+AS_DOC = (['-e', 'on run argv', '-e', 'tell application "Safari"', '-e', 'set ziel to missing value', '-e', 'repeat with d in documents',
+           '-e', 'set u to URL of d', '-e', 'if u is "https://www.social1.ai/" or u starts with "https://www.social1.ai/?" then',
+           '-e', 'set ziel to d', '-e', 'exit repeat', '-e', 'end if', '-e', 'end repeat'])
+
+
+def research_fenster():
+    """Sorgt dafür, dass es ein eigenes Research-Fenster gibt (Social1-Videoseite)."""
+    r = subprocess.run(["osascript", *AS_DOC, "-e", 'if ziel is missing value then', "-e",
+                        'make new document with properties {URL:"https://www.social1.ai/?page=1"}', "-e", 'return "neu"', "-e",
+                        'end if', "-e", 'return "da"', "-e", "end tell", "-e", "end run"], capture_output=True, text=True)
+    if r.stdout.strip() == "neu":
+        time.sleep(9)
+
+
 def safari(js):
-    r = subprocess.run(["osascript", "-e", "on run argv", "-e", "with timeout of 25 seconds", "-e",
-                        'tell application "Safari" to do JavaScript (item 1 of argv) in front document', "-e", "end timeout",
-                        "-e", "end run", js], capture_output=True, text=True)
+    r = subprocess.run(["osascript", *AS_DOC, "-e", 'if ziel is missing value then return "kein-fenster"', "-e",
+                        "with timeout of 25 seconds", "-e", "return do JavaScript (item 1 of argv) in ziel", "-e", "end timeout",
+                        "-e", "end tell", "-e", "end run", js], capture_output=True, text=True)
+    if r.stdout.strip() == "kein-fenster":
+        research_fenster()
+        return safari(js)
     if r.returncode:
         if "-1712" in r.stderr:
             raise Haenger()
@@ -53,33 +77,38 @@ def safari(js):
 
 def tab_neu():
     """Eingefrorenen Social1-Tab schließen (nur wenn vorne wirklich Social1 ist) und frisch öffnen."""
-    url = subprocess.run(["osascript", "-e", "with timeout of 10 seconds", "-e",
-                          'tell application "Safari" to get URL of front document', "-e", "end timeout"],
-                         capture_output=True, text=True).stdout.strip()
-    if "social1.ai" not in url:
-        sys.exit(f"STOPP Safari hängt, vorne ist aber nicht Social1 ({url[:60]}) – nichts geschlossen")
-    subprocess.run(["osascript", "-e", "with timeout of 15 seconds", "-e", 'tell application "Safari" to close front window',
-                    "-e", "end timeout"], capture_output=True)
+    subprocess.run(["osascript", *AS_DOC, "-e", "if ziel is not missing value then", "-e", "with timeout of 15 seconds", "-e",
+                    "close ziel", "-e", "end timeout", "-e", "end if", "-e", "end tell", "-e", "end run", "x"], capture_output=True)
     time.sleep(2)
-    subprocess.run(["osascript", "-e", 'tell application "Safari" to make new document with properties {URL:"https://www.social1.ai/"}'],
-                   capture_output=True)
-    time.sleep(9)
+    research_fenster()
     print("Safari-Tab hing → neu geöffnet", flush=True)
 
 
 def mit_neustart(f, *args):
-    """Fortsetzbare Abläufe bei hängendem Tab bis zu 6× neu starten (Gespeichertes/Gelesenes wird übersprungen)."""
+    """Beim Neustart nach Hänger wird --frisch nicht wiederholt (sonst ginge Gelesenes verloren).
+    Fortsetzbare Abläufe bei hängendem Tab bis zu 6× neu starten (Gespeichertes/Gelesenes wird übersprungen)."""
     for _ in range(6):
         try:
             return f(*args)
         except Haenger:
             tab_neu()
+            if f is lesen:
+                args = args[:2] + (False,)
     sys.exit("STOPP Safari hängt immer wieder")
 
 
+def land_zurueck():
+    """Land für die anderen Social1-Tabs (post_mensch) wieder auf DE stellen."""
+    try:
+        safari("localStorage.setItem('selectedRegion','de');1")
+    except (Haenger, SystemExit):
+        pass
+
+
 def gehe(url):
-    subprocess.run(["osascript", "-e", "on run argv", "-e", 'tell application "Safari" to set URL of front document to (item 1 of argv)',
-                    "-e", "end run", url], capture_output=True)
+    research_fenster()
+    subprocess.run(["osascript", *AS_DOC, "-e", "set URL of ziel to (item 1 of argv)", "-e", "end tell", "-e", "end run", url],
+                   capture_output=True)
 
 
 def zahl(s):
@@ -114,9 +143,11 @@ def land_setzen(land):
         sys.exit(f"STOPP Land: Social1 zeigt '{knopf}' statt {land.upper()}")
 
 
-def lesen(land, seiten):
+def lesen(land, seiten, frisch=False):
     ORDNER.mkdir(parents=True, exist_ok=True)
     ziel = ORDNER / f"{land}.json"
+    if frisch and ziel.exists():                              # weiterer Lauf am selben Tag: alten Stand aufheben, neu lesen
+        ziel.rename(ORDNER / f"{land}-{time.strftime('%H%M')}.json")
     daten = json.loads(ziel.read_text()) if ziel.exists() else {"land": land, "datum": HEUTE.isoformat(), "seiten": {}}
     land_setzen(land)
     for s in range(1, seiten + 1):
@@ -172,8 +203,16 @@ def filtern(land):
             grund = f"Beauty ({w})"
         gesehen.add(k["video_id"])
         (raus if grund else rein).append({**k, "grund": grund} if grund else k)
-    for i, k in enumerate(rein, 1):
-        k["nr"] = i
+    alt = ORDNER / f"{land}-kandidaten.json"                  # Nummern bleiben über mehrere Läufe am Tag gleich
+    nummer = {k["video_id"]: k["nr"] for k in json.loads(alt.read_text())} if alt.exists() else {}
+    naechste = max(nummer.values(), default=0) + 1
+    for k in rein:
+        if k["video_id"] in nummer:
+            k["nr"] = nummer[k["video_id"]]
+        else:
+            k["nr"], naechste = naechste, naechste + 1
+            k["neu"] = True
+    rein.sort(key=lambda k: k["nr"])
     (ORDNER / f"{land}-kandidaten.json").write_text(json.dumps(rein, ensure_ascii=False, indent=1))
     (ORDNER / f"{land}-raus.json").write_text(json.dumps(raus, ensure_ascii=False, indent=1))
     gruende = {}
@@ -183,10 +222,17 @@ def filtern(land):
     print(f"FERTIG filtern {land.upper()}: {len(rein)} Kandidaten, {len(raus)} raus {gruende}")
 
 
-def blaetter(land, pro):
+def blaetter(land, pro, nur_neu=False):
     if not BLATT.exists():
         subprocess.run(["zsh", str(PROJ / "werkzeuge" / "build.sh")], check=True)
     kand = json.loads((ORDNER / f"{land}-kandidaten.json").read_text())
+    if nur_neu:                                               # nur noch nicht einsortierte Kandidaten
+        sort = ORDNER / f"{land}-sortiert.json"
+        fertig = set(json.loads(sort.read_text())) | set(json.loads((ORDNER / f"{land}-nein.json").read_text())
+                                                      if (ORDNER / f"{land}-nein.json").exists() else [])
+        kand = [k for k in kand if str(k["nr"]) not in fertig] if sort.exists() else kand
+    if not kand:
+        return print("Keine neuen Kandidaten")
     bilder = ORDNER / f"{land}-bilder"
     bilder.mkdir(exist_ok=True)
     for k in kand:
@@ -201,7 +247,7 @@ def blaetter(land, pro):
         args = []
         for k in teil:
             args += [str(bilder / f"{k['video_id']}.jpg"), f"{k['nr']} · {k['alter'].replace(' ago', '')}"]
-        aus = ORDNER / f"{land}-blatt-{b + 1:02d}.jpg"
+        aus = ORDNER / f"{land}-blatt-{'neu-' if nur_neu else ''}{b + 1:02d}.jpg"
         subprocess.run([str(BLATT), str(aus), "5", *args], check=True)
         print(f"{aus.name}: Nr {teil[0]['nr']}–{teil[-1]['nr']}")
 
@@ -225,6 +271,9 @@ def speichern(land, liste, nummern):
     kand = {k["nr"]: k for k in json.loads((ORDNER / f"{land}-kandidaten.json").read_text())}
     log = ORDNER / f"gespeichert-{liste}.json"
     fertig = set(json.loads(log.read_text())) if log.exists() else set()
+    weg_log = ORDNER / f"nicht-gefunden-{liste}.json"         # nach Neustart nicht nochmal suchen
+    weg = set(json.loads(weg_log.read_text())) if weg_log.exists() else set()
+    fertig |= weg
     land_setzen(land)
     seite = None
     for nr in nummern:
@@ -248,16 +297,20 @@ if(!c) return 'fehlt'; const b=c.querySelector('button[title="Save to list"]'); 
             r = safari(klick)
         if r != "ok":
             print(f"Nr {nr}: Video nicht mehr in der Nähe von Seite {k['seite']} → übersprungen")
+            weg.add(vid)
+            weg_log.write_text(json.dumps(sorted(weg)))
             continue
         anz = "0"                                    # warten, bis die Listen im Dialog geladen sind (nie leer anlegen)
-        for _ in range(16):
+        for _ in range(40):
             time.sleep(0.5)
             anz = safari(f"(()=>{{const d={DLG}; return d?String(d.querySelectorAll('button[role=checkbox]').length):'kein-dialog'}})()")
             if anz.isdigit() and int(anz) > 0:
                 break
         if not (anz.isdigit() and int(anz) > 0):
             _dialog_zu("Close")
-            sys.exit(f"STOPP speichern Nr {nr}: Dialog ohne Listen")
+            print(f"Nr {nr}: Dialog ohne Listen → 30 s Pause, Tab neu", flush=True)
+            time.sleep(30)
+            raise Haenger()
         r = _haken(liste)
         if r == "fehlt":                             # Liste anlegen (React-Feld per nativem Setter)
             safari(f"(()=>{{const d={DLG};const b=[...d.querySelectorAll('button')].find(b=>b.innerText.trim()=='Create new list');setTimeout(()=>b.click(),0);return 1}})()")
@@ -283,7 +336,184 @@ return c&&c.getAttribute('aria-checked')=='true'?'ja':'nein'}})()""")
         fertig.add(vid)
         log.write_text(json.dumps(sorted(fertig)))
         print(f"Nr {nr} → {liste} ({k['produkt'][:45]})", flush=True)
-    print(f"FERTIG speichern {liste}: {len(fertig)} Videos")
+    print(f"FERTIG speichern {liste}: {len(fertig - weg)} Videos ({len(weg)} nicht mehr gefunden)")
+
+
+def _doc_js(prefix, js, start_url, warte=9):
+    """JS in einem eigenen Safari-Fenster ausführen, dessen URL mit prefix beginnt (sonst neu öffnen)."""
+    r = subprocess.run(["osascript", "-e", "on run argv", "-e", 'tell application "Safari"', "-e", "repeat with d in documents",
+                        "-e", "if URL of d starts with (item 2 of argv) then", "-e", "with timeout of 25 seconds", "-e",
+                        "return do JavaScript (item 1 of argv) in d", "-e", "end timeout", "-e", "end if", "-e", "end repeat",
+                        "-e", 'return "kein-fenster"', "-e", "end tell", "-e", "end run", js, prefix], capture_output=True, text=True)
+    if r.stdout.strip() == "kein-fenster":
+        subprocess.run(["osascript", "-e", "on run argv", "-e", 'tell application "Safari" to make new document with properties {URL:(item 1 of argv)}',
+                        "-e", "end run", start_url], capture_output=True)
+        time.sleep(warte)
+        return _doc_js(prefix, js, start_url, warte)
+    if r.returncode:
+        if "-1712" in r.stderr:
+            raise Haenger()
+        sys.exit(f"STOPP Safari: {r.stderr.strip()}")
+    return r.stdout.strip()
+
+
+def _doc_gehe(prefix, url, warte=7):
+    _doc_js(prefix, "1", url)
+    subprocess.run(["osascript", "-e", "on run argv", "-e", 'tell application "Safari"', "-e", "repeat with d in documents",
+                    "-e", "if URL of d starts with (item 2 of argv) then", "-e", "set URL of d to (item 1 of argv)", "-e", "exit repeat",
+                    "-e", "end if", "-e", "end repeat", "-e", "end tell", "-e", "end run", url, prefix], capture_output=True)
+    time.sleep(warte)
+
+
+S1P = "https://www.social1.ai/products"
+JS_PRODUKTE = r"""JSON.stringify([...document.querySelectorAll('tr')].map(r=>{const t=r.innerText.split(/\n|\t/).map(s=>s.trim()).filter(Boolean);
+ const i=r.querySelector('img[src*="/products/"]'); if(!i||t.length<6) return null;
+ return {name:t[0], shop:t[1], preis:t[2], gmv:t[3], views:t[4], videos:t[5], verkauft:t[6]||'', id:(i.src.match(/products\/(\d+)/)||[])[1]||''};}).filter(Boolean))"""
+
+
+def de_suche(suchwort, n=5):
+    """Gibt es das Produkt (oder ein ähnliches) im TikTok Shop DE? Social1-Produktsuche mit Land DE, Bestseller zuerst."""
+    import urllib.parse
+    _doc_js(S1P, "localStorage.setItem('selectedRegion','de');1", S1P)
+    _doc_gehe(S1P, f"{S1P}?q={urllib.parse.quote_plus(suchwort)}", 8)
+    erg = []
+    for _ in range(10):
+        try:
+            erg = json.loads(_doc_js(S1P, JS_PRODUKTE, S1P) or "[]")
+        except json.JSONDecodeError:
+            erg = []
+        if erg:
+            break
+        time.sleep(1)
+    erg.sort(key=lambda p: zahl(p["verkauft"]), reverse=True)
+    for p in erg[:n]:
+        print(f"{p['verkauft']:>6} verkauft | {p['preis']:>8} | {p['name'][:90]} | id {p['id']}")
+    if not erg:
+        print("NICHTS in DE gefunden")
+    return erg[:n]
+
+
+AMZ = "https://www.amazon.es"
+
+
+def amazon_suche(suchwort, n=5):
+    """Amazon.es durchsuchen (nur lesen): ASIN, Preis, Bewertungen, Titel."""
+    import urllib.parse
+    _doc_gehe(AMZ, f"{AMZ}/s?k={urllib.parse.quote_plus(suchwort)}", 7)
+    js = r"""JSON.stringify([...document.querySelectorAll('div[data-component-type="s-search-result"]')].filter(d=>d.dataset.asin&&!d.innerText.includes('Patrocinado')).slice(0,12).map(d=>({asin:d.dataset.asin,
+      titel:(d.querySelector('h2')||{}).innerText||'', preis:(d.querySelector('.a-price .a-offscreen')||{}).innerText||'',
+      bewertungen:((d.querySelector('[aria-label*="valoraciones"],[aria-label*="calificaciones"], a[href*="customerReviews"] span')||{}).innerText||'').trim()})))"""
+    erg = json.loads(_doc_js(AMZ, js, AMZ) or "[]")
+    for p in erg[:n]:
+        print(f"{p['asin']} | {p['preis']:>9} | {p['bewertungen']:>8} | {p['titel'][:90]}")
+    if not erg:
+        print("NICHTS auf Amazon.es gefunden")
+    return erg[:n]
+
+
+def amazon_wagen(asin):
+    """Produkt per ASIN in den Amazon.es-Einkaufswagen legen. Klickt NUR #add-to-cart-button, nie „Comprar ya“/Kasse."""
+    _doc_gehe(AMZ, f"{AMZ}/dp/{asin}", 7)
+    info = json.loads(_doc_js(AMZ, r"""JSON.stringify({titel:((document.querySelector('#productTitle')||{}).innerText||'').trim(),
+       knopf:!!document.querySelector('#add-to-cart-button'), login:!!document.querySelector('#nav-link-accountList')&&
+       !/Hola, identifícate/i.test((document.querySelector('#nav-link-accountList')||{}).innerText||''),
+       captcha:/captcha|robot/i.test(document.title+document.body.innerText.slice(0,500))})""", AMZ))
+    if info["captcha"]:
+        sys.exit("STOPP Amazon zeigt Captcha/Robot-Prüfung – macht Artur")
+    if not info["knopf"]:
+        return print(f"{asin}: kein „In den Einkaufswagen“-Knopf (nicht lieferbar/Variante wählen?) – übersprungen")
+    _doc_js(AMZ, "(()=>{const b=document.querySelector('#add-to-cart-button'); setTimeout(()=>b.click(),0); return 1})()", AMZ)
+    time.sleep(5)
+    ok = _doc_js(AMZ, r"""(()=>{const t=document.body.innerText; return /Añadido a la cesta|Agregado a la cesta|Añadido al carrito|Subtotal de la cesta/i.test(t)?'ja':'nein'})()""", AMZ)
+    print(f"{asin}: {'IN DEN WAGEN' if ok == 'ja' else 'unklar (kein Bestätigungstext)'} | {'eingeloggt' if info['login'] else 'NICHT eingeloggt'} | {info['titel'][:80]}")
+    return ok == "ja"
+
+
+def skript(land, nr):
+    """„Transcribe“ von Social1 für ein Video holen → research/<datum>/<land>-skripte/<nr>-original.txt (Claude schreibt daraus Deutsch)."""
+    kand = {k["nr"]: k for k in json.loads((ORDNER / f"{land}-kandidaten.json").read_text())}
+    k = kand[int(nr)]
+    land_setzen(land)
+    for s in (k["seite"], k["seite"] + 1, k["seite"] - 1, k["seite"] + 2):
+        if s < 1:
+            continue
+        gehe(f"https://www.social1.ai/?page={s}")
+        time.sleep(6)
+        r = safari(f"""(()=>{{const c=[...document.querySelectorAll('[data-slot=card]')].find(c=>c.querySelector('img[src*="thumbnails/{k['video_id']}"]'));
+if(!c) return 'fehlt'; const b=[...c.querySelectorAll('button')].find(b=>b.innerText.trim()=='Transcribe'); if(!b) return 'kein knopf';
+setTimeout(()=>b.click(),0); return 'ok'}})()""")
+        if r == "ok":
+            break
+    else:
+        return print(f"Nr {nr}: Video nicht gefunden")
+    text = ""
+    for _ in range(30):
+        time.sleep(1.5)
+        text = safari(f"(()=>{{const d={DLG}; return d? d.innerText : ''}})()")
+        if text and not re.search(r"Transcribing|Loading|Generating", text, re.I) and len(text) > 40:
+            break
+    _dialog_zu("Close")
+    ziel = ORDNER / f"{land}-skripte"
+    ziel.mkdir(exist_ok=True)
+    (ziel / f"{nr}-original.txt").write_text(text)
+    print(f"Nr {nr}: Transkript {len(text)} Zeichen → {ziel.name}/{nr}-original.txt")
+
+
+SPERRE = PROJ / "uebergabe" / "research" / ".laeuft"
+MESSUNG = PROJ / "uebergabe" / "research" / "messung.jsonl"
+
+
+def sperre_setzen():
+    import atexit, os
+    SPERRE.parent.mkdir(parents=True, exist_ok=True)
+    SPERRE.write_text(str(os.getpid()))
+    atexit.register(lambda: SPERRE.unlink(missing_ok=True))
+
+
+def sperre_aktiv():
+    import os
+    try:
+        os.kill(int(SPERRE.read_text()), 0)
+        return True
+    except (FileNotFoundError, ValueError, ProcessLookupError, PermissionError):
+        return False
+
+
+def messen():
+    """Stündlich (launchd): Seite 1 DE + US lesen und protokollieren → erkennen, wann Social1 seine Zahlen erneuert."""
+    if sperre_aktiv():
+        return print("Research läuft gerade – Messung ausgelassen")
+    sperre_setzen()
+    zeile = {"zeit": time.strftime("%Y-%m-%d %H:%M")}
+    try:
+        for land in ("de", "us"):
+            land_setzen(land)
+            karten = []
+            for _ in range(20):
+                time.sleep(1)
+                try:
+                    karten = json.loads(safari(JS_KARTEN) or "[]")
+                except json.JSONDecodeError:
+                    karten = []
+                if karten and karten[0]["rang"] == "1" and all(k["video_id"] for k in karten):
+                    break
+            zeile[land] = [[k["video_id"], k["plus_views"], k["views"]] for k in karten]
+    finally:
+        land_zurueck()
+    with MESSUNG.open("a") as f:
+        f.write(json.dumps(zeile) + "\n")
+    print(f"Messung {zeile['zeit']}: DE {len(zeile.get('de', []))}, US {len(zeile.get('us', []))}")
+
+
+def messung_auswerten():
+    """Zeigt pro Stunde, ob sich Top 12 / +Views geändert haben (Änderung = Social1 hat aktualisiert)."""
+    z = [json.loads(l) for l in MESSUNG.read_text().splitlines() if l.strip()]
+    for a, b in zip(z, z[1:]):
+        for land in ("de", "us"):
+            va, vb = a.get(land, []), b.get(land, [])
+            neu_ids = len({x[0] for x in vb} - {x[0] for x in va})
+            gleich = sum(1 for x in vb for y in va if x[0] == y[0] and x[1] == y[1])
+            print(f"{b['zeit']} {land.upper()}: {neu_ids:2d} neue Videos in Top 12, {gleich:2d} mit unveränderten +Views")
 
 
 def punkte(k):
@@ -299,7 +529,7 @@ def punkte(k):
 def rangliste(land):
     sort = json.loads((ORDNER / f"{land}-sortiert.json").read_text())   # {"nr": "BOF"|"SLIDES"|"QUALITY", ...}
     kand = {str(k["nr"]): k for k in json.loads((ORDNER / f"{land}-kandidaten.json").read_text())}
-    zeilen = sorted(((punkte(kand[n]), n, art) for n, art in sort.items() if n in kand), reverse=True)
+    zeilen = sorted(((punkte(kand[n]), n, art) for n, art in sort.items() if n in kand and not art.endswith("?")), reverse=True)
     aus = [f"# Rangliste {land.upper()} {HEUTE.strftime('%d.%m.%Y')}", "",
            "| Platz | Punkte | Liste | Alter | +Views | Produkt | Creator | Link |", "|---|---|---|---|---|---|---|---|"]
     for i, (p, n, art) in enumerate(zeilen, 1):
@@ -314,17 +544,40 @@ def rangliste(land):
 
 if __name__ == "__main__":
     a = sys.argv[1:]
+    if a[:1] == ["messen"]:
+        mit_neustart(messen)
+        sys.exit()
+    if a[:1] == ["messung"]:
+        messung_auswerten()
+        sys.exit()
+    if a[:1] == ["de-suche"]:
+        mit_neustart(de_suche, " ".join(a[1:]))
+        sys.exit()
+    if a[:1] == ["amazon"]:
+        mit_neustart(amazon_suche, " ".join(a[1:]))
+        sys.exit()
+    if a[:1] == ["wagen"]:
+        mit_neustart(amazon_wagen, a[1])
+        sys.exit()
+    if a[:1] in (["lesen"], ["speichern"]):
+        sperre_setzen()
     if len(a) < 2 or a[1] not in ("de", "us"):
         sys.exit(__doc__)
     befehl, land = a[0], a[1]
     if befehl == "lesen":
-        mit_neustart(lesen, land, int(a[a.index("--seiten") + 1]) if "--seiten" in a else 50)
+        frisch = "--frisch" in a
+        mit_neustart(lesen, land, int(a[a.index("--seiten") + 1]) if "--seiten" in a else 50, frisch)
+        land_zurueck()
     elif befehl == "filtern":
         filtern(land)
     elif befehl == "blaetter":
-        blaetter(land, int(a[a.index("--pro") + 1]) if "--pro" in a else 20)
+        blaetter(land, int(a[a.index("--pro") + 1]) if "--pro" in a else 20, "--neu" in a)
     elif befehl == "speichern":
         mit_neustart(speichern, land, a[2], " ".join(a[3:]).split())
+        land_zurueck()
+    elif befehl == "skript":
+        mit_neustart(skript, land, a[2])
+        land_zurueck()
     elif befehl == "rangliste":
         rangliste(land)
     else:

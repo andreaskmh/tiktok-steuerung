@@ -328,3 +328,10 @@
   fortsetzen (`mit_neustart`, nur wenn vorne wirklich Social1 ist). Fehler beim Anlegen neuer Listen behoben (fehlende Zuweisung).
   Erster Lauf DE: 600 gelesen, 408 Kandidaten, `BOF DE 19.11.2026` 121 Videos, `SLIDES DE 19.11.2026` 31 Videos
   (5 inzwischen aus der Rangliste gerutscht). Research-Bilder per .gitignore nicht im Repo.
+- **19.11.2026 (Artur)** – Research: Parfüm erlaubt; Sketche/Vergleiche und reine Vorführungen ohne Gesicht gehören in BOF DE
+  (`BOF DE 19.11.2026` jetzt 332 Videos). research.py: eigenes Safari-Fenster statt „front document“ (stört post_mensch nicht),
+  Land danach zurück auf DE, stabile Kandidaten-Nummern bei mehreren Läufen/Tag (`lesen --frisch`, `blaetter --neu`),
+  Sperre `uebergabe/research/.laeuft`, leerer Listen-Dialog = Tab neu (Social1 wird nach vielen Saves langsam).
+  Neu: `de-suche` (TikTok Shop DE über Social1-Produkte, Bestseller zuerst), `amazon`/`wagen` (Amazon.es, nur Einkaufswagen),
+  `skript` (Transcribe), `messen`/`messung` (stündlich per launchd `de.tiktoksteuerung.research-messen`, Plist in werkzeuge/).
+  Geplante Aufgabe „tiktok-research-taeglich“ 7/13/19 Uhr (Claude-App, Auto-Modus) → Tageslauf in docs/RESEARCH.md.
