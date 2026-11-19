@@ -32,6 +32,8 @@ def main(a):
                                 "-o", str(ton), url], capture_output=True, text=True, timeout=180)
             if ton.exists() or "Unsupported URL" in r.stderr or "not available" in r.stderr:
                 break
+            if "Log in for access" in r.stderr:                  # altersbeschränkt: braucht TikTok-Login → vorerst übersprungen
+                break
             time.sleep(3)
         if not ton.exists():
             aus.write_text(json.dumps({"fehler": (r.stderr.strip().splitlines() or ["Download fehlgeschlagen"])[-1][:200]}))
