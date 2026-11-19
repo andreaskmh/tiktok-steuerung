@@ -38,7 +38,7 @@ Erster Lauf des Tages ohne `--frisch`, weitere Läufe am selben Tag mit `--frisc
    Einzeln geht auch: `de-suche <suchwort>`.
    Gibt es das Produkt oder etwas Ähnliches/andere Marke → `"QUALITY"`, sonst in `us-nein.json` („nicht in DE“). Treffer (Name, id, verkauft)
    in `us-quality.json` notieren (`{"nr": {"de_produkt": …, "de_id": …, "amazon": ASIN}}`).
-4. Nur für `QUALITY`: Amazon.es suchen (`amazon <spanisches/englisches Suchwort>`), passendstes Produkt (gute Bewertungen, Preis passt) →
+4. **Zurzeit deaktiviert (Artur 19.11.: `amazon_aktiv: false` in research_regeln.json – Schritt auslassen).** Nur für `QUALITY`: Amazon.es suchen (`amazon <spanisches/englisches Suchwort>`), passendstes Produkt (gute Bewertungen, Preis passt) →
    `wagen <ASIN>`. **Nie kaufen, nie zur Kasse, nie „Comprar ya“.** Captcha/Login → STOPP, Artur.
 5. `speichern us "SLIDES USA <datum>" …` und `speichern us "Quality USA <datum>" …`, dann `rangliste us`.
 6. (weiter mit „Skripte“ unten)
@@ -72,6 +72,10 @@ Artur schickt seine eigene Research (Listen/Bildschirmaufnahme). Video für Vide
   keine Cookies, keine Klicks): Lesen = `getTopVideos` (100 Seiten DE in ~2 Min. statt ~40), Speichern = `addVideoToList` gebündelt
   (prüft die echte Liste, legt fehlende Listen per `createVideoList` an), DE-Check = `searchProducts`. Die Aktions-IDs liest das
   Werkzeug bei jedem Lauf aus den Programmdateien von Social1 (sie ändern sich bei Updates); findet es sie nicht → STOPP „Social1 umgebaut?“.
+- **Amazon.es direkt (19.11., Schritt zurzeit deaktiviert):** `amazon --datei <woerter.txt>` sucht viele Wörter auf einmal (Suchseite im
+  Hintergrund geladen, ~3 s/Wort), `wagen <ASIN> [<ASIN> …]` lädt die Produktseite im Hintergrund und sendet NUR das Formular
+  „In den Einkaufswagen“ (Ziel `handle-buy-box`/`add-to-cart`, nie Kasse/„Comprar ya“), danach Kontrolle im Einkaufswagen.
+  `wagen <ASIN> --pruefen` = nur prüfen, nichts senden. Robot-Prüfung (Captcha) → STOPP, Artur. Einschalten: `amazon_aktiv: true`.
 - Social1 liefert pro Video auch `slideshow` / `ki` (Social1-Einstufung) und `time_posted`; die Sammelbilder zeigen „SLIDE“ / „KI“ an.
 - research.py nutzt sein eigenes Safari-Fenster (Social1-Videoseite `social1.ai/?…`) und für Amazon ein eigenes. Die Listen-Tabs von
   post_mensch (`saved-videos/…`) werden nie angefasst. Die Region wird bei jedem Aufruf mitgegeben (kein Umstellen mehr nötig).

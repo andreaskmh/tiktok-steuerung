@@ -621,37 +621,92 @@ def de_suche_viele(woerter, n=5):
 AMZ = "https://www.amazon.es"
 
 
+def _amz_async(js_promise_body, warte=60):
+    """Async-JS im Amazon-Fenster: Ergebnis (String) über window-Variable abholen. Kein Seitenwechsel, keine Klicks."""
+    k = f"a{time.time_ns()}"
+    start = _doc_js(AMZ, f"""(()=>{{window.__amz=window.__amz||{{}};const k={json.dumps(k)};window.__amz[k]=null;
+(async()=>{{{js_promise_body}}})().then(v=>window.__amz[k]=String(v)).catch(e=>window.__amz[k]=JSON.stringify({{fehler:String(e)}}));return 1}})()""", AMZ)
+    if start not in ("1", "1.0"):
+        raise RuntimeError(f"Amazon: Befehl startete nicht ({start[:80]!r})")
+    for _ in range(warte * 2):
+        time.sleep(0.5)
+        r = _doc_js(AMZ, f"(()=>{{const v=(window.__amz||{{}})[{json.dumps(k)}];if(v!==null&&v!==undefined)delete window.__amz[{json.dumps(k)}];return v===null||v===undefined?'':v}})()", AMZ)
+        if r:
+            return r
+    raise Haenger()
+
+
+JS_AMZ_CAPTCHA = r"""const cap=t=>/validateCaptcha|Introduce los caracteres|api-services-support@amazon|Type the characters/i.test(t);"""
+
+
+def amazon_suche_viele(woerter, n=5):
+    """Amazon.es direkt durchsuchen (nur lesen): je Suchwort die Treffer ohne Werbung – ASIN, Preis, Bewertungen, Titel."""
+    js = JS_AMZ_CAPTCHA + f"""const W={json.dumps(woerter, ensure_ascii=False)};const out=[];
+for(const w of W){{const t=await (await fetch('/s?k='+encodeURIComponent(w),{{credentials:'same-origin'}})).text();
+ if(cap(t)) return JSON.stringify({{captcha:true}});
+ const d=new DOMParser().parseFromString(t,'text/html');
+ out.push([...d.querySelectorAll('div[data-component-type="s-search-result"]')].filter(x=>x.dataset.asin&&!/Patrocinado/.test(x.innerText||x.textContent))
+  .slice(0,12).map(x=>({{asin:x.dataset.asin,titel:((x.querySelector('h2')||{{}}).textContent||'').trim(),
+   preis:((x.querySelector('.a-price .a-offscreen')||{{}}).textContent||'').trim(),
+   bewertungen:((x.querySelector('[aria-label*="valoraciones"],[aria-label*="calificaciones"],a[href*="customerReviews"] span')||{{}}).textContent||'').trim()}})));
+ await new Promise(r=>setTimeout(r,800));}}
+return JSON.stringify({{erg:out}});"""
+    r = json.loads(_amz_async(js, warte=30 + 10 * len(woerter)))
+    if r.get("captcha"):
+        sys.exit("STOPP Amazon zeigt eine Robot-Prüfung (Captcha) – macht Artur, danach neu starten")
+    if r.get("fehler"):
+        sys.exit(f"STOPP Amazon: {r['fehler'][:150]}")
+    alle = []
+    for w, erg in zip(woerter, r["erg"]):
+        print(f"== {w}")
+        for p in erg[:n]:
+            print(f"{p['asin']} | {p['preis']:>9} | {p['bewertungen']:>8} | {p['titel'][:90]}")
+        if not erg:
+            print("NICHTS auf Amazon.es gefunden")
+        alle.append(erg[:n])
+    return alle
+
+
 def amazon_suche(suchwort, n=5):
-    """Amazon.es durchsuchen (nur lesen): ASIN, Preis, Bewertungen, Titel."""
-    import urllib.parse
-    _doc_gehe(AMZ, f"{AMZ}/s?k={urllib.parse.quote_plus(suchwort)}", 7)
-    js = r"""JSON.stringify([...document.querySelectorAll('div[data-component-type="s-search-result"]')].filter(d=>d.dataset.asin&&!d.innerText.includes('Patrocinado')).slice(0,12).map(d=>({asin:d.dataset.asin,
-      titel:(d.querySelector('h2')||{}).innerText||'', preis:(d.querySelector('.a-price .a-offscreen')||{}).innerText||'',
-      bewertungen:((d.querySelector('[aria-label*="valoraciones"],[aria-label*="calificaciones"], a[href*="customerReviews"] span')||{}).innerText||'').trim()})))"""
-    erg = json.loads(_doc_js(AMZ, js, AMZ) or "[]")
-    for p in erg[:n]:
-        print(f"{p['asin']} | {p['preis']:>9} | {p['bewertungen']:>8} | {p['titel'][:90]}")
-    if not erg:
-        print("NICHTS auf Amazon.es gefunden")
-    return erg[:n]
+    return amazon_suche_viele([suchwort], n)[0]
 
 
-def amazon_wagen(asin):
-    """Produkt per ASIN in den Amazon.es-Einkaufswagen legen. Klickt NUR #add-to-cart-button, nie „Comprar ya“/Kasse."""
-    _doc_gehe(AMZ, f"{AMZ}/dp/{asin}", 7)
-    info = json.loads(_doc_js(AMZ, r"""JSON.stringify({titel:((document.querySelector('#productTitle')||{}).innerText||'').trim(),
-       knopf:!!document.querySelector('#add-to-cart-button'), login:!!document.querySelector('#nav-link-accountList')&&
-       !/Hola, identifícate/i.test((document.querySelector('#nav-link-accountList')||{}).innerText||''),
-       captcha:/captcha|robot/i.test(document.title+document.body.innerText.slice(0,500))})""", AMZ))
-    if info["captcha"]:
-        sys.exit("STOPP Amazon zeigt Captcha/Robot-Prüfung – macht Artur")
-    if not info["knopf"]:
-        return print(f"{asin}: kein „In den Einkaufswagen“-Knopf (nicht lieferbar/Variante wählen?) – übersprungen")
-    _doc_js(AMZ, "(()=>{const b=document.querySelector('#add-to-cart-button'); setTimeout(()=>b.click(),0); return 1})()", AMZ)
-    time.sleep(5)
-    ok = _doc_js(AMZ, r"""(()=>{const t=document.body.innerText; return /Añadido a la cesta|Agregado a la cesta|Añadido al carrito|Subtotal de la cesta/i.test(t)?'ja':'nein'})()""", AMZ)
-    print(f"{asin}: {'IN DEN WAGEN' if ok == 'ja' else 'unklar (kein Bestätigungstext)'} | {'eingeloggt' if info['login'] else 'NICHT eingeloggt'} | {info['titel'][:80]}")
-    return ok == "ja"
+def amazon_wagen(asin, nur_pruefen=False):
+    """Produkt per ASIN direkt in den Amazon.es-Einkaufswagen: Produktseite im Hintergrund laden, NUR das Formular
+    „In den Einkaufswagen“ (#addToCart) absenden. Nie „Comprar ya“/Kasse. nur_pruefen=True: Formular nur lesen, nichts senden."""
+    js = JS_AMZ_CAPTCHA + f"""const t=await (await fetch('/dp/{asin}',{{credentials:'same-origin'}})).text();
+if(cap(t)) return JSON.stringify({{captcha:true}});
+const d=new DOMParser().parseFromString(t,'text/html');
+const titel=((d.querySelector('#productTitle')||{{}}).textContent||'').trim();
+const f=d.querySelector('form#addToCart');
+if(!f||!d.querySelector('#add-to-cart-button')) return JSON.stringify({{titel,kein_knopf:true}});
+const fd=new FormData();
+for(const e of f.querySelectorAll('input[name]')){{const n=e.name;
+ if(/buy-now|buyNow|checkout|1-click|oneClick/i.test(n))continue;
+ if((e.type=='checkbox'||e.type=='radio')&&!e.checked)continue;
+ if(e.type=='submit'||e.type=='image')continue; fd.append(n,e.value);}}
+fd.set('submit.add-to-cart','Añadir a la cesta');
+const ziel=new URL(f.getAttribute('action')||'/cart/add-to-cart/ref=dp_start-bbf_1_glance',location.origin).href;
+const pfad=new URL(ziel).pathname;if(!ziel.startsWith(location.origin)||/checkout|spc|buy-now|buynow|1-click|oneclick/i.test(ziel)||!/^\/(gp\/product\/handle-buy-box|cart\/add-to-cart|gp\/add-to-cart)/.test(pfad)) return JSON.stringify({{titel,falsches_ziel:ziel}});
+if({'true' if nur_pruefen else 'false'}) return JSON.stringify({{titel,pruefen:true,ziel,felder:[...fd.keys()]}});
+const a=await (await fetch(ziel,{{method:'POST',body:fd,credentials:'same-origin'}})).text();
+if(cap(a)) return JSON.stringify({{captcha:true}});
+const n=await (await fetch('/gp/cart/view.html',{{credentials:'same-origin'}})).text();
+const drin=n.includes('{asin}');
+return JSON.stringify({{titel,drin,antwort_ok:/Añadido a la cesta|Agregado a la cesta|Subtotal/i.test(a)}});"""
+    r = json.loads(_amz_async(js))
+    if r.get("captcha"):
+        sys.exit("STOPP Amazon zeigt eine Robot-Prüfung (Captcha) – macht Artur, danach neu starten")
+    if r.get("fehler"):
+        sys.exit(f"STOPP Amazon: {r['fehler'][:150]}")
+    if r.get("falsches_ziel"):
+        sys.exit(f"STOPP Amazon: Formular zeigt nicht auf den Einkaufswagen ({r['falsches_ziel'][:80]}) – nichts gesendet")
+    if r.get("kein_knopf"):
+        return print(f"{asin}: kein „In den Einkaufswagen“ (nicht lieferbar/Variante wählen?) – übersprungen | {r.get('titel','')[:70]}")
+    if r.get("pruefen"):
+        return print(f"{asin}: Formular ok → {r['ziel'][:70]} | {len(r['felder'])} Felder: {', '.join(r['felder'][:12])} | {r['titel'][:60]}")
+    print(f"{asin}: {'IM EINKAUFSWAGEN' if r.get('drin') else 'unklar – im Einkaufswagen nicht gefunden'} | {r.get('titel','')[:80]}")
+    return bool(r.get("drin"))
 
 
 def skript(land, nr, land_schon=False):
@@ -828,11 +883,18 @@ if __name__ == "__main__":
     if a[:1] == ["de-suche"]:
         mit_neustart(de_suche, " ".join(a[1:]))
         sys.exit()
+    if a[:1] in (["amazon"], ["wagen"]) and not REGELN.get("amazon_aktiv", True):
+        print("Amazon ist deaktiviert (Artur 19.11.2026, research_regeln.json „amazon_aktiv“) – Schritt übersprungen")
+        sys.exit()
+    if a[:2] == ["amazon", "--datei"]:                         # eine Zeile pro Suchwort
+        mit_neustart(amazon_suche_viele, [w.strip() for w in pathlib.Path(a[2]).read_text().splitlines() if w.strip()])
+        sys.exit()
     if a[:1] == ["amazon"]:
         mit_neustart(amazon_suche, " ".join(a[1:]))
         sys.exit()
     if a[:1] == ["wagen"]:
-        mit_neustart(amazon_wagen, a[1])
+        for asin in [x for x in a[1:] if not x.startswith("--")]:
+            mit_neustart(amazon_wagen, asin, "--pruefen" in a)
         sys.exit()
     if a[:1] in (["lesen"], ["speichern"]):
         sperre_setzen()

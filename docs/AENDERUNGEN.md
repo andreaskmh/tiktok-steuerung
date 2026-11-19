@@ -357,3 +357,7 @@
   `speichern` = addVideoToList gebündelt + Abgleich mit der echten Liste + Liste anlegen per createVideoList, `de-suche` =
   searchProducts (neu `--datei` für viele Wörter, ~1,4 s/Wort), `messen` ebenfalls direkt. Neue Felder slideshow/ki/time_posted,
   Sammelbilder zeigen SLIDE/KI. BOF DE: 22 beim Klick-Speichern verlorene Videos nachgetragen. Sicherung `research.py.bak-20261119-direkt`.
+- **19.11.2026 (Artur)** – Amazon erstmal deaktiviert (`amazon_aktiv: false` in research_regeln.json; `amazon`/`wagen` melden nur
+  „deaktiviert“, auch für den laufenden 13-Uhr-Lauf). Amazon trotzdem auf den direkten Weg umgebaut: Suche + Einkaufswagen als
+  Anfragen im Amazon-Fenster (keine Seitenwechsel/Klicks), nur Formular „In den Einkaufswagen“, Captcha → STOPP. Getestet: Suche
+  2 Wörter 6 s, Formularprüfung 2 s (`--pruefen`); echtes Einlegen noch nicht getestet (deaktiviert).
