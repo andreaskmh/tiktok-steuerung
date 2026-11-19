@@ -713,14 +713,24 @@ return JSON.stringify({{titel,drin,antwort_ok:/Añadido a la cesta|Agregado a la
 
 
 def bildvergleich(land, datei, pro_blatt=4):
-    """Bildvergleich (Artur 19.11.: Bildersuche nur bei TikTok Shop + Amazon.es, kein Google): je Kandidat die Suchwörter aus
-    `datei` (JSON {"nr": ["wort", …]}) im TikTok Shop DE (Social1 searchProducts) und – wenn aktiv – auf Amazon.es suchen,
+    """Bildvergleich (Artur 19.11.: Bildersuche nur bei TikTok Shop + Amazon.es, kein Google): je Kandidat mit dem kopierten
+    Social1-Produktnamen (+ gekürzt) und den Zusatzwörtern aus `datei` (JSON {"nr": ["wort", …]}, darf leer sein: {"nr": []})
+    im TikTok Shop DE (Social1 searchProducts) und – wenn aktiv – auf Amazon.es (voller Name) suchen,
     dann Sammelbild: Zeile = US-Produktbild + Top-Treffer (TT1… = TikTok Shop DE nach Verkäufen, AZ1… = Amazon.es).
     Claude entscheidet am Bild: gleich / ähnlich / gibt's nicht. Treffer-Liste: <land>-vergleich.json."""
     wuensche = json.loads(pathlib.Path(datei).read_text())
     kand = {str(k["nr"]): k for k in json.loads((ORDNER / f"{land}-kandidaten.json").read_text())}
     aktionen_laden()
-    paare = [(nr, w) for nr, ws in wuensche.items() for w in (ws if isinstance(ws, list) else [ws])]
+
+    def namens_suchen(name):
+        """Artur 19.11.: Produktname von Social1 übernehmen. Social1 sucht streng (jedes Wort muss passen) → auch kürzer."""
+        n = re.sub(r"【[^】]*】|\[[^\]]*\]", " ", name)
+        w = n.split()
+        return [x for x in dict.fromkeys([" ".join(w[:12]), " ".join(w[:4]), " ".join(w[:3]), " ".join(w[:2])]) if x]
+
+    paare = [(nr, w) for nr, ws in wuensche.items()
+             for w in dict.fromkeys(namens_suchen(kand[str(nr)]["produkt"]) if str(nr) in kand else []).keys()
+             | dict.fromkeys(ws if isinstance(ws, list) else [ws]).keys()]
     antworten = s1_viele("searchProducts", [[{"query": w, "region": "de"}] for _, w in paare])
     tt = {}
     for (nr, w), roh in zip(paare, antworten):
@@ -729,7 +739,7 @@ def bildvergleich(land, datei, pro_blatt=4):
                 tt[nr].append(p)
     az = {}
     if REGELN.get("amazon_aktiv", True):
-        erst = {nr: (ws if isinstance(ws, list) else [ws])[0] for nr, ws in wuensche.items()}
+        erst = {nr: " ".join(kand[str(nr)]["produkt"].split()[:12]) for nr in wuensche if str(nr) in kand}   # kopierter Name
         for nr, erg in zip(erst, amazon_suche_viele(list(erst.values()), 3)):
             az[nr] = erg
     bilder = ORDNER / f"{land}-vergleich-bilder"
