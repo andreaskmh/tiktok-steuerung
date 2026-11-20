@@ -1,4 +1,4 @@
-<title>kmhview</title>
+<title>statsKMH</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap">
@@ -42,9 +42,15 @@ body { background: var(--bg); color: var(--fg); font-family: var(--text); font-s
 .hero .label { opacity: .75; font-size: 13.5px }
 .hero .gross { font-family: var(--anzeige); font-weight: 800; font-size: clamp(36px, 9vw, 52px); letter-spacing: -.02em; line-height: 1.05; font-variant-numeric: tabular-nums }
 .hero .unter { opacity: .75; font-size: 12.5px }
-.hero svg { width: 100%; height: 96px; display: block; overflow: visible }
+.hero svg { width: 100%; height: 130px; display: block; overflow: visible }
+.vwrap { position: relative; cursor: crosshair; touch-action: pan-y; margin-top: 20px }
+.vlinie { position: absolute; top: 0; bottom: 0; width: 1px; border-left: 1px dashed rgba(255,255,255,.55); pointer-events: none }
+.vpunkt { position: absolute; width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 4px rgba(255,255,255,.25); pointer-events: none }
+.vtip { position: absolute; top: -26px; transform: translateX(-50%); background: #fff; color: #111; border-radius: 9px; padding: 4px 9px; font-size: 12px; white-space: nowrap; pointer-events: none; box-shadow: 0 6px 18px rgba(0,0,0,.2) }
+.vtip b { font-family: var(--anzeige); font-variant-numeric: tabular-nums }
+.bars rect { transition: opacity .15s } .bars g:hover rect { opacity: 1 !important } .bars:hover g:not(:hover) rect { opacity: .35 }
 .kacheln { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px }
-@media (min-width: 640px) { .kacheln { grid-template-columns: repeat(4, minmax(0, 1fr)) } }
+@media (min-width: 640px) { .kacheln { grid-template-columns: repeat(3, minmax(0, 1fr)) } }
 .kachel, .karte { background: var(--flaeche); border: 1px solid var(--linie); border-radius: 22px }
 .kachel { padding: 16px; display: grid; gap: 10px }
 .sym { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center }
@@ -70,27 +76,37 @@ button.zeile { background: none; border: 0; padding: 0; font: inherit; text-alig
 .bars { width: 100%; height: 190px; display: block }
 .kachel .w { overflow-wrap: anywhere }
 @media (max-width: 420px) { .mitteL { display: none } .kachel .w { font-size: 18px } }
+.eigen { display: flex; gap: 10px; flex-wrap: wrap }
+.eigen label { display: grid; gap: 4px; font-size: 12px; opacity: .85 }
+.eigen input { font: 500 14px var(--text); border: 0; border-radius: 10px; padding: 7px 9px; background: rgba(255,255,255,.95); color: #111 }
+.erkl { font-size: 11.5px; opacity: .65; margin-top: 4px }
+.minis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px }
+.mini { background: var(--spur); border-radius: 12px; padding: 10px }
+.mini .t { color: var(--leise); font-size: 11px } .mini .w { font: 700 16px var(--anzeige); font-variant-numeric: tabular-nums }
 .fuss { color: var(--ganzleise); font-size: 11.5px; line-height: 1.5 }
 @media (prefers-reduced-motion: no-preference) { .hero .gross, .kachel .w { transition: opacity .2s } }
 </style>
 
 <div class="seite">
-  <header class="kopf"><h1>kmhview</h1><div class="stand" id="stand"></div></header>
+  <header class="kopf"><h1>statsKMH</h1><div class="stand" id="stand"></div></header>
   <nav class="leiste" id="leiste" aria-label="Account wählen"></nav>
   <section class="hero" aria-label="Voraussichtliche Provision">
     <div class="chips" id="chips"></div>
-    <div><div class="label">Voraussichtliche Provision</div><div class="gross" id="gross"></div><div class="unter" id="unter"></div></div>
-    <svg id="verlauf" viewBox="0 0 600 96" preserveAspectRatio="none" aria-hidden="true"></svg>
+    <div class="eigen" id="eigen" hidden><label>Von <input type="date" id="von"></label><label>Bis <input type="date" id="bis"></label></div>
+    <div><div class="label">Voraussichtliche Provision</div><div class="gross" id="gross"></div><div class="unter" id="unter"></div><div class="unter erkl" id="erkl"></div></div>
+    <div class="vwrap" id="vwrap"><svg id="verlauf" viewBox="0 0 600 96" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="vlinie" id="vlinie" hidden></div><div class="vpunkt" id="vpunkt" hidden></div><div class="vtip" id="vtip" hidden></div></div>
     <div class="unter" id="achse" style="display:flex;justify-content:space-between"></div>
   </section>
   <section class="kacheln" id="kacheln"></section>
+  <section class="karte" id="vid"></section>
   <section class="karte" id="rang"></section>
   <section class="karte" id="monate"></section>
   <section class="karte" id="auszahl"></section>
   <section class="karte" id="videos"></section>
   <section class="karte" id="produkte"></section>
   <section class="karte" id="offen"></section>
-  <p class="fuss">Voraussichtlich = ausgezahlte plus offene Provision nach Bestelldatum, ohne „nicht berechtigt“. Quelle: Partnerbestellungen-Export der TikTok-App je Account. Prämien nur, soweit abgelesen.</p>
+  <p class="fuss">Voraussichtlich = ausgezahlte/bereitstehende plus offene Provision nach Bestelldatum, ohne „nicht berechtigt“. „Abgerechnet gesamt“ = von TikTok gutgeschrieben (Status „Bezahlt“). „Zur Auszahlung bereit“ = „Verfügbare Auszahlung“ in der App (abgelesen). „Bereits ausgezahlt“ = abgerechnet + Prämien − bereit (Näherung, ohne Gebühren/Abzüge). „Letzte N Tage“ = rollierend inkl. heute, kein Kalendermonat. Quelle: Partnerbestellungen-Export der TikTok-App je Account. Prämien nur, soweit abgelesen.</p>
 </div>
 
 <script id="daten" type="application/json">__DATEN__</script>
@@ -101,16 +117,37 @@ const zahl = x => x.toLocaleString('de-DE');
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const monat = (m, lang) => new Date(m + '-01T12:00').toLocaleDateString('de-DE', lang ? {month: 'long', year: 'numeric'} : {month: 'short'});
 const laufend = new Date().toISOString().slice(0, 7);
-const PER = [['heute','Heute'],['gestern','Gestern'],['tage7','7 Tage'],['tage30','30 Tage']];
+const PER = [['heute','Heute'],['gestern','Gestern'],['tage3','3 Tage'],['tage7','7 Tage'],['tage30','30 Tage'],['eigen','Zeitraum']];
+const iso = d => d.toLocaleDateString('sv-SE');
+const plus = n => { const d = new Date(); d.setHours(12); d.setDate(d.getDate() + n); return iso(d) };
+const dat = t => new Date(t + 'T12:00').toLocaleDateString('de-DE', {day: '2-digit', month: '2-digit', year: 'numeric'});
+let eigen = {von: plus(-13), bis: plus(0)};
+function spanne(per) {
+  const h = plus(0);
+  return {heute: [h, h], gestern: [plus(-1), plus(-1)], tage3: [plus(-2), h], tage7: [plus(-6), h], tage30: [plus(-29), h], eigen: [eigen.von, eigen.bis]}[per];
+}
+function erkl(per, [a, b]) {
+  if (per === 'heute') return `Heute, ${dat(b)} (bis zum letzten Abruf)`;
+  if (per === 'gestern') return `Gestern, ${dat(b)}, ganzer Tag`;
+  if (per === 'eigen') return `${dat(a)} – ${dat(b)} · eigener Zeitraum`;
+  return `${dat(a)} – ${dat(b)} · letzte ${{tage3: 3, tage7: 7, tage30: 30}[per]} Tage inkl. heute (rollierend, kein Kalendermonat)`;
+}
+function summe(k, [a, b]) { const z = {provision: 0, bestellungen: 0, umsatz: 0};
+  for (const [t, p, n, u] of k.tage) if (t >= a && t <= b) { z.provision += p; z.bestellungen += n; z.umsatz += u } return z }
+function videos(k, [a, b]) { return k.videos_tage.map(v => { let n = 0, g = 0, p = 0;
+  for (const [t, x, y, z] of v.t) if (t >= a && t <= b) { n += x; g += y; p += z } return {id: v.id, konto: v.konto, name: v.name, n, g, p} })
+  .filter(v => v.n > 0).sort((x, y) => y.g - x.g) }
 let st = {konto: 'Alle Accounts', per: 'heute'};
-try { const g = JSON.parse(localStorage.getItem('kmhview') || '{}'); if (D.konten.some(k => k.name === g.konto)) st.konto = g.konto; if (g.per) st.per = g.per } catch (e) {}
-const merke = () => { try { localStorage.setItem('kmhview', JSON.stringify(st)) } catch (e) {} };
+try { const g = JSON.parse(localStorage.getItem('statsKMH') || '{}'); if (D.konten.some(k => k.name === g.konto)) st.konto = g.konto; if (g.per) st.per = g.per } catch (e) {}
+const merke = () => { try { localStorage.setItem('statsKMH', JSON.stringify(st)) } catch (e) {} };
 const ava = (k, cls = '') => k.name === 'Alle Accounts'
   ? `<div class="ava alle ${cls}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"><path d="M12 3 3 7.5 12 12l9-4.5L12 3Z"/><path d="m3 12 9 4.5 9-4.5M3 16.5 12 21l9-4.5"/></svg></div>`
   : k.avatar ? `<img class="ava ${cls}" alt="" src="data:image/jpeg;base64,${k.avatar}">` : `<div class="ava ${cls}">${esc(k.name[0].toUpperCase())}</div>`;
 const SYM = {
   ok: ['--gut', '<path d="M5 12.5 10 17l9-10"/>'], uhr: ['--akzent2', '<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>'],
   gift: ['--akzent', '<rect x="4" y="9" width="16" height="11" rx="2"/><path d="M12 9v11M4 13h16M12 9c-2-4-6-3-5 0M12 9c2-4 6-3 5 0"/>'],
+  bank: ['--gut', '<path d="M3 10 12 4l9 6M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/>'],
+  siegel: ['--akzent', '<path d="m12 3 2.4 1.8 3 .1.9 2.8 2.4 1.8-.9 2.9.9 2.8-2.4 1.8-.9 2.8-3 .1L12 21l-2.4-1.8-3-.1-.9-2.8L3.3 14.5l.9-2.8-.9-2.9 2.4-1.8.9-2.8 3-.1L12 3Z"/><path d="m9 12 2 2 4-4"/>'],
   x: ['--schlecht', '<circle cx="12" cy="12" r="8"/><path d="m9 9 6 6M15 9l-6 6"/>']};
 const sym = n => `<div class="sym" style="background:color-mix(in srgb, var(${SYM[n][0]}) 16%, transparent);color:var(${SYM[n][0]})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${SYM[n][1]}</svg></div>`;
 
@@ -119,28 +156,41 @@ function zeichne() {
   document.getElementById('stand').textContent = 'Stand ' + D.stand.replace('T', ' · ');
   document.getElementById('leiste').innerHTML = D.konten.map(x => `<button class="konto" aria-pressed="${x.name === k.name}" data-k="${esc(x.name)}"><span class="ring">${ava(x)}</span><span>${x.name === 'Alle Accounts' ? 'Alle' : esc(x.name)}</span></button>`).join('');
   document.getElementById('chips').innerHTML = PER.map(([id, t]) => `<button class="chip" aria-pressed="${st.per === id}" data-p="${id}">${t}</button>`).join('');
-  const p = k.zeitraeume[st.per];
+  const sp = spanne(st.per), p = summe(k, sp);
+  document.getElementById('eigen').hidden = st.per !== 'eigen';
+  document.getElementById('von').value = eigen.von; document.getElementById('bis').value = eigen.bis;
   document.getElementById('gross').textContent = eur(p.provision);
   document.getElementById('unter').textContent = `${zahl(p.bestellungen)} Bestellungen · ${eur(p.umsatz, true)} Umsatz`;
+  document.getElementById('erkl').textContent = erkl(st.per, sp);
+  const vl = videos(k, sp);
+  document.getElementById('vid').innerHTML = `<h2>Video-Performance <small>${vl.length} Videos mit Verkäufen</small></h2><div class="s" style="color:var(--leise);font-size:12px">${erkl(st.per, sp)}</div>
+    <div class="minis"><div class="mini"><div class="t">Sales</div><div class="w">${zahl(vl.reduce((a, v) => a + v.n, 0))}</div></div><div class="mini"><div class="t">GMV</div><div class="w">${eur(vl.reduce((a, v) => a + v.g, 0), true)}</div></div><div class="mini"><div class="t">Aufrufe</div><div class="w">–</div></div></div>` +
+    (vl.length ? '' : '<div class="s" style="color:var(--leise)">Keine Verkäufe in diesem Zeitraum.</div>') +
+    vl.slice(0, 10).map((v, i) => `<a class="zeile" href="https://www.tiktok.com/@${esc(v.konto)}/video/${esc(v.id)}" target="_blank" rel="noopener"><span class="nr">${i + 1}</span><div class="mitte"><div class="n">${esc(v.name)}</div><div class="s">${k.name === 'Alle Accounts' ? esc(v.konto) + ' · ' : ''}${zahl(v.n)} Sales · ${eur(v.p)} Provision</div></div><span class="b">${eur(v.g)}</span></a>`).join('') +
+    `<p class="fuss" style="margin:0">Sales/GMV aus dem Partnerbestellungen-Export (nach Bestelldatum). Aufrufe, Likes, Kommentare folgen, sobald eine Quelle angebunden ist.</p>`;
   // Verlauf 30 Tage
   const v = k.verlauf, max = Math.max(...v.map(t => t.provision), 1), W = 600, H = 90;
-  const pts = v.map((t, i) => [i * W / (v.length - 1), H - t.provision / max * (H - 8)]);
+  const H2 = 126; const pts = v.map((t, i) => [i * W / (v.length - 1), H2 - t.provision / max * (H2 - 10)]);
+  document.getElementById('verlauf').setAttribute('viewBox', `0 0 600 130`);
+  window._v = {v, pts, max};
   const glatt = pts.map((q, i) => i ? (() => { const a = pts[i - 1], m = (a[0] + q[0]) / 2; return `C${m},${a[1]} ${m},${q[1]} ${q[0]},${q[1]}` })() : `M${q[0]},${q[1]}`).join(' ');
   const e = pts[pts.length - 1];
   document.getElementById('verlauf').innerHTML = `<defs><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
-    <path d="${glatt} L${W},96 L0,96 Z" fill="url(#fl)"/><path d="${glatt}" fill="none" stroke="#fff" stroke-width="2.2" vector-effect="non-scaling-stroke" stroke-linecap="round"/>`;
+    ${[.25, .5, .75].map(f => `<line x1="0" x2="600" y1="${H2 - f * (H2 - 10)}" y2="${H2 - f * (H2 - 10)}" stroke="#fff" stroke-opacity=".12" vector-effect="non-scaling-stroke"/>`).join('')}<path d="${glatt} L${W},130 L0,130 Z" fill="url(#fl)"/><path d="${glatt}" fill="none" stroke="#fff" stroke-width="2.2" vector-effect="non-scaling-stroke" stroke-linecap="round"/>`;
   const tag = t => new Date(t + 'T12:00').toLocaleDateString('de-DE', {day: 'numeric', month: 'short'});
   document.getElementById('achse').innerHTML = `<span>${tag(v[0].tag)}</span><span class="mitteL">Letzte 30 Tage</span><span>${tag(e && v[v.length - 1].tag)}</span>`;
   // Kacheln
+  const geld = x => x == null ? '–' : eur(x);
   document.getElementById('kacheln').innerHTML = [
-    ['ok', 'Ausgezahlt', eur(z.ausgezahlt), ''], ['uhr', 'Noch offen', eur(z.offen), zahl(z.offen_anzahl) + ' Bestellungen'],
-    ['gift', 'Prämien', eur(z.praemien), ''], ['x', 'Nicht berechtigt', z.quote_prozent.toLocaleString('de-DE') + ' %', eur(z.verloren) + ' entgangen']
+    ['bank', 'Bereits ausgezahlt', geld(z.bank), 'aufs Bankkonto (ca.)'], ['ok', 'Zur Auszahlung bereit', geld(z.bereit), 'Verfügbare Auszahlung'],
+    ['uhr', 'Noch offen', eur(z.offen), zahl(z.offen_anzahl) + ' Bestellungen'], ['siegel', 'Abgerechnet gesamt', eur(z.ausgezahlt), 'von TikTok gutgeschrieben'],
+    ['gift', 'Prämien', eur(z.praemien), 'soweit abgelesen'], ['x', 'Nicht berechtigt', z.quote_prozent.toLocaleString('de-DE') + ' %', eur(z.verloren) + ' entgangen']
   ].map(([s, t, w, u]) => `<div class="kachel">${sym(s)}<div><div class="t">${t}</div><div class="w">${w}</div><div class="u">${u}</div></div></div>`).join('');
   // Rangliste
   const rang = document.getElementById('rang'), andere = D.konten.slice(1);
   rang.hidden = k.name !== 'Alle Accounts';
   const m30 = Math.max(...andere.map(x => x.zeitraeume.tage30.provision), 1);
-  rang.innerHTML = `<h2>Accounts <small>voraussichtlich, 30 Tage</small></h2>` + andere.map(x => { const r = x.zeitraeume;
+  rang.innerHTML = `<h2>Accounts <small>voraussichtlich, letzte 30 Tage</small></h2>` + andere.map(x => { const r = x.zeitraeume;
     return `<button class="zeile" data-k="${esc(x.name)}">${ava(x)}<div class="mitte"><div style="display:flex;justify-content:space-between;gap:10px"><span class="n" style="font-weight:600">${esc(x.name)}</span><span class="b">${eur(r.tage30.provision)}</span></div>
     <div class="balken"><i style="width:${(r.tage30.provision / m30 * 100).toFixed(1)}%"></i></div><div class="s">Heute ${eur(r.heute.provision)} · Gestern ${eur(r.gestern.provision)} · 7 T ${eur(r.tage7.provision, true)}</div></div></button>` }).join('');
   // Monate
@@ -151,12 +201,12 @@ function zeichne() {
     <div style="text-align:right"><div class="b">${eur(m.vorauss)}</div><div class="s">${m.offen > 0 ? eur(m.offen) + ' offen' : 'komplett'}</div></div></div>` }).join('');
   // Auszahlungen
   const am = k.auszahlmonate, mx = Math.max(...am.map(m => m.betrag), 1), bw = 600 / Math.max(am.length, 1);
-  document.getElementById('auszahl').innerHTML = `<h2>Auszahlungen <small>pro Monat</small></h2><svg class="bars" viewBox="0 0 600 190" role="img" aria-label="Auszahlungen pro Monat">
+  document.getElementById('auszahl').innerHTML = `<h2>Abgerechnet <small>pro Monat, nach Abrechnungsdatum</small></h2><svg class="bars" viewBox="0 0 600 190" role="img" aria-label="Auszahlungen pro Monat">
     <defs><linearGradient id="bg1" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="var(--akzent)"/><stop offset="1" stop-color="var(--akzent2)"/></linearGradient></defs>` +
     am.map((m, i) => { const h = m.betrag / mx * 130, x = i * bw + bw * .22, w = bw * .56, y = 160 - h;
-      return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="7" fill="url(#bg1)" opacity="${m.monat === laufend ? .45 : 1}"/>
+      return `<g><title>${monat(m.monat, true)}: ${eur(m.betrag)}</title><rect x="${i * bw}" y="0" width="${bw}" height="190" fill="transparent"/><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="7" fill="url(#bg1)" opacity="${m.monat === laufend ? .45 : 1}"/>
       <text x="${x + w / 2}" y="${y - 8}" text-anchor="middle" font-size="12" font-weight="600" fill="var(--leise)">${eur(m.betrag, true)}</text>
-      <text x="${x + w / 2}" y="182" text-anchor="middle" font-size="12" fill="var(--leise)">${monat(m.monat)}</text>` }).join('') + `</svg>`;
+      <text x="${x + w / 2}" y="182" text-anchor="middle" font-size="12" fill="var(--leise)">${monat(m.monat)}</text></g>` }).join('') + `</svg>`;
   // Top
   const top = (id, titel, l, video) => document.getElementById(id).innerHTML = `<h2>${titel}</h2>` + l.slice(0, 8).map((e, i) => {
     const s = (k.name === 'Alle Accounts' && e.konto ? esc(e.konto) + ' · ' : '') + zahl(e.bestellungen) + ' Bestellungen' + (video ? '' : ` · ${e.quote_prozent.toLocaleString('de-DE')} % n. b.`);
@@ -167,10 +217,28 @@ function zeichne() {
   of.innerHTML = `<h2>Offene Bestellungen <small>${zahl(z.offen_anzahl)} gesamt</small></h2>` + k.offen.slice(0, 10).map(o =>
     `<div class="zeile"><div class="mitte"><div class="n">${esc(o.produkt)}</div><div class="s">${k.name === 'Alle Accounts' ? esc(o.konto) + ' · ' : ''}bestellt ${o.bestellt}</div></div><span class="b">${eur(o.betrag)}</span></div>`).join('');
 }
+document.addEventListener('change', ev => {
+  if (ev.target.id === 'von' && ev.target.value) eigen.von = ev.target.value;
+  if (ev.target.id === 'bis' && ev.target.value) eigen.bis = ev.target.value;
+  if (eigen.von > eigen.bis) [eigen.von, eigen.bis] = [eigen.bis, eigen.von];
+  zeichne();
+});
 document.addEventListener('click', ev => {
   const b = ev.target.closest('[data-k],[data-p]'); if (!b) return;
   if (b.dataset.k) st.konto = b.dataset.k; else st.per = b.dataset.p;
   merke(); zeichne(); if (b.dataset.k && b.classList.contains('zeile')) window.scrollTo({top: 0, behavior: 'smooth'});
 });
+function tip(ev) {
+  const w = document.getElementById('vwrap'), r = w.getBoundingClientRect(), d = window._v; if (!d) return;
+  const x = ((ev.touches ? ev.touches[0].clientX : ev.clientX) - r.left) / r.width;
+  const i = Math.max(0, Math.min(d.v.length - 1, Math.round(x * (d.v.length - 1)))), t = d.v[i], px = d.pts[i][0] / 600 * r.width, py = d.pts[i][1] / 130 * r.height;
+  const L = document.getElementById('vlinie'), P = document.getElementById('vpunkt'), T = document.getElementById('vtip');
+  L.hidden = P.hidden = T.hidden = false; L.style.left = px + 'px'; P.style.left = px + 'px'; P.style.top = py + 'px';
+  T.innerHTML = `<b>${eur(t.provision)}</b> · ${new Date(t.tag + 'T12:00').toLocaleDateString('de-DE', {weekday: 'short', day: 'numeric', month: 'short'})}`;
+  T.style.left = Math.max(70, Math.min(r.width - 70, px)) + 'px';
+}
+const vw = document.getElementById('vwrap');
+vw.addEventListener('mousemove', tip); vw.addEventListener('touchstart', tip, {passive: true}); vw.addEventListener('touchmove', tip, {passive: true});
+vw.addEventListener('mouseleave', () => ['vlinie', 'vpunkt', 'vtip'].forEach(id => document.getElementById(id).hidden = true));
 zeichne();
 </script>

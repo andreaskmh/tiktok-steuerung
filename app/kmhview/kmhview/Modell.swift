@@ -7,6 +7,7 @@ import AppKit
 #endif
 
 struct Daten: Codable { let stand: String; let konten: [Konto] }
+let appName = "statsKMH"
 struct Konto: Codable, Identifiable, Equatable {
     static func == (a: Konto, b: Konto) -> Bool { a.name == b.name }
     var id: String { name }
@@ -15,6 +16,8 @@ struct Konto: Codable, Identifiable, Equatable {
     let stand: String?
     let kennzahlen: Kennzahlen
     let zeitraeume: Zeitraeume
+    let tage: [[Wert]]
+    let videos_tage: [VideoTage]
     let verlauf: [Tag]
     let bestellmonate: [Bestellmonat]
     let auszahlmonate: [Auszahlmonat]
@@ -26,9 +29,50 @@ struct Konto: Codable, Identifiable, Equatable {
 struct Kennzahlen: Codable {
     let ausgezahlt, offen, verloren, quote_prozent, praemien: Double
     let offen_anzahl, bestellungen: Int
+    let bereit: Double?
+    let bank: Double?
 }
-struct Zeitraum: Codable { let provision: Double; let bestellungen: Int; let umsatz: Double }
-struct Zeitraeume: Codable { let heute, gestern, tage7, tage30: Zeitraum }
+struct Zeitraum: Codable { var provision: Double; var bestellungen: Int; var umsatz: Double }
+struct Zeitraeume: Codable { let heute, gestern, tage3, tage7, tage30: Zeitraum }
+
+/// Gemischtes JSON-Feld (Text oder Zahl) für kompakte Tageslisten [tag, provision, bestellungen, umsatz]
+enum Wert: Codable {
+    case text(String), zahl(Double)
+    init(from d: Decoder) throws {
+        let c = try d.singleValueContainer()
+        if let x = try? c.decode(Double.self) { self = .zahl(x) } else { self = .text(try c.decode(String.self)) }
+    }
+    func encode(to e: Encoder) throws { var c = e.singleValueContainer(); switch self { case .text(let t): try c.encode(t); case .zahl(let z): try c.encode(z) } }
+    var t: String { if case .text(let x) = self { return x }; return "" }
+    var z: Double { if case .zahl(let x) = self { return x }; return 0 }
+}
+struct VideoTage: Codable { let id: String; let konto: String; let name: String; let t: [[Wert]] }
+
+/// Zeitraum = von…bis (Bestelldatum, inklusive). „Letzte N Tage“ = rollierend inkl. heute, kein Kalendermonat.
+struct Spanne: Equatable { var von: Date; var bis: Date }
+let tagFormat: DateFormatter = { let f = DateFormatter(); f.dateFormat = "yyyy-MM-dd"; f.timeZone = .current; return f }()
+func tagText(_ d: Date) -> String { tagFormat.string(from: d) }
+func kurzDatum(_ d: Date) -> String { d.formatted(.dateTime.day().month(.twoDigits).year().locale(deDE)) }
+
+extension Konto {
+    func summe(_ s: Spanne) -> Zeitraum {
+        let a = tagText(s.von), b = tagText(s.bis)
+        var z = Zeitraum(provision: 0, bestellungen: 0, umsatz: 0)
+        for r in tage where r.count >= 4 && r[0].t >= a && r[0].t <= b {
+            z.provision += r[1].z; z.bestellungen += Int(r[2].z); z.umsatz += r[3].z
+        }
+        return z
+    }
+    func videos(_ s: Spanne) -> [VideoZeile] {
+        let a = tagText(s.von), b = tagText(s.bis)
+        return videos_tage.compactMap { v in
+            var n = 0, g = 0.0, p = 0.0
+            for r in v.t where r[0].t >= a && r[0].t <= b { n += Int(r[1].z); g += r[2].z; p += r[3].z }
+            return n > 0 ? VideoZeile(id: v.konto + "/" + v.id, video: v.id, konto: v.konto, name: v.name, bestellungen: n, gmv: g, provision: p) : nil
+        }.sorted { $0.gmv > $1.gmv }
+    }
+}
+struct VideoZeile: Identifiable { let id: String; let video: String; let konto: String; let name: String; let bestellungen: Int; let gmv: Double; let provision: Double }
 struct Tag: Codable, Identifiable { var id: String { tag }; let tag: String; let provision: Double }
 struct Bestellmonat: Codable, Identifiable {
     var id: String { monat }
@@ -45,10 +89,30 @@ struct Offen: Codable, Identifiable {
 }
 
 enum Periode: String, CaseIterable, Identifiable {
-    case heute = "Heute", gestern = "Gestern", tage7 = "7 Tage", tage30 = "30 Tage"
+    case heute = "Heute", gestern = "Gestern", tage3 = "3 Tage", tage7 = "7 Tage", tage30 = "30 Tage", eigen = "Zeitraum"
     var id: String { rawValue }
-    func wert(_ z: Zeitraeume) -> Zeitraum {
-        switch self { case .heute: z.heute; case .gestern: z.gestern; case .tage7: z.tage7; case .tage30: z.tage30 }
+    /// Feste Zeiträume relativ zu heute; „Letzte N Tage“ enthält heute.
+    func spanne(eigen: Spanne) -> Spanne {
+        let k = Calendar.current, h = k.startOfDay(for: Date()), minus = { (n: Int) in k.date(byAdding: .day, value: -n, to: h)! }
+        switch self {
+        case .heute: return Spanne(von: h, bis: h)
+        case .gestern: return Spanne(von: minus(1), bis: minus(1))
+        case .tage3: return Spanne(von: minus(2), bis: h)
+        case .tage7: return Spanne(von: minus(6), bis: h)
+        case .tage30: return Spanne(von: minus(29), bis: h)
+        case .eigen: return eigen
+        }
+    }
+    func erklaerung(_ s: Spanne) -> String {
+        let von = kurzDatum(s.von), bis = kurzDatum(s.bis)
+        switch self {
+        case .heute: return "Heute, \(bis) (bis zum letzten Abruf)"
+        case .gestern: return "Gestern, \(bis), ganzer Tag"
+        case .tage3, .tage7, .tage30:
+            let n = self == .tage3 ? 3 : self == .tage7 ? 7 : 30
+            return "\(von) – \(bis) · letzte \(n) Tage inkl. heute (rollierend, kein Kalendermonat)"
+        case .eigen: return "\(von) – \(bis) · eigener Zeitraum"
+        }
     }
 }
 
@@ -113,7 +177,7 @@ final class Speicher: ObservableObject {
         fehler = nil
         #if os(macOS)
         let datei = FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent("Library/Mobile Documents/com~apple~CloudDocs/kmhview/provision.json")
+            .appendingPathComponent("Library/Mobile Documents/com~apple~CloudDocs/statsKMH/provision.json")
         if let d = lese(datei) { daten = d; quelle = "iCloud"; return }
         #else
         if let b = UserDefaults.standard.data(forKey: schluessel) {

@@ -36,9 +36,9 @@ auf den Cent (6.11.–19.11.). Die Prämie aus „Belohnungen“ (5 €) steht *
   (UDID 00008130-00163088368A001C) per `POST /api/devices {"udid":…}` rein; Werkzeuge mit `TS_IPHONE_UDID=…`.
   Vor dem nächsten Posten iPhone 11 (00008030-00096C8621C3402E) wieder einbinden.
 
-## kmhview (Stand 20.11.2026)
+## statsKMH (Stand 20.11.2026)
 
-Eine Ansicht der Provisionszahlen, drei Wege: **iPhone-App** und **Mac-App** `kmhview` (`app/kmhview`, SwiftUI, ein Ziel für
+Eine Ansicht der Provisionszahlen, drei Wege: **iPhone-App** und **Mac-App** `statsKMH` (`app/kmhview`, SwiftUI, ein Ziel für
 iOS + macOS, Personal Team → iPhone-App 7 Tage gültig) und **Browser**: https://claude.ai/artifact/XVnK7tCrYwqgy499zy6pjS.
 
 Ablauf (Morgen/Abend):
@@ -47,9 +47,9 @@ Ablauf (Morgen/Abend):
    Downloads → Teilen → AirDrop an „MacBook Pro von Andreas“ (iPhone 11 hat andere iCloud, darum AirDrop) →
    `werkzeuge/analyse/exporte/<konto>.xlsx`. Werbe-Popups: rot tippen, dann zurück (Artur). Nie „Abheben“.
 2. `python3 werkzeuge/analyse/baue.py` → `bestellungen.json` (alle Konten).
-3. `python3 werkzeuge/analyse/app_daten.py` → `provision.json` in iCloud Drive `kmhview/` (Mac-App liest direkt, iPhone-App
+3. `python3 werkzeuge/analyse/app_daten.py` → `provision.json` in iCloud Drive `statsKMH/` (Mac-App liest direkt, iPhone-App
    nach einmaliger Ordnerwahl) + hier.
-4. `python3 werkzeuge/analyse/web.py` → `app/web/kmhview.html`, als Artifact (gleiche URL) neu veröffentlichen.
+4. `python3 werkzeuge/analyse/web.py` → `app/web/statsKMH.html`, als Artifact (gleiche URL) neu veröffentlichen.
 
 Konten auf dem iPhone 11: anduri.official, ella_robinson2, artur.official, andreasfastlane, andreas.testet
 (leonida.highlightss ist kein Shop-Account → nicht exportieren). andrucha.official nur auf dem iPhone 15 Pro Max (Export vom 19.11.). Profilbilder: `avatare/`.

@@ -427,3 +427,7 @@
 voraussichtliche Provision heute/gestern/7/30 Tage, „Alle Accounts“ zusammengerechnet) + Browser-Version (`app/web`, Artifact).
 Neu `werkzeuge/analyse/export_holen.py` (Export aller Accounts am iPhone 11 per AirDrop), `baue.py` (alle Konten),
 `web.py`. Alte App `app/Provision` ersetzt (Artur).
+
+**20.11.2026** – App heißt **statsKMH** (Artur). Neu: Zeiträume 3 Tage + eigener Zeitraum mit klarer Datumsangabe, Video-Performance
+(Sales/GMV), Kacheln „Bereits ausgezahlt“ / „Zur Auszahlung bereit“ (Guthaben per `export_holen.py --guthaben`), interaktive
+Diagramme. Stand + nächste Schritte: `docs/STAND-ANALYSE.md`.

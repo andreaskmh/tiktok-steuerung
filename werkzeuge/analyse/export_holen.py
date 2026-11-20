@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Partnerbestellungen-Export eines Accounts holen (iPhone am Kabel, TikTok) und per AirDrop auf den Mac.
-  python3 werkzeuge/analyse/export_holen.py konto1 [konto2 …]
+  python3 werkzeuge/analyse/export_holen.py konto1 [konto2 …]     (Export + Guthaben)
+  python3 werkzeuge/analyse/export_holen.py --guthaben konto1 …   (nur „Verfügbare Auszahlung“ ablesen)
 Ablauf: Profil → Konto wechseln → TikTok Shop für Creator*innen → Toolkit → Einnahmen → Partnerbestellungen →
 Herunterladen → Bestätigen → Datei laden (Safari) → Downloads → Teilen → AirDrop „MacBook Pro von Andreas“.
 Ergebnis: werkzeuge/analyse/exporte/<konto>.xlsx. Nie „Abheben“ tippen. Eine Zeile pro Konto, bei Problem STOPP."""
@@ -55,6 +56,8 @@ def tiktok_profil():
     K.taste("home"); time.sleep(1.2)
     tipp_text("Suchen", w=1.2)
     K.text("TikTok"); time.sleep(1); K.taste("return"); time.sleep(4)
+    if seh.finde("Siri-Vorschl"):     # Tippen ging daneben → TikTok-Symbol in den Vorschlägen
+        x, y = warte("TikTok", 4, genau=True); tipp(x, y - 25, 4)
     for i in range(10):
         tx = seh.lesen()
         if seh.finde("Gefolgt", tx):
@@ -92,6 +95,50 @@ def konto_liste_oeffnen():
     tipp(45, (h[0] if h else y - 50) - 24, 2)
 
 
+AKTUELL = {"konto": None}
+
+
+def guthaben():
+    """„Verfügbare Auszahlung“ (= zur Auszahlung bereit) auf der Auszahlungsübersicht ablesen → exporte/<konto>.guthaben.json.
+    Nur lesen – „Abheben“ liegt direkt darunter und wird nie getippt."""
+    import json, re
+    _, y = warte("Verfügbare Auszahlung", 10)
+    for t, a, b in seh.lesen():
+        m = re.search(r"([\d.]+,\d{2})", t.replace(" ", ""))
+        if m and y < b < y + 45:
+            wert = float(m.group(1).replace(".", "").replace(",", "."))
+            json.dump({"konto": AKTUELL["konto"], "bereit": wert, "stand": time.strftime("%Y-%m-%d %H:%M")},
+                      open(EXP / f"{AKTUELL['konto']}.guthaben.json", "w"))
+            print(f"{AKTUELL['konto']}: bereit {wert:.2f} €", flush=True)
+            return wert
+    raise Stopp("Betrag „Verfügbare Auszahlung“ nicht lesbar")
+
+
+def nur_guthaben():
+    tipp_text("TikTok Shop für Creator", w=5)
+    for _ in range(3):
+        rot = seh.finde("Poste")
+        if not rot:
+            break
+        tipp(*rot, 3); tipp(22, 58, 3)
+    warte("Hallo", 15)
+    y = None
+    for _ in range(6):
+        q = seh.finde("TikTok Sh", unter=110, ueber=520)
+        if q:
+            y = q[1]; break
+        K.ziehe(167, 500, 167, 340, 0.4); time.sleep(2)
+    if y is None:
+        raise Stopp("Toolkit nicht gefunden")
+    pf = [(a, b) for t, a, b in seh.lesen() if t.strip() in (">", "›") and a > 290 and abs(b - y) < 25]
+    tipp(*(pf[0] if pf else (314, y)), 3)
+    if not seh.finde("Meistbesucht"):
+        tipp(314, y, 3)
+    warte("Meistbesucht", 8)
+    tipp_text("Einnahmen", w=4)
+    guthaben()
+
+
 def export():
     tipp_text("TikTok Shop für Creator", w=5)
     for _ in range(3):                # Werbe-Popup (Artur 20.11.: auf Rot tippen, dann zurück)
@@ -115,6 +162,7 @@ def export():
         tipp(314, y, 3)
     warte("Meistbesucht", 8)
     tipp_text("Einnahmen", w=4)
+    guthaben()
     tipp_text("Partnerbestell", w=4)
     warte("Bestell-ID", 15)
     tipp(310, 56, 3)
@@ -146,9 +194,14 @@ def export():
 
 def main(konten):
     EXP.mkdir(exist_ok=True)
+    nur = "--guthaben" in konten
+    konten = [k for k in konten if not k.startswith("--")]
     for k in konten:
+        AKTUELL["konto"] = k
         try:
             tiktok_profil(); konto_wechseln(k)
+            if nur:
+                nur_guthaben(); continue
             f = export()
             time.sleep(1); shutil.move(f, EXP / f"{k}.xlsx")
             print(f"{k}: ok", flush=True)

@@ -15,6 +15,7 @@ struct Uebersicht: View {
     @EnvironmentObject var s: Speicher
     @State private var auswahl = "Alle Accounts"
     @State private var periode: Periode = .heute
+    @State private var eigen = Spanne(von: Calendar.current.date(byAdding: .day, value: -13, to: Calendar.current.startOfDay(for: Date()))!, bis: Calendar.current.startOfDay(for: Date()))
     @State private var waehlen = false
 
     var konto: Konto? { s.daten?.konten.first { $0.name == auswahl } ?? s.daten?.konten.first }
@@ -26,8 +27,9 @@ struct Uebersicht: View {
                     kopf
                     if let d = s.daten { KontoLeiste(konten: d.konten, auswahl: $auswahl) }
                     if let k = konto {
-                        Hero(k: k, periode: $periode)
+                        Hero(k: k, periode: $periode, eigen: $eigen)
                         Kacheln(k: k)
+                        VideoStatistik(k: k, spanne: periode.spanne(eigen: eigen), erklaerung: periode.erklaerung(periode.spanne(eigen: eigen)))
                         if k.istAlle, let d = s.daten { Rangliste(konten: Array(d.konten.dropFirst()), auswahl: $auswahl) }
                         Monate(k: k)
                         Auszahlungen(k: k)
@@ -56,7 +58,7 @@ struct Uebersicht: View {
     var kopf: some View {
         HStack(alignment: .firstTextBaseline) {
             VStack(alignment: .leading, spacing: 2) {
-                Text("kmhview").font(.system(size: 30, weight: .bold, design: .rounded))
+                Text(appName).font(.system(size: 30, weight: .bold, design: .rounded))
                 if let d = s.daten {
                     Text("Stand " + d.stand.replacingOccurrences(of: "T", with: " · ")).font(.footnote).foregroundStyle(.secondary)
                 }
@@ -79,7 +81,7 @@ struct Uebersicht: View {
     }
 
     var fuss: some View {
-        Text("Voraussichtlich = ausgezahlte + offene Provision nach Bestelldatum, ohne „nicht berechtigt“. Quelle: Partnerbestellungen-Export (\(s.quelle)).")
+        Text("Voraussichtlich = ausgezahlte/bereitstehende + offene Provision nach Bestelldatum, ohne „nicht berechtigt“. „Abgerechnet gesamt“ = von TikTok gutgeschrieben (Status „Bezahlt“). „Zur Auszahlung bereit“ = „Verfügbare Auszahlung“ in der App (abgelesen). „Bereits ausgezahlt“ = abgerechnet + Prämien − bereit (Näherung, ohne Gebühren/Abzüge). „Letzte N Tage“ = rollierend inkl. heute, kein Kalendermonat. Quelle: Partnerbestellungen-Export (\(s.quelle)).")
             .font(.caption2).foregroundStyle(.tertiary).padding(.top, 6)
     }
 }
@@ -154,19 +156,34 @@ struct KontoLeiste: View {
 }
 
 struct Hero: View {
-    let k: Konto; @Binding var periode: Periode
+    let k: Konto; @Binding var periode: Periode; @Binding var eigen: Spanne
+    @State private var gewaehlt: Date?
+    var punkt: Tag? {
+        guard let g = gewaehlt else { return nil }
+        return k.verlauf.min { abs(tagDatum($0.tag).timeIntervalSince(g)) < abs(tagDatum($1.tag).timeIntervalSince(g)) }
+    }
     var body: some View {
-        let z = periode.wert(k.zeitraeume)
+        let sp = periode.spanne(eigen: eigen)
+        let z = k.summe(sp)
         VStack(alignment: .leading, spacing: 16) {
-            HStack(spacing: 6) {
-                ForEach(Periode.allCases) { p in
-                    Button { withAnimation(.snappy) { periode = p } } label: {
-                        Text(p.rawValue).font(.footnote.weight(.semibold))
-                            .padding(.horizontal, 12).padding(.vertical, 7)
-                            .background(periode == p ? Color.white.opacity(0.95) : Color.white.opacity(0.14), in: Capsule())
-                            .foregroundStyle(periode == p ? Color.black : Color.white)
-                    }.buttonStyle(.plain)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    ForEach(Periode.allCases) { p in
+                        Button { withAnimation(.snappy) { periode = p } } label: {
+                            Text(p.rawValue).font(.footnote.weight(.semibold))
+                                .padding(.horizontal, 12).padding(.vertical, 7)
+                                .background(periode == p ? Color.white.opacity(0.95) : Color.white.opacity(0.14), in: Capsule())
+                                .foregroundStyle(periode == p ? Color.black : Color.white)
+                        }.buttonStyle(.plain)
+                    }
                 }
+            }
+            if periode == .eigen {
+                HStack(spacing: 10) {
+                    DatePicker("Von", selection: $eigen.von, in: ...eigen.bis, displayedComponents: .date)
+                    DatePicker("Bis", selection: $eigen.bis, in: eigen.von...Date(), displayedComponents: .date)
+                }
+                .labelsHidden().environment(\.locale, deDE).tint(.white).colorScheme(.dark)
             }
             VStack(alignment: .leading, spacing: 4) {
                 Text("Voraussichtliche Provision").font(.subheadline).foregroundStyle(.white.opacity(0.75))
@@ -174,6 +191,7 @@ struct Hero: View {
                     .contentTransition(.numericText()).minimumScaleFactor(0.6).lineLimit(1)
                 Text("\(zahl(z.bestellungen)) Bestellungen · \(euro(z.umsatz, kurz: true)) Umsatz")
                     .font(.footnote).foregroundStyle(.white.opacity(0.75))
+                Text(periode.erklaerung(sp)).font(.caption2).foregroundStyle(.white.opacity(0.6)).padding(.top, 2)
             }
             Chart(k.verlauf) { t in
                 AreaMark(x: .value("Tag", tagDatum(t.tag)), y: .value("€", t.provision))
@@ -181,11 +199,26 @@ struct Hero: View {
                     .foregroundStyle(LinearGradient(colors: [.white.opacity(0.35), .white.opacity(0)], startPoint: .top, endPoint: .bottom))
                 LineMark(x: .value("Tag", tagDatum(t.tag)), y: .value("€", t.provision))
                     .interpolationMethod(.catmullRom).foregroundStyle(.white).lineStyle(StrokeStyle(lineWidth: 2.2, lineCap: .round))
+                if let p = punkt, p.tag == t.tag {
+                    RuleMark(x: .value("Tag", tagDatum(p.tag))).foregroundStyle(.white.opacity(0.5)).lineStyle(StrokeStyle(lineWidth: 1, dash: [3, 3]))
+                        .annotation(position: .top, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {
+                            VStack(spacing: 1) {
+                                Text(euro(p.provision)).font(.caption.weight(.bold)).monospacedDigit()
+                                Text(tagDatum(p.tag).formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated).locale(deDE))).font(.caption2)
+                            }
+                            .padding(.horizontal, 8).padding(.vertical, 4)
+                            .background(.white, in: RoundedRectangle(cornerRadius: 8, style: .continuous)).foregroundStyle(.black)
+                        }
+                    PointMark(x: .value("Tag", tagDatum(p.tag)), y: .value("€", p.provision)).foregroundStyle(.white).symbolSize(70)
+                }
             }
+            .chartXSelection(value: $gewaehlt)
             .chartXAxis { AxisMarks(values: .stride(by: .day, count: 7)) { _ in AxisValueLabel(format: .dateTime.day().month(.abbreviated)).foregroundStyle(.white.opacity(0.6)) } }
-            .chartYAxis(.hidden)
-            .frame(height: 90)
-            Text("Letzte 30 Tage").font(.caption2).foregroundStyle(.white.opacity(0.6))
+            .chartYAxis { AxisMarks(position: .trailing, values: .automatic(desiredCount: 3)) { v in
+                AxisGridLine().foregroundStyle(.white.opacity(0.12))
+                AxisValueLabel { if let d = v.as(Double.self) { Text(euro(d, kurz: true)).font(.caption2).foregroundStyle(.white.opacity(0.55)) } } } }
+            .frame(height: 150).padding(.top, 26)
+            Text("Verlauf: letzte 30 Tage, Provision je Bestelltag – antippen oder darüberfahren für Werte").font(.caption2).foregroundStyle(.white.opacity(0.6))
         }
         .padding(20)
         .background(
@@ -197,14 +230,60 @@ struct Hero: View {
     }
 }
 
+struct VideoStatistik: View {
+    let k: Konto; let spanne: Spanne; let erklaerung: String
+    var body: some View {
+        let l = k.videos(spanne)
+        Karte(titel: "Video-Performance", rechts: "\(l.count) Videos mit Verkäufen") {
+            Text(erklaerung).font(.caption).foregroundStyle(.secondary)
+            HStack(spacing: 10) {
+                Mini(titel: "Sales", wert: zahl(l.reduce(0) { $0 + $1.bestellungen }))
+                Mini(titel: "GMV", wert: euro(l.reduce(0) { $0 + $1.gmv }, kurz: true))
+                Mini(titel: "Aufrufe", wert: "–")
+            }
+            if l.isEmpty { Text("Keine Verkäufe in diesem Zeitraum.").font(.subheadline).foregroundStyle(.secondary) }
+            ForEach(Array(l.prefix(10).enumerated()), id: \.offset) { i, v in
+                let zeile = HStack(spacing: 12) {
+                    Text("\(i + 1)").font(.system(.footnote, design: .rounded).weight(.bold)).foregroundStyle(.secondary).frame(width: 18)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(v.name).font(.subheadline).lineLimit(1)
+                        Text((k.istAlle ? v.konto + " · " : "") + "\(zahl(v.bestellungen)) Sales · \(euro(v.provision)) Provision")
+                            .font(.caption).foregroundStyle(.secondary).lineLimit(1)
+                    }
+                    Spacer(minLength: 8)
+                    Text(euro(v.gmv)).font(.subheadline.weight(.semibold)).monospacedDigit()
+                    Image(systemName: "arrow.up.right").font(.caption2).foregroundStyle(.tertiary)
+                }
+                if let url = URL(string: "https://www.tiktok.com/@\(v.konto)/video/\(v.video)") { Link(destination: url) { zeile }.buttonStyle(.plain) } else { zeile }
+            }
+            Text("Sales/GMV aus dem Partnerbestellungen-Export (nach Bestelldatum). Aufrufe, Likes, Kommentare folgen, sobald eine Quelle angebunden ist.")
+                .font(.caption2).foregroundStyle(.tertiary)
+        }
+    }
+}
+
+struct Mini: View {
+    let titel: String; let wert: String
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(titel).font(.caption2).foregroundStyle(.secondary)
+            Text(wert).font(.system(.headline, design: .rounded)).monospacedDigit().lineLimit(1).minimumScaleFactor(0.7)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading).padding(10)
+        .background(Color.secondary.opacity(0.08), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+    }
+}
+
 struct Kacheln: View {
     let k: Konto
     var body: some View {
         let z = k.kennzahlen
         LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
-            Kachel(symbol: "checkmark.circle.fill", farbe: .gut, titel: "Ausgezahlt", wert: euro(z.ausgezahlt))
+            Kachel(symbol: "building.columns.fill", farbe: .gut, titel: "Bereits ausgezahlt", wert: z.bank.map { euro($0) } ?? "–", unter: "aufs Bankkonto (ca.)")
+            Kachel(symbol: "banknote.fill", farbe: .gut, titel: "Zur Auszahlung bereit", wert: z.bereit.map { euro($0) } ?? "–", unter: "Verfügbare Auszahlung")
             Kachel(symbol: "hourglass", farbe: .akzent2, titel: "Noch offen", wert: euro(z.offen), unter: "\(zahl(z.offen_anzahl)) Bestellungen")
-            Kachel(symbol: "gift.fill", farbe: .akzent, titel: "Prämien", wert: euro(z.praemien))
+            Kachel(symbol: "checkmark.seal.fill", farbe: .akzent, titel: "Abgerechnet gesamt", wert: euro(z.ausgezahlt), unter: "von TikTok gutgeschrieben")
+            Kachel(symbol: "gift.fill", farbe: .akzent, titel: "Prämien", wert: euro(z.praemien), unter: "soweit abgelesen")
             Kachel(symbol: "xmark.octagon.fill", farbe: .schlecht, titel: "Nicht berechtigt", wert: z.quote_prozent.formatted(.number.locale(deDE)) + " %", unter: euro(z.verloren) + " entgangen")
         }
     }
@@ -232,7 +311,7 @@ struct Rangliste: View {
     let konten: [Konto]; @Binding var auswahl: String
     var body: some View {
         let max = konten.map { $0.zeitraeume.tage30.provision }.max() ?? 1
-        Karte(titel: "Accounts", rechts: "voraussichtlich, 30 Tage") {
+        Karte(titel: "Accounts", rechts: "voraussichtlich, letzte 30 Tage") {
             ForEach(konten) { k in
                 Button { withAnimation(.snappy) { auswahl = k.name } } label: {
                     HStack(spacing: 12) {
@@ -298,14 +377,20 @@ struct Monate: View {
 
 struct Auszahlungen: View {
     let k: Konto
+    @State private var gewaehlt: String?
     var body: some View {
-        Karte(titel: "Auszahlungen", rechts: "pro Monat") {
+        Karte(titel: "Abgerechnet", rechts: "pro Monat, nach Abrechnungsdatum") {
             Chart(k.auszahlmonate) { m in
                 BarMark(x: .value("Monat", monatName(m.monat)), y: .value("€", m.betrag), width: .ratio(0.55))
                     .foregroundStyle(m.monat == laufenderMonat() ? AnyShapeStyle(Color.akzent.opacity(0.4)) : AnyShapeStyle(verlaufFarbe))
+                    .opacity(gewaehlt == nil || gewaehlt == monatName(m.monat) ? 1 : 0.35)
                     .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
-                    .annotation(position: .top) { Text(euro(m.betrag, kurz: true)).font(.caption2.weight(.medium)).foregroundStyle(.secondary) }
+                    .annotation(position: .top) {
+                        Text(gewaehlt == monatName(m.monat) ? euro(m.betrag) : euro(m.betrag, kurz: true))
+                            .font(.caption2.weight(gewaehlt == monatName(m.monat) ? .bold : .medium)).foregroundStyle(gewaehlt == monatName(m.monat) ? .primary : .secondary)
+                    }
             }
+            .chartXSelection(value: $gewaehlt)
             .chartYAxis(.hidden)
             .frame(height: 170)
         }

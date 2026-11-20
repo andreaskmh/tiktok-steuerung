@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Baut provision.json für kmhview (iPhone, Mac, Browser) aus bestellungen.json + praemien.json + avatare/.
+"""Baut provision.json für statsKMH (iPhone, Mac, Browser) aus bestellungen.json + praemien.json + avatare/.
 Schreibt nach iCloud Drive/kmhview/provision.json und hierher.  python3 werkzeuge/analyse/app_daten.py"""
 import json, os, base64, datetime as D
 from collections import defaultdict
 
 HIER = os.path.dirname(os.path.abspath(__file__))
-ZIEL = os.path.expanduser("~/Library/Mobile Documents/com~apple~CloudDocs/kmhview/provision.json")
+ZIEL = os.path.expanduser("~/Library/Mobile Documents/com~apple~CloudDocs/statsKMH/provision.json")
 r2 = lambda x: round(x + 0.0, 2)
 HEUTE = D.date.today()
 
@@ -21,12 +21,12 @@ def zeitraum(rows, von, bis):
             "umsatz": r2(sum(r["umsatz"] for r in g if r["status"] != "nicht berechtigt"))}
 
 
-def konto_daten(rows, praemien):
+def konto_daten(rows, praemien, bereit=None):
     aus = [r for r in rows if r["status"] == "ausgezahlt"]
     off = [r for r in rows if r["status"] == "offen"]
     weg = [r for r in rows if r["status"] == "nicht berechtigt"]
     h = HEUTE.isoformat(); tag = lambda n: (HEUTE - D.timedelta(days=n)).isoformat()
-    zr = {"heute": zeitraum(rows, h, h), "gestern": zeitraum(rows, tag(1), tag(1)),
+    zr = {"heute": zeitraum(rows, h, h), "gestern": zeitraum(rows, tag(1), tag(1)), "tage3": zeitraum(rows, tag(2), h),
           "tage7": zeitraum(rows, tag(6), h), "tage30": zeitraum(rows, tag(29), h)}
     tage = defaultdict(float)
     for r in rows:
@@ -37,6 +37,10 @@ def konto_daten(rows, praemien):
          "verloren": r2(sum(r["provision_vorauss"] for r in weg)), "bestellungen": len(rows),
          "quote_prozent": round(100 * len(weg) / max(1, len(aus) + len(weg)), 1),
          "praemien": r2(sum(p["betrag"] for p in praemien))}
+    # Guthaben („Verfügbare Auszahlung“, abgelesen) → zur Auszahlung bereit; Rest der abgerechneten Provision (+ Prämien)
+    # gilt als bereits aufs Bankkonto ausgezahlt (Näherung: Pauschalgebühren/Verstöße nicht abgezogen).
+    k["bereit"] = r2(bereit) if bereit is not None else None
+    k["bank"] = r2(max(0.0, k["ausgezahlt"] + k["praemien"] - bereit)) if bereit is not None else None
     bm = defaultdict(list)
     for r in rows:
         bm[r["bestellt"][:7]].append(r)
@@ -61,7 +65,23 @@ def konto_daten(rows, praemien):
         out = [{"id": i or "", "name": e["name"], "konto": e["konto"], "betrag": r2(e["betrag"]), "bestellungen": e["n"],
                 "quote_prozent": round(100 * e["weg"] / max(1, e["ok"] + e["weg"]), 1)} for i, e in t.items()]
         return sorted(out, key=lambda x: -x["betrag"])[:10]
-    return {"kennzahlen": k, "zeitraeume": zr, "verlauf": verlauf, "bestellmonate": bestellmonate,
+    # Tageswerte (für jeden Zeitraum inkl. eigenem): [tag, provision, bestellungen, umsatz]
+    td = defaultdict(lambda: [0.0, 0, 0.0])
+    for r in rows:
+        e = td[r["bestellt"]]; e[1] += 1
+        if r["status"] != "nicht berechtigt":
+            e[0] += wert(r); e[2] += r["umsatz"]
+    tage_l = [[t, r2(e[0]), e[1], r2(e[2])] for t, e in sorted(td.items())]
+    # Videos je Tag: id → {name, konto, t: [[tag, bestellungen, gmv, provision]]}
+    vt = {}
+    for r in rows:
+        if not r["video_id"] or r["status"] == "nicht berechtigt":
+            continue
+        v = vt.setdefault(r["konto"] + "/" + r["video_id"], {"id": r["video_id"], "konto": r["konto"], "name": r["produkt"], "t": {}})
+        e = v["t"].setdefault(r["bestellt"], [0, 0.0, 0.0]); e[0] += 1; e[1] += r["umsatz"]; e[2] += wert(r)
+    videos_tage = [{"id": v["id"], "konto": v["konto"], "name": v["name"],
+                    "t": [[t, e[0], r2(e[1]), r2(e[2])] for t, e in sorted(v["t"].items())]} for v in vt.values()]
+    return {"kennzahlen": k, "zeitraeume": zr, "tage": tage_l, "videos_tage": videos_tage, "verlauf": verlauf, "bestellmonate": bestellmonate,
             "auszahlmonate": [{"monat": m, "betrag": r2(v)} for m, v in sorted(am.items())],
             "videos": top("video_id"), "produkte": top("produkt_id"),
             "offen": sorted([{"produkt": r["produkt"], "konto": r["konto"], "bestellt": r["bestellt"], "betrag": r["provision_vorauss"]}
@@ -77,10 +97,18 @@ B = json.load(open(os.path.join(HIER, "bestellungen.json")))
 rows = B["rows"]; pr = json.load(open(os.path.join(HIER, "praemien.json")))["rows"]
 stand = {q["konto"]: q["datei_stand"] for q in B.get("quellen", [])}
 konten = sorted({r["konto"] for r in rows})
+def guthaben(k):
+    p = os.path.join(HIER, "exporte", k + ".guthaben.json")
+    return json.load(open(p))["bereit"] if os.path.exists(p) else None
+
+
 liste = [dict(name=k, avatar=avatar(k), stand=stand.get(k), **konto_daten([r for r in rows if r["konto"] == k],
-              [p for p in pr if p["konto"] == k])) for k in konten]
+              [p for p in pr if p["konto"] == k], guthaben(k))) for k in konten]
 liste.sort(key=lambda x: -x["zeitraeume"]["tage30"]["provision"])
 alle = dict(name="Alle Accounts", avatar=None, stand=None, **konto_daten(rows, pr))
+bek = [x["kennzahlen"] for x in liste if x["kennzahlen"]["bereit"] is not None]   # nur Konten mit abgelesenem Guthaben
+alle["kennzahlen"]["bereit"] = r2(sum(x["bereit"] for x in bek)) if bek else None
+alle["kennzahlen"]["bank"] = r2(sum(x["bank"] for x in bek)) if bek else None
 out = {"stand": D.datetime.now().strftime("%Y-%m-%dT%H:%M"), "konten": [alle] + liste}
 text = json.dumps(out, ensure_ascii=False)
 open(os.path.join(HIER, "provision.json"), "w").write(text)
