@@ -572,6 +572,17 @@
    "entwurf": false,
    "dauer_s": 175,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "02:06",
+   "account": "artur.official",
+   "datei": "Video 151 - 53 Minisaft Probierbox - V1.mp4",
+   "produkt": "Minisaft Probierbox",
+   "tts_link": "https://shop.tiktok.com/view/product/1729899234621036927",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 93,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
@@ -579,6 +590,6 @@
   "anduri.official": 23,
   "ella_robinson2": 23,
   "andreas.testet": 2,
-  "artur.official": 2
+  "artur.official": 3
  }
 }
