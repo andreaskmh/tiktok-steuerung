@@ -564,3 +564,7 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - 20.11.2026 (spät): Online-Seite für die Ranglisten (claude.ai, fester Link, privat): DE/USA × Artur/Andreas/SLIDES, gemeinsame Haken (Artifact-Datenbank), Skripte aufklappbar, Links funktionieren am Handy. research.py schreibt daten-<land>.json, die Research veröffentlicht sie jede Runde an dieselbe URL. Warum: lokale HTML-Dateien öffnen am iPhone nur in der Vorschau (keine Haken, keine Links).
 - 20.11.2026 (spät): Ranglisten-Seite im WLAN: werkzeuge/ranglisten_server.py (launchd, Port 8080) liefert die Seite + gemeinsame Haken für alle Handys ohne Anmeldung; research.py `rangliste` kopiert daten-<land>.json nach ~/.tiktok-research/seite. Warum: Artur – mehrere Handys ohne Claude-Login.
 - 20.11.2026 (spät): Ranglisten-Server liefert die Seite mit Handy-Breite (viewport fehlte → iPhone zeigte Desktop-Breite, rechts abgeschnitten); Produktnamen auf 2 Zeilen gekürzt.
+
+## 20.11.2026 – statsKMH: alle Accounts auf jedem Handy
+- `werkzeuge/analyse/aktualisieren.py`: iPhone 11 und iPhone 15 Pro Max haben jetzt beide alle 6 Accounts (vorher iPhone 15 nur andrucha.official).
+  Ohne Handy-Wahl wird jeder Account nur einmal gelesen. Grund: Artur – Stand jetzt sind auf jedem Handy alle Accounts; soll später wieder getrennt werden.

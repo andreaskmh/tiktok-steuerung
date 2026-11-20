@@ -14,8 +14,9 @@ import json, os, sys, time, subprocess, pathlib, urllib.request, datetime as D
 HIER = pathlib.Path(__file__).resolve().parent
 ICLOUD = pathlib.Path.home() / "Library/Mobile Documents/com~apple~CloudDocs/statsKMH"
 AUFTRAG, STATUS, DAUER, LOG = ICLOUD / "auftrag.json", ICLOUD / "status.json", HIER / "dauer.json", HIER / "aktualisieren.log"
-GERAETE = [("00008030-00096C8621C3402E", ["anduri.official", "ella_robinson2", "artur.official", "andreasfastlane", "andreas.testet"]),
-           ("00008130-00163088368A001C", ["andrucha.official"])]   # iPhone 11 / iPhone 15 Pro Max
+KONTEN = ["anduri.official", "ella_robinson2", "artur.official", "andreasfastlane", "andreas.testet", "andrucha.official"]
+# Stand 20.11.2026: auf jedem Handy sind alle Accounts angemeldet (iPhone 11 / iPhone 15 Pro Max)
+GERAETE = [("00008030-00096C8621C3402E", list(KONTEN)), ("00008130-00163088368A001C", list(KONTEN))]
 def zusatz_konten():
     """In der App hinzugefügte Accounts (statsKMH/konten.json: [{"name", "udid"}]) an die feste Liste anhängen."""
     try:
@@ -71,11 +72,11 @@ def sek_pro_konto(art):
 
 def schaetzung():
     """Geschätzte Gesamtdauer je Art in Sekunden (für die Knöpfe in der App)."""
-    n = sum(len(k) for _, k in GERAETE)
+    n = len(ALLE_KONTEN)
     return {a: round(n * sek_pro_konto(a) + 20) for a in SCHRITTE}
 
 
-ALLE_KONTEN = [k for _, ks in GERAETE for k in ks]
+ALLE_KONTEN = list(dict.fromkeys(k for _, ks in GERAETE for k in ks))   # jeder Account einmal
 
 
 def geraet_hinzufuegen(udid):
@@ -111,7 +112,11 @@ def lauf(art, udid=None):
         geraet_hinzufuegen(udid)
         plan = [(udid, k) for k in next((ks for u, ks in GERAETE if u == udid), ALLE_KONTEN)]
     else:
-        plan = [(u, k) for u, konten in GERAETE for k in konten]
+        erstes = {}   # ohne Handy-Wahl: jeden Account nur einmal lesen, auf dem ersten Handy, das ihn hat
+        for u, konten in GERAETE:
+            for k in konten:
+                erstes.setdefault(k, u)
+        plan = [(u, k) for k, u in erstes.items()]
     pro_schritt = sek_pro_konto(art) / len(schritte)
     gesamt = len(plan) * len(schritte) + 1                      # +1 = App-Daten bauen
     start = time.time(); erledigt = 0; fehler = []; geschaetzt_fertig = 0.0
