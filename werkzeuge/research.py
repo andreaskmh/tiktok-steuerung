@@ -1235,6 +1235,10 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
     def ist_musik_bof(z):
         return "BOF" in z[2].split("+") and kand[z[1]]["video_id"] in musik and kand[z[1]]["video_id"] not in skr
 
+    def schoen(name):                                          # Artur 20.11.: „2026-11-20 DE Artur.html“ statt „de-rangliste-artur.html“
+        l, wer, endung = re.match(r"(\w+)-rangliste-(\w+)\.(\w+)$", name).groups()
+        return f"{HEUTE.isoformat()} {'DE' if l == 'de' else 'USA'} {wer.upper() if wer == 'slides' else wer.capitalize()}.{endung}"
+
     def eintrag(i, z):
         if ist_musik_bof(z):
             return eintrag_ohne(i, z)[:-1] + ["🎵 **Nur Musik – Standard-Skripte:**", ""] + [
@@ -1274,7 +1278,7 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
     desk.mkdir(parents=True, exist_ok=True)
     for name, text in dateien.items():
         (ORDNER / name).write_text(text)
-        (desk / name).write_text(text)
+        (desk / schoen(name)).write_text(text)
     # Artur 20.11.: dieselben Dateien als HTML-Tabelle (iPhone-Vorschau in WhatsApp/AirDrop/Dateien), Produkt = Link
     esc = lambda t: str(t).replace("&", "&amp;").replace("<", "&lt;").replace('"', "&quot;")
     def badge(k, art=""):
@@ -1333,7 +1337,7 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
                 f'</style><h1>{wer if wer != "slides" else "SLIDES"}</h1><p class="st">Rangliste {land.upper()} · {datum}</p>{inhalt}')
         name = f"{land}-rangliste-{wer.lower()}.html"
         (ORDNER / name).write_text(html)
-        (desk / name).write_text(html)
+        (desk / schoen(name)).write_text(html)
     print(f"FERTIG Aufteilung {', '.join(PERSONEN)} + Ablage: {desk}")
 
 
