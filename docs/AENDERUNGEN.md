@@ -534,3 +534,6 @@ nur bei Änderung neu zeichnen, Diagramm per Tippen statt Ziehen); Accounts-List
 **20.11.2026 (19:50, Research-Lauf 19 Uhr)** – `research.py lesen`: liefert Social1 schon Seite 1 leer → STOPP, alter Stand
 bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederhergestellt). `sortieren`: Fehler beim Wieder-Einlegen
 („Load failed“) bricht nicht mehr ab, sondern versucht es nochmal + Nachkontrolle (1 BOF-Video war kurz raus, aus Sicherung zurück).
+
+**20.11.2026 (20:10)** – iPhone: Seite war breiter als der Bildschirm (lange Handy-Auswahl mit fixedSize) → gekürzt; Schrift auf
+„groß“ begrenzt, kompaktere Abstände. Icon B (Graphit + Mint-Linie) eingebaut. Alte Fehlermeldungen aus status.json entfernt.

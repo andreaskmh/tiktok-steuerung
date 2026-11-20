@@ -168,8 +168,8 @@ struct Aktualisieren: View {
                         ForEach(s.geraete) { g in Text(g.titel).tag(g.udid) }
                         if gewaehlt == nil { Text(s.geraete.isEmpty ? "Handys werden gesucht …" : "nicht gefunden").tag(handy) }
                     }
-                    .labelsHidden().pickerStyle(.menu).fixedSize()
-                    Spacer()
+                    .labelsHidden().pickerStyle(.menu).lineLimit(1).truncationMode(.middle)
+                    .frame(maxWidth: .infinity, alignment: .leading)   // nie breiter als der Bildschirm (sonst ist alles „reingezoomt“)
                     #if os(macOS)
                     Button { s.spiegelOeffnen(handy) } label: { Label("Spiegel", systemImage: "rectangle.on.rectangle") }
                         .buttonStyle(.borderless).font(.caption)
