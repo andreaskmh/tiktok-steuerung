@@ -1212,7 +1212,33 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
             if v and "**DEUTSCH:**" in blk:
                 skr[v.group(1)] = ((spr.group(1) if spr else "?").upper(), blk.split("**DEUTSCH:**", 1)[1].strip())
 
+    musik = set()                                              # Artur 20.11.: BOF nur mit Musik → Standard-Skripte
+    for f in (ORDNER / f"{land}-transkripte").glob("*.json"):
+        t = json.loads(f.read_text())
+        if len(t.get("text", "")) < 30 and f.stem in kand:
+            musik.add(kand[f.stem]["video_id"])
+    for blk in (sf.read_text().split("<!-- ")[1:] if sf.exists() else []):
+        if "nur Musik" in blk and (v := re.search(r"/video/(\d+)", blk)):
+            musik.add(v.group(1))
+
+    def standard(k):
+        name = re.split(r" [-–|] |, |\(|【|\[", k["produkt"])[0].strip()[:45] or k["produkt"][:45]
+        preis = k.get("preis") or "einen Spitzenpreis"
+        s = [f"TikTok Shop verschenkt einfach fast ihren {name}. Leute, den gibt's grade für {preis}, das ist kein Fake. "
+             f"Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?"]
+        if HEUTE <= date(2026, 12, 1):                         # nur während Black Friday / Cyber Monday
+            s.insert(0, f"Für die nächsten 24h gibt's diesen {name} zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, "
+                        f"weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den "
+                        f"orangenen Einkaufswagen, bevor die wieder weg sind.")
+        return s
+
+    def ist_musik_bof(z):
+        return "BOF" in z[2].split("+") and kand[z[1]]["video_id"] in musik and kand[z[1]]["video_id"] not in skr
+
     def eintrag(i, z):
+        if ist_musik_bof(z):
+            return eintrag_ohne(i, z)[:-1] + ["🎵 **Nur Musik – Standard-Skripte:**", ""] + [
+                x for n, t in enumerate(standard(kand[z[1]]), 1) for x in (f"> **{n}.** {t}", ">")][:-1] + [""]
         e = eintrag_ohne(i, z)
         v = kand[z[1]]["video_id"]
         if v not in skr:
@@ -1251,12 +1277,19 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
         (desk / name).write_text(text)
     # Artur 20.11.: dieselben Dateien als HTML-Tabelle (iPhone-Vorschau in WhatsApp/AirDrop/Dateien), Produkt = Link
     esc = lambda t: str(t).replace("&", "&amp;").replace("<", "&lt;").replace('"', "&quot;")
-    def badge(k):
+    def badge(k, art=""):
         v = k["video_id"]
-        return (f'<a class="chip sp" href="#s{v}" onclick="document.getElementById(\'s{v}\').toggleAttribute(\'open\');return false">'
-                f'🌐 {skr[v][0]} · Skript</a>') if v in skr else ""
+        knopf = lambda t: (f'<a class="chip sp" href="#s{v}" onclick="document.getElementById(\'s{v}\').toggleAttribute(\'open\');'
+                           f'return false">{t}</a>')
+        if v in skr:
+            return knopf(f"🌐 {skr[v][0]} · Skript")
+        return knopf("🎵 Standard-Skript") if "BOF" in art.split("+") and v in musik else ""
 
-    def skript(k):
+    def skript(k, art=""):
+        if k["video_id"] in musik and k["video_id"] not in skr and "BOF" in art.split("+"):
+            t = "".join(f"<p><b>{n}.</b> {esc(x)}</p>" for n, x in enumerate(standard(k), 1))
+            return (f'<tr class="skr"><td></td><td colspan="3"><details id="s{k["video_id"]}"><summary>Nur Musik – Standard-Skripte</summary>'
+                    f'<div>{t}</div></details></td></tr>')
         if k["video_id"] not in skr:
             return ""
         t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", esc(skr[k["video_id"]][1])).replace("\n", "<br>")
@@ -1269,9 +1302,9 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
             k = kand[n]
             alt = {"Today": "neu", "Yesterday": "gestern"}.get(k["alter"], "alt")
             r.append(f'<tr><td><span class="nr">{i}</span></td><td><a href="https://www.tiktok.com/@{esc(k["creator"])}/video/{k["video_id"]}">'
-                     f'{esc(k["produkt"][:60])}</a><div class="sub"><span class="chip">{esc(art)}</span>{badge(k)}'
+                     f'{esc(k["produkt"][:60])}</a><div class="sub"><span class="chip">{esc(art)}</span>{badge(k, art)}'
                      f'<span class="cr">@{esc(k["creator"])}</span></div></td><td><span class="chip {alt}">{esc(k["alter"])}</span></td>'
-                     f'<td class="v">{esc(k["plus_views"])}</td></tr>' + skript(k))
+                     f'<td class="v">{esc(k["plus_views"])}</td></tr>' + skript(k, art))
         return "".join(r) + "</table>"
     seiten = {p: "".join(f"<h2>{a} ({len(t)})</h2>{tabelle(t)}" for a, t in abschnitte[p]) for p in PERSONEN}
     seiten["slides"] = f"<h2>SLIDES ({len(slides)})</h2>{tabelle(slides)}"
@@ -1296,7 +1329,7 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
                 '.chip.alt{color:var(--mut)}.chip.sp{color:#ffcc66;background:#ffcc661c}.cr{font-size:12px;color:var(--mut)}'
                 '.v{font-weight:700;color:#fff;white-space:nowrap}tr.skr td{padding-top:0}tr:has(+tr.skr) td{border-bottom:0}'
                 'details:not([open]){display:none}details{background:#1f1f22;border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.45}'
-                'summary{color:#ffcc66;font-size:12px;margin-bottom:6px;list-style:none}'
+                'summary{color:#ffcc66;font-size:12px;margin-bottom:6px;list-style:none}details p{margin:0 0 8px}'
                 f'</style><h1>{wer if wer != "slides" else "SLIDES"}</h1><p class="st">Rangliste {land.upper()} · {datum}</p>{inhalt}')
         name = f"{land}-rangliste-{wer.lower()}.html"
         (ORDNER / name).write_text(html)
