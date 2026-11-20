@@ -185,3 +185,8 @@ per fetch-Hook im Safari-Tab (Aktions-IDs ändern sich bei jedem Social1-Update 
   oder XMLHttpRequest/`performance`-Einträge prüfen; Argumente (Region, Seite, Zeitraum, Performance) aus dem Chunk ablesen.
 - Geprüft 19.11.: Durch das Klick-Speichern fehlten in BOF DE 25 protokollierte Videos → 22 direkt nachgetragen (Liste 363),
   1 ohne Video-Nummer, 2 nicht mehr unter den Kandidaten. SLIDES DE war vollständig.
+
+## Slideshow-Vorbilder (20.11.2026)
+`python3 werkzeuge/research.py vorbilder [--min 30000]` – Hits der Slideshow-Accounts aus research_regeln.json („vorbilder“)
+→ `uebergabe/ausgang/social1-vorbilder.json` für das Slideshow-Auto (Editing System, Liste „vorbilder“). Hintergrund:
+docs/SLIDESHOW-ANALYSE.md. Nicht während eines Posten-Stapels starten (öffnet ein Safari-Fenster).

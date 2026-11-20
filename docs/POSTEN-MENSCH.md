@@ -9,6 +9,7 @@ python3 werkzeuge/post_mensch.py <eingang.json>                    # ein Video
 python3 werkzeuge/post_mensch.py <json> --entwurf --ohne-airdrop   # Test: bis „Entwürfe“, nichts veröffentlichen
 python3 werkzeuge/post_mensch.py --aufraeumen <json>               # nur Social1-Lesezeichen + Fotos
 python3 werkzeuge/post_mensch.py --fotos <stapel>                  # Gepostete des Stapels aus Fotos löschen
+python3 werkzeuge/post_mensch.py --liken <stapel> [account]        # Nachlauf: Gepostete liken + speichern (20.11.2026)
 ```
 Ausgabe: eine Zeile pro Schritt mit Sekunden seit Start, je Video `✓ … 84 s`, am Ende `FERTIG x/y, Ø … s`. `STOPP …` → Foto
 (`python3 werkzeuge/kabel.py foto`), Ursache beheben, denselben Befehl neu starten (Gepostete überspringt der Stapel über den Status).
@@ -46,6 +47,13 @@ Die Schritt-Beschreibung unten gilt weiter, Fotos: zuerst Sammel-Löschen in „
 7. **@Brand** nur mit `handle` und wenn genau dieser Nutzername in der Trefferliste steht; sonst zurück, ohne Brand.
    Brands ohne Konto merkt sich `uebergabe/ausgang/brand-konten.json` (dann keine Suche mehr, spart ~10 s).
 8. **Veröffentlichen** erst, wenn der Knopf kräftig rot ist (Pixel). `--entwurf` / `ausverkauft` → „Entwürfe“ (links geprüft).
+8b. **Liken + Speichern** (seit 20.11.2026, Artur: „liken und markieren integrieren“) – nur nach echtem Veröffentlichen, nie bei
+   Entwurf: steht das neue Video gleich im Feed („<account> · Vor 1 Sek.“) → dort, sonst Profil → Kachel mit dem Hook-Titel →
+   Vollbild. Herz (181 Pkt über „Teilen“) und Lesezeichen (74 Pkt über „Teilen“) nur antippen, wenn sie **weiß** sind, danach per
+   Pixel prüfen: Herz rot, Lesezeichen gelb. Zurück per Wisch (im Feed nie seitlich wischen). Fehler → nur „liken übersprungen“,
+   der Post bleibt „gepostet“; 3× hintereinander gescheitert → für den Rest des Laufs aus. Aus: `TS_OHNE_LIKEN=1`.
+   In der JSON: `geliked` (Zeit) bzw. `liken_info` (Grund). **Nachlauf:** `post_mensch.py --liken <stapel-präfix> [account]`
+   (alle `gepostet` ohne `geliked`, Account für Account, Kachel im Profil suchen, blättert bis 8× nach unten).
 9. **Aufräumen:** Social1 am **Mac** (Safari, Liste offen in einem Tab `social1.ai/saved-videos/<liste>`): Karte mit der Produkt-ID →
    Lesezeichen „Save to list“ → Haken der offenen Liste raus → „Done“ (per JavaScript, nie „Delete“). Spart den App-Wechsel am iPhone.
    **Fotos gesammelt am Stapel-Ende** (einmal Fotos öffnen statt pro Video, spart ~10 s je Video): Mediathek → Kachel mit dem

@@ -1,0 +1,225 @@
+{
+ "stand": "2026-11-20T01:57",
+ "konten": [
+  {
+   "name": "andrucha.official",
+   "kennzahlen": {
+    "ausgezahlt": 929.54,
+    "offen": 6.83,
+    "offen_anzahl": 2,
+    "verloren": 124.41,
+    "bestellungen": 287,
+    "quote_prozent": 26.7,
+    "praemien": 5.0
+   },
+   "bestellmonate": [
+    {
+     "monat": "2026-08",
+     "bestellungen": 1,
+     "fertig_prozent": 100.0,
+     "ausgezahlt": 1.5,
+     "offen": 0.0,
+     "vorauss": 1.5,
+     "verloren": 0.0
+    },
+    {
+     "monat": "2026-09",
+     "bestellungen": 105,
+     "fertig_prozent": 100.0,
+     "ausgezahlt": 637.31,
+     "offen": 0.0,
+     "vorauss": 637.31,
+     "verloren": 27.5
+    },
+    {
+     "monat": "2026-10",
+     "bestellungen": 180,
+     "fertig_prozent": 99.4,
+     "ausgezahlt": 290.73,
+     "offen": 3.13,
+     "vorauss": 293.86,
+     "verloren": 96.91
+    },
+    {
+     "monat": "2026-11",
+     "bestellungen": 1,
+     "fertig_prozent": 0.0,
+     "ausgezahlt": 0.0,
+     "offen": 3.7,
+     "vorauss": 3.7,
+     "verloren": 0.0
+    }
+   ],
+   "auszahlmonate": [
+    {
+     "monat": "2026-09",
+     "betrag": 165.21
+    },
+    {
+     "monat": "2026-10",
+     "betrag": 613.19
+    },
+    {
+     "monat": "2026-11",
+     "betrag": 151.14
+    }
+   ],
+   "videos": [
+    {
+     "id": "7684307447674146080",
+     "name": "Oral-B iO Ultimative Reinigung, Original Aufsteckbürsten, Schwarz, 10 Stück",
+     "betrag": 363.0,
+     "bestellungen": 56,
+     "quote_prozent": 3.6
+    },
+    {
+     "id": "7692792250715213088",
+     "name": "Tyreses 2-in-1 Galaxie Projektor Nachtlicht, HD Sternprojektor, 360° verstellbarer Galaxie- & Ozeanprojektor für Schlafzimmer, Decke",
+     "betrag": 122.5,
+     "bestellungen": 43,
+     "quote_prozent": 19.0
+    },
+    {
+     "id": "7681431424565513504",
+     "name": "Oral-B iO Ultimative Reinigung, Original Aufsteckbürsten, Schwarz, 10 Stück",
+     "betrag": 61.04,
+     "bestellungen": 9,
+     "quote_prozent": 0.0
+    },
+    {
+     "id": "7694271806030499104",
+     "name": "Perioden Tanga - ZORA Sport",
+     "betrag": 59.29,
+     "bestellungen": 57,
+     "quote_prozent": 22.8
+    },
+    {
+     "id": "7686111886940589345",
+     "name": "BEDLORE Matratzenauflage aus Bambusfaser-Viskose mit tiefen Taschen, gesteppter Matratzentopper, weich & druckentlastend, passend für Matratzen bis 30-40 cm",
+     "betrag": 46.49,
+     "bestellungen": 21,
+     "quote_prozent": 42.9
+    },
+    {
+     "id": "7685492410025004321",
+     "name": "Oral-B iO Ultimative Reinigung, Original Aufsteckbürsten, Schwarz, 10 Stück",
+     "betrag": 46.2,
+     "bestellungen": 7,
+     "quote_prozent": 0.0
+    },
+    {
+     "id": "7683949340028718368",
+     "name": "Tonerde Maske Stick 2er-Set – Vulkanerde & Cica, Gesichtsmaske bei Mitessern & Unreinheiten, Tiefenreinigung der Poren, mattierend, für unreine & empfindliche Haut, ohne auszutrocknen",
+     "betrag": 32.34,
+     "bestellungen": 12,
+     "quote_prozent": 18.2
+    },
+    {
+     "id": "7685808857506975008",
+     "name": "Oral-B iO Ultimative Reinigung, Original Aufsteckbürsten, Schwarz, 10 Stück",
+     "betrag": 26.4,
+     "bestellungen": 4,
+     "quote_prozent": 0.0
+    },
+    {
+     "id": "7691653535942987040",
+     "name": "Halloween Mystery Set - Massage Gun 2.0 + Mystery Geschenk",
+     "betrag": 20.7,
+     "bestellungen": 20,
+     "quote_prozent": 90.0
+    },
+    {
+     "id": "7685518154780445985",
+     "name": "Oral-B iO Ultimative Reinigung, Original Aufsteckbürsten, Schwarz, 10 Stück",
+     "betrag": 19.8,
+     "bestellungen": 3,
+     "quote_prozent": 0.0
+    }
+   ],
+   "produkte": [
+    {
+     "id": "1729855353971055235",
+     "name": "Oral-B iO Ultimative Reinigung, Original Aufsteckbürsten, Schwarz, 10 Stück",
+     "betrag": 576.25,
+     "bestellungen": 88,
+     "quote_prozent": 2.3
+    },
+    {
+     "id": "1729897282736855527",
+     "name": "Tyreses 2-in-1 Galaxie Projektor Nachtlicht, HD Sternprojektor, 360° verstellbarer Galaxie- & Ozeanprojektor für Schlafzimmer, Decke",
+     "betrag": 135.0,
+     "bestellungen": 47,
+     "quote_prozent": 17.4
+    },
+    {
+     "id": "1729867263619930388",
+     "name": "Perioden Tanga - ZORA Sport",
+     "betrag": 59.29,
+     "bestellungen": 57,
+     "quote_prozent": 22.8
+    },
+    {
+     "id": "1729777181936098148",
+     "name": "BEDLORE Matratzenauflage aus Bambusfaser-Viskose mit tiefen Taschen, gesteppter Matratzentopper, weich & druckentlastend, passend für Matratzen bis 30-40 cm",
+     "betrag": 46.49,
+     "bestellungen": 21,
+     "quote_prozent": 42.9
+    },
+    {
+     "id": "1729885912621619568",
+     "name": "Halloween Mystery Set - Massage Gun 2.0 + Mystery Geschenk",
+     "betrag": 20.7,
+     "bestellungen": 40,
+     "quote_prozent": 95.0
+    },
+    {
+     "id": "1729884260801027055",
+     "name": "Tonerde Maske Stick 2er-Set – Vulkanerde & Cica, Gesichtsmaske bei Mitessern & Unreinheiten, Tiefenreinigung der Poren, mattierend, für unreine & empfindliche Haut, ohne auszutrocknen",
+     "betrag": 18.9,
+     "bestellungen": 8,
+     "quote_prozent": 28.6
+    },
+    {
+     "id": "1729648563966941242",
+     "name": "LION Paar Aknecreme W, leichte Creme, 14 g",
+     "betrag": 13.99,
+     "bestellungen": 5,
+     "quote_prozent": 0.0
+    },
+    {
+     "id": "1729884312955034607",
+     "name": "Tonerde Maske Stick 2er-Set – Vulkanerde & Cica, Gesichtsmaske bei Mitessern & Unreinheiten, Tiefenreinigung der Poren, mattierend, für unreine & empfindliche Haut, ohne auszutrocknen",
+     "betrag": 13.44,
+     "bestellungen": 4,
+     "quote_prozent": 0.0
+    },
+    {
+     "id": "1729912628006067064",
+     "name": "prepmymeal Bestseller-Probierbox XL Gerichte - High Protein Meal Prep, je Tüte 2 Mahlzeiten, bis zu 60g Protein pro Mahlzeit, tiefgekühlt, keine Zusatzstoffe, nur natürliche Zutaten – XL Tüten mit je 2 Portionen – 6, 12, 18 oder 24 Gerichte",
+     "betrag": 10.48,
+     "bestellungen": 3,
+     "quote_prozent": 0.0
+    },
+    {
+     "id": "1729928215735409343",
+     "name": "Energybody Fitness Adventskalender 2026 / Haferriegel",
+     "betrag": 7.5,
+     "bestellungen": 1,
+     "quote_prozent": 0.0
+    }
+   ],
+   "offen": [
+    {
+     "produkt": "Tonerde Maske Stick 2er-Set – Vulkanerde & Cica, Gesichtsmaske bei Mitessern & Unreinheiten, Tiefenreinigung der Poren, mattierend, für unreine & empfindliche Haut, ohne auszutrocknen",
+     "bestellt": "2026-10-29",
+     "betrag": 3.13
+    },
+    {
+     "produkt": "Tyreses 2-in-1 Galaxie Projektor Nachtlicht, HD Sternprojektor, 360° verstellbarer Galaxie- & Ozeanprojektor für Schlafzimmer, Decke",
+     "bestellt": "2026-11-08",
+     "betrag": 3.7
+    }
+   ]
+  }
+ ]
+}

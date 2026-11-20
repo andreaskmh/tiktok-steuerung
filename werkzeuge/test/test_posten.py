@@ -479,7 +479,7 @@ class Ablauf:
 def mit_ablauf(ab, d, entwurf=False):
     namen = ("konto", "zum_produkt", "showcase_oder_wagen", "zum_beitrag", "cover_pruefen", "beschreiben", "verlinken",
              "schluss_pruefung", "abschluss", "lage", "zur_hauptseite", "zurueck_zum_beitrag", "erstellen_route",
-             "aufraeumen", "schreibe", "eintragen", "lesen", "log", "lade", "warenkorb_leeren", "in_wagen")
+             "aufraeumen", "schreibe", "eintragen", "lesen", "log", "lade", "warenkorb_leeren", "in_wagen", "liken_nach_post")
     alt = {n: getattr(P, n) for n in namen}
     alt_run, alt_k, alt_sleep = P.subprocess.run, P.seh.kabel, P.time.sleep
     try:
@@ -502,6 +502,8 @@ def mit_ablauf(ab, d, entwurf=False):
         P.lage = lambda tx=None: (ab.schirm, [], ab.schirm in (B.FEED, B.PROFIL, B.TIKTOK))
         P.zur_hauptseite = ab.schritt("hauptseite")
         P.aufraeumen = lambda *a, **k: None
+        ab.liken = 0
+        P.liken_nach_post = lambda p, d: setattr(ab, "liken", ab.liken + 1)   # 20.11.2026: liken + speichern
         P.schreibe = lambda *a, **k: None
         P.eintragen = lambda *a, **k: None
         P.lesen = lambda: [("pro Verkauf", 100, 500)]
@@ -1042,8 +1044,127 @@ def test_live_wahl():
             setattr(P, n, v)
 
 
+def _pixel_roh(datei, punkte):
+    """RGB an Punkten (334×735) in einem echten Foto aus test/bildschirme/roh – wie P.farben, aber ohne iPhone."""
+    import subprocess
+    arg = [f"{v / (334.0 if i % 2 == 0 else 735.0):.4f}" for pt in punkte for i, v in enumerate(pt)]
+    out = subprocess.run([str(H.parent / "bin" / "pixel"), str(H / "bildschirme" / "roh" / datei), *arg],
+                         capture_output=True, text=True).stdout
+    return [tuple(map(int, z.split())) for z in out.splitlines()]
+
+
+def test_liken():
+    """20.11.2026 (Artur: „liken und markieren integrieren“): Seitenleiste finden, Zustand per Pixel, nie ein aktives
+    Symbol antippen, Fehler machen den Post nie kaputt, nur bei echtem Veröffentlichen."""
+    # ---- Erkennung an echten Fotos: 143924 (artur.official, beides aus), 170901 (andreas.official, beides an)
+    for name, datei, soll in (("aus", "20261115-143924-n3c6c3ud-f", (False, False)),
+                              ("an", "20261112-170901-2k0fnhne-f", (True, True)),
+                              ("an (Promote-Balken)", "20261112-213013-m40zk3hr-f", (True, True)),
+                              ("aus (Garnier)", "20261115-171241-o4imhxgs-f", (False, False))):
+        tx = fall(datei)
+        t = B.eigenes_video(tx)
+        check(f"Liken: Leiste gefunden ({name})", bool(t), str(t))
+        if not t:
+            continue
+        s = B.seitenleiste(t)
+        f = _pixel_roh(datei + ".png", B.probe_punkte(s["herz"]) + B.probe_punkte(s["merken"]))
+        h, m = f[:9], f[9:]
+        check(f"Liken: Herz/Lesezeichen {name}", (B.herz_an(h), B.merken_an(m)) == soll, f"{h[:2]} {m[:2]}")
+        if soll == (False, False):
+            check(f"Liken: inaktiv = klar weiß ({name})", P.symbol_weiss(h) and P.symbol_weiss(m))
+        else:
+            check(f"Liken: aktiv ist nie „weiß“ ({name})", not P.symbol_weiss(h) and not P.symbol_weiss(m))
+    check("Liken: keine Leiste auf der Beitragsseite", not B.eigenes_video(fall("20261112-010200")))
+    check("Liken: keine Leiste im Profil", not B.eigenes_video(fall("20261115-172950")))
+    check("Liken: gelb ist kein Herz, rot kein Lesezeichen",
+          not B.herz_an([(250, 206, 21)] * 9) and not B.merken_an([(254, 44, 85)] * 9))
+    # ---- direkt nach dem Veröffentlichen steht das neue Video im Feed („Vor 1 Sek.“)
+    check("Liken: neues Video im Feed erkannt", P._gerade_gepostet(fall("20261112-170901"), "andreas.official"))
+    check("Liken: fremdes Konto nicht", not P._gerade_gepostet(fall("20261112-170901"), "anduri.official"))
+    check("Liken: altes Video (ohne „Sek.“) nicht", not P._gerade_gepostet(fall("20261115-171241"), "artur.official"))
+    # ---- Kachel im Profil-Raster (Hook auf dem Cover)
+    prof = fall("20261115-172950")
+    k = P.profil_kachel(prof, "SAUGROBOTER FÜR 2€?! 😍")
+    check("Liken: Kachel im Profil gefunden", bool(k) and k[1] > 250, str(k))
+    check("Liken: fremde Kachel nicht", not P.profil_kachel(prof, "LIP PLUMPER FÜR 1,32€?! 😍"))
+    zwei = [("NIKE AIR MAX", 56, 400), ("SO GÜNSTIG?!", 57, 415), ("D 4,1 Mio", 40, 470)]
+    check("Liken: zweizeiliger Hook", P.profil_kachel(zwei, "NIKE AIR MAX SO GÜNSTIG?!") == (56, 400))
+    check("Liken: Profil-Raster erkannt", P.profil_raster(prof) and not P.profil_raster(fall("20261112-010200")))
+
+    # ---- leiste_tippen: tippt nur weiße Symbole, prüft danach
+    def lauf(folge):
+        getippt = []
+        alt = {n: getattr(P, n) for n in ("lesen", "leiste_zustand", "tipp", "ruhe")}
+        alt_sleep = P.time.sleep
+        it = iter(folge)
+        last = [None]
+        try:
+            P.lesen = lambda: []
+            def lz(tx):
+                last[0] = next(it, last[0]); z = last[0]
+                return None if z is None else ({"herz": (308, 413), "merken": (308, 520)}, z[0], z[1])
+            P.leiste_zustand = lz
+            P.tipp = lambda x, y, tx=None, was="", **kw: getippt.append(was.split()[0])
+            P.ruhe = lambda *a, **k: None
+            P.time.sleep = lambda s: None
+            return P.leiste_tippen(), getippt
+        finally:
+            for n, v in alt.items():
+                setattr(P, n, v)
+            P.time.sleep = alt_sleep
+    r, g = lauf([(False, False), (True, False), (True, True)])
+    check("Liken: Herz dann Lesezeichen", r == (True, True) and g == ["Herz", "Lesezeichen"], f"{r} {g}")
+    r, g = lauf([(True, True)])
+    check("Liken: schon aktiv → nichts tippen", r == (True, True) and g == [], f"{r} {g}")
+    r, g = lauf([(None, None)] * 8)
+    check("Liken: unklar (Animation) → nie tippen", r == (False, False) and g == [], f"{r} {g}")
+    r, g = lauf([(True, None), (True, False), (True, True)])
+    check("Liken: nur Lesezeichen fehlt → nur das", r == (True, True) and g == ["Lesezeichen"], f"{r} {g}")
+    r, g = lauf([(False, True)] * 8)
+    check("Liken: Herz reagiert nicht → höchstens 2× tippen, dann aufgeben", r == (False, True) and g == ["Herz", "Herz"],
+          f"{r} {g}")
+
+    # ---- liken_nach_post: Fehler → nur Log, kein Absturz, danach Hauptseite
+    logs, haupt = [], []
+    alt = {n: getattr(P, n) for n in ("liken_speichern", "log", "zur_hauptseite", "liken_merken")}
+    try:
+        P.log = logs.append
+        P.zur_hauptseite = lambda **k: haupt.append(1)
+        P.liken_merken = lambda *a, **k: None
+        for fehler in (P.Stopp("Kachel nicht gefunden"), P.Hart("CAPTCHA 45 min"), RuntimeError("kaputt")):
+            def ls(d, **k):
+                raise fehler
+            P.liken_speichern = ls
+            P.liken_nach_post(pathlib.Path("/dev/null"), {"account": "a", "kachel": "K"})
+        check("Liken: Fehler → nur „liken übersprungen“, Post bleibt", sum("liken übersprungen" in m for m in logs) == 3
+              and len(haupt) == 3, str(logs))
+        check("Liken: nach 3 Fehlschlägen für den Lauf aus", P.LIKEN["fehler_folge"] >= P.LIKEN_AUS_NACH
+              and "ab jetzt aus" in logs[-1], str(logs[-1:]))
+        n = len(haupt)
+        P.liken_nach_post(pathlib.Path("/dev/null"), {"account": "a", "kachel": "K"})
+        check("Liken: ausgeschaltet → kein Versuch mehr", len(haupt) == n)
+        P.LIKEN["fehler_folge"] = 0
+        P.liken_speichern = lambda d, **k: True; logs.clear()
+        P.liken_nach_post(pathlib.Path("/dev/null"), {"account": "a", "kachel": "K"})
+        check("Liken: Erfolg geloggt", any("geliked + gespeichert" in m for m in logs), str(logs))
+    finally:
+        for n, v in alt.items():
+            setattr(P, n, v)
+
+    # ---- nur nach echtem Veröffentlichen, nie bei Entwurf/ausverkauft
+    d = {"datei": "Video 143 - 26 Garnier Hair Food - V2.mp4", "account": "artur.official", "produkt": "Garnier Fructis",
+         "tts_link": "https://shop/1729", "kachel": "2 MASKEN FÜR 1,20€?! 😍", "button": "Wenige verfügbar",
+         "hashtags": ["#haarmaske"], "stapel": "test"}
+    ab = Ablauf(); mit_ablauf(ab, d)
+    check("Liken: nach Veröffentlichen genau 1×", ab.liken == 1, str(ab.liken))
+    ab = Ablauf(); mit_ablauf(ab, d, entwurf=True)
+    check("Liken: nie bei --entwurf", ab.liken == 0, str(ab.liken))
+    ab = Ablauf(); mit_ablauf(ab, dict(d, ausverkauft=True))
+    check("Liken: nie bei ausverkauft (Entwurf ohne Link)", ab.liken == 0 and ab.entwurf is True, str(ab.liken))
+
+
 def main():
-    for t in (test_live_wahl, test_erkennung, test_sicherungen, test_plan, test_hauptseite, test_zum_beitrag, test_ablauf, test_hauptschleife, test_erstellen_weg, test_szenarien,
+    for t in (test_liken, test_live_wahl, test_erkennung, test_sicherungen, test_plan, test_hauptseite, test_zum_beitrag, test_ablauf, test_hauptschleife, test_erstellen_weg, test_szenarien,
               test_tempo_16_11):
         try:
             t()

@@ -90,6 +90,8 @@ def captcha_wort(tx):
     alles = re.sub(r"verifiziert\w*", "", alles)        # „Von TikTok verifiziert“ (Shop-Abzeichen) ist kein CAPTCHA
     alles = re.sub(r"spiele\s*(&|und)\s*puzzles?|puzzles?\s*(&|und)\s*\w+|bestseller[^,]{0,40}|\w*puzzles\b", "", alles)
     # 17.11.2026 (147-25 UNO): Kategorie „Bestseller-Nr. 3 · Spiele & Puzzles“ ist kein CAPTCHA
+    alles = re.sub(r"[a-zäöüß0-9]+puzzle\w*|#\w+", "", alles)   # 20.11.: auch Hashtags (#puzzle in der Beschreibung)
+    # 20.11.2026 (151-24 TONECHEER „3D Holzpuzzle“): Wort mit Puzzle am Ende (Produktname) ist kein CAPTCHA
     return next((w for w in CAPTCHA_WORTE if w in alles), None)
 
 
@@ -160,6 +162,41 @@ def live_wahl(tx):
     tx = _t(tx)
     return bool(hat(tx, "what live do you want") or (hat(tx, "following Live") and hat(tx, "trending Live"))
                 or (hat(tx, "trending Live") and hat(tx, "recommend Live")))
+
+
+# ---------------------------------------------------------------- Liken + Speichern (20.11.2026, Artur: „liken und
+# markieren integrieren“) – eigenes Video im Vollbild. Rechte Leiste von oben: Profilbild, Herz (+Zahl), Kommentar
+# („Sei 1.“/Zahl), Lesezeichen (+Zahl), Teilen. Gemessen an echten Fotos (12.11./15.11.): Herz-Mitte 181 Pkt, Lesezeichen-
+# Mitte 74 Pkt über dem Label „Teilen“ (rutscht mit/ohne Shop-Button mit → immer von „Teilen“ aus rechnen).
+HERZ_DY, MERKEN_DY = -181, -74
+
+
+def eigenes_video(tx):
+    """Reine Funktion: Video im Vollbild mit rechter Leiste → (x, y) des Labels „Teilen“ (rechts, 480–650), sonst None.
+    erkenne() bleibt dafür unverändert (FEED/TIKTOK_SONST) – diese Prüfung nutzt nur liken_speichern()."""
+    return hat(_t(tx), "Teilen", genau=True, rechts=270, unter=480, ueber=650)
+
+
+def seitenleiste(teilen):
+    """(x, y) von „Teilen“ → {"herz": (x, y), "merken": (x, y)} Mitte der Symbole."""
+    x, y = teilen
+    return {"herz": (x, y + HERZ_DY), "merken": (x, y + MERKEN_DY)}
+
+
+def probe_punkte(mitte, r=5):
+    """9 Messpunkte um die Symbol-Mitte (Symbol ~24 Pkt breit)."""
+    x, y = mitte
+    return [(x + dx, y + dy) for dx in (-r, 0, r) for dy in (-4, 0, 4)]
+
+
+def herz_an(rgbs):
+    """Herz aktiv = kräftig rot (gemessen 254/44/85), inaktiv weiß (~235/235/235). ≥ 3 von 9 Punkten rot."""
+    return sum(r > 200 and g < 120 and b < 150 for r, g, b in rgbs) >= 3
+
+
+def merken_an(rgbs):
+    """Lesezeichen aktiv = gelb (gemessen 250/206/21), inaktiv weiß. ≥ 3 von 9 Punkten gelb."""
+    return sum(r > 200 and 140 < g < 235 and b < 110 for r, g, b in rgbs) >= 3
 
 
 def erkenne(tx, tabs=None):

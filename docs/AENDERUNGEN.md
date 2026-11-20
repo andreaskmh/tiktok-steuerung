@@ -396,3 +396,27 @@
 - Nachtrag (Artur): gelesen wird wieder bis Seite 100; `SEITEN_MAX` in research.py: BOF DE + SLIDES DE nur bis Seite 50 (speichern lässt
   Weiteres weg), Reactions DE + USA bis 100 → heute 44 Videos in Reactions DE/SLIDES USA zurückgelegt. `gemacht-abgleich`: nur Arturs
   `eigene BOF …` zählt (Inhalt + Rausgenommenes = gemacht), seine anderen Listen nicht (er arbeitet nur die BOF-Liste ab).
+
+**20.11.2026 00:20 – CAPTCHA-Fehlalarm „Holzpuzzle“ (Video 151-24, Posting-Session):** Social1-Seite „TONECHEER 3D Holzpuzzle …“ wurde als Puzzle-CAPTCHA erkannt → Lauf wartete. `bildschirm.captcha_wort` entfernt jetzt Wörter mit „puzzle“ am Wortende (Holzpuzzle, 3D-Puzzle als Kompositum) vor der Prüfung; „Puzzleteil“/„das Puzzle“ bleiben CAPTCHA. Backup `bildschirm.py.bak-20261120-holzpuzzle`. Tests 224/225 (rot nur datenabhängig „Liste per Produkt Tatort“).
+  Nachtrag 00:21: auch Hashtags (#puzzle aus der eigenen Beschreibung) werden vor der CAPTCHA-Prüfung ausgeblendet.
+
+**20.11.2026 – Liken + Speichern in `post_mensch.py` (Artur: „liken und markieren integrieren“, Regel seit 13.11.):** nach jedem echten Veröffentlichen `liken_nach_post()` → Feed (neues Video „Vor 1 Sek.“) oder Profil-Kachel (Hook) → Herz + Lesezeichen nur tippen, wenn weiß, danach Pixel-Prüfung (rot/gelb). Fehler nur geloggt, Post bleibt gepostet; 3 Fehlschläge in Folge → für den Lauf aus; `TS_OHNE_LIKEN=1` schaltet ab. Neu `--liken <stapel> [account]` (Nachlauf). Erkennung in `bildschirm.py` (`eigenes_video`, `seitenleiste`, `herz_an`, `merken_an`; `erkenne()` unverändert). Tests `test_liken` (33 neu, an 4 echten Fotos gemessen). Backups `*.bak-20261120-liken`.
+
+**20.11.2026 00:45 – Fehlalarm „Bild eingefroren“ (151-55):** Nach dem AirDrop zeigt das Fotos-Vollbild (Video spielt) oben die Platzhalter-Uhr „9:41“ → `_bild_aktuell` meldete Einfrieren → harter STOPP. Jetzt: Uhr „9:41“ auf Fotos-/unbekanntem Bildschirm zählt nicht als eingefroren. Backup `post_mensch.py.bak-20261120-uhr941`. Tests 258/259.
+  Nachtrag 00:50: Das iPhone zeigt seit dem Server-Neustart ÜBERALL „9:41“ (Demo-Statusleiste, auch Home) → Uhr „9:41“ wird generell nicht mehr verglichen (Einfrier-Schutz per Uhr ruht, solange die Demo-Uhr steht).
+
+- 20.11.2026 01:50 – Liken/Speichern: Profil stand oft auf dem Shop-Reiter (Tasche) → Kachel nie gefunden, Liken im Lauf ab 00:53 aus.
+  Jetzt: `profil_raster()` zählt Shop-Reiter/Ladefehler nicht mehr, `_zum_profil()` tippt den Video-Reiter (`video_reiter()`,
+  36 pt unter der Showcase-Zeile, Höhe je Konto verschieden). Am iPhone getestet (ella_robinson2, Halara): Herz + Lesezeichen an.
+
+## 20.11.2026 – Slideshow-Test nach klickguru (Artur: „alle 5 Punkte“)
+- Analyse @klickguru vs. @andreasfastlane: `docs/SLIDESHOW-ANALYSE.md`.
+- `research.py vorbilder`: liest Slideshow-Accounts (research_regeln.json „vorbilder“, zurzeit klickguru) im eigenen Safari-Fenster
+  (TikTok-Profil, nicht eingeloggt; Haken auf /api/post/item_list, „Aktualisieren“ bei Fehlerseite) → Hits ≥ 30K/≤ 7 Tage als
+  `uebergabe/ausgang/social1-vorbilder.json` (social1-Format + gewinner_sounds). Produkt-ID als Text (zu groß für JS-Zahlen).
+  Logik im Claude-Browser geprüft, echter Safari-Lauf noch offen (lief gerade ein Posten-Stapel).
+- `post_slideshow.py --stil klickguru`: Beschreibung leer, keine Hashtags (Schluss-Prüfung bleibt).
+- Editing System (eigene/): `slideshow-auto/auto_posten.py` + `konten.json` „regeln“: andreasfastlane = Testkonto, max. 8/Tag,
+  ≥ 45 Min. Abstand, --stil klickguru, Gesamtlimit aufgehoben; andere Konten wie bisher (Vergleich). Sicherungen *.bak-vor-klickguru.
+  `REZEPT-SLIDESHOW-AUTO.md`: Abschnitt „Test klickguru-Regeln“ (Bild 1 = Story/Meme, immer neue Bilder, Quelle „vorbilder“).
+- Offen: KI-Kennzeichnung am iPhone (Schritt nicht gebaut), Sound-Wiederverwendung (TikTok wählt Musik selbst, Artur 17.11.).

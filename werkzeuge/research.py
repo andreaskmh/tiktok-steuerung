@@ -14,6 +14,7 @@
   python3 werkzeuge/research.py wagen <ASIN>                    # in den Amazon.es-Einkaufswagen (nie kaufen)
   python3 werkzeuge/research.py skripte <de|us> [--top 30]      # Transkripte Top je Liste → fremdsprachige in „SKRIPTE <datum>.md“
   python3 werkzeuge/research.py skript <de|us> <nr>             # Transkript (Social1 „Transcribe“) speichern
+  python3 werkzeuge/research.py vorbilder [--min 30000]           # Slideshow-Vorbilder (klickguru …) → uebergabe/ausgang/social1-vorbilder.json
   python3 werkzeuge/research.py gemacht-abgleich               # Arturs Listen vs. letzte Momentaufnahme → Erledigtes in gemacht.json
   python3 werkzeuge/research.py messen                         # stündlich (launchd): Seite 1 DE+US protokollieren
   python3 werkzeuge/research.py messung                        # Auswertung: wann aktualisiert Social1?
@@ -711,6 +712,74 @@ def _doc_gehe(prefix, url, warte=7):
     time.sleep(warte)
 
 
+# ── Slideshow-Vorbilder (Artur 20.11.2026): erfolgreiche Slideshow-Accounts (klickguru …) auslesen → Hits als Liste
+#    im social1.py-Format (uebergabe/ausgang/social1-vorbilder.json), die das Slideshow-Auto im Editing System abarbeitet.
+TT = "https://www.tiktok.com/@"
+VORBILD_STAND = pathlib.Path.home() / ".tiktok-research" / "vorbilder.json"
+JS_TT_HAKEN = r"""(()=>{if(window.__kdcap)return 'schon';window.__kdcap=[];
+const of=window.fetch;window.fetch=async(...a)=>{const r=await of(...a);try{const u=(a[0]&&a[0].url)||String(a[0]);
+ if(u.includes('/api/post/item_list'))r.clone().json().then(j=>window.__kdcap.push(j))}catch(e){};return r};
+const oo=XMLHttpRequest.prototype.open,os=XMLHttpRequest.prototype.send;
+XMLHttpRequest.prototype.open=function(m,u){this.__u=u;return oo.apply(this,arguments)};
+XMLHttpRequest.prototype.send=function(){this.addEventListener('load',()=>{if(String(this.__u||'').includes('/api/post/item_list'))
+ try{window.__kdcap.push(JSON.parse(this.responseText))}catch(e){}});return os.apply(this,arguments)};
+const k=t=>[...document.querySelectorAll('button')].find(b=>b.innerText.trim()===t);
+setTimeout(()=>{k('Aktualisieren')&&k('Aktualisieren').click()},300);   // TikTok-Fehlerseite → neu laden (läuft dann durch den Haken)
+[4000,6500,9000,11500,14000,16500].forEach(z=>setTimeout(()=>window.scrollTo(0,document.body.scrollHeight),z));
+setTimeout(()=>{k('Beliebt')&&k('Beliebt').click()},19000);return 'ok'})()"""
+# Erste Seite (neueste 16) kommt manchmal vor dem Haken → zusätzlich aus dem Raster (ID + Aufrufe, ohne Produkt).
+JS_TT_LESEN = r"""(()=>{const z=s=>{s=(s||'').replace(',','.');const m=parseFloat(s);return /M/.test(s)?m*1e6:/K/.test(s)?m*1e3:m||0};
+const L=(window.__kdcap||[]).flatMap(c=>c.itemList||[]).map(it=>{let p={};
+ for(const a of it.anchors||[]){try{for(const x of JSON.parse(a.extra||'[]')){const m=String(x.extra||'').match(/"product_id"\s*:\s*"?(\d+)/);   // als Text: Zahl ist zu groß für JS
+  if(m){let n='';try{n=JSON.parse(x.extra).title||''}catch(e){};p={id:m[1],name:n||x.keyword||''};break}}}catch(e){}}
+ return {id:it.id,a:(it.author||{}).uniqueId,ct:it.createTime,v:(it.stats||{}).playCount,teile:(it.stats||{}).shareCount,
+  bilder:((it.imagePost||{}).images||[]).length,cover:(((it.imagePost||{}).cover||{}).imageURL||{}).urlList?.[0]||'',
+  ki:it.aigcLabelType||0,text:it.desc||'',sound:(it.music||{}).title||'',sound_id:(it.music||{}).id||'',produkt:p}});
+const da=new Set(L.map(x=>x.id)),konto=location.pathname.split('@')[1].split('/')[0];
+for(const e of document.querySelectorAll('[data-e2e="user-post-item"]')){const h=(e.querySelector('a')||{}).href||'';const m=h.match(/\/(photo|video)\/(\d+)/);
+ if(!m||da.has(m[2]))continue;const img=e.querySelector('img');
+ L.push({id:m[2],a:konto,ct:Number(BigInt(m[2])>>32n),v:z((e.querySelector('[data-e2e="video-views"]')||{}).innerText),teile:0,
+  bilder:m[1]==='photo'?1:0,cover:(img||{}).src||'',ki:0,text:'',sound:((img||{}).alt||'').split('Musik ')[1]||'',sound_id:'',produkt:{}})}
+return JSON.stringify(L)})()"""
+
+
+def vorbilder(min_views=30000, max_tage=7):
+    regeln = REGELN
+    konten = regeln.get("vorbilder", ["klickguru"])
+    stand = json.loads(VORBILD_STAND.read_text()) if VORBILD_STAND.exists() else {"genommen": []}
+    alle = {}
+    for konto in konten:
+        _doc_gehe(TT, TT + konto, warte=8)
+        _doc_js(TT, JS_TT_HAKEN, TT + konto)
+        time.sleep(26)
+        posts = [x for x in json.loads(_doc_js(TT, JS_TT_LESEN, TT + konto) or "[]") if x["a"] == konto]
+        for x in posts:
+            alle[x["id"]] = x
+        print(f"{konto}: {len({x['id'] for x in posts})} Posts gelesen", flush=True)
+    jetzt = time.time()
+    hits = sorted((x for x in alle.values() if x["bilder"] and x["v"] >= min_views and jetzt - x["ct"] <= max_tage * 86400
+                   and x["id"] not in stand["genommen"]), key=lambda x: -x["v"] / max(1, (jetzt - x["ct"]) / 3600))
+    sounds = {}
+    for x in alle.values():                                   # Gewinner-Sounds: Sounds mit Hits > min_views
+        if x["v"] >= min_views and x["sound"]:
+            s = sounds.setdefault(x["sound_id"], {"sound": x["sound"], "hits": 0, "views": 0})
+            s["hits"] += 1; s["views"] += x["v"]
+    eintraege = [{"nr": i, "produkt": x["produkt"].get("name", ""), "produkt_id": x["produkt"].get("id", ""),
+                  "video_id": x["id"], "creator": "@" + x["a"], "vorschau": x["cover"], "views": x["v"], "bilder": x["bilder"],
+                  "alter_h": round((jetzt - x["ct"]) / 3600), "sound": x["sound"], "sound_id": x["sound_id"], "ki_label": x["ki"],
+                  "tts_link": f"https://shop.tiktok.com/view/product/{x['produkt'].get('id')}" if x["produkt"].get("id") else "",
+                  "tiktok_link": f"https://www.tiktok.com/@{x['a']}/photo/{x['id']}"} for i, x in enumerate(hits, 1)]
+    ziel = PROJ / "uebergabe" / "ausgang" / "social1-vorbilder.json"
+    ziel.write_text(json.dumps({"liste": "vorbilder", "url": "", "gelesen": time.strftime("%Y-%m-%d %H:%M"), "eintraege": eintraege,
+                                "gewinner_sounds": sorted(sounds.values(), key=lambda s: -s["views"])[:15]},
+                               ensure_ascii=False, indent=1))
+    stand["genommen"] = sorted(set(stand["genommen"]) | {e["video_id"] for e in eintraege})
+    VORBILD_STAND.write_text(json.dumps(stand))
+    for e in eintraege[:10]:
+        print(f"{e['nr']}. {e['views']:>9} {e['alter_h']:>4}h {e['bilder']} Bilder · {e['produkt'][:50]} · {e['tiktok_link']}")
+    print(f"FERTIG vorbilder: {len(eintraege)} Hits → {ziel}")
+
+
 S1P = "https://www.social1.ai/products"
 JS_PRODUKTE = r"""JSON.stringify([...document.querySelectorAll('tr')].map(r=>{const t=r.innerText.split(/\n|\t/).map(s=>s.trim()).filter(Boolean);
  const i=r.querySelector('img[src*="/products/"]'); if(!i||t.length<6) return null;
@@ -1075,6 +1144,9 @@ if __name__ == "__main__":
         sys.exit()
     if a[:1] == ["messung"]:
         messung_auswerten()
+        sys.exit()
+    if a[:1] == ["vorbilder"]:
+        mit_neustart(vorbilder, int(a[a.index("--min") + 1]) if "--min" in a else 30000)
         sys.exit()
     if a[:1] == ["gemacht-abgleich"]:
         mit_neustart(gemacht_abgleich)

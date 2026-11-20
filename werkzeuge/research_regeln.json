@@ -190,5 +190,9 @@
     "us"
   ],
   "_supplement": "Artur 19.11. (Abgleich): in DE sind Supplements ok (15 in seiner BOF-Liste); riskante fängt verstoss_risiko.",
-  "verstoss_risiko_aktiv": false
+  "verstoss_risiko_aktiv": false,
+  "vorbilder": [
+    "klickguru"
+  ],
+  "_vorbilder": "Slideshow-Accounts, deren Hits research.py vorbilder als Vorlagen sammelt (Artur 20.11.2026). Weitere einfach ergänzen."
 }

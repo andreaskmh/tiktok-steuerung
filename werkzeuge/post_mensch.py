@@ -6,6 +6,7 @@ per Text-Label auf dem Bildschirm (seh.lesen), mit Gefahren-Sperre und menschlic
   python3 werkzeuge/post_mensch.py --stapel <stapel> [--entwurf] [--ohne-airdrop]   # alle „freigegeben“, Account für Account
   python3 werkzeuge/post_mensch.py --aufraeumen <eingang.json>                      # nur Social1-Lesezeichen + Fotos
   python3 werkzeuge/post_mensch.py --fotos <stapel>                                 # Gepostete des Stapels aus Fotos löschen
+  python3 werkzeuge/post_mensch.py --liken <stapel> [account]                       # Nachlauf: Gepostete liken + speichern
   python3 werkzeuge/post_mensch.py --wo                                             # Trockenlauf: welcher Bildschirm? (nur lesen)
   python3 werkzeuge/test/test_posten.py                                             # Offline-Tests (vor jedem Stapel)
 
@@ -17,7 +18,8 @@ Pro Video:  (Account prüfen/wechseln) → Safari social1.ai/products/<id> → �
             Showcase über „… pro Verkauf“, sonst Einkaufswagen (verfügbare Variante) → Produktseite zu → „+“ → Galerie →
             Video (Hook-Titel) → Auswählen → Weiter → Weiter → Beschreibung menschlich tippen → Link → Produkt →
             Showcase oben bzw. Weitere Produkte → Einkaufswagen → Hinzufügen → (@Brand, nur wenn Konto da) →
-            Veröffentlichen (--entwurf: „Entwürfe“) → Social1-Lesezeichen am Mac abhaken; am Stapel-Ende alle Videos in Fotos löschen.
+            Veröffentlichen (--entwurf: „Entwürfe“) → eigenes Video liken + speichern (20.11., TS_OHNE_LIKEN=1 aus) →
+            Social1-Lesezeichen am Mac abhaken; am Stapel-Ende alle Videos in Fotos löschen.
 Gefahren-Sperre: nie in der Nähe von Kasse, Jetzt kaufen, LIVE, Konto hinzufügen, Delete; CAPTCHA → STOPP.
 Ausgabe: eine Zeile pro Schritt mit Sekunden, am Ende „✓ <datei> 84 s“ bzw. „STOPP …“ (dann Foto: kabel.py foto).
 """
@@ -272,6 +274,8 @@ def _bild_aktuell(tx):
     uhr = [t[0].strip() for t in tx if t[2] < 30 and t[1] < 80 and re.fullmatch(r"\d{1,2}:\d{2}", t[0].strip())]
     if not uhr:
         return True
+    if uhr[0] == "9:41":   # Demo-Uhr (Statusleiste überschrieben) – Uhrvergleich unmöglich
+        return True          # 20.11.2026 (151-55): Fotos-Vollbild nach AirDrop zeigt Platzhalter-Uhr 9:41 → kein Einfrieren
     h, m = map(int, uhr[0].split(":"))
     jetzt = datetime.datetime.now()
     ist = (h % 12) * 60 + m
@@ -2270,6 +2274,263 @@ def abschluss(entwurf):
     raise Stopp("Beitragsseite noch offen – nicht veröffentlicht?")
 
 
+# ---------------------------------------------------------------- 5b) Liken + Speichern (Artur 20.11.2026)
+# Regel seit 13.11. (Editing System eigene/TIKTOK-STEUERUNG.md §2): nach dem Posten eigenes Video liken + speichern
+# („markieren“ = Lesezeichen). Weg: Profil → Kachel des neuen Videos (Hook-Text) → Vollbild → Herz → Lesezeichen →
+# per Pixel prüfen (rot/gelb) → zurück. Nie ein schon aktives Symbol antippen (würde es ausschalten). Fehler hier
+# machen den Post nie kaputt – nur „liken übersprungen“.
+
+def symbol_weiss(rgbs):
+    """Reine Funktion: Symbol klar inaktiv (weiß/hellgrau) – nur dann darf getippt werden."""
+    return sum(min(r, g, b) > 185 and max(r, g, b) - min(r, g, b) < 30 for r, g, b in rgbs) >= 5
+
+
+def leiste_zustand(tx):
+    """Rechte Leiste im zuletzt gelesenen Bild → (punkte, herz, merken) mit herz/merken = True (aktiv), False (klar
+    inaktiv) oder None (unklar, z. B. Animation) – oder None, wenn kein Video im Vollbild offen ist."""
+    t = B.eigenes_video(tx)
+    if not t:
+        return None
+    s = B.seitenleiste(t)
+    f = farben(*B.probe_punkte(s["herz"]), *B.probe_punkte(s["merken"]))
+    if len(f) != 18:
+        return None
+    h, m = f[:9], f[9:]
+    return (s, True if B.herz_an(h) else (False if symbol_weiss(h) else None),
+            True if B.merken_an(m) else (False if symbol_weiss(m) else None))
+
+
+def profil_kachel(tx, kachel):
+    """Reine Funktion: Kachel des Videos im Profil-Raster (Hook-Text auf dem Cover, 250 < y < 650) → (x, y) oder None.
+    Hook steht oft auf 2 Zeilen → auch Zeilen derselben Spalte zusammen prüfen."""
+    raster = [t for t in tx if 250 < t[2] < 650]
+    for t in raster:
+        if _passt(kachel, t[0]):
+            return t[1], t[2]
+    for t in raster:
+        unter = [u for u in raster if u is not t and abs(u[1] - t[1]) < 45 and 0 < u[2] - t[2] < 30]
+        if unter and _passt(kachel, t[0] + " " + unter[0][0]):
+            return t[1], t[2]
+    return None
+
+
+def _konto_sichtbar(tx, account):
+    k = _kn(account)
+    return any(k and k in _kn(t[0]) for t in tx if t[2] < 230)
+
+
+def _gerade_gepostet(tx, account):
+    """Reine Funktion: Feed zeigt nach dem Veröffentlichen das eigene neue Video („<account> · Vor 1 Sek.“)."""
+    k = _kn(account)
+    return bool(B.eigenes_video(tx)) and any(k and k in _kn(t[0]) and 480 < t[2] < 600 for t in tx) \
+        and any(re.search(r"vor\s*\d+\s*sek", t[0].lower()) and 480 < t[2] < 600 for t in tx)
+
+
+def video_reiter(tx):
+    """Reine Funktion: Profil → Punkt des Video-Raster-Reiters (Symbol ganz links, 36 pt unter der Knopf-Zeile
+    „Showcase“/„Bestellungen“; Zeile liegt je nach Konto verschieden hoch). → (x, y) oder None."""
+    ys = [t[2] for t in tx if 150 < t[2] < 330 and re.search(r"showcase|bestellungen", t[0].lower())]
+    return (36, max(ys) + 36) if ys else None
+
+
+def _zum_profil(account):
+    """Hauptseite → Profil-Tab; muss das richtige Konto zeigen (kein Wechsel hier)."""
+    tx = zur_hauptseite(abbrechen=True)
+    schon = (B.erkenne(tx) == B.PROFIL and _konto_sichtbar(tx, account)) or \
+        (profil_raster(tx) and not B.eigenes_video(tx) and not B.feed_oben(tx))   # Profil gescrollt (Nachlauf)
+    if not schon:
+        tipp(*PROFIL, tx, "Profil"); ruhe(1.2, 1.8)
+    for _ in range(6):
+        tx = lesen()
+        if popup_ok(tx):
+            continue
+        if seh.finde("Follower", tx) or seh.finde("Angepinnt", tx) or profil_raster(tx):
+            break
+        time.sleep(0.5)
+    if seh.finde("Follower", tx) and not (seh.finde("@" + account, tx) or _konto_sichtbar(tx, account)):
+        raise Stopp(f"Profil zeigt nicht {account} – liken übersprungen")
+    for _ in range(2):                                           # 20.11.: Profil stand auf Shop-Reiter (Tasche) → Video-Reiter
+        if profil_raster(tx) or not seh.finde("Follower", tx):
+            break
+        r = video_reiter(tx)
+        if not r:
+            break
+        tipp(*r, tx, "Video-Reiter im Profil", abstand=8, zitter=3); ruhe(1.0, 1.5)
+        for _ in range(4):
+            tx = lesen()
+            if profil_raster(tx):
+                break
+            time.sleep(0.6)
+    return tx
+
+
+def profil_raster(tx):
+    """Reine Funktion: Profil-Raster sichtbar (Kachel-Zahlen „D 4 Mio“, „> 600.221“, „Angepinnt“).
+    20.11.: Shop-Reiter (Produkte „289 verkauft“, „TikTok Shop für Creator“) oder Ladefehler zählt nicht."""
+    if any(t[2] > 280 and re.search(r"tiktok shop f|\d\s*verkauf|fehler beim laden", t[0].lower()) for t in tx):
+        return False
+    return sum(bool(re.fullmatch(r"\W{0,2}\s*[\d.,]+\s*(mio\.?|k|tsd\.?)?\W?", t[0].strip().lower())) for t in tx
+               if t[2] > 300) >= 2 or bool(seh.finde("Angepinnt", tx))
+
+
+def kachel_suchen(kachel, max_s=10.0, scrollen=0):
+    """Profil-Raster: Kachel finden → (x, y, tx). Erst warten (Upload läuft noch), dann bis `scrollen`× nach unten
+    blättern, am Ende einmal ganz nach oben und nochmal. Profil wird nie neu geladen (Artur 09.11.)."""
+    ende = time.time() + max_s
+    while True:
+        tx = lesen()
+        f = profil_kachel(tx, kachel)
+        if f:
+            return f[0], f[1], tx
+        if time.time() > ende:
+            break
+        time.sleep(1.5)
+    for runde in range(2 if scrollen else 0):
+        for _ in range(scrollen):
+            K().ziehe(167 + random.uniform(-15, 15), 560, 167 + random.uniform(-15, 15), 330, 0.35); ruhe(0.8, 1.2)
+            tx = lesen()
+            f = profil_kachel(tx, kachel)
+            if f:
+                return f[0], f[1], tx
+        if runde == 0:                                           # ganz nach oben, dann nochmal abwärts suchen
+            for _ in range(scrollen + 2):
+                K().ziehe(167, 250, 167, 640, 0.25); ruhe(0.4, 0.6)
+    return None
+
+
+def leiste_tippen(was="liken + speichern"):
+    """Video ist im Vollbild offen: Herz + Lesezeichen an (nur tippen, wenn klar weiß), danach prüfen → (herz, merken)."""
+    getippt = {"herz": 0, "merken": 0}
+    h = m = None
+    for _ in range(8):
+        tx = lesen()
+        z = leiste_zustand(tx)
+        if not z:
+            time.sleep(0.6); continue
+        s, h, m = z
+        if h and m:
+            return True, True
+        if h is False and getippt["herz"] < 2:
+            tipp(*s["herz"], tx, "Herz (liken)", abstand=20, zitter=4); getippt["herz"] += 1; ruhe(0.5, 0.9)
+            continue                                             # neu lesen, dann Lesezeichen
+        if m is False and getippt["merken"] < 2:
+            tipp(*s["merken"], tx, "Lesezeichen (speichern)", abstand=20, zitter=4); getippt["merken"] += 1
+            ruhe(0.6, 1.0); continue
+        if (h is False or m is False) and getippt["herz"] >= 2 and getippt["merken"] >= 2:
+            break
+        time.sleep(0.6)                                          # unklar (Animation) → nochmal lesen
+    return bool(h), bool(m)
+
+
+def liken_speichern(d, max_s=60.0, scrollen=0, zurueck=True):
+    """Eigenes Video (d) liken + speichern. → True wenn beides aktiv. Fehler → Stopp (Aufrufer fängt)."""
+    account, kachel = d["account"], d.get("kachel", "")
+    tx = lesen()
+    if _gerade_gepostet(tx, account):                            # Feed zeigt das neue Video schon → gleich hier
+        log("neues Video steht im Feed – liken + speichern dort")
+        zurueck = False                                          # im Feed nie seitlich wischen (Reiter links = LIVE)
+    else:
+        muss(kachel, "keine Kachel (Hook) – Video im Profil nicht zu finden")
+        _zum_profil(account)
+        f = kachel_suchen(kachel, max_s=max_s, scrollen=scrollen)
+        muss(f, f"Kachel „{kachel}“ im Profil nicht gefunden")
+        offen = False
+        for _ in range(3):                                       # Kachel kann noch hochladen → nochmal tippen
+            tipp(f[0], f[1], f[2], f"Kachel „{kachel[:20]}“", abstand=25, zitter=6); ruhe(1.2, 1.8)
+            for _ in range(6):
+                if B.eigenes_video(lesen()):
+                    offen = True; break
+                time.sleep(0.5)
+            if offen:
+                break
+            tx = lesen()
+            if B.erkenne(tx) != B.PROFIL and not profil_raster(tx):
+                wisch_zurueck()
+            f = kachel_suchen(kachel, max_s=8) or f
+        muss(offen, "Video öffnet sich nicht (Vollbild ohne „Teilen“)")
+    h, m = leiste_tippen()
+    if zurueck:
+        wisch_zurueck()
+    muss(h and m, f"nach dem Tippen nicht aktiv (Herz {'an' if h else 'aus'}, Lesezeichen {'an' if m else 'aus'})")
+    return True
+
+
+def liken_merken(p, d, ok, info=""):
+    d["geliked"] = datetime.datetime.now().isoformat(timespec="seconds") if ok else None
+    if not ok:
+        d["liken_info"] = info[:160]
+    else:
+        d.pop("liken_info", None)
+    try:
+        p.write_text(json.dumps(d, ensure_ascii=False, indent=2), encoding="utf-8")
+    except OSError:
+        pass
+
+
+LIKEN = {"fehler_folge": 0}
+LIKEN_AUS_NACH = 3                                               # so viele Fehlschläge hintereinander → für diesen Lauf aus
+
+
+def liken_nach_post(p, d):
+    """Nach jedem echten Veröffentlichen (nie bei Entwurf). Fehler → nur loggen, Post bleibt „gepostet“. Scheitert es
+    mehrmals hintereinander, bleibt es für den Rest des Laufs aus (kein Zeitverlust) – Nachlauf: --liken <stapel>."""
+    if LIKEN["fehler_folge"] >= LIKEN_AUS_NACH:
+        liken_merken(p, d, False, "liken in diesem Lauf aus (mehrfach gescheitert)"); return
+    t = time.time()
+    try:
+        liken_speichern(d, max_s=30)
+        log(f"geliked + gespeichert ({time.time() - t:.0f} s)")
+        liken_merken(p, d, True); LIKEN["fehler_folge"] = 0
+    except (KeyboardInterrupt, SystemExit):
+        raise
+    except BaseException as e:
+        LIKEN["fehler_folge"] += 1
+        aus = LIKEN["fehler_folge"] >= LIKEN_AUS_NACH
+        log(f"liken übersprungen: {str(e)[:120]}" + (" – ab jetzt aus für diesen Lauf (Nachlauf: --liken)" if aus else ""))
+        liken_merken(p, d, False, str(e))
+    try:
+        zur_hauptseite(abbrechen=True)
+    except (KeyboardInterrupt, SystemExit):
+        raise
+    except BaseException as e:
+        log(f"nach dem Liken: Hauptseite nicht erreicht ({str(e)[:80]}) – nächstes Video räumt auf")
+
+
+def nachlauf_liken(stapel_praefix, nur_account=None):
+    """--liken <stapel>: alle gepostete Videos der Stapel, die mit <stapel> beginnen und noch nicht geliked sind,
+    Account für Account im Profil suchen, liken + speichern. Eine Zeile pro Video."""
+    import eingang as EG
+    global _konto
+    liste = [(p, d) for p, d in EG.alle() if d.get("status") == "gepostet" and str(d.get("stapel", "")).startswith(stapel_praefix)
+             and not d.get("geliked") and (not nur_account or d["account"] == nur_account)]
+    liste.sort(key=lambda x: (REIHENFOLGE.index(x[1]["account"]) if x[1]["account"] in REIHENFOLGE else 99,
+                              x[1].get("gepostet_um", "")))
+    ok = fehl = 0
+    for acc in [a for a in REIHENFOLGE if any(d["account"] == a for _, d in liste)]:
+        vids = sorted([x for x in liste if x[1]["account"] == acc], key=lambda x: x[1].get("gepostet_um", ""), reverse=True)
+        log(f"── {acc}: {len(vids)} Videos")
+        if _konto != acc:
+            konto(acc); _konto = acc
+        for p, d in vids:
+            try:
+                liken_speichern(d, max_s=3, scrollen=8)
+                ok += 1; liken_merken(p, d, True)
+                print(f"♥ {d['datei']} → {acc}", flush=True)
+            except (KeyboardInterrupt, SystemExit):
+                raise
+            except Hart:
+                raise
+            except BaseException as e:
+                fehl += 1; liken_merken(p, d, False, str(e))
+                print(f"✗ {d['datei']} → {acc}: {str(e)[:120]}", flush=True)
+                try:
+                    zur_hauptseite(abbrechen=True)
+                except Stopp as e2:
+                    log(f"Rückweg: {e2}")
+    print(f"LIKEN FERTIG {ok}/{ok + fehl}", flush=True)
+    return ok, fehl
+
+
 # ---------------------------------------------------------------- 6) Aufräumen
 
 def social1_abhaken(pid, liste_id=None, _runde=0):
@@ -3002,6 +3263,8 @@ def ein_video(p, d, entwurf=False, aufr=True):
     print(f"✓ {d['datei']} → {d['account']} ({weg}{', Entwurf' if entwurf else ''}) {dauer:.0f} s", flush=True)
     if aufr and not entwurf:
         aufraeumen_im_hintergrund(d)                             # 16.11.: Mac-Safari parallel zum nächsten Video
+    if not entwurf and not os.environ.get("TS_OHNE_LIKEN"):     # 20.11.2026 (Artur): liken + speichern, Fehler nur Log
+        liken_nach_post(p, d)
     elif aufr and aus and not test_entwurf:                      # 16.11.: im --entwurf-Test Social1 nicht anfassen                                           # Artur 16.11.2026: ausverkauft/nicht provisionsberechtigt
         pid = d.get("tts_link", "").rstrip("/").split("/")[-1]  # → Vorbild in Social1-Liste „nicht verfügbar“ verschieben
         social1_warten()                                         # nie zwei Social1-Schritte gleichzeitig im Mac-Safari
@@ -3138,6 +3401,13 @@ def main(a):
             p, d = lade(rest[0]); aufraeumen(d); return
         if a[0] == "--fotos":                                    # alle geposteten Videos des Stapels aus Fotos
             fotos_aufraeumen([d for _, d in EG.alle() if d["stapel"] == rest[0] and d["status"] in ("gepostet", "entwurf")]); return
+        if a[0] == "--liken":                                    # 20.11.2026: Nachlauf liken + speichern
+            try:
+                if seh.kabel() and hasattr(seh.kabel(), "auf_usb"):
+                    seh.kabel().auf_usb()
+            except Exception as e:
+                log(f"USB-Prüfung: {e}")
+            nachlauf_liken(rest[0], rest[1] if len(rest) > 1 else None); return
         if a[0] == "--stapel":
             liste = [(p, d) for p, d in EG.alle() if d["status"] == "freigegeben" and d["stapel"] == rest[0]]
             if not liste:

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Foto-Slideshow posten (Artur 17.11.2026) – nutzt den Video-Ablauf aus post_mensch.py, nur die Galerie ist anders.
 
-  python3 werkzeuge/post_slideshow.py "<slideshow-ordner>" --account andreasfastlane [--entwurf] [--ohne-airdrop]
+  python3 werkzeuge/post_slideshow.py "<slideshow-ordner>" --account andreasfastlane [--entwurf] [--ohne-airdrop] [--stil klickguru]
+  --stil klickguru: Beschreibung leer, keine Hashtags (Test 20.11.2026, auto_posten.py setzt es fürs Testkonto)
 
 Der Ordner (Editing System, Videos/Slideshows/Auto …/NN Name/) braucht:
   fertig/S_Bild1.jpg …   die fertigen Slides (Reihenfolge = Nummer)
@@ -531,6 +532,11 @@ def main():
     M.MAX_WIEDERAUFNAHMEN = 0                         # Artur 17.11.: bei Hänger stehen bleiben, nicht selbst neu anfangen
     M.feld_text = feld_text_slides
     M.beschreibung_feld_tippen = feld_tippen_slides
+    if "--stil" in a and a[a.index("--stil") + 1] == "klickguru":
+        # Test klickguru-Regeln (Artur 20.11.2026, docs/SLIDESHOW-ANALYSE.md): Beschreibung komplett leer, keine Hashtags.
+        # Die Schluss-Prüfung liest weiter am Bildschirm: steht doch Text im Feld → Sperre (nicht posten).
+        M.beschreibung_text = lambda dd: ""
+        M.beschreiben = lambda text: M.log("Beschreibung leer (Stil klickguru)")
     M.zum_beitrag = lambda kachel, galerie=None, warten_s=120: fotos_zum_beitrag(len(slides), galerie)
     M.video_waehlen = M.zum_beitrag
     try:
