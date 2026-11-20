@@ -569,3 +569,6 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - `werkzeuge/analyse/aktualisieren.py`: iPhone 11 und iPhone 15 Pro Max haben jetzt beide alle 6 Accounts (vorher iPhone 15 nur andrucha.official).
   Ohne Handy-Wahl wird jeder Account nur einmal gelesen. Grund: Artur – Stand jetzt sind auf jedem Handy alle Accounts; soll später wieder getrennt werden.
 - statsKMH (`Uebersicht.swift`): Account unten in der Liste antippen → Bild springt nicht mehr mit (Liste bleibt an derselben Stelle stehen, ohne Animation). Grund: Artur – „Wisch-Hocheffekt“ beim Wechseln.
+- statsKMH Design an Arturs Vorlage (Broker-App-Screenshots) angepasst: echtes Schwarz/Weiß, Abschnitte ohne Rahmen mit großen fetten Überschriften,
+  Hauptzahl groß, Verlauf als reine weiße Linie bis an den Rand mit gepunkteter Durchschnittslinie (ohne Achsen), Zeitraum als schlichte Textreihe,
+  flache graue Kacheln (ohne Symbole), Ansicht-Reiter als Text, Aktualisieren-Knöpfe als helle Pillen. Gilt für iPhone und Mac. Alte Fassung: Git-Verlauf.

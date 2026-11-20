@@ -11,25 +11,17 @@ func hd(_ hell: UInt32, _ dunkel: UInt32) -> Color {
     return Color(NSColor(name: nil) { $0.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua ? NSColor(red: b.0, green: b.1, blue: b.2, alpha: 1) : NSColor(red: a.0, green: a.1, blue: a.2, alpha: 1) })
     #endif
 }
-extension Color {
-    #if os(iOS)   // iPhone dunkler (Artur 20.11.): echtes Schwarz, Karten dunkelgrau
-    static let grund = hd(0xECECEE, 0x000000)
-    static let flaeche = hd(0xFBFBFC, 0x1C1C1E)
-    static let linie = hd(0xD6D6D9, 0x2C2C2E)
-    static let mulde = hd(0xE8E8EA, 0x0B0B0C)
-    static let symbolGrund = hd(0xECECEE, 0x2C2C2E)
-    #else
-    static let grund = hd(0xECECEE, 0x1C1C1E)        // Seitenhintergrund
-    static let flaeche = hd(0xFBFBFC, 0x2C2C2E)      // Karten
-    static let linie = hd(0xD6D6D9, 0x3A3A3C)        // feine Ränder
-    static let mulde = hd(0xE8E8EA, 0x1C1C1E)        // Spur des Zeitraum-Schalters
-    static let symbolGrund = hd(0xECECEE, 0x3A3A3C)  // Hintergrund kleiner Symbole
-    #endif
-    static let akzent = hd(0x3A3A3C, 0xD1D1D6)       // „Tinte“: Linien, Balken, Auswahl
+extension Color {   // Broker-App-Look (Artur 20.11. abends): Schwarz/Weiß, flache graue Kacheln, Grün/Rot nur für Zahlen
+    static let grund = hd(0xFFFFFF, 0x000000)        // Seitenhintergrund
+    static let flaeche = hd(0xF2F2F4, 0x161618)      // Kacheln
+    static let linie = hd(0xE3E3E6, 0x2A2A2D)        // feine Linien
+    static let mulde = hd(0xF2F2F4, 0x161618)
+    static let symbolGrund = hd(0xE9E9EC, 0x242427)  // gewählte Zeile, kleine Symbole
+    static let akzent = hd(0x000000, 0xFFFFFF)       // Linie, Auswahl, Knöpfe
     static let akzent2 = akzent
-    static let gut = hd(0x3C9A5F, 0x6CC48A)
+    static let gut = hd(0x1FA34A, 0x2FD158)
     static let warn = hd(0xC98A2E, 0xE0A95A)
-    static let schlecht = hd(0xC9524A, 0xE57A72)
+    static let schlecht = hd(0xE0352B, 0xFF453A)
 }
 let verlaufFarbe = LinearGradient(colors: [.gut, .gut], startPoint: .top, endPoint: .bottom)   // Balken (Artur: nicht grau)
 
@@ -75,7 +67,7 @@ struct Uebersicht: View {
                     }
                     fuss
                 }
-                .padding(.horizontal, randAussen).padding(.bottom, 30)
+                .padding(.horizontal, randAussen + 6).padding(.bottom, 30)
                 .frame(maxWidth: 720).frame(maxWidth: .infinity)
             }
             .coordinateSpace(name: "blatt")
@@ -108,7 +100,7 @@ struct Uebersicht: View {
     var kopf: some View {
         HStack(alignment: .firstTextBaseline) {
             VStack(alignment: .leading, spacing: 2) {
-                Text(appName).font(.system(size: 30, weight: .bold, design: .rounded))
+                Text(appName).font(.system(size: 34, weight: .bold))
                 if let d = s.daten {
                     Text("Stand " + d.stand.replacingOccurrences(of: "T", with: " · ")).font(.footnote).foregroundStyle(.secondary)
                 }
@@ -118,7 +110,7 @@ struct Uebersicht: View {
             Button { waehlen = true } label: {
                 Image(systemName: s.hatOrdner ? "icloud.fill" : "icloud.and.arrow.down")
                     .font(.system(size: 16, weight: .semibold)).frame(width: 38, height: 38)
-                    .background(.ultraThinMaterial, in: Circle())
+                    .background(Color.flaeche, in: Circle())
             }.buttonStyle(.plain)
             #else
             Button { s.laden() } label: { Image(systemName: "arrow.clockwise") }.buttonStyle(.borderless)
@@ -174,7 +166,7 @@ struct Aktualisieren: View {
                 }
             } else {
                 HStack {
-                    Text("Daten aktualisieren").font(.system(.headline, design: .rounded))
+                    Text("Daten aktualisieren").font(.title3.weight(.bold))
                     Spacer()
                     if let e = st?.ende { Text("zuletzt " + datum(e).formatted(.dateTime.day().month().hour().minute().locale(deDE))).font(.caption).foregroundStyle(.secondary) }
                 }
@@ -227,15 +219,16 @@ struct Aktualisieren: View {
         Button { frage = (art, titel, sek) } label: {
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
-                    Image(systemName: symbol).foregroundStyle(Color.gut)
-                    Text(titel).font(.subheadline.weight(.semibold))
+                    Image(systemName: symbol)
+                    Text(titel).font(.headline.weight(.bold))
                     Spacer()
-                    Text("~\(dauer(Double(sek)))").font(.caption.weight(.semibold)).monospacedDigit().foregroundStyle(.secondary)
+                    Text("~\(dauer(Double(sek)))").font(.caption.weight(.semibold)).monospacedDigit().opacity(0.6)
                 }
-                Text(unter).font(.caption2).foregroundStyle(.secondary).lineLimit(2).multilineTextAlignment(.leading)
+                Text(unter).font(.caption2).opacity(0.6).lineLimit(2).multilineTextAlignment(.leading)
             }
-            .padding(12).frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.symbolGrund, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .foregroundStyle(Color.grund)
+            .padding(.horizontal, 16).padding(.vertical, 14).frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color.akzent.opacity(0.92), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain).disabled(gesperrt).opacity(gesperrt ? 0.5 : 1)
@@ -263,16 +256,14 @@ struct Karte<C: View>: View {
         VStack(alignment: .leading, spacing: 14) {
             if let t = titel {
                 HStack {
-                    Text(t).font(.system(.headline, design: .rounded))
+                    Text(t).font(.title3.weight(.bold))
                     Spacer()
-                    if let r = rechts { Text(r).font(.caption).foregroundStyle(.secondary) }
+                    if let r = rechts { Text(r).font(.caption.weight(.medium)).foregroundStyle(.secondary).multilineTextAlignment(.trailing) }
                 }
             }
             inhalt
         }
-        .padding(randInnen)
-        .background(Color.flaeche, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).strokeBorder(Color.linie, lineWidth: 0.5))
+        .padding(.vertical, 8)
     }
 }
 
@@ -285,7 +276,7 @@ struct Avatar: View {
             } else if let b = Avatar.bild(name, konto?.avatar) {
                 b.resizable().scaledToFill()
             } else {
-                ZStack { Color.symbolGrund; Text(String(name.prefix(1)).uppercased()).font(.system(size: groesse * 0.42, weight: .bold, design: .rounded)) }
+                ZStack { Color.symbolGrund; Text(String(name.prefix(1)).uppercased()).font(.system(size: groesse * 0.42, weight: .bold)) }
             }
         }
         .frame(width: groesse, height: groesse)
@@ -319,9 +310,8 @@ struct KontoWahl: View {
                 Spacer()
                 Image(systemName: "chevron.up.chevron.down").font(.footnote.weight(.semibold)).foregroundStyle(.secondary)
             }
-            .padding(12).contentShape(Rectangle())
-            .background(Color.flaeche, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).strokeBorder(Color.linie, lineWidth: 0.5))
+            .padding(14).contentShape(Rectangle())
+            .background(Color.flaeche, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
         }
         .buttonStyle(.plain)
         .sheet(isPresented: $offen) {
@@ -445,30 +435,13 @@ struct Hero: View {
         let sp = periode.spanne(eigen: eigen)
         let z = k.summe(sp)
         VStack(alignment: .leading, spacing: 16) {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 4) {
-                    ForEach(Periode.allCases.filter { $0 != .tage3 }) { p in   // 3 Tage nur in der Video-/Aufrufstatistik (Artur 20.11.)
-                        Button { withAnimation(.snappy) { periode = p } } label: {
-                            Text(p.rawValue).font(.footnote.weight(.semibold))
-                                .padding(.horizontal, 12).padding(.vertical, 6)
-                                .background(periode == p ? Color.flaeche : .clear, in: Capsule())
-                                .overlay(Capsule().strokeBorder(periode == p ? Color.linie : .clear, lineWidth: 0.5))
-                                .foregroundStyle(periode == p ? Color.primary : Color.secondary)
-                        }.buttonStyle(.plain)
-                    }
-                }
-                .padding(3).background(Color.mulde, in: Capsule())
-            }
-            if periode == .eigen {
-                BereichWahl(spanne: $eigen)
-            }
             HStack(spacing: 8) {   // welcher Account gerade gezeigt wird – auch ohne nach oben zu scrollen
                 Avatar(konto: k, name: k.name, groesse: 22)
                 Text(k.istAlle ? "Alle Accounts" : k.name).font(.footnote.weight(.semibold))
             }
             VStack(alignment: .leading, spacing: 4) {
-                Text("Vorauss. Provisionen").font(.subheadline).foregroundStyle(.secondary)
-                Text(euro(z.provision)).font(.system(size: 40, weight: .bold, design: .rounded))
+                Text("Vorauss. Provisionen").font(.headline).foregroundStyle(.secondary)
+                Text(euro(z.provision)).font(.system(size: 42, weight: .bold))
                     .contentTransition(.numericText()).minimumScaleFactor(0.6).lineLimit(1)
                 Text("\(zahl(z.bestellungen)) Sales · \(euro(z.umsatz, kurz: true)) GMV" + ((z.aufrufe ?? 0) > 0 ? " · \(aufrufeText(z.aufrufe!)) Aufrufe" : ""))
                     .font(.footnote).foregroundStyle(.secondary)
@@ -477,12 +450,16 @@ struct Hero: View {
                     .background(Color.symbolGrund, in: Capsule()).foregroundStyle((z.offiziell ?? 0) >= 0.999 ? Color.gut : Color.secondary)
                 Text(mitZeit(periode.erklaerung(sp), sp)).font(.caption2).foregroundStyle(.secondary).padding(.top, 2)
             }
-            Chart(k.verlauf) { t in
-                AreaMark(x: .value("Tag", tagDatum(t.tag)), y: .value("€", t.provision))
-                    .interpolationMethod(.catmullRom)
-                    .foregroundStyle(LinearGradient(colors: [Color.akzent.opacity(0.18), Color.akzent.opacity(0)], startPoint: .top, endPoint: .bottom))
+            ZeitTabs(periode: $periode, ohne: [.tage3])   // 3 Tage nur in der Video-/Aufrufstatistik (Artur 20.11.)
+            if periode == .eigen {
+                BereichWahl(spanne: $eigen)
+            }
+            let schnitt = k.verlauf.isEmpty ? 0 : k.verlauf.reduce(0) { $0 + $1.provision } / Double(k.verlauf.count)
+            Chart {
+              RuleMark(y: .value("Ø", schnitt)).foregroundStyle(Color.secondary.opacity(0.7)).lineStyle(StrokeStyle(lineWidth: 2, lineCap: .round, dash: [0.5, 6]))
+              ForEach(k.verlauf) { t in
                 LineMark(x: .value("Tag", tagDatum(t.tag)), y: .value("€", t.provision))
-                    .interpolationMethod(.catmullRom).foregroundStyle(Color.akzent).lineStyle(StrokeStyle(lineWidth: 2.2, lineCap: .round))
+                    .foregroundStyle(Color.akzent).lineStyle(StrokeStyle(lineWidth: 2.6, lineCap: .round, lineJoin: .round))
                 if let p = punkt, p.tag == t.tag {
                     RuleMark(x: .value("Tag", tagDatum(p.tag))).foregroundStyle(Color.akzent.opacity(0.5)).lineStyle(StrokeStyle(lineWidth: 1, dash: [3, 3]))
                         .annotation(position: .top, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {
@@ -495,6 +472,7 @@ struct Hero: View {
                         }
                     PointMark(x: .value("Tag", tagDatum(p.tag)), y: .value("€", p.provision)).foregroundStyle(Color.akzent).symbolSize(70)
                 }
+              }
             }
             .chartOverlay { proxy in   // Tippen wählt einen Tag (Ziehen würde mit dem Scrollen kämpfen → Ruckeln)
                 GeometryReader { geo in
@@ -507,16 +485,29 @@ struct Hero: View {
                         }
                 }
             }
-            .chartXAxis { AxisMarks(values: .stride(by: .day, count: 7)) { _ in AxisValueLabel(format: .dateTime.day().month(.abbreviated)).foregroundStyle(Color.gray) } }
-            .chartYAxis { AxisMarks(position: .trailing, values: .automatic(desiredCount: 3)) { v in
-                AxisGridLine().foregroundStyle(Color.linie)
-                AxisValueLabel { if let d = v.as(Double.self) { Text(euro(d, kurz: true)).font(.caption2).foregroundStyle(.secondary) } } } }
-            .frame(height: 150).padding(.top, 26)
-            Text("Verlauf: letzte 30 Tage, Provision je Bestelltag – Tag antippen für den Wert").font(.caption2).foregroundStyle(.secondary)
+            .chartXAxis(.hidden).chartYAxis(.hidden)
+            .frame(height: 210).padding(.top, 30).padding(.horizontal, -randAussen)   // Linie bis an den Rand
+            Text("Verlauf: letzte 30 Tage, Provision je Bestelltag · gepunktet = Durchschnitt · Tag antippen für den Wert").font(.caption2).foregroundStyle(.secondary)
         }
-        .padding(randInnen + 2)
-        .background(Color.flaeche, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).strokeBorder(Color.linie, lineWidth: 0.5))
+        .padding(.vertical, 8)
+    }
+}
+
+/// Zeitraum-Auswahl als schlichte Textreihe (1T 1W 1M …): gewählter Eintrag weiß, Rest grau
+struct ZeitTabs: View {
+    @Binding var periode: Periode; var ohne: [Periode] = []; var beiWahl: () -> Void = {}
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 20) {
+                ForEach(Periode.allCases.filter { !ohne.contains($0) }) { p in
+                    Button { periode = p; beiWahl() } label: {
+                        Text(p.rawValue).font(.subheadline.weight(.bold))
+                            .foregroundStyle(periode == p ? Color.primary : Color.secondary.opacity(0.7))
+                            .padding(.vertical, 6).contentShape(Rectangle())
+                    }.buttonStyle(.plain)
+                }
+            }
+        }
     }
 }
 
@@ -577,19 +568,7 @@ struct VideoStatistik: View {
         let seiten = max(1, (alle.count + proSeite - 1) / proSeite)
         let s = min(seite, seiten - 1)
         Karte(titel: "Video-Performance", rechts: "\(l.count) Videos mit Verkäufen") {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 6) {
-                    ForEach(Periode.allCases) { p in
-                        Button { withAnimation(.snappy) { periode = p; seite = 0 } } label: {
-                            Text(p.rawValue).font(.caption.weight(.semibold))
-                                .padding(.horizontal, 11).padding(.vertical, 6)
-                                .background(periode == p ? Color.grund : .clear, in: Capsule())
-                                .overlay(Capsule().strokeBorder(periode == p ? Color.linie : .clear, lineWidth: 0.5))
-                                .foregroundStyle(periode == p ? Color.primary : Color.secondary)
-                        }.buttonStyle(.plain)
-                    }
-                }
-            }
+            ZeitTabs(periode: $periode) { seite = 0 }
             if periode == .eigen {
                 BereichWahl(spanne: $eigen)
             }
@@ -600,8 +579,14 @@ struct VideoStatistik: View {
                 Mini(titel: "GMV", wert: euro(l.reduce(0) { $0 + $1.gmv }, kurz: true))
                 Mini(titel: "Provision", wert: euro(l.reduce(0) { $0 + $1.provision }, kurz: true))
             }
-            Picker("Ansicht", selection: $ansicht) { ForEach(VideoAnsicht.allCases) { Text($0.rawValue).tag($0) } }
-                .pickerStyle(.segmented).labelsHidden()
+            HStack(spacing: 18) {   // Reiter wie „Portfolio  Cash“: gewählt weiß, sonst grau
+                ForEach(VideoAnsicht.allCases) { a in
+                    Button { ansicht = a } label: {
+                        Text(a.rawValue).font(.headline.weight(.bold)).foregroundStyle(ansicht == a ? Color.primary : Color.secondary.opacity(0.7))
+                    }.buttonStyle(.plain)
+                }
+            }
+            .padding(.top, 4)
                 .onChange(of: ansicht) { _, a in sortierung = a == .verkauf ? .provision : .aufrufe; seite = 0 }
             HStack {
                 Text("\(alle.count) Videos · Zeitraum oben")
@@ -619,7 +604,7 @@ struct VideoStatistik: View {
             ForEach(Array(alle.dropFirst(s * proSeite).prefix(proSeite).enumerated()), id: \.offset) { i, v in
                 let (w, e) = wert(v)
                 let zeile = HStack(spacing: 12) {
-                    Text("\(s * proSeite + i + 1)").font(.system(.footnote, design: .rounded).weight(.bold)).foregroundStyle(.secondary).frame(width: 24)
+                    Text("\(s * proSeite + i + 1)").font(.system(.footnote).weight(.bold)).foregroundStyle(.secondary).frame(width: 24)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(v.titel).font(.subheadline).lineLimit(1)
                         Text(v.unter).font(.caption).foregroundStyle(.secondary).lineLimit(1)
@@ -680,11 +665,11 @@ struct Mini: View {
     let titel: String; let wert: String
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(titel).font(.caption2).foregroundStyle(.secondary)
-            Text(wert).font(.system(.headline, design: .rounded)).monospacedDigit().lineLimit(1).minimumScaleFactor(0.7)
+            Text(titel).font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+            Text(wert).font(.headline.weight(.bold)).monospacedDigit().lineLimit(1).minimumScaleFactor(0.7)
         }
-        .frame(maxWidth: .infinity, alignment: .leading).padding(10)
-        .background(Color.secondary.opacity(0.08), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .frame(maxWidth: .infinity, alignment: .leading).padding(12)
+        .background(Color.flaeche, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 }
 
@@ -706,18 +691,13 @@ struct Kacheln: View {
 struct Kachel: View {
     let symbol: String; let farbe: Color; let titel: String; let wert: String; var unter: String? = nil
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Image(systemName: symbol).font(.system(size: 14, weight: .semibold)).foregroundStyle(farbe)
-                .frame(width: 30, height: 30).background(Color.symbolGrund, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
-            VStack(alignment: .leading, spacing: 2) {
-                Text(titel).font(.caption).foregroundStyle(.secondary)
-                Text(wert).font(.system(.title3, design: .rounded).weight(.bold)).minimumScaleFactor(0.6).lineLimit(1)
-                Text(unter ?? " ").font(.caption2).foregroundStyle(.secondary)
-            }
+        VStack(alignment: .leading, spacing: 6) {
+            Text(titel).font(.subheadline.weight(.semibold)).foregroundStyle(.secondary).lineLimit(1).minimumScaleFactor(0.8)
+            Text(wert).font(.title3.weight(.bold)).minimumScaleFactor(0.6).lineLimit(1)
+            Text(unter ?? " ").font(.caption).foregroundStyle(.secondary).lineLimit(1)
         }
-        .frame(maxWidth: .infinity, alignment: .leading).padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 16).padding(.vertical, 18)
         .background(Color.flaeche, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).strokeBorder(Color.linie, lineWidth: 0.5))
     }
 }
 
@@ -732,10 +712,10 @@ struct Rangliste: View {
                     Text("Alle Accounts").font(.subheadline.weight(.semibold))
                     Spacer()
                     Text(euro(alle.zeitraeume.tage30.provision)).font(.subheadline.weight(.semibold)).monospacedDigit()
-                    Image(systemName: auswahl == alle.name ? "checkmark.circle.fill" : "circle").foregroundStyle(auswahl == alle.name ? Color.gut : Color.secondary.opacity(0.4))
+                    Image(systemName: auswahl == alle.name ? "checkmark.circle.fill" : "circle").foregroundStyle(auswahl == alle.name ? Color.akzent : Color.secondary.opacity(0.4))
                 }
                 .padding(8).contentShape(Rectangle())
-                .background(auswahl == alle.name ? Color.symbolGrund : .clear, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .background(auswahl == alle.name ? Color.flaeche : .clear, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
             }.buttonStyle(.plain)
             ForEach(konten) { k in
                 let an = k.name == auswahl
@@ -757,11 +737,10 @@ struct Rangliste: View {
                             Text("Heute \(euro(k.zeitraeume.heute.provision)) · Gestern \(euro(k.zeitraeume.gestern.provision)) · 7 T \(euro(k.zeitraeume.tage7.provision, kurz: true))")
                                 .font(.caption2).foregroundStyle(.secondary).lineLimit(1).minimumScaleFactor(0.8)
                         }
-                        Image(systemName: an ? "checkmark.circle.fill" : "circle").foregroundStyle(an ? Color.gut : Color.secondary.opacity(0.4))
+                        Image(systemName: an ? "checkmark.circle.fill" : "circle").foregroundStyle(an ? Color.akzent : Color.secondary.opacity(0.4))
                     }
                     .padding(8).contentShape(Rectangle())
-                    .background(an ? Color.symbolGrund : .clear, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-                    .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).strokeBorder(an ? Color.gut.opacity(0.6) : .clear, lineWidth: 1))
+                    .background(an ? Color.flaeche : .clear, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
                 }.buttonStyle(.plain)
             }
         }
@@ -774,7 +753,7 @@ struct Ring: View {
         ZStack {
             Circle().stroke(Color.secondary.opacity(0.15), lineWidth: 4)
             Circle().trim(from: 0, to: anteil).stroke(farbe, style: StrokeStyle(lineWidth: 4, lineCap: .round)).rotationEffect(.degrees(-90))
-            Text("\(Int(anteil * 100))").font(.system(size: 10, weight: .bold, design: .rounded))
+            Text("\(Int(anteil * 100))").font(.system(size: 10, weight: .bold))
         }.frame(width: 36, height: 36)
     }
 }
@@ -864,7 +843,7 @@ struct TopListe: View {
         Karte(titel: titel, rechts: "\(eintraege.count) Einträge") {
             ForEach(Array(eintraege.dropFirst(s * 10).prefix(10).enumerated()), id: \.offset) { i, e in
                 let zeile = HStack(spacing: 12) {
-                    Text("\(s * 10 + i + 1)").font(.system(.footnote, design: .rounded).weight(.bold)).foregroundStyle(.secondary).frame(width: 24)
+                    Text("\(s * 10 + i + 1)").font(.system(.footnote).weight(.bold)).foregroundStyle(.secondary).frame(width: 24)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(e.name).font(.subheadline).lineLimit(1)
                         Text((zeigeKonto && e.konto != nil ? e.konto! + " · " : "") + "\(zahl(e.bestellungen)) Bestellungen" + (video ? "" : " · \(e.quote_prozent.formatted(.number.locale(deDE))) % n. b."))
