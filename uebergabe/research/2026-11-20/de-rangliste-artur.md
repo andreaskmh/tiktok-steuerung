@@ -47,6 +47,12 @@ https://www.tiktok.com/@zuwideals/video/7710008550122147105
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
 
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Blechschild Metallposter Wanddekoration GTA 6 zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Blechschild Metallposter Wanddekoration GTA 6. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+
 **10. 【Black Friday】 TOPDON CarPal Bluetooth-OBD2-Diagnosegerät fü**  
 BOF · Yesterday · +137.2K · @kloster_testet  
 https://www.tiktok.com/@kloster_testet/video/7709851079374064928

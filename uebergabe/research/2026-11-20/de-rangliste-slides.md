@@ -7,6 +7,12 @@ https://www.tiktok.com/@sparradar1/video/7710183926500740385
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
 
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Probiotikum Gummibonbons für Frauen zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Probiotikum Gummibonbons für Frauen. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+
 **2. Pukka Bio Tee Adventskalender 2026, Geschenkset, 24 Teebeute**  
 SLIDES · Yesterday · +1.4M · @socialmediacreations  
 https://www.tiktok.com/@socialmediacreations/video/7709905379257355552
@@ -14,12 +20,24 @@ https://www.tiktok.com/@socialmediacreations/video/7709905379257355552
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
 
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Pukka Bio Tee Adventskalender 2026 zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Pukka Bio Tee Adventskalender 2026. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+
 **3. Sommertal KS 15 LED Mini Kühlschrank 15L | kühlen & wärmen, **  
 SLIDES · Yesterday · +450.5K · @mr.newwave_  
 https://www.tiktok.com/@mr.newwave_/video/7709978230349925664
 🌐 **EN – Skript auf Deutsch:**
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
+
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Sommertal KS 15 LED Mini Kühlschrank 15L zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Sommertal KS 15 LED Mini Kühlschrank 15L. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **4. Probiotikum Gummibonbons für Frauen | Intimflora & pH‑Wert a**  
 SLIDES · Yesterday · +540.3K · @sparradar1  
@@ -30,12 +48,24 @@ https://www.tiktok.com/@sparradar1/video/7709945108493241632
 > **Skript:** _(nur Musik – Slideshow, Text kommt auf die Bilder)_  
 > Bild 1: „Frauen, warum sagt euch das keiner?“ · Bild 2: Gummibärchen in der Hand, „Probiotika für die Intimflora“ · Bild 3: „schmeckt wie Süßigkeiten, 1× am Tag“ · Bild 4: Preis + „Link im Warenkorb“.  
 
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Probiotikum Gummibonbons für Frauen zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Probiotikum Gummibonbons für Frauen. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+
 **5. Tatort Escape Adventskalender: Krimi-Rätsel in 24 Teilen**  
 SLIDES · Yesterday · +368.5K · @socialmediacreations  
 https://www.tiktok.com/@socialmediacreations/video/7709900738503232800
 🌐 **EN – Skript auf Deutsch:**
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
+
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Tatort Escape Adventskalender: Krimi-Rätsel i zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Tatort Escape Adventskalender: Krimi-Rätsel i. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **6. Herrenschuhe aus Leder mit dicker Sohle, leicht, bequem, atm**  
 SLIDES · Yesterday · +273.9K · @glamwithlexi  
@@ -48,6 +78,12 @@ https://www.tiktok.com/@shadowluna_twins/video/7709970992231189793
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
 
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen WindBoss Gold Shilajit Gummies zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren WindBoss Gold Shilajit Gummies. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+
 **8. WindBoss Gold Shilajit Gummies - 30 Stück Bio-Gummibärchen m**  
 SLIDES · Yesterday · +202.6K · @shadowluna_twins  
 https://www.tiktok.com/@shadowluna_twins/video/7709854749075459361
@@ -57,12 +93,24 @@ https://www.tiktok.com/@shadowluna_twins/video/7709854749075459361
 > **Skript:** _(nur Musik – Slideshow, Text kommt auf die Bilder)_  
 > Bild 1: Hook · Bild 2: Shilajit-Gummies in der Hand · Bild 3: „Shilajit + Granatapfel, kein Harz-Gekratze mehr“ · Bild 4: Preis pro Tag + „Link unten“. (Original-Song nicht übernehmen.)  
 
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen WindBoss Gold Shilajit Gummies zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren WindBoss Gold Shilajit Gummies. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+
 **9. [medicube Offizieller Shop] Black Friday Exklusiv: Rundum-Pf**  
 SLIDES · Yesterday · +149.9K · @morabackup5  
 https://www.tiktok.com/@morabackup5/video/7709808643289484576
 🌐 **EN – Skript auf Deutsch:**
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
+
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen [medicube Offizieller Shop] Black Friday Exkl zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren [medicube Offizieller Shop] Black Friday Exkl. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **10. Probiotikum Gummibonbons für Frauen | Intimflora & pH‑Wert a**  
 SLIDES · Yesterday · +204.2K · @shadowluna_twins  
@@ -73,6 +121,12 @@ https://www.tiktok.com/@shadowluna_twins/video/7709797979225378081
 > **Skript:** _(nur Musik – Slideshow, Text kommt auf die Bilder)_  
 > Bild 1: Hook über Selfie · Bild 2: Dose groß · Bild 3: „für Intimflora & pH-Wert“ · Bild 4: „gerade im Angebot – Warenkorb unten“. (Original-Song nicht übernehmen, anderen Trend-Sound nehmen.)  
 
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Probiotikum Gummibonbons für Frauen zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Probiotikum Gummibonbons für Frauen. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+
 **11. Ninja DualZone XL-Heißluftfritteuse mit 9,5 l Fassungsvermög**  
 SLIDES · Yesterday · +198.9K · @morabackup5  
 https://www.tiktok.com/@morabackup5/video/7709799684637822241
@@ -81,6 +135,12 @@ https://www.tiktok.com/@morabackup5/video/7709799684637822241
 > **Hook:** Ich hab meinen Backofen seit Wochen nicht mehr angemacht.  
 > **Skript:** _(nur Musik – Slideshow, Text kommt auf die Bilder)_  
 > Bild 1: Hook · Bild 2: Ninja DualZone, beide Körbe voll · Bild 3: „zwei Gerichte gleichzeitig, beide fertig zur selben Zeit“ · Bild 4: „9,5 Liter – reicht für die ganze Familie“ · Bild 5: Black-Friday-Preis + Warenkorb.  
+
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Ninja DualZone XL-Heißluftfritteuse mit 9,5 l zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Ninja DualZone XL-Heißluftfritteuse mit 9,5 l. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **12. 【VEVOR Sommersale】VEVOR Staänderstütze, kompatibel mit Dyson**  
 SLIDES · Yesterday · +341.5K · @manuel_lovers  
@@ -99,6 +159,12 @@ https://www.tiktok.com/@dago37302/video/7709884181265829153
 > **Skript:** _(nur Musik – Slideshow, Text kommt auf die Bilder)_  
 > Bild 1: Hook · Bild 2: Gewürz-Box offen · Bild 3: „Bagaluten-Gewürze, Bohnen wie im Film“ · Bild 4: „unterm Baum der Hit – Preis im Warenkorb“. Weihnachts-Sound passt.  
 
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Ankerkraut Bud Spencer & Terence Hill Bagalut zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Ankerkraut Bud Spencer & Terence Hill Bagalut. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+
 **15. ARMONIAS Paris Damenmantel in Felloptik mit Reverskragen, la**  
 SLIDES · Yesterday · +144.4K · @mini.musthaves  
 https://www.tiktok.com/@mini.musthaves/video/7709798761014250784
@@ -110,6 +176,12 @@ https://www.tiktok.com/@elisesahin/video/7709844847259159840
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
 
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Energy-Drink-Plüsch-Schlüsselanhänger zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Energy-Drink-Plüsch-Schlüsselanhänger. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+
 **17. Deutschland T-Shirt mit Adler-Motiv – Unisex Shirt für Herre**  
 SLIDES · Yesterday · +88.6K · @healthsuptipps  
 https://www.tiktok.com/@healthsuptipps/video/7709829738952494369
@@ -120,6 +192,12 @@ https://www.tiktok.com/@zuwideals/video/7710008550122147105
 🌐 **EN – Skript auf Deutsch:**
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
+
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Blechschild Metallposter Wanddekoration GTA 6 zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Blechschild Metallposter Wanddekoration GTA 6. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **19. Deutschland T-Shirt mit Adler-Motiv – Unisex Shirt für Herre**  
 SLIDES · Yesterday · +97.2K · @schnaepchenking  
@@ -140,12 +218,24 @@ https://www.tiktok.com/@socialmediacreations/video/7709800899677261089
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
 
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Tatort Escape Adventskalender: Krimi-Rätsel i zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Tatort Escape Adventskalender: Krimi-Rätsel i. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+
 **22. Elusa 383 - Extrait de Parfum - Unisex - süß/frisch/fruchtig**  
 SLIDES · Yesterday · +86.8K · @nolantestet  
 https://www.tiktok.com/@nolantestet/video/7709780232458243361
 🌐 **EN – Skript auf Deutsch:**
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
+
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Elusa 383 zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Elusa 383. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **23. Oyajia Infrarot-LED-Deckenleuchte mit Bewegungsmelder, ultra**  
 SLIDES · Yesterday · +76.5K · @sweetserenit4  
@@ -158,12 +248,24 @@ https://www.tiktok.com/@elisesahin/video/7709871594054651168
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
 
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Besondere herzförmige Wohndekoration für Mama zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Besondere herzförmige Wohndekoration für Mama. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+
 **25. Elusa 501 - Extrait de Parfum - Unisex - süß/würzig/cremig**  
 SLIDES · Yesterday · +167.3K · @schnaepchenking  
 https://www.tiktok.com/@schnaepchenking/video/7709897328567553313
 🌐 **EN – Skript auf Deutsch:**
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
+
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Elusa 501 zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Elusa 501. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **26. Deutschland T-Shirt mit Adler-Motiv – Unisex Shirt für Herre**  
 SLIDES · 2 days ago · +998K · @elisesahin  
@@ -175,6 +277,12 @@ https://www.tiktok.com/@shadowluna_twins/video/7709469954403257632
 🌐 **EN – Skript auf Deutsch:**
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
+
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Probiotikum Gummibonbons für Frauen zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Probiotikum Gummibonbons für Frauen. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **28. ONE MEMORY NOIR/AURA Damenparfum 30 ml x 2 | Elegantes Gesch**  
 SLIDES · 2 days ago · +472.7K · @produktwolf  
@@ -195,6 +303,12 @@ https://www.tiktok.com/@deal_vault/video/7709478387538038049
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
 
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Gawfolk 24‑Zoll 200 Hz/300 Hz Gaming‑Monitor  zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Gawfolk 24‑Zoll 200 Hz/300 Hz Gaming‑Monitor . Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+
 **31. CHICME Damen Midikleid mit einem Schulterträger, glitzernd u**  
 SLIDES · 2 days ago · +202.3K · @aureliaa_fashion  
 https://www.tiktok.com/@aureliaa_fashion/video/7707812652860362017
@@ -203,6 +317,12 @@ https://www.tiktok.com/@aureliaa_fashion/video/7707812652860362017
 > **Hook:** Dein Silvester-Outfit ist gefunden.  
 > **Skript:** _(nur Musik – Slideshow, Text kommt auf die Bilder)_  
 > Bild 1: Hook · Bild 2–3: Kleid von vorne/hinten, Glitzer im Licht · Bild 4: „unter 40 € statt Boutique-Preis“ · Bild 5: „Link im Warenkorb“.  
+
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen CHICME Damen Midikleid mit einem Schulterträg zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren CHICME Damen Midikleid mit einem Schulterträg. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **32. ONE MEMORY NOIR/AURA Damenparfum 30 ml x 2 | Elegantes Gesch**  
 SLIDES · 2 days ago · +189.6K · @produktwolf  
@@ -227,6 +347,12 @@ https://www.tiktok.com/@schnaepchenking/video/7709539744673172769
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
 
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Purelei Tiny Heart Armband mit kleinem Herz zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Purelei Tiny Heart Armband mit kleinem Herz. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+
 **36. ONE MEMORY NOIR/AURA Damenparfum 30 ml x 2 | Elegantes Gesch**  
 SLIDES · 2 days ago · +185.4K · @produktwolf  
 https://www.tiktok.com/@produktwolf/video/7709539334197693718
@@ -245,6 +371,12 @@ https://www.tiktok.com/@produktwolf/video/7709530188253613344
 🌐 **EN – Skript auf Deutsch:**
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
+
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen 【Black Friday】 Sweatpants für Herren mit lock zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren 【Black Friday】 Sweatpants für Herren mit lock. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **39. Shark PowerLite Akku-Staubsauger**  
 SLIDES · 2 days ago · +224.2K · @morabackup5  
@@ -269,6 +401,12 @@ https://www.tiktok.com/@schnaepchenking/video/7709551134414736673
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
 
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Purelei Tiny Heart Armband mit kleinem Herz zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Purelei Tiny Heart Armband mit kleinem Herz. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+
 **44. Gutes Dutzend 12er-Geschenkset je 60g**  
 SLIDES · 2 days ago · +145.5K · @veselyedeti  
 https://www.tiktok.com/@veselyedeti/video/7709415160049405217
@@ -287,6 +425,12 @@ https://www.tiktok.com/@alsytestet/video/7709629103720107296
 🌐 **EN – Skript auf Deutsch:**
 
 > Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.  
+
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Red Bull Iced Vanilla Berry 250 ml zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Red Bull Iced Vanilla Berry 250 ml. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **47. Algaplay Michelangelo Set L für Handschulpmassen eines Paare**  
 SLIDES · 2 days ago · +136.5K · @luan_deals  
@@ -385,6 +529,12 @@ https://www.tiktok.com/@shophie.looks/video/7709497794314259745
 > **Skript:** _(nur Musik – Slideshow, Text kommt auf die Bilder)_  
 > Bild 1: Hook, Outfit-Spiegelselfie · Bild 2: Cord-Detail · Bild 3: „Stretch-Bund, sitzt trotzdem schön“ · Bild 4: „3 Farben, unter 30 €“ · Bild 5: Link unten.  
 
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen Halara Lässige Cordhose mit mittelhohem Bund zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren Halara Lässige Cordhose mit mittelhohem Bund. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+
 **69. Dumpling Adventskalender 2026 – 24 Tage voller Überraschunge**  
 SLIDES · 3 days ago · +523.5K · @hot.sexysinglemom  
 https://www.tiktok.com/@hot.sexysinglemom/video/7708974661891018017
@@ -429,6 +579,12 @@ https://www.tiktok.com/@quiz.life.ring/video/7709181758868147489
 > **Hook:** Jeder fragt mich, welches Parfüm das ist.  
 > **Skript:** _(nur Musik – Slideshow, Text kommt auf die Bilder)_  
 > Bild 1: Hook · Bild 2: Flakon in der Hand · Bild 3: „Parfümextrakt – hält den ganzen Tag“ · Bild 4: „riecht wie ein 150-€-Duft, kostet einen Bruchteil“ · Bild 5: Preis im Warenkorb. (Original-Song nicht übernehmen.)  
+
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen S.desmarques Parfum 50 ml Parfümextrakt mit l zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren S.desmarques Parfum 50 ml Parfümextrakt mit l. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **79. UGREEN FineTrack Duo 4 Pack für iOS & Android, USB-C GPS Tra**  
 SLIDES · 3 days ago · +100.6K · @mehtenvieh.testet  
@@ -494,6 +650,12 @@ https://www.tiktok.com/@celine.maler/video/7708824045520702753
 > **Hook:** Das Kleid für die Weihnachtsfeier – und es ist gerade im Black Friday.  
 > **Skript:** _(nur Musik – Slideshow, Text kommt auf die Bilder)_  
 > Bild 1: Hook · Bild 2–3: Kleid getragen, verschiedene Farben · Bild 4: „schlicht, elegant, passt zu allem“ · Bild 5: Black-Friday-Preis + Warenkorb.  
+
+🎵 **Standard-Skripte:**
+
+> **1.** Für die nächsten 24h gibt's diesen 【Black Friday】 Damen ärmelloses einfarbiges A zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+>
+> **2.** TikTok Shop verschenkt einfach fast ihren 【Black Friday】 Damen ärmelloses einfarbiges A. Leute, den gibt's grade für einen Spitzenpreis, das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **94. Weihnachtskalender 2026, 24-Tage-Countdown-Kalender-Geschenk**  
 SLIDES · 4 days ago · +86.9K · @cano.deals  

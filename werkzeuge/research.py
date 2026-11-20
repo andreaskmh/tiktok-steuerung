@@ -1247,7 +1247,10 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
         v = kand[z[1]]["video_id"]
         if v not in skr:
             return e
-        return e[:-1] + [f"🌐 **{skr[v][0]} – Skript auf Deutsch:**", ""] + [f"> {l}  " if l else ">" for l in skr[v][1].splitlines()] + [""]
+        e = e[:-1] + [f"🌐 **{skr[v][0]} – Skript auf Deutsch:**", ""] + [f"> {l}  " if l else ">" for l in skr[v][1].splitlines()] + [""]
+        if "nur musik" in skr[v][1].lower():                   # Artur 20.11.: bei „nur Musik“ die 2 Standard-Skripte dazu
+            e += ["🎵 **Standard-Skripte:**", ""] + [x for n, t in enumerate(standard(kand[z[1]]), 1) for x in (f"> **{n}.** {t}", ">")][:-1] + [""]
+        return e
 
     def eintrag_ohne(i, z):
         pk, n, art = z
@@ -1297,6 +1300,9 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
         if k["video_id"] not in skr:
             return ""
         t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", esc(skr[k["video_id"]][1])).replace("\n", "<br>")
+        if "nur musik" in skr[k["video_id"]][1].lower():      # Artur 20.11.: bei „nur Musik“ die 2 Standard-Skripte dazu
+            t += '<p style="margin-top:10px;color:#ffcc66">Standard-Skripte</p>' + "".join(
+                f"<p><b>{n}.</b> {esc(x)}</p>" for n, x in enumerate(standard(k), 1))
         return (f'<tr class="skr"><td></td><td colspan="3"><details id="s{k["video_id"]}"><summary>Skript auf Deutsch</summary>'
                 f'<div>{t}</div></details></td></tr>')
 
