@@ -1,20 +1,43 @@
 import SwiftUI
 import Charts
 
-// Farben: ruhig, ein Akzent (Indigo→Cyan wie das Icon)
-extension Color {
-    static let akzent = Color(red: 0.46, green: 0.40, blue: 1.0)
-    static let akzent2 = Color(red: 0.30, green: 0.82, blue: 1.0)
-    static let gut = Color(red: 0.20, green: 0.78, blue: 0.55)
-    static let warn = Color(red: 1.0, green: 0.62, blue: 0.25)
-    static let schlecht = Color(red: 1.0, green: 0.36, blue: 0.42)
+// Mac-Look (Artur 20.11.): Grautöne wie die getönten Dock-Symbole, Farbe nur gedämpft in kleinen Symbolen; hell/dunkel automatisch
+func hd(_ hell: UInt32, _ dunkel: UInt32) -> Color {
+    func c(_ x: UInt32) -> (CGFloat, CGFloat, CGFloat) { (CGFloat(x >> 16 & 255) / 255, CGFloat(x >> 8 & 255) / 255, CGFloat(x & 255) / 255) }
+    let (a, b) = (c(hell), c(dunkel))
+    #if os(iOS)
+    return Color(UIColor { $0.userInterfaceStyle == .dark ? UIColor(red: b.0, green: b.1, blue: b.2, alpha: 1) : UIColor(red: a.0, green: a.1, blue: a.2, alpha: 1) })
+    #else
+    return Color(NSColor(name: nil) { $0.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua ? NSColor(red: b.0, green: b.1, blue: b.2, alpha: 1) : NSColor(red: a.0, green: a.1, blue: a.2, alpha: 1) })
+    #endif
 }
-let verlaufFarbe = LinearGradient(colors: [.akzent, .akzent2], startPoint: .topLeading, endPoint: .bottomTrailing)
+extension Color {
+    #if os(iOS)   // iPhone dunkler (Artur 20.11.): echtes Schwarz, Karten dunkelgrau
+    static let grund = hd(0xECECEE, 0x000000)
+    static let flaeche = hd(0xFBFBFC, 0x1C1C1E)
+    static let linie = hd(0xD6D6D9, 0x2C2C2E)
+    static let mulde = hd(0xE8E8EA, 0x0B0B0C)
+    static let symbolGrund = hd(0xECECEE, 0x2C2C2E)
+    #else
+    static let grund = hd(0xECECEE, 0x1C1C1E)        // Seitenhintergrund
+    static let flaeche = hd(0xFBFBFC, 0x2C2C2E)      // Karten
+    static let linie = hd(0xD6D6D9, 0x3A3A3C)        // feine Ränder
+    static let mulde = hd(0xE8E8EA, 0x1C1C1E)        // Spur des Zeitraum-Schalters
+    static let symbolGrund = hd(0xECECEE, 0x3A3A3C)  // Hintergrund kleiner Symbole
+    #endif
+    static let akzent = hd(0x3A3A3C, 0xD1D1D6)       // „Tinte“: Linien, Balken, Auswahl
+    static let akzent2 = akzent
+    static let gut = hd(0x3C9A5F, 0x6CC48A)
+    static let warn = hd(0xC98A2E, 0xE0A95A)
+    static let schlecht = hd(0xC9524A, 0xE57A72)
+}
+let verlaufFarbe = LinearGradient(colors: [.gut, .gut], startPoint: .top, endPoint: .bottom)   // Balken (Artur: nicht grau)
 
 struct Uebersicht: View {
     @EnvironmentObject var s: Speicher
     @State private var auswahl = "Alle Accounts"
     @State private var periode: Periode = .heute
+    @State private var videoPeriode: Periode = .tage3
     @State private var eigen = Spanne(von: Calendar.current.date(byAdding: .day, value: -13, to: Calendar.current.startOfDay(for: Date()))!, bis: Calendar.current.startOfDay(for: Date()))
     @State private var waehlen = false
 
@@ -25,11 +48,11 @@ struct Uebersicht: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     kopf
-                    if let d = s.daten { KontoLeiste(konten: d.konten, auswahl: $auswahl) }
+                    if let d = s.daten { KontoWahl(konten: d.konten, auswahl: $auswahl) }
                     if let k = konto {
                         Hero(k: k, periode: $periode, eigen: $eigen)
                         Kacheln(k: k)
-                        VideoStatistik(k: k, spanne: periode.spanne(eigen: eigen), erklaerung: periode.erklaerung(periode.spanne(eigen: eigen)))
+                        VideoStatistik(k: k, periode: $videoPeriode, eigen: $eigen)
                         if k.istAlle, let d = s.daten { Rangliste(konten: Array(d.konten.dropFirst()), auswahl: $auswahl) }
                         Monate(k: k)
                         Auszahlungen(k: k)
@@ -45,6 +68,7 @@ struct Uebersicht: View {
                 .frame(maxWidth: 720).frame(maxWidth: .infinity)
             }
             .background(Hintergrund())
+            .tint(Color.akzent)   // keine blaue Systemfarbe (Mac-Look)
             .refreshable { s.laden() }
             #if os(iOS)
             .toolbar(.hidden, for: .navigationBar)
@@ -81,7 +105,7 @@ struct Uebersicht: View {
     }
 
     var fuss: some View {
-        Text("Voraussichtlich = ausgezahlte/bereitstehende + offene Provision nach Bestelldatum, ohne „nicht berechtigt“. „Abgerechnet gesamt“ = von TikTok gutgeschrieben (Status „Bezahlt“). „Zur Auszahlung bereit“ = „Verfügbare Auszahlung“ in der App (abgelesen). „Bereits ausgezahlt“ = abgerechnet + Prämien − bereit (Näherung, ohne Gebühren/Abzüge). „Letzte N Tage“ = rollierend inkl. heute, kein Kalendermonat. Quelle: Partnerbestellungen-Export (\(s.quelle)).")
+        Text("Vorauss. Provisionen = offizielle Zahl von TikTok (Creator-Bereich → „Daten“), je Tag abgelesen; fehlt ein Tag, wird er aus dem Export gerechnet (ausgezahlte + offene Provision nach Bestelldatum, ohne „nicht berechtigt“). Sales/GMV/Aufrufe ebenso. „Abgerechnet gesamt“ = von TikTok gutgeschrieben (Status „Bezahlt“). „Zur Auszahlung bereit“ = „Verfügbare Auszahlung“ in der App (abgelesen). „Bereits ausgezahlt“ = abgerechnet + Prämien − bereit (Näherung, ohne Gebühren/Abzüge). „Letzte N Tage“ = rollierend inkl. heute, kein Kalendermonat. Quelle: Partnerbestellungen-Export (\(s.quelle)).")
             .font(.caption2).foregroundStyle(.tertiary).padding(.top, 6)
     }
 }
@@ -89,10 +113,7 @@ struct Uebersicht: View {
 struct Hintergrund: View {
     @Environment(\.colorScheme) var schema
     var body: some View {
-        ZStack {
-            (schema == .dark ? Color(red: 0.04, green: 0.04, blue: 0.07) : Color(red: 0.96, green: 0.96, blue: 0.98))
-            RadialGradient(colors: [Color.akzent.opacity(schema == .dark ? 0.28 : 0.14), .clear], center: .topTrailing, startRadius: 0, endRadius: 520)
-        }.ignoresSafeArea()
+        Color.grund.ignoresSafeArea()
     }
 }
 
@@ -112,8 +133,8 @@ struct Karte<C: View>: View {
             inhalt
         }
         .padding(18)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).strokeBorder(.white.opacity(0.06)))
+        .background(Color.flaeche, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).strokeBorder(Color.linie, lineWidth: 0.5))
     }
 }
 
@@ -122,36 +143,116 @@ struct Avatar: View {
     var body: some View {
         Group {
             if name == "Alle Accounts" {
-                ZStack { Circle().fill(verlaufFarbe); Image(systemName: "square.stack.3d.up.fill").foregroundStyle(.white).font(.system(size: groesse * 0.38, weight: .semibold)) }
-            } else if let b = avatarBild(konto?.avatar) {
+                ZStack { Color.flaeche; Image(systemName: "square.stack.3d.up.fill").foregroundStyle(Color.akzent).font(.system(size: groesse * 0.38, weight: .semibold)) }
+            } else if let b = Avatar.bild(name, konto?.avatar) {
                 b.resizable().scaledToFill()
             } else {
-                ZStack { Circle().fill(Color.secondary.opacity(0.25)); Text(String(name.prefix(1)).uppercased()).font(.system(size: groesse * 0.42, weight: .bold, design: .rounded)) }
+                ZStack { Color.symbolGrund; Text(String(name.prefix(1)).uppercased()).font(.system(size: groesse * 0.42, weight: .bold, design: .rounded)) }
             }
         }
-        .frame(width: groesse, height: groesse).clipShape(Circle())
+        .frame(width: groesse, height: groesse)
+        .clipShape(Circle())
+        .overlay(Circle().strokeBorder(Color.linie, lineWidth: 0.5))
+    }
+    /// Bild nur einmal entpacken (sonst ruckelt der Account-Wechsel)
+    @MainActor static var cache: [String: Image] = [:]
+    @MainActor static func bild(_ name: String, _ b64: String?) -> Image? {
+        if let i = cache[name] { return i }
+        let i = avatarBild(b64); cache[name] = i; return i
     }
 }
 
-struct KontoLeiste: View {
+/// Account-Auswahl als ein Feld + Liste mit Suche (bleibt übersichtlich bei 10–20 Accounts)
+struct KontoWahl: View {
     let konten: [Konto]; @Binding var auswahl: String
+    @State private var offen = false
+    @State private var suche = ""
+    func titel(_ k: Konto) -> String { k.istAlle ? "Alle Accounts" : k.name }
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 14) {
-                ForEach(konten) { k in
-                    let an = k.name == auswahl
-                    Button { withAnimation(.snappy) { auswahl = k.name } } label: {
-                        VStack(spacing: 6) {
-                            Avatar(konto: k, name: k.name, groesse: 54)
-                                .padding(3)
-                                .overlay(Circle().strokeBorder(an ? AnyShapeStyle(verlaufFarbe) : AnyShapeStyle(Color.clear), lineWidth: 2.5))
-                            Text(k.istAlle ? "Alle" : k.name).font(.caption2.weight(an ? .semibold : .regular))
-                                .lineLimit(1).frame(width: 72).foregroundStyle(an ? .primary : .secondary)
-                        }
+        let k = konten.first { $0.name == auswahl } ?? konten[0]
+        Button { offen = true } label: {
+            HStack(spacing: 12) {
+                Avatar(konto: k, name: k.name, groesse: 36)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(titel(k)).font(.headline).lineLimit(1)
+                    Text("\(konten.count - 1) Accounts · antippen zum Wechseln").font(.caption).foregroundStyle(.secondary)
+                }
+                Spacer()
+                Image(systemName: "chevron.up.chevron.down").font(.footnote.weight(.semibold)).foregroundStyle(.secondary)
+            }
+            .padding(12).contentShape(Rectangle())
+            .background(Color.flaeche, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).strokeBorder(Color.linie, lineWidth: 0.5))
+        }
+        .buttonStyle(.plain)
+        .sheet(isPresented: $offen) {
+            NavigationStack {
+                List(konten.filter { suche.isEmpty || $0.name.localizedCaseInsensitiveContains(suche) }) { x in
+                    Button { auswahl = x.name; offen = false } label: {
+                        HStack(spacing: 12) {
+                            Avatar(konto: x, name: x.name, groesse: 32)
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text(titel(x)).lineLimit(1)
+                                Text("Gestern \(euro(x.zeitraeume.gestern.provision)) · 7 T \(euro(x.zeitraeume.tage7.provision, kurz: true))")
+                                    .font(.caption).foregroundStyle(.secondary)
+                            }
+                            Spacer()
+                            if x.name == auswahl { Image(systemName: "checkmark").foregroundStyle(Color.akzent) }
+                        }.contentShape(Rectangle())
                     }.buttonStyle(.plain)
                 }
-            }.padding(.vertical, 2)
+                .searchable(text: $suche, prompt: "Account suchen")
+                .navigationTitle("Account wählen")
+                .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Fertig") { offen = false } } }
+            }
+            #if os(macOS)
+            .frame(minWidth: 380, minHeight: 460)
+            #endif
         }
+    }
+}
+
+/// Zeitraum wie bei TikTok: 1. Tipp = Start, 2. Tipp = Ende
+struct BereichWahl: View {
+    @Binding var spanne: Spanne
+    @State private var monat = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: Date()))!
+    @State private var start: Date?
+    var body: some View {
+        let kal = Calendar.current, heute = kal.startOfDay(for: Date())
+        let tage = kal.range(of: .day, in: .month, for: monat)!.count
+        let vorne = (kal.component(.weekday, from: monat) + 5) % 7   // Montag zuerst
+        VStack(spacing: 8) {
+            HStack {
+                Button { monat = kal.date(byAdding: .month, value: -1, to: monat)! } label: { Image(systemName: "chevron.left").frame(width: 30, height: 28) }
+                Spacer()
+                Text(monat.formatted(.dateTime.month(.wide).year().locale(deDE))).font(.subheadline.weight(.semibold))
+                Spacer()
+                Button { monat = kal.date(byAdding: .month, value: 1, to: monat)! } label: { Image(systemName: "chevron.right").frame(width: 30, height: 28) }
+                    .disabled(kal.date(byAdding: .month, value: 1, to: monat)! > heute)
+            }.buttonStyle(.plain)
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2), count: 7), spacing: 4) {
+                ForEach(["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"], id: \.self) { Text($0).font(.caption2).foregroundStyle(.secondary) }
+                ForEach(0..<vorne, id: \.self) { _ in Color.clear.frame(height: 32) }
+                ForEach(1...tage, id: \.self) { n in
+                    let d = kal.date(byAdding: .day, value: n - 1, to: monat)!
+                    let ende = start == nil && (d == spanne.von || d == spanne.bis) || d == start
+                    let drin = start == nil && d > spanne.von && d < spanne.bis
+                    Button { tippe(d) } label: {
+                        Text("\(n)").font(.subheadline.weight(ende ? .bold : .regular)).monospacedDigit()
+                            .frame(maxWidth: .infinity, minHeight: 32)
+                            .background(ende ? Color.akzent : drin ? Color.symbolGrund : .clear, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                            .foregroundStyle(ende ? Color.grund : d > heute ? Color.secondary.opacity(0.4) : Color.primary)
+                    }.buttonStyle(.plain).disabled(d > heute)
+                }
+            }
+            Text(start == nil ? "\(kurzDatum(spanne.von)) – \(kurzDatum(spanne.bis)) · Starttag antippen zum Ändern" : "Jetzt Endtag antippen")
+                .font(.caption).foregroundStyle(.secondary)
+        }
+        .onAppear { monat = kal.date(from: kal.dateComponents([.year, .month], from: spanne.bis))! }
+    }
+    func tippe(_ d: Date) {
+        if let s = start { spanne = Spanne(von: min(s, d), bis: max(s, d)); start = nil }
+        else { start = d }
     }
 }
 
@@ -167,99 +268,206 @@ struct Hero: View {
         let z = k.summe(sp)
         VStack(alignment: .leading, spacing: 16) {
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 6) {
-                    ForEach(Periode.allCases) { p in
+                HStack(spacing: 4) {
+                    ForEach(Periode.allCases.filter { $0 != .tage3 }) { p in   // 3 Tage nur in der Video-/Aufrufstatistik (Artur 20.11.)
                         Button { withAnimation(.snappy) { periode = p } } label: {
                             Text(p.rawValue).font(.footnote.weight(.semibold))
-                                .padding(.horizontal, 12).padding(.vertical, 7)
-                                .background(periode == p ? Color.white.opacity(0.95) : Color.white.opacity(0.14), in: Capsule())
-                                .foregroundStyle(periode == p ? Color.black : Color.white)
+                                .padding(.horizontal, 12).padding(.vertical, 6)
+                                .background(periode == p ? Color.flaeche : .clear, in: Capsule())
+                                .overlay(Capsule().strokeBorder(periode == p ? Color.linie : .clear, lineWidth: 0.5))
+                                .foregroundStyle(periode == p ? Color.primary : Color.secondary)
                         }.buttonStyle(.plain)
                     }
                 }
+                .padding(3).background(Color.mulde, in: Capsule())
             }
             if periode == .eigen {
-                HStack(spacing: 10) {
-                    DatePicker("Von", selection: $eigen.von, in: ...eigen.bis, displayedComponents: .date)
-                    DatePicker("Bis", selection: $eigen.bis, in: eigen.von...Date(), displayedComponents: .date)
-                }
-                .labelsHidden().environment(\.locale, deDE).tint(.white).colorScheme(.dark)
+                BereichWahl(spanne: $eigen)
             }
             VStack(alignment: .leading, spacing: 4) {
-                Text("Voraussichtliche Provision").font(.subheadline).foregroundStyle(.white.opacity(0.75))
-                Text(euro(z.provision)).font(.system(size: 44, weight: .bold, design: .rounded)).foregroundStyle(.white)
+                Text("Vorauss. Provisionen").font(.subheadline).foregroundStyle(.secondary)
+                Text(euro(z.provision)).font(.system(size: 44, weight: .bold, design: .rounded))
                     .contentTransition(.numericText()).minimumScaleFactor(0.6).lineLimit(1)
-                Text("\(zahl(z.bestellungen)) Bestellungen · \(euro(z.umsatz, kurz: true)) Umsatz")
-                    .font(.footnote).foregroundStyle(.white.opacity(0.75))
-                Text(periode.erklaerung(sp)).font(.caption2).foregroundStyle(.white.opacity(0.6)).padding(.top, 2)
+                Text("\(zahl(z.bestellungen)) Sales · \(euro(z.umsatz, kurz: true)) GMV" + ((z.aufrufe ?? 0) > 0 ? " · \(aufrufeText(z.aufrufe!)) Aufrufe" : ""))
+                    .font(.footnote).foregroundStyle(.secondary)
+                Text(quelleText(z.offiziell ?? 0)).font(.caption2.weight(.semibold))
+                    .padding(.horizontal, 8).padding(.vertical, 3)
+                    .background(Color.symbolGrund, in: Capsule()).foregroundStyle((z.offiziell ?? 0) >= 0.999 ? Color.gut : Color.secondary)
+                Text(periode.erklaerung(sp)).font(.caption2).foregroundStyle(.secondary).padding(.top, 2)
             }
             Chart(k.verlauf) { t in
                 AreaMark(x: .value("Tag", tagDatum(t.tag)), y: .value("€", t.provision))
                     .interpolationMethod(.catmullRom)
-                    .foregroundStyle(LinearGradient(colors: [.white.opacity(0.35), .white.opacity(0)], startPoint: .top, endPoint: .bottom))
+                    .foregroundStyle(LinearGradient(colors: [Color.akzent.opacity(0.18), Color.akzent.opacity(0)], startPoint: .top, endPoint: .bottom))
                 LineMark(x: .value("Tag", tagDatum(t.tag)), y: .value("€", t.provision))
-                    .interpolationMethod(.catmullRom).foregroundStyle(.white).lineStyle(StrokeStyle(lineWidth: 2.2, lineCap: .round))
+                    .interpolationMethod(.catmullRom).foregroundStyle(Color.akzent).lineStyle(StrokeStyle(lineWidth: 2.2, lineCap: .round))
                 if let p = punkt, p.tag == t.tag {
-                    RuleMark(x: .value("Tag", tagDatum(p.tag))).foregroundStyle(.white.opacity(0.5)).lineStyle(StrokeStyle(lineWidth: 1, dash: [3, 3]))
+                    RuleMark(x: .value("Tag", tagDatum(p.tag))).foregroundStyle(Color.akzent.opacity(0.5)).lineStyle(StrokeStyle(lineWidth: 1, dash: [3, 3]))
                         .annotation(position: .top, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {
                             VStack(spacing: 1) {
                                 Text(euro(p.provision)).font(.caption.weight(.bold)).monospacedDigit()
                                 Text(tagDatum(p.tag).formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated).locale(deDE))).font(.caption2)
                             }
                             .padding(.horizontal, 8).padding(.vertical, 4)
-                            .background(.white, in: RoundedRectangle(cornerRadius: 8, style: .continuous)).foregroundStyle(.black)
+                            .background(Color.akzent, in: RoundedRectangle(cornerRadius: 8, style: .continuous)).foregroundStyle(Color.grund)
                         }
-                    PointMark(x: .value("Tag", tagDatum(p.tag)), y: .value("€", p.provision)).foregroundStyle(.white).symbolSize(70)
+                    PointMark(x: .value("Tag", tagDatum(p.tag)), y: .value("€", p.provision)).foregroundStyle(Color.akzent).symbolSize(70)
                 }
             }
             .chartXSelection(value: $gewaehlt)
-            .chartXAxis { AxisMarks(values: .stride(by: .day, count: 7)) { _ in AxisValueLabel(format: .dateTime.day().month(.abbreviated)).foregroundStyle(.white.opacity(0.6)) } }
+            .chartXAxis { AxisMarks(values: .stride(by: .day, count: 7)) { _ in AxisValueLabel(format: .dateTime.day().month(.abbreviated)).foregroundStyle(Color.gray) } }
             .chartYAxis { AxisMarks(position: .trailing, values: .automatic(desiredCount: 3)) { v in
-                AxisGridLine().foregroundStyle(.white.opacity(0.12))
-                AxisValueLabel { if let d = v.as(Double.self) { Text(euro(d, kurz: true)).font(.caption2).foregroundStyle(.white.opacity(0.55)) } } } }
+                AxisGridLine().foregroundStyle(Color.linie)
+                AxisValueLabel { if let d = v.as(Double.self) { Text(euro(d, kurz: true)).font(.caption2).foregroundStyle(.secondary) } } } }
             .frame(height: 150).padding(.top, 26)
-            Text("Verlauf: letzte 30 Tage, Provision je Bestelltag – antippen oder darüberfahren für Werte").font(.caption2).foregroundStyle(.white.opacity(0.6))
+            Text("Verlauf: letzte 30 Tage, Provision je Bestelltag – antippen oder darüberfahren für Werte").font(.caption2).foregroundStyle(.secondary)
         }
         .padding(20)
-        .background(
-            ZStack {
-                LinearGradient(colors: [Color(red: 0.27, green: 0.20, blue: 0.85), Color(red: 0.12, green: 0.45, blue: 0.95)], startPoint: .topLeading, endPoint: .bottomTrailing)
-                RadialGradient(colors: [Color.akzent2.opacity(0.5), .clear], center: .topTrailing, startRadius: 0, endRadius: 260)
-            }.clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous)))
-        .shadow(color: Color.akzent.opacity(0.35), radius: 24, y: 10)
+        .background(Color.flaeche, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).strokeBorder(Color.linie, lineWidth: 0.5))
     }
 }
 
+enum VideoAnsicht: String, CaseIterable, Identifiable { case verkauf = "Nach Verkäufen", aufrufe = "Nach Aufrufen"; var id: String { rawValue } }
+enum VideoSortierung: String, CaseIterable, Identifiable {
+    case provision = "Provision", gmv = "GMV", sales = "Sales", aufrufe = "Aufrufe", name = "Name"
+    var id: String { rawValue }
+}
+
+/// Eine Zeile der Video-Liste (Export-Videos und TikTok-Top-Videos einheitlich)
+struct VListe: Identifiable {
+    let id: String; let titel: String; let unter: String; let provision: Double?; let gmv: Double; let sales: Int
+    let aufrufe: Int?; let link: URL?
+}
+
 struct VideoStatistik: View {
-    let k: Konto; let spanne: Spanne; let erklaerung: String
-    var body: some View {
-        let l = k.videos(spanne)
-        Karte(titel: "Video-Performance", rechts: "\(l.count) Videos mit Verkäufen") {
-            Text(erklaerung).font(.caption).foregroundStyle(.secondary)
-            HStack(spacing: 10) {
-                Mini(titel: "Sales", wert: zahl(l.reduce(0) { $0 + $1.bestellungen }))
-                Mini(titel: "GMV", wert: euro(l.reduce(0) { $0 + $1.gmv }, kurz: true))
-                Mini(titel: "Aufrufe", wert: "–")
-            }
-            if l.isEmpty { Text("Keine Verkäufe in diesem Zeitraum.").font(.subheadline).foregroundStyle(.secondary) }
-            ForEach(Array(l.prefix(10).enumerated()), id: \.offset) { i, v in
-                let zeile = HStack(spacing: 12) {
-                    Text("\(i + 1)").font(.system(.footnote, design: .rounded).weight(.bold)).foregroundStyle(.secondary).frame(width: 18)
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(v.name).font(.subheadline).lineLimit(1)
-                        Text((k.istAlle ? v.konto + " · " : "") + "\(zahl(v.bestellungen)) Sales · \(euro(v.provision)) Provision")
-                            .font(.caption).foregroundStyle(.secondary).lineLimit(1)
-                    }
-                    Spacer(minLength: 8)
-                    Text(euro(v.gmv)).font(.subheadline.weight(.semibold)).monospacedDigit()
-                    Image(systemName: "arrow.up.right").font(.caption2).foregroundStyle(.tertiary)
-                }
-                if let url = URL(string: "https://www.tiktok.com/@\(v.konto)/video/\(v.video)") { Link(destination: url) { zeile }.buttonStyle(.plain) } else { zeile }
-            }
-            Text("Sales/GMV aus dem Partnerbestellungen-Export (nach Bestelldatum). Aufrufe, Likes, Kommentare folgen, sobald eine Quelle angebunden ist.")
-                .font(.caption2).foregroundStyle(.tertiary)
+    let k: Konto; @Binding var periode: Periode; @Binding var eigen: Spanne
+    @State private var ansicht: VideoAnsicht = .verkauf
+    @State private var sortierung: VideoSortierung = .provision
+    @State private var seite = 0
+    let proSeite = 10
+
+    func zeilen(_ l: [VideoZeile]) -> [VListe] {
+        if ansicht == .verkauf {
+            return l.map { v in VListe(id: v.id, titel: v.name, unter: (k.istAlle ? v.konto + " · " : "") + "\(zahl(v.bestellungen)) Sales · \(euro(v.gmv)) GMV",
+                                       provision: v.provision, gmv: v.gmv, sales: v.bestellungen, aufrufe: nil,
+                                       link: URL(string: "https://www.tiktok.com/@\(v.konto)/video/\(v.video)")) }
+        }
+        return k.aufrufVideos(periode.spanne(eigen: eigen)).enumerated().map { i, v in
+            VListe(id: "\(i)" + v.konto + v.titel, titel: v.titel, unter: (k.istAlle ? v.konto + " · " : "") + (v.datum.isEmpty ? "" : "gepostet \(v.datum) · ") + "\(zahl(v.artikel)) Sales · \(euro(v.gmv)) GMV",
+                   provision: nil, gmv: v.gmv, sales: v.artikel, aufrufe: v.aufrufe, link: nil)
         }
     }
+    func sortiert(_ z: [VListe]) -> [VListe] {
+        switch sortierung {
+        case .provision: return z.sorted { ($0.provision ?? $0.gmv) > ($1.provision ?? $1.gmv) }
+        case .gmv: return z.sorted { $0.gmv > $1.gmv }
+        case .sales: return z.sorted { $0.sales > $1.sales }
+        case .aufrufe: return z.sorted { ($0.aufrufe ?? 0) > ($1.aufrufe ?? 0) }
+        case .name: return z.sorted { $0.titel.localizedCompare($1.titel) == .orderedAscending }
+        }
+    }
+    var sortierungen: [VideoSortierung] { ansicht == .verkauf ? [.provision, .gmv, .sales, .name] : [.aufrufe, .gmv, .sales, .name] }
+    func wert(_ v: VListe) -> (String, String) {
+        switch sortierung {
+        case .aufrufe: return (aufrufeText(v.aufrufe ?? 0), "Aufrufe")
+        case .gmv: return (euro(v.gmv), "GMV")
+        case .sales: return (zahl(v.sales), "Sales")
+        default: return v.provision.map { (euro($0), "Provision") } ?? (aufrufeText(v.aufrufe ?? 0), "Aufrufe")
+        }
+    }
+
+    var body: some View {
+        let spanne = periode.spanne(eigen: eigen)
+        let l = k.videos(spanne)
+        let z = k.summe(spanne)
+        let alle = sortiert(zeilen(l))
+        let seiten = max(1, (alle.count + proSeite - 1) / proSeite)
+        let s = min(seite, seiten - 1)
+        Karte(titel: "Video-Performance", rechts: "\(l.count) Videos mit Verkäufen") {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    ForEach(Periode.allCases) { p in
+                        Button { withAnimation(.snappy) { periode = p; seite = 0 } } label: {
+                            Text(p.rawValue).font(.caption.weight(.semibold))
+                                .padding(.horizontal, 11).padding(.vertical, 6)
+                                .background(periode == p ? Color.grund : .clear, in: Capsule())
+                                .overlay(Capsule().strokeBorder(periode == p ? Color.linie : .clear, lineWidth: 0.5))
+                                .foregroundStyle(periode == p ? Color.primary : Color.secondary)
+                        }.buttonStyle(.plain)
+                    }
+                }
+            }
+            if periode == .eigen {
+                BereichWahl(spanne: $eigen)
+            }
+            Text(periode.erklaerung(spanne)).font(.caption).foregroundStyle(.secondary)
+            LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 10) {
+                Mini(titel: "Aufrufe", wert: (z.aufrufe ?? 0) > 0 ? aufrufeText(z.aufrufe!) : "–")
+                Mini(titel: "Sales", wert: zahl(l.reduce(0) { $0 + $1.bestellungen }))
+                Mini(titel: "GMV", wert: euro(l.reduce(0) { $0 + $1.gmv }, kurz: true))
+                Mini(titel: "Provision", wert: euro(l.reduce(0) { $0 + $1.provision }, kurz: true))
+            }
+            Picker("Ansicht", selection: $ansicht) { ForEach(VideoAnsicht.allCases) { Text($0.rawValue).tag($0) } }
+                .pickerStyle(.segmented).labelsHidden()
+                .onChange(of: ansicht) { _, a in sortierung = a == .verkauf ? .provision : .aufrufe; seite = 0 }
+            HStack {
+                Text("\(alle.count) Videos · Zeitraum oben")
+                    .font(.caption).foregroundStyle(.secondary)
+                Spacer()
+                Menu {
+                    ForEach(sortierungen) { o in Button { sortierung = o; seite = 0 } label: { if o == sortierung { Label(o.rawValue, systemImage: "checkmark") } else { Text(o.rawValue) } } }
+                } label: {
+                    Label("Sortiert: \(sortierung.rawValue)", systemImage: "arrow.up.arrow.down").font(.caption.weight(.semibold))
+                }.menuStyle(.borderlessButton).fixedSize()
+            }
+            if alle.isEmpty {
+                Text(ansicht == .verkauf ? "Keine Verkäufe in diesem Zeitraum." : "Für diesen Zeitraum noch keine Video-Aufrufe abgelesen.").font(.subheadline).foregroundStyle(.secondary)
+            }
+            ForEach(Array(alle.dropFirst(s * proSeite).prefix(proSeite).enumerated()), id: \.offset) { i, v in
+                let (w, e) = wert(v)
+                let zeile = HStack(spacing: 12) {
+                    Text("\(s * proSeite + i + 1)").font(.system(.footnote, design: .rounded).weight(.bold)).foregroundStyle(.secondary).frame(width: 24)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(v.titel).font(.subheadline).lineLimit(1)
+                        Text(v.unter).font(.caption).foregroundStyle(.secondary).lineLimit(1)
+                    }
+                    Spacer(minLength: 8)
+                    VStack(alignment: .trailing, spacing: 0) {
+                        Text(w).font(.subheadline.weight(.semibold)).monospacedDigit()
+                        Text(e).font(.caption2).foregroundStyle(.secondary)
+                    }
+                }
+                if let url = v.link { Link(destination: url) { zeile }.buttonStyle(.plain) } else { zeile }
+            }
+            if seiten > 1 {
+                HStack {
+                    Button { withAnimation(.snappy) { seite = max(0, s - 1) } } label: { Image(systemName: "chevron.left").frame(width: 34, height: 30) }
+                        .disabled(s == 0)
+                    Spacer()
+                    Text("Seite \(s + 1) von \(seiten)").font(.caption.weight(.semibold)).monospacedDigit()
+                    Spacer()
+                    Button { withAnimation(.snappy) { seite = min(seiten - 1, s + 1) } } label: { Image(systemName: "chevron.right").frame(width: 34, height: 30) }
+                        .disabled(s >= seiten - 1)
+                }
+                .buttonStyle(.bordered).buttonBorderShape(.capsule)
+            }
+            Text("„Nach Verkäufen“: Sales/GMV/Provision je Video aus dem Partnerbestellungen-Export (nach Bestelldatum, Video antippen öffnet es). „Nach Aufrufen“: TikTok „Daten“ → Video → Alle anzeigen, je Tag die 25 Videos mit den meisten Aufrufen, für den Zeitraum oben zusammengezählt. Aufrufe oben: offizielle TikTok-Zahl. Likes/Kommentare zeigt TikTok dort nicht – folgen mit der TikTok-Schnittstelle (Display API).")
+                .font(.caption2).foregroundStyle(.tertiary)
+        }
+        .onChange(of: k.name) { _, _ in seite = 0 }
+    }
+}
+
+func aufrufeText(_ n: Int) -> String {
+    if n >= 1_000_000 { return (Double(n) / 1e6).formatted(.number.precision(.fractionLength(1)).locale(deDE)) + " Mio." }
+    if n >= 10_000 { return (Double(n) / 1e3).formatted(.number.precision(.fractionLength(1)).locale(deDE)) + "K" }
+    return zahl(n)
+}
+func quelleText(_ anteil: Double) -> String {
+    if anteil >= 0.999 { return "✓ offizielle TikTok-Zahl" }
+    if anteil <= 0.001 { return "aus Export gerechnet (TikTok-Zahl fehlt noch)" }
+    return "\(Int((anteil * 100).rounded())) % offizielle TikTok-Zahl, Rest aus Export"
 }
 
 struct Mini: View {
@@ -281,7 +489,7 @@ struct Kacheln: View {
         LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
             Kachel(symbol: "building.columns.fill", farbe: .gut, titel: "Bereits ausgezahlt", wert: z.bank.map { euro($0) } ?? "–", unter: "aufs Bankkonto (ca.)")
             Kachel(symbol: "banknote.fill", farbe: .gut, titel: "Zur Auszahlung bereit", wert: z.bereit.map { euro($0) } ?? "–", unter: "Verfügbare Auszahlung")
-            Kachel(symbol: "hourglass", farbe: .akzent2, titel: "Noch offen", wert: euro(z.offen), unter: "\(zahl(z.offen_anzahl)) Bestellungen")
+            Kachel(symbol: "hourglass", farbe: .warn, titel: "Noch offen", wert: euro(z.offen), unter: "\(zahl(z.offen_anzahl)) Bestellungen")
             Kachel(symbol: "checkmark.seal.fill", farbe: .akzent, titel: "Abgerechnet gesamt", wert: euro(z.ausgezahlt), unter: "von TikTok gutgeschrieben")
             Kachel(symbol: "gift.fill", farbe: .akzent, titel: "Prämien", wert: euro(z.praemien), unter: "soweit abgelesen")
             Kachel(symbol: "xmark.octagon.fill", farbe: .schlecht, titel: "Nicht berechtigt", wert: z.quote_prozent.formatted(.number.locale(deDE)) + " %", unter: euro(z.verloren) + " entgangen")
@@ -294,7 +502,7 @@ struct Kachel: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Image(systemName: symbol).font(.system(size: 14, weight: .semibold)).foregroundStyle(farbe)
-                .frame(width: 30, height: 30).background(farbe.opacity(0.15), in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+                .frame(width: 30, height: 30).background(Color.symbolGrund, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
             VStack(alignment: .leading, spacing: 2) {
                 Text(titel).font(.caption).foregroundStyle(.secondary)
                 Text(wert).font(.system(.title3, design: .rounded).weight(.bold)).minimumScaleFactor(0.6).lineLimit(1)
@@ -302,8 +510,8 @@ struct Kachel: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading).padding(16)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).strokeBorder(.white.opacity(0.06)))
+        .background(Color.flaeche, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).strokeBorder(Color.linie, lineWidth: 0.5))
     }
 }
 
@@ -313,7 +521,7 @@ struct Rangliste: View {
         let max = konten.map { $0.zeitraeume.tage30.provision }.max() ?? 1
         Karte(titel: "Accounts", rechts: "voraussichtlich, letzte 30 Tage") {
             ForEach(konten) { k in
-                Button { withAnimation(.snappy) { auswahl = k.name } } label: {
+                Button { auswahl = k.name } label: {
                     HStack(spacing: 12) {
                         Avatar(konto: k, name: k.name, groesse: 40)
                         VStack(alignment: .leading, spacing: 6) {
@@ -352,7 +560,7 @@ struct Ring: View {
 struct Monate: View {
     let k: Konto
     var body: some View {
-        Karte(titel: "Nach Bestellmonat", rechts: "% abgeschlossen") {
+        Karte(titel: "Nach Bestellmonat", rechts: "nach Bestelldatum · % abgerechnet") {
             ForEach(k.bestellmonate.reversed()) { m in
                 let laeuft = m.monat == laufenderMonat()
                 HStack(spacing: 14) {
@@ -367,7 +575,7 @@ struct Monate: View {
                     Spacer()
                     VStack(alignment: .trailing, spacing: 2) {
                         Text(euro(m.vorauss)).font(.subheadline.weight(.semibold)).monospacedDigit()
-                        Text(m.offen > 0 ? "\(euro(m.offen)) offen" : "komplett").font(.caption).foregroundStyle(.secondary)
+                        Text(m.offen > 0 ? "davon \(euro(m.offen)) offen" : "komplett abgerechnet").font(.caption).foregroundStyle(.secondary)
                     }
                 }
             }
@@ -379,10 +587,10 @@ struct Auszahlungen: View {
     let k: Konto
     @State private var gewaehlt: String?
     var body: some View {
-        Karte(titel: "Abgerechnet", rechts: "pro Monat, nach Abrechnungsdatum") {
+        Karte(titel: "Abgerechnet pro Monat", rechts: "nach Abrechnungsdatum") {
             Chart(k.auszahlmonate) { m in
                 BarMark(x: .value("Monat", monatName(m.monat)), y: .value("€", m.betrag), width: .ratio(0.55))
-                    .foregroundStyle(m.monat == laufenderMonat() ? AnyShapeStyle(Color.akzent.opacity(0.4)) : AnyShapeStyle(verlaufFarbe))
+                    .foregroundStyle(m.monat == laufenderMonat() ? AnyShapeStyle(Color.gut.opacity(0.4)) : AnyShapeStyle(verlaufFarbe))
                     .opacity(gewaehlt == nil || gewaehlt == monatName(m.monat) ? 1 : 0.35)
                     .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
                     .annotation(position: .top) {
@@ -397,13 +605,35 @@ struct Auszahlungen: View {
     }
 }
 
+/// Blätter-Leiste „‹ Seite x von y ›“ (je 10 Einträge)
+struct Seiten: View {
+    @Binding var seite: Int; let anzahl: Int
+    var body: some View {
+        if anzahl > 1 {
+            HStack {
+                Button { withAnimation(.snappy) { seite = max(0, seite - 1) } } label: { Image(systemName: "chevron.left").frame(width: 34, height: 30) }
+                    .disabled(seite == 0)
+                Spacer()
+                Text("Seite \(seite + 1) von \(anzahl)").font(.caption.weight(.semibold)).monospacedDigit()
+                Spacer()
+                Button { withAnimation(.snappy) { seite = min(anzahl - 1, seite + 1) } } label: { Image(systemName: "chevron.right").frame(width: 34, height: 30) }
+                    .disabled(seite >= anzahl - 1)
+            }
+            .buttonStyle(.bordered).buttonBorderShape(.capsule)
+        }
+    }
+}
+func seitenZahl(_ n: Int, pro: Int = 10) -> Int { max(1, (n + pro - 1) / pro) }
+
 struct TopListe: View {
     let titel: String; let eintraege: [Top]; let video: Bool; let zeigeKonto: Bool
+    @State private var seite = 0
     var body: some View {
-        Karte(titel: titel) {
-            ForEach(Array(eintraege.prefix(8).enumerated()), id: \.offset) { i, e in
+        let s = min(seite, seitenZahl(eintraege.count) - 1)
+        Karte(titel: titel, rechts: "\(eintraege.count) Einträge") {
+            ForEach(Array(eintraege.dropFirst(s * 10).prefix(10).enumerated()), id: \.offset) { i, e in
                 let zeile = HStack(spacing: 12) {
-                    Text("\(i + 1)").font(.system(.footnote, design: .rounded).weight(.bold)).foregroundStyle(.secondary).frame(width: 18)
+                    Text("\(s * 10 + i + 1)").font(.system(.footnote, design: .rounded).weight(.bold)).foregroundStyle(.secondary).frame(width: 24)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(e.name).font(.subheadline).lineLimit(1)
                         Text((zeigeKonto && e.konto != nil ? e.konto! + " · " : "") + "\(zahl(e.bestellungen)) Bestellungen" + (video ? "" : " · \(e.quote_prozent.formatted(.number.locale(deDE))) % n. b."))
@@ -417,15 +647,19 @@ struct TopListe: View {
                     Link(destination: url) { zeile }.buttonStyle(.plain)
                 } else { zeile }
             }
+            Seiten(seite: $seite, anzahl: seitenZahl(eintraege.count))
         }
+        .onChange(of: eintraege.count) { _, _ in seite = 0 }
     }
 }
 
 struct OffeneListe: View {
     let k: Konto
+    @State private var seite = 0
     var body: some View {
+        let s = min(seite, seitenZahl(k.offen.count) - 1)
         Karte(titel: "Offene Bestellungen", rechts: "\(zahl(k.kennzahlen.offen_anzahl)) gesamt") {
-            ForEach(k.offen.prefix(10)) { o in
+            ForEach(Array(k.offen.dropFirst(s * 10).prefix(10).enumerated()), id: \.offset) { _, o in
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(o.produkt).font(.subheadline).lineLimit(1)
@@ -435,6 +669,11 @@ struct OffeneListe: View {
                     Text(euro(o.betrag)).font(.subheadline.weight(.semibold)).monospacedDigit()
                 }
             }
+            Seiten(seite: $seite, anzahl: seitenZahl(k.offen.count))
+            if k.kennzahlen.offen_anzahl > k.offen.count {
+                Text("Die neuesten \(k.offen.count) von \(zahl(k.kennzahlen.offen_anzahl)) offenen Bestellungen.").font(.caption2).foregroundStyle(.tertiary)
+            }
         }
+        .onChange(of: k.name) { _, _ in seite = 0 }
     }
 }

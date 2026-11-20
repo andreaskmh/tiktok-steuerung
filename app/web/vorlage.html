@@ -1,23 +1,21 @@
-<title>statsKMH</title>
+<title>ViewKMH</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap">
 <style>
 /* Layout: eine ruhige Spalte (max 760px), oben Account-Leiste, darunter Verlaufs-Karte als einziger Akzent, dann Kacheln und Listen */
 :root {
-  --bg: #f4f4f8; --flaeche: #ffffff; --linie: rgba(20,18,40,.08); --fg: #15131f; --leise: #6b6880; --ganzleise: #a3a0b5;
-  --akzent: #7566ff; --akzent2: #4dd1ff; --gut: #1fae79; --warn: #f2902f; --schlecht: #ec4d61; --spur: rgba(20,18,40,.07);
-  --heroA: #4533d9; --heroB: #1f73f2;
-  --anzeige: "Manrope", ui-rounded, system-ui, sans-serif; --text: "Inter", system-ui, sans-serif;
+  /* Mac-Look (Artur 20.11.): Grautöne wie getönte Dock-Symbole, Farbe nur gedämpft in kleinen Symbolen */
+  --bg: #ececee; --flaeche: #fbfbfc; --linie: #d6d6d9; --fg: #1d1d1f; --leise: #86868b; --ganzleise: #aeaeb2;
+  --akzent: #3a3a3c; --akzent2: #3a3a3c; --gut: #3c9a5f; --warn: #c98a2e; --schlecht: #c9524a; --spur: #e8e8ea; --symgrund: #ececee;
+  --anzeige: ui-rounded, -apple-system, system-ui, sans-serif; --text: -apple-system, system-ui, sans-serif;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #0a0a12; --flaeche: #15141f; --linie: rgba(255,255,255,.06); --fg: #f2f1f8; --leise: #9b98ad; --ganzleise: #626073;
-  --spur: rgba(255,255,255,.08); color-scheme: dark } }
-:root[data-theme="dark"] { --bg: #0a0a12; --flaeche: #15141f; --linie: rgba(255,255,255,.06); --fg: #f2f1f8; --leise: #9b98ad;
-  --ganzleise: #626073; --spur: rgba(255,255,255,.08); color-scheme: dark }
+  --bg: #1c1c1e; --flaeche: #2c2c2e; --linie: #3a3a3c; --fg: #f2f2f7; --leise: #8e8e93; --ganzleise: #636366;
+  --akzent: #d1d1d6; --akzent2: #d1d1d6; --gut: #6cc48a; --warn: #e0a95a; --schlecht: #e57a72; --spur: #1c1c1e; --symgrund: #3a3a3c; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #1c1c1e; --flaeche: #2c2c2e; --linie: #3a3a3c; --fg: #f2f2f7; --leise: #8e8e93; --ganzleise: #636366;
+  --akzent: #d1d1d6; --akzent2: #d1d1d6; --gut: #6cc48a; --warn: #e0a95a; --schlecht: #e57a72; --spur: #1c1c1e; --symgrund: #3a3a3c; color-scheme: dark }
 * { box-sizing: border-box }
-body { background: var(--bg); color: var(--fg); font-family: var(--text); font-size: 14px; -webkit-font-smoothing: antialiased;
-  background-image: radial-gradient(600px 420px at 100% 0, color-mix(in srgb, var(--akzent) 22%, transparent), transparent 70%); background-repeat: no-repeat }
+body { background: var(--bg); color: var(--fg); font-family: var(--text); font-size: 14px; -webkit-font-smoothing: antialiased }
 .seite { max-width: 760px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 22px 40px; display: grid; gap: 20px }
 .kopf { display: flex; align-items: baseline; justify-content: space-between; gap: 4px 12px; flex-wrap: wrap }
 .kopf h1 { font-family: var(--anzeige); font-weight: 800; font-size: 30px; letter-spacing: -.02em; margin: 0 }
@@ -26,27 +24,29 @@ body { background: var(--bg); color: var(--fg); font-family: var(--text); font-s
 .leiste::-webkit-scrollbar { display: none }
 .konto { display: grid; justify-items: center; gap: 6px; background: none; border: 0; padding: 0; cursor: pointer; color: var(--leise); font: inherit; font-size: 11.5px; width: 76px; flex: none }
 .konto span { max-width: 76px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
-.konto .ring { padding: 3px; border-radius: 50%; border: 2.5px solid transparent }
+.konto .ring { display: grid; justify-items: center; gap: 5px; opacity: .75 }
+.konto .ring::after { content: ""; width: 4px; height: 4px; border-radius: 50% }
 .konto[aria-pressed="true"] { color: var(--fg); font-weight: 600 }
-.konto[aria-pressed="true"] .ring { border-color: var(--akzent) }
+.konto[aria-pressed="true"] .ring { opacity: 1 }
+.konto[aria-pressed="true"] .ring::after { background: var(--akzent) }
 .konto:focus-visible .ring { outline: 2px solid var(--akzent2); outline-offset: 2px }
-.ava { width: 54px; height: 54px; border-radius: 50%; object-fit: cover; display: grid; place-items: center; background: var(--spur); font-family: var(--anzeige); font-weight: 800; font-size: 20px; color: var(--fg) }
-.ava.alle { background: linear-gradient(135deg, var(--akzent), var(--akzent2)); color: #fff }
-.hero { border-radius: 28px; padding: 22px; color: #fff; display: grid; gap: 14px;
-  background: radial-gradient(320px 220px at 100% 0, rgba(77,209,255,.45), transparent 70%), linear-gradient(135deg, var(--heroA), var(--heroB));
-  box-shadow: 0 18px 40px -18px color-mix(in srgb, var(--akzent) 70%, transparent) }
-.chips { display: flex; gap: 6px; flex-wrap: wrap }
-.chip { border: 0; border-radius: 999px; padding: 7px 13px; font: 600 12.5px var(--text); background: rgba(255,255,255,.15); color: #fff; cursor: pointer }
-.chip[aria-pressed="true"] { background: rgba(255,255,255,.95); color: #111 }
-.chip:focus-visible { outline: 2px solid #fff; outline-offset: 2px }
+.ava { width: 54px; height: 54px; border-radius: 50%; border: 0.5px solid var(--linie); object-fit: cover; display: grid; place-items: center; background: var(--spur); font-family: var(--anzeige); font-weight: 800; font-size: 20px; color: var(--fg) }
+.ava.alle { background: var(--flaeche); color: var(--akzent) }
+.hero { border-radius: 24px; padding: 22px; color: var(--fg); display: grid; gap: 14px; background: var(--flaeche); border: 0.5px solid var(--linie) }
+.chips { display: inline-flex; gap: 2px; flex-wrap: wrap; padding: 3px; border-radius: 999px; background: var(--spur); justify-self: start }
+.chip { border: 0.5px solid transparent; border-radius: 999px; padding: 6px 12px; font: 600 12.5px var(--text); background: transparent; color: var(--leise); cursor: pointer }
+.chip[aria-pressed="true"] { background: var(--flaeche); border-color: var(--linie); color: var(--fg) }
+.chip:focus-visible { outline: 2px solid var(--akzent); outline-offset: 2px }
 .hero .label { opacity: .75; font-size: 13.5px }
 .hero .gross { font-family: var(--anzeige); font-weight: 800; font-size: clamp(36px, 9vw, 52px); letter-spacing: -.02em; line-height: 1.05; font-variant-numeric: tabular-nums }
 .hero .unter { opacity: .75; font-size: 12.5px }
+.hero .quelle { display: inline-block; margin-top: 6px; padding: 3px 9px; border-radius: 999px; background: var(--symgrund); color: var(--leise); font-size: 11.5px; font-weight: 600 }
+.hero .quelle.ok { color: var(--gut) }
 .hero svg { width: 100%; height: 130px; display: block; overflow: visible }
 .vwrap { position: relative; cursor: crosshair; touch-action: pan-y; margin-top: 20px }
-.vlinie { position: absolute; top: 0; bottom: 0; width: 1px; border-left: 1px dashed rgba(255,255,255,.55); pointer-events: none }
-.vpunkt { position: absolute; width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 4px rgba(255,255,255,.25); pointer-events: none }
-.vtip { position: absolute; top: -26px; transform: translateX(-50%); background: #fff; color: #111; border-radius: 9px; padding: 4px 9px; font-size: 12px; white-space: nowrap; pointer-events: none; box-shadow: 0 6px 18px rgba(0,0,0,.2) }
+.vlinie { position: absolute; top: 0; bottom: 0; width: 1px; border-left: 1px dashed var(--ganzleise); pointer-events: none }
+.vpunkt { position: absolute; width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; border-radius: 50%; background: var(--akzent); box-shadow: 0 0 0 4px var(--symgrund); pointer-events: none }
+.vtip { position: absolute; top: -26px; transform: translateX(-50%); background: var(--akzent); color: var(--bg); border-radius: 9px; padding: 4px 9px; font-size: 12px; white-space: nowrap; pointer-events: none; box-shadow: 0 6px 18px rgba(0,0,0,.2) }
 .vtip b { font-family: var(--anzeige); font-variant-numeric: tabular-nums }
 .bars rect { transition: opacity .15s } .bars g:hover rect { opacity: 1 !important } .bars:hover g:not(:hover) rect { opacity: .35 }
 .kacheln { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px }
@@ -69,17 +69,43 @@ body { background: var(--bg); color: var(--fg); font-family: var(--text); font-s
 .zeile .nr { width: 18px; color: var(--ganzleise); font: 700 12px var(--anzeige); text-align: center }
 a.zeile:hover .n { color: var(--akzent) }
 .balken { height: 6px; border-radius: 9px; background: var(--spur); overflow: hidden }
-.balken i { display: block; height: 100%; border-radius: 9px; background: linear-gradient(90deg, var(--akzent), var(--akzent2)) }
+.balken i { display: block; height: 100%; border-radius: 9px; background: var(--akzent) }
 .zeile .ava { width: 40px; height: 40px; font-size: 16px }
 button.zeile { background: none; border: 0; padding: 0; font: inherit; text-align: left; cursor: pointer; width: 100% }
 .pill { font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 99px; background: color-mix(in srgb, var(--akzent) 16%, transparent); color: var(--akzent); margin-left: 6px }
 .bars { width: 100%; height: 190px; display: block }
 .kachel .w { overflow-wrap: anywhere }
 @media (max-width: 420px) { .mitteL { display: none } .kachel .w { font-size: 18px } }
-.eigen { display: flex; gap: 10px; flex-wrap: wrap }
-.eigen label { display: grid; gap: 4px; font-size: 12px; opacity: .85 }
-.eigen input { font: 500 14px var(--text); border: 0; border-radius: 10px; padding: 7px 9px; background: rgba(255,255,255,.95); color: #111 }
+.eigen { display: grid; gap: 6px; max-width: 360px }
+.kalkopf { display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 13.5px }
+.kalkopf button { border: 0; background: none; color: inherit; font-size: 18px; width: 34px; height: 28px; cursor: pointer }
+.kalkopf button:disabled { opacity: .3; cursor: default }
+.kalgrid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; text-align: center }
+.kalgrid .wt { font-size: 11px; color: var(--leise) }
+.kalgrid button { border: 0; border-radius: 8px; height: 32px; font: 500 13px var(--text); background: none; color: var(--fg); cursor: pointer; font-variant-numeric: tabular-nums }
+.kalgrid button.drin { background: var(--symgrund) }
+.kalgrid button.ende { background: var(--akzent); color: var(--bg); font-weight: 700 }
+.kalgrid button:disabled { opacity: .3; cursor: default }
+.kalhint { font-size: 12px; color: var(--leise) }
+.kwahl { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 18px; background: var(--flaeche); border: 0.5px solid var(--linie); position: relative }
+.kwahl .ava { width: 36px; height: 36px; font-size: 15px }
+.kwahl b { display: block; font-size: 15px } .kwahl small { color: var(--leise); font-size: 12px }
+.kwahl select { position: absolute; inset: 0; opacity: 0; cursor: pointer; font-size: 16px; width: 100% }
+.kwahl .pfeil { margin-left: auto; color: var(--leise) }
 .erkl { font-size: 11.5px; opacity: .65; margin-top: 4px }
+.vchips { display: flex; gap: 6px; flex-wrap: wrap; margin: 2px 0 6px }
+.vchip { border: 0; border-radius: 999px; padding: 6px 12px; font: 600 12px var(--text); background: color-mix(in srgb, var(--akzent) 12%, transparent); color: inherit; cursor: pointer }
+.vchip[aria-pressed="true"] { background: var(--bg); color: var(--fg); box-shadow: inset 0 0 0 0.5px var(--linie) }
+.minis.vier { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+@media (min-width: 560px) { .minis.vier { grid-template-columns: repeat(4, minmax(0, 1fr)) } }
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 3px; border-radius: 10px; background: var(--spur); margin-top: 10px }
+.seg button { border: 0; border-radius: 8px; padding: 7px; font: 600 12.5px var(--text); background: transparent; color: inherit; cursor: pointer }
+.seg button[aria-pressed="true"] { background: var(--flaeche); box-shadow: 0 1px 3px rgba(0,0,0,.15) }
+.sortzeile { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12px; color: var(--leise); margin: 8px 0 2px }
+.sortzeile select { font: 600 12px var(--text); border-radius: 8px; padding: 3px 6px; background: transparent; color: inherit; border: 1px solid var(--spur) }
+.seiten { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 12px; font-weight: 600 }
+.seiten button { border: 0; border-radius: 999px; width: 38px; height: 30px; font-size: 18px; background: color-mix(in srgb, var(--akzent) 14%, transparent); color: inherit; cursor: pointer }
+.seiten button:disabled { opacity: .35; cursor: default }
 .minis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px }
 .mini { background: var(--spur); border-radius: 12px; padding: 10px }
 .mini .t { color: var(--leise); font-size: 11px } .mini .w { font: 700 16px var(--anzeige); font-variant-numeric: tabular-nums }
@@ -88,12 +114,12 @@ button.zeile { background: none; border: 0; padding: 0; font: inherit; text-alig
 </style>
 
 <div class="seite">
-  <header class="kopf"><h1>statsKMH</h1><div class="stand" id="stand"></div></header>
-  <nav class="leiste" id="leiste" aria-label="Account wählen"></nav>
+  <header class="kopf"><h1>ViewKMH</h1><div class="stand" id="stand"></div></header>
+  <div class="kwahl" id="leiste"></div>
   <section class="hero" aria-label="Voraussichtliche Provision">
     <div class="chips" id="chips"></div>
-    <div class="eigen" id="eigen" hidden><label>Von <input type="date" id="von"></label><label>Bis <input type="date" id="bis"></label></div>
-    <div><div class="label">Voraussichtliche Provision</div><div class="gross" id="gross"></div><div class="unter" id="unter"></div><div class="unter erkl" id="erkl"></div></div>
+    <div class="eigen" id="eigen" hidden></div>
+    <div><div class="label">Vorauss. Provisionen</div><div class="gross" id="gross"></div><div class="unter" id="unter"></div><div class="unter erkl" id="erkl"></div><div class="quelle" id="quelle"></div></div>
     <div class="vwrap" id="vwrap"><svg id="verlauf" viewBox="0 0 600 96" preserveAspectRatio="none" aria-hidden="true"></svg>
       <div class="vlinie" id="vlinie" hidden></div><div class="vpunkt" id="vpunkt" hidden></div><div class="vtip" id="vtip" hidden></div></div>
     <div class="unter" id="achse" style="display:flex;justify-content:space-between"></div>
@@ -106,7 +132,7 @@ button.zeile { background: none; border: 0; padding: 0; font: inherit; text-alig
   <section class="karte" id="videos"></section>
   <section class="karte" id="produkte"></section>
   <section class="karte" id="offen"></section>
-  <p class="fuss">Voraussichtlich = ausgezahlte/bereitstehende plus offene Provision nach Bestelldatum, ohne „nicht berechtigt“. „Abgerechnet gesamt“ = von TikTok gutgeschrieben (Status „Bezahlt“). „Zur Auszahlung bereit“ = „Verfügbare Auszahlung“ in der App (abgelesen). „Bereits ausgezahlt“ = abgerechnet + Prämien − bereit (Näherung, ohne Gebühren/Abzüge). „Letzte N Tage“ = rollierend inkl. heute, kein Kalendermonat. Quelle: Partnerbestellungen-Export der TikTok-App je Account. Prämien nur, soweit abgelesen.</p>
+  <p class="fuss">Vorauss. Provisionen = offizielle Zahl von TikTok (Creator-Bereich → „Daten“), je Tag abgelesen; fehlt ein Tag, wird er aus dem Export gerechnet (ausgezahlte plus offene Provision nach Bestelldatum, ohne „nicht berechtigt“). Sales/GMV/Aufrufe ebenso. „Abgerechnet gesamt“ = von TikTok gutgeschrieben (Status „Bezahlt“). „Zur Auszahlung bereit“ = „Verfügbare Auszahlung“ in der App (abgelesen). „Bereits ausgezahlt“ = abgerechnet + Prämien − bereit (Näherung, ohne Gebühren/Abzüge). „Letzte N Tage“ = rollierend inkl. heute, kein Kalendermonat. Quelle: Partnerbestellungen-Export der TikTok-App je Account. Prämien nur, soweit abgelesen.</p>
 </div>
 
 <script id="daten" type="application/json">__DATEN__</script>
@@ -117,7 +143,8 @@ const zahl = x => x.toLocaleString('de-DE');
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const monat = (m, lang) => new Date(m + '-01T12:00').toLocaleDateString('de-DE', lang ? {month: 'long', year: 'numeric'} : {month: 'short'});
 const laufend = new Date().toISOString().slice(0, 7);
-const PER = [['heute','Heute'],['gestern','Gestern'],['tage3','3 Tage'],['tage7','7 Tage'],['tage30','30 Tage'],['eigen','Zeitraum']];
+const VPER = [['heute','Heute'],['gestern','Gestern'],['tage3','3 Tage'],['tage7','7 Tage'],['tage30','30 Tage'],['eigen','Zeitraum']];
+const PER = VPER.filter(p => p[0] !== 'tage3');   // 3 Tage nur in der Video-/Aufrufstatistik (Artur 20.11.)
 const iso = d => d.toLocaleDateString('sv-SE');
 const plus = n => { const d = new Date(); d.setHours(12); d.setDate(d.getDate() + n); return iso(d) };
 const dat = t => new Date(t + 'T12:00').toLocaleDateString('de-DE', {day: '2-digit', month: '2-digit', year: 'numeric'});
@@ -132,42 +159,69 @@ function erkl(per, [a, b]) {
   if (per === 'eigen') return `${dat(a)} – ${dat(b)} · eigener Zeitraum`;
   return `${dat(a)} – ${dat(b)} · letzte ${{tage3: 3, tage7: 7, tage30: 30}[per]} Tage inkl. heute (rollierend, kein Kalendermonat)`;
 }
-function summe(k, [a, b]) { const z = {provision: 0, bestellungen: 0, umsatz: 0};
-  for (const [t, p, n, u] of k.tage) if (t >= a && t <= b) { z.provision += p; z.bestellungen += n; z.umsatz += u } return z }
+// Video-Performance: Ansicht (Verkäufe/Aufrufe), Sortierung, Seiten à 10
+function zeichneVideos(k, vsp, vz, vl) {
+  const alle = k.name === 'Alle Accounts';
+  let z = st.vans === 'aufrufe'
+    ? (k.videos_aufrufe || []).map(v => { let n = 0, g = 0, art = 0; for (const [t, a, gm, ar] of v.t) if (t >= vsp[0] && t <= vsp[1]) { n += a; g += gm; art += ar }
+        return {titel: v.titel, unter: (alle ? v.konto + ' · ' : '') + (v.datum ? 'gepostet ' + v.datum + ' · ' : '') + zahl(art) + ' Sales · ' + eur(g) + ' GMV', prov: null, gmv: g, sales: art, auf: n, link: null} }).filter(v => v.auf > 0)
+    : vl.map(v => ({titel: v.name, unter: (alle ? v.konto + ' · ' : '') + zahl(v.n) + ' Sales · ' + eur(v.g) + ' GMV', prov: v.p, gmv: v.g, sales: v.n, auf: null, link: `https://www.tiktok.com/@${v.konto}/video/${v.id}`}));
+  const SORT = st.vans === 'aufrufe' ? [['auf','Aufrufe'],['gmv','GMV'],['sales','Sales'],['name','Name']] : [['prov','Provision'],['gmv','GMV'],['sales','Sales'],['name','Name']];
+  if (!SORT.some(o => o[0] === st.vsort)) st.vsort = SORT[0][0];
+  const key = {prov: v => v.prov, gmv: v => v.gmv, sales: v => v.sales, auf: v => v.auf}[st.vsort];
+  z.sort(st.vsort === 'name' ? (a, b) => a.titel.localeCompare(b.titel, 'de') : (a, b) => key(b) - key(a));
+  const seiten = Math.max(1, Math.ceil(z.length / 10)); st.vseite = Math.min(st.vseite || 0, seiten - 1);
+  const wert = v => st.vsort === 'auf' || (st.vsort === 'name' && v.prov === null) ? [aufr(v.auf || 0), 'Aufrufe'] : st.vsort === 'gmv' ? [eur(v.gmv), 'GMV'] : st.vsort === 'sales' ? [zahl(v.sales), 'Sales'] : [eur(v.prov), 'Provision'];
+  const zeile = (v, i) => { const [w, e] = wert(v), inn = `<span class="nr">${st.vseite * 10 + i + 1}</span><div class="mitte"><div class="n">${esc(v.titel)}</div><div class="s">${esc(v.unter)}</div></div><div style="text-align:right"><div class="b">${w}</div><div class="s">${e}</div></div>`;
+    return v.link ? `<a class="zeile" href="${esc(v.link)}" target="_blank" rel="noopener">${inn}</a>` : `<div class="zeile">${inn}</div>` };
+  document.getElementById('vid').innerHTML = `<h2>Video-Performance <small>${vl.length} Videos mit Verkäufen</small></h2>
+    <div class="vchips">${VPER.map(([id, t]) => `<button class="vchip" aria-pressed="${st.vper === id}" data-v="${id}">${t}</button>`).join('')}</div>
+    <div class="s" style="color:var(--leise);font-size:12px">${erkl(st.vper, vsp)}</div>
+    <div class="minis vier"><div class="mini"><div class="t">Aufrufe</div><div class="w">${vz.aufrufe ? aufr(vz.aufrufe) : '–'}</div></div><div class="mini"><div class="t">Sales</div><div class="w">${zahl(vl.reduce((a, v) => a + v.n, 0))}</div></div><div class="mini"><div class="t">GMV</div><div class="w">${eur(vl.reduce((a, v) => a + v.g, 0), true)}</div></div><div class="mini"><div class="t">Provision</div><div class="w">${eur(vl.reduce((a, v) => a + v.p, 0), true)}</div></div></div>
+    <div class="seg"><button data-va="verkauf" aria-pressed="${st.vans !== 'aufrufe'}">Nach Verkäufen</button><button data-va="aufrufe" aria-pressed="${st.vans === 'aufrufe'}">Nach Aufrufen</button></div>
+    <div class="sortzeile"><span>${z.length} Videos · Zeitraum oben</span><label>Sortiert: <select id="vsort">${SORT.map(([id, t]) => `<option value="${id}"${st.vsort === id ? ' selected' : ''}>${t}</option>`).join('')}</select></label></div>` +
+    (z.length ? z.slice(st.vseite * 10, st.vseite * 10 + 10).map(zeile).join('') : `<div class="s" style="color:var(--leise)">${st.vans === 'aufrufe' ? 'Für diesen Zeitraum noch keine Video-Aufrufe abgelesen.' : 'Keine Verkäufe in diesem Zeitraum.'}</div>`) +
+    (seiten > 1 ? `<div class="seiten"><button data-vs="-1"${st.vseite === 0 ? ' disabled' : ''} aria-label="Vorherige Seite">‹</button><span>Seite ${st.vseite + 1} von ${seiten}</span><button data-vs="1"${st.vseite >= seiten - 1 ? ' disabled' : ''} aria-label="Nächste Seite">›</button></div>` : '') +
+    `<p class="fuss" style="margin:0">„Nach Verkäufen“: Sales/GMV/Provision je Video aus dem Partnerbestellungen-Export (nach Bestelldatum). „Nach Aufrufen“: TikTok „Daten“ → Video → Alle anzeigen, je Tag die 25 Videos mit den meisten Aufrufen, für den Zeitraum oben zusammengezählt. Aufrufe oben: offizielle TikTok-Zahl. Likes/Kommentare zeigt TikTok dort nicht – folgen mit der TikTok-Schnittstelle (Display API).</p>`;
+}
+document.addEventListener('change', ev => { if (ev.target.id === 'vsort') { st.vsort = ev.target.value; st.vseite = 0; merke(); zeichne() } });
+function summe(k, [a, b]) { const z = {provision: 0, bestellungen: 0, umsatz: 0, aufrufe: 0, amtlich: 0};
+  for (const [t, p, n, u, auf = 0, f = 0] of k.tage) if (t >= a && t <= b) { z.provision += p; z.bestellungen += n; z.umsatz += u; z.aufrufe += auf; z.amtlich += p * f }
+  z.offiziell = z.provision > 0 ? z.amtlich / z.provision : 1; return z }
+const aufr = n => n >= 1e6 ? (n / 1e6).toLocaleString('de-DE', {maximumFractionDigits: 1}) + ' Mio.' : n >= 1e4 ? (n / 1e3).toLocaleString('de-DE', {maximumFractionDigits: 1}) + 'K' : Math.round(n).toLocaleString('de-DE');
+const quelle = a => a >= 0.999 ? '✓ offizielle TikTok-Zahl' : a <= 0.001 ? 'aus Export gerechnet (TikTok-Zahl fehlt noch)' : `${Math.round(a * 100)} % offizielle TikTok-Zahl, Rest aus Export`;
 function videos(k, [a, b]) { return k.videos_tage.map(v => { let n = 0, g = 0, p = 0;
   for (const [t, x, y, z] of v.t) if (t >= a && t <= b) { n += x; g += y; p += z } return {id: v.id, konto: v.konto, name: v.name, n, g, p} })
   .filter(v => v.n > 0).sort((x, y) => y.g - x.g) }
-let st = {konto: 'Alle Accounts', per: 'heute'};
-try { const g = JSON.parse(localStorage.getItem('statsKMH') || '{}'); if (D.konten.some(k => k.name === g.konto)) st.konto = g.konto; if (g.per) st.per = g.per } catch (e) {}
+let st = {konto: 'Alle Accounts', per: 'heute', vper: 'tage3'};
+try { const g = JSON.parse(localStorage.getItem('statsKMH') || '{}'); if (D.konten.some(k => k.name === g.konto)) st.konto = g.konto; if (g.per && g.per !== 'tage3') st.per = g.per; if (g.vper) st.vper = g.vper } catch (e) {}
 const merke = () => { try { localStorage.setItem('statsKMH', JSON.stringify(st)) } catch (e) {} };
 const ava = (k, cls = '') => k.name === 'Alle Accounts'
-  ? `<div class="ava alle ${cls}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"><path d="M12 3 3 7.5 12 12l9-4.5L12 3Z"/><path d="m3 12 9 4.5 9-4.5M3 16.5 12 21l9-4.5"/></svg></div>`
+  ? `<div class="ava alle ${cls}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 3 3 7.5 12 12l9-4.5L12 3Z"/><path d="m3 12 9 4.5 9-4.5M3 16.5 12 21l9-4.5"/></svg></div>`
   : k.avatar ? `<img class="ava ${cls}" alt="" src="data:image/jpeg;base64,${k.avatar}">` : `<div class="ava ${cls}">${esc(k.name[0].toUpperCase())}</div>`;
 const SYM = {
-  ok: ['--gut', '<path d="M5 12.5 10 17l9-10"/>'], uhr: ['--akzent2', '<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>'],
+  ok: ['--gut', '<path d="M5 12.5 10 17l9-10"/>'], uhr: ['--warn', '<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>'],
   gift: ['--akzent', '<rect x="4" y="9" width="16" height="11" rx="2"/><path d="M12 9v11M4 13h16M12 9c-2-4-6-3-5 0M12 9c2-4 6-3 5 0"/>'],
   bank: ['--gut', '<path d="M3 10 12 4l9 6M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/>'],
   siegel: ['--akzent', '<path d="m12 3 2.4 1.8 3 .1.9 2.8 2.4 1.8-.9 2.9.9 2.8-2.4 1.8-.9 2.8-3 .1L12 21l-2.4-1.8-3-.1-.9-2.8L3.3 14.5l.9-2.8-.9-2.9 2.4-1.8.9-2.8 3-.1L12 3Z"/><path d="m9 12 2 2 4-4"/>'],
   x: ['--schlecht', '<circle cx="12" cy="12" r="8"/><path d="m9 9 6 6M15 9l-6 6"/>']};
-const sym = n => `<div class="sym" style="background:color-mix(in srgb, var(${SYM[n][0]}) 16%, transparent);color:var(${SYM[n][0]})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${SYM[n][1]}</svg></div>`;
+const sym = n => `<div class="sym" style="background:var(--symgrund);color:var(${SYM[n][0]})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${SYM[n][1]}</svg></div>`;
 
 function zeichne() {
   const k = D.konten.find(x => x.name === st.konto) || D.konten[0], z = k.kennzahlen;
   document.getElementById('stand').textContent = 'Stand ' + D.stand.replace('T', ' · ');
-  document.getElementById('leiste').innerHTML = D.konten.map(x => `<button class="konto" aria-pressed="${x.name === k.name}" data-k="${esc(x.name)}"><span class="ring">${ava(x)}</span><span>${x.name === 'Alle Accounts' ? 'Alle' : esc(x.name)}</span></button>`).join('');
+  document.getElementById('leiste').innerHTML = `${ava(k)}<div><b>${k.name === 'Alle Accounts' ? 'Alle Accounts' : esc(k.name)}</b><small>${D.konten.length - 1} Accounts · antippen zum Wechseln</small></div><span class="pfeil" aria-hidden="true">⌄</span>
+    <select id="kwahl" aria-label="Account wählen">${D.konten.map(x => `<option value="${esc(x.name)}"${x.name === k.name ? ' selected' : ''}>${x.name === 'Alle Accounts' ? 'Alle Accounts' : esc(x.name)}</option>`).join('')}</select>`;
   document.getElementById('chips').innerHTML = PER.map(([id, t]) => `<button class="chip" aria-pressed="${st.per === id}" data-p="${id}">${t}</button>`).join('');
   const sp = spanne(st.per), p = summe(k, sp);
-  document.getElementById('eigen').hidden = st.per !== 'eigen';
-  document.getElementById('von').value = eigen.von; document.getElementById('bis').value = eigen.bis;
+  document.getElementById('eigen').hidden = st.per !== 'eigen' && st.vper !== 'eigen';
+  kalender();
   document.getElementById('gross').textContent = eur(p.provision);
-  document.getElementById('unter').textContent = `${zahl(p.bestellungen)} Bestellungen · ${eur(p.umsatz, true)} Umsatz`;
+  document.getElementById('unter').textContent = `${zahl(p.bestellungen)} Sales · ${eur(p.umsatz, true)} GMV` + (p.aufrufe ? ` · ${aufr(p.aufrufe)} Aufrufe` : '');
+  document.getElementById('quelle').textContent = quelle(p.offiziell); document.getElementById('quelle').classList.toggle('ok', p.offiziell >= 0.999);
   document.getElementById('erkl').textContent = erkl(st.per, sp);
-  const vl = videos(k, sp);
-  document.getElementById('vid').innerHTML = `<h2>Video-Performance <small>${vl.length} Videos mit Verkäufen</small></h2><div class="s" style="color:var(--leise);font-size:12px">${erkl(st.per, sp)}</div>
-    <div class="minis"><div class="mini"><div class="t">Sales</div><div class="w">${zahl(vl.reduce((a, v) => a + v.n, 0))}</div></div><div class="mini"><div class="t">GMV</div><div class="w">${eur(vl.reduce((a, v) => a + v.g, 0), true)}</div></div><div class="mini"><div class="t">Aufrufe</div><div class="w">–</div></div></div>` +
-    (vl.length ? '' : '<div class="s" style="color:var(--leise)">Keine Verkäufe in diesem Zeitraum.</div>') +
-    vl.slice(0, 10).map((v, i) => `<a class="zeile" href="https://www.tiktok.com/@${esc(v.konto)}/video/${esc(v.id)}" target="_blank" rel="noopener"><span class="nr">${i + 1}</span><div class="mitte"><div class="n">${esc(v.name)}</div><div class="s">${k.name === 'Alle Accounts' ? esc(v.konto) + ' · ' : ''}${zahl(v.n)} Sales · ${eur(v.p)} Provision</div></div><span class="b">${eur(v.g)}</span></a>`).join('') +
-    `<p class="fuss" style="margin:0">Sales/GMV aus dem Partnerbestellungen-Export (nach Bestelldatum). Aufrufe, Likes, Kommentare folgen, sobald eine Quelle angebunden ist.</p>`;
+  const vsp = spanne(st.vper), vz = summe(k, vsp), vl = videos(k, vsp);
+  zeichneVideos(k, vsp, vz, vl);
   // Verlauf 30 Tage
   const v = k.verlauf, max = Math.max(...v.map(t => t.provision), 1), W = 600, H = 90;
   const H2 = 126; const pts = v.map((t, i) => [i * W / (v.length - 1), H2 - t.provision / max * (H2 - 10)]);
@@ -175,8 +229,8 @@ function zeichne() {
   window._v = {v, pts, max};
   const glatt = pts.map((q, i) => i ? (() => { const a = pts[i - 1], m = (a[0] + q[0]) / 2; return `C${m},${a[1]} ${m},${q[1]} ${q[0]},${q[1]}` })() : `M${q[0]},${q[1]}`).join(' ');
   const e = pts[pts.length - 1];
-  document.getElementById('verlauf').innerHTML = `<defs><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
-    ${[.25, .5, .75].map(f => `<line x1="0" x2="600" y1="${H2 - f * (H2 - 10)}" y2="${H2 - f * (H2 - 10)}" stroke="#fff" stroke-opacity=".12" vector-effect="non-scaling-stroke"/>`).join('')}<path d="${glatt} L${W},130 L0,130 Z" fill="url(#fl)"/><path d="${glatt}" fill="none" stroke="#fff" stroke-width="2.2" vector-effect="non-scaling-stroke" stroke-linecap="round"/>`;
+  document.getElementById('verlauf').innerHTML = `<defs><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--akzent)" stop-opacity=".18"/><stop offset="1" stop-color="var(--akzent)" stop-opacity="0"/></linearGradient></defs>
+    ${[.25, .5, .75].map(f => `<line x1="0" x2="600" y1="${H2 - f * (H2 - 10)}" y2="${H2 - f * (H2 - 10)}" stroke="var(--linie)" vector-effect="non-scaling-stroke"/>`).join('')}<path d="${glatt} L${W},130 L0,130 Z" fill="url(#fl)"/><path d="${glatt}" fill="none" stroke="var(--akzent)" stroke-width="2.2" vector-effect="non-scaling-stroke" stroke-linecap="round"/>`;
   const tag = t => new Date(t + 'T12:00').toLocaleDateString('de-DE', {day: 'numeric', month: 'short'});
   document.getElementById('achse').innerHTML = `<span>${tag(v[0].tag)}</span><span class="mitteL">Letzte 30 Tage</span><span>${tag(e && v[v.length - 1].tag)}</span>`;
   // Kacheln
@@ -194,38 +248,51 @@ function zeichne() {
     return `<button class="zeile" data-k="${esc(x.name)}">${ava(x)}<div class="mitte"><div style="display:flex;justify-content:space-between;gap:10px"><span class="n" style="font-weight:600">${esc(x.name)}</span><span class="b">${eur(r.tage30.provision)}</span></div>
     <div class="balken"><i style="width:${(r.tage30.provision / m30 * 100).toFixed(1)}%"></i></div><div class="s">Heute ${eur(r.heute.provision)} · Gestern ${eur(r.gestern.provision)} · 7 T ${eur(r.tage7.provision, true)}</div></div></button>` }).join('');
   // Monate
-  document.getElementById('monate').innerHTML = `<h2>Nach Bestellmonat <small>% abgeschlossen</small></h2>` + k.bestellmonate.slice().reverse().map(m => {
+  document.getElementById('monate').innerHTML = `<h2>Nach Bestellmonat <small>nach Bestelldatum · % abgerechnet</small></h2>` + k.bestellmonate.slice().reverse().map(m => {
     const a = m.fertig_prozent / 100, c = 2 * Math.PI * 15, f = a >= .95 ? 'var(--gut)' : 'var(--warn)';
     return `<div class="zeile"><svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true"><circle cx="19" cy="19" r="15" fill="none" stroke="var(--spur)" stroke-width="4"/><circle cx="19" cy="19" r="15" fill="none" stroke="${f}" stroke-width="4" stroke-linecap="round" stroke-dasharray="${(c * a).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 19 19)"/><text x="19" y="22.5" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)" font-family="Manrope, sans-serif">${Math.floor(m.fertig_prozent)}</text></svg>
     <div class="mitte"><div class="n" style="font-weight:600">${monat(m.monat, true)}${m.monat === laufend ? '<span class="pill">läuft</span>' : ''}</div><div class="s">${zahl(m.bestellungen)} Bestellungen</div></div>
-    <div style="text-align:right"><div class="b">${eur(m.vorauss)}</div><div class="s">${m.offen > 0 ? eur(m.offen) + ' offen' : 'komplett'}</div></div></div>` }).join('');
+    <div style="text-align:right"><div class="b">${eur(m.vorauss)}</div><div class="s">${m.offen > 0 ? 'davon ' + eur(m.offen) + ' offen' : 'komplett abgerechnet'}</div></div></div>` }).join('');
   // Auszahlungen
   const am = k.auszahlmonate, mx = Math.max(...am.map(m => m.betrag), 1), bw = 600 / Math.max(am.length, 1);
-  document.getElementById('auszahl').innerHTML = `<h2>Abgerechnet <small>pro Monat, nach Abrechnungsdatum</small></h2><svg class="bars" viewBox="0 0 600 190" role="img" aria-label="Auszahlungen pro Monat">
+  document.getElementById('auszahl').innerHTML = `<h2>Abgerechnet pro Monat <small>nach Abrechnungsdatum</small></h2><svg class="bars" viewBox="0 0 600 190" role="img" aria-label="Auszahlungen pro Monat">
     <defs><linearGradient id="bg1" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="var(--akzent)"/><stop offset="1" stop-color="var(--akzent2)"/></linearGradient></defs>` +
     am.map((m, i) => { const h = m.betrag / mx * 130, x = i * bw + bw * .22, w = bw * .56, y = 160 - h;
       return `<g><title>${monat(m.monat, true)}: ${eur(m.betrag)}</title><rect x="${i * bw}" y="0" width="${bw}" height="190" fill="transparent"/><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="7" fill="url(#bg1)" opacity="${m.monat === laufend ? .45 : 1}"/>
       <text x="${x + w / 2}" y="${y - 8}" text-anchor="middle" font-size="12" font-weight="600" fill="var(--leise)">${eur(m.betrag, true)}</text>
       <text x="${x + w / 2}" y="182" text-anchor="middle" font-size="12" fill="var(--leise)">${monat(m.monat)}</text></g>` }).join('') + `</svg>`;
   // Top
-  const top = (id, titel, l, video) => document.getElementById(id).innerHTML = `<h2>${titel}</h2>` + l.slice(0, 8).map((e, i) => {
+  const pg = (name, n) => { const anz = Math.max(1, Math.ceil(n / 10)); st.pg = st.pg || {}; const p = Math.min(st.pg[name] || 0, anz - 1); st.pg[name] = p;
+    return [p, anz > 1 ? `<div class="seiten"><button data-pg="${name}" data-d="-1"${p === 0 ? ' disabled' : ''} aria-label="Vorherige Seite">‹</button><span>Seite ${p + 1} von ${anz}</span><button data-pg="${name}" data-d="1"${p >= anz - 1 ? ' disabled' : ''} aria-label="Nächste Seite">›</button></div>` : ''] };
+  const top = (id, titel, l, video) => { const [p, leiste] = pg(id, l.length); document.getElementById(id).innerHTML = `<h2>${titel} <small>${l.length} Einträge</small></h2>` + l.slice(p * 10, p * 10 + 10).map((e, j) => { const i = p * 10 + j;
     const s = (k.name === 'Alle Accounts' && e.konto ? esc(e.konto) + ' · ' : '') + zahl(e.bestellungen) + ' Bestellungen' + (video ? '' : ` · ${e.quote_prozent.toLocaleString('de-DE')} % n. b.`);
     const inner = `<span class="nr">${i + 1}</span><div class="mitte"><div class="n">${esc(e.name)}</div><div class="s">${s}</div></div><span class="b">${eur(e.betrag)}</span>`;
-    return video && e.id && e.konto ? `<a class="zeile" href="https://www.tiktok.com/@${esc(e.konto)}/video/${esc(e.id)}" target="_blank" rel="noopener">${inner}</a>` : `<div class="zeile">${inner}</div>` }).join('');
+    return video && e.id && e.konto ? `<a class="zeile" href="https://www.tiktok.com/@${esc(e.konto)}/video/${esc(e.id)}" target="_blank" rel="noopener">${inner}</a>` : `<div class="zeile">${inner}</div>` }).join('') + leiste };
   top('videos', 'Top-Videos', k.videos, true); top('produkte', 'Top-Produkte', k.produkte, false);
   const of = document.getElementById('offen'); of.hidden = !k.offen.length;
-  of.innerHTML = `<h2>Offene Bestellungen <small>${zahl(z.offen_anzahl)} gesamt</small></h2>` + k.offen.slice(0, 10).map(o =>
-    `<div class="zeile"><div class="mitte"><div class="n">${esc(o.produkt)}</div><div class="s">${k.name === 'Alle Accounts' ? esc(o.konto) + ' · ' : ''}bestellt ${o.bestellt}</div></div><span class="b">${eur(o.betrag)}</span></div>`).join('');
+  const [po, lo] = pg('offen', k.offen.length);
+  of.innerHTML = `<h2>Offene Bestellungen <small>${zahl(z.offen_anzahl)} gesamt</small></h2>` + k.offen.slice(po * 10, po * 10 + 10).map(o =>
+    `<div class="zeile"><div class="mitte"><div class="n">${esc(o.produkt)}</div><div class="s">${k.name === 'Alle Accounts' ? esc(o.konto) + ' · ' : ''}bestellt ${o.bestellt}</div></div><span class="b">${eur(o.betrag)}</span></div>`).join('') + lo +
+    (z.offen_anzahl > k.offen.length ? `<p class="fuss" style="margin:0">Die neuesten ${k.offen.length} von ${zahl(z.offen_anzahl)} offenen Bestellungen.</p>` : '');
 }
-document.addEventListener('change', ev => {
-  if (ev.target.id === 'von' && ev.target.value) eigen.von = ev.target.value;
-  if (ev.target.id === 'bis' && ev.target.value) eigen.bis = ev.target.value;
-  if (eigen.von > eigen.bis) [eigen.von, eigen.bis] = [eigen.bis, eigen.von];
-  zeichne();
-});
+document.addEventListener('change', ev => { if (ev.target.id === 'kwahl') { st.konto = ev.target.value; st.vseite = 0; st.pg = {}; merke(); zeichne() } });
+// Zeitraum wie bei TikTok: 1. Tipp = Start, 2. Tipp = Ende
+let kal = {monat: eigen.bis.slice(0, 7), start: null};
+function kalender() {
+  const [j, m] = kal.monat.split('-').map(Number), tage = new Date(j, m, 0).getDate(), vorne = (new Date(j, m - 1, 1).getDay() + 6) % 7, h = plus(0);
+  const iso = n => `${kal.monat}-${String(n).padStart(2, '0')}`;
+  let html = `<div class="kalkopf"><button data-km="-1" aria-label="Vorheriger Monat">‹</button><span>${new Date(j, m - 1, 1).toLocaleDateString('de-DE', {month: 'long', year: 'numeric'})}</span><button data-km="1" aria-label="Nächster Monat"${kal.monat >= h.slice(0, 7) ? ' disabled' : ''}>›</button></div><div class="kalgrid">` +
+    ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'].map(t => `<span class="wt">${t}</span>`).join('') + '<span></span>'.repeat(vorne);
+  for (let n = 1; n <= tage; n++) { const t = iso(n), ende = kal.start ? t === kal.start : (t === eigen.von || t === eigen.bis), drin = !kal.start && t > eigen.von && t < eigen.bis;
+    html += `<button data-kt="${t}" class="${ende ? 'ende' : drin ? 'drin' : ''}"${t > h ? ' disabled' : ''}>${n}</button>` }
+  document.getElementById('eigen').innerHTML = html + `</div><div class="kalhint">${kal.start ? 'Jetzt Endtag antippen' : dat(eigen.von) + ' – ' + dat(eigen.bis) + ' · Starttag antippen zum Ändern'}</div>`;
+}
 document.addEventListener('click', ev => {
-  const b = ev.target.closest('[data-k],[data-p]'); if (!b) return;
-  if (b.dataset.k) st.konto = b.dataset.k; else st.per = b.dataset.p;
+  const b = ev.target.closest('[data-k],[data-p],[data-v],[data-va],[data-vs],[data-pg],[data-km],[data-kt]'); if (!b) return;
+  if (b.dataset.km) { const [j, m] = kal.monat.split('-').map(Number), d = new Date(j, m - 1 + +b.dataset.km, 1); kal.monat = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`; kalender(); return }
+  if (b.dataset.kt) { const t = b.dataset.kt; if (kal.start) { [eigen.von, eigen.bis] = kal.start < t ? [kal.start, t] : [t, kal.start]; kal.start = null; zeichne() } else { kal.start = t; kalender() } return }
+  if (b.dataset.pg) { st.pg = st.pg || {}; st.pg[b.dataset.pg] = (st.pg[b.dataset.pg] || 0) + +b.dataset.d }
+  else if (b.dataset.k) { st.konto = b.dataset.k; st.vseite = 0; st.pg = {} } else if (b.dataset.v) { st.vper = b.dataset.v; st.vseite = 0 } else if (b.dataset.va) { st.vans = b.dataset.va; st.vsort = ''; st.vseite = 0 } else if (b.dataset.vs) st.vseite = (st.vseite || 0) + +b.dataset.vs; else st.per = b.dataset.p;
   merke(); zeichne(); if (b.dataset.k && b.classList.contains('zeile')) window.scrollTo({top: 0, behavior: 'smooth'});
 });
 function tip(ev) {

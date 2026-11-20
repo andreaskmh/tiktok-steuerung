@@ -7,7 +7,7 @@ import AppKit
 #endif
 
 struct Daten: Codable { let stand: String; let konten: [Konto] }
-let appName = "statsKMH"
+let appName = "ViewKMH"
 struct Konto: Codable, Identifiable, Equatable {
     static func == (a: Konto, b: Konto) -> Bool { a.name == b.name }
     var id: String { name }
@@ -24,6 +24,7 @@ struct Konto: Codable, Identifiable, Equatable {
     let videos: [Top]
     let produkte: [Top]
     let offen: [Offen]
+    let videos_aufrufe: [VideoAufrufe]?
     var istAlle: Bool { name == "Alle Accounts" }
 }
 struct Kennzahlen: Codable {
@@ -32,7 +33,15 @@ struct Kennzahlen: Codable {
     let bereit: Double?
     let bank: Double?
 }
-struct Zeitraum: Codable { var provision: Double; var bestellungen: Int; var umsatz: Double }
+struct Zeitraum: Codable {
+    var provision: Double; var bestellungen: Int; var umsatz: Double
+    var aufrufe: Int? = nil
+    /// Anteil der Provision aus TikToks offiziellen Zahlen (Seite „Daten“), 0…1; Rest aus dem Export gerechnet
+    var offiziell: Double? = nil
+}
+/// Video laut TikTok („Daten“ → Video → Alle anzeigen, Top 25 je Tag nach Aufrufen): t = [[tag, aufrufe, gmv, artikel]]
+struct VideoAufrufe: Codable { let titel: String; let datum: String; let konto: String; let t: [[Wert]] }
+struct AufrufZeile { let titel: String; let datum: String; let konto: String; let aufrufe: Int; let gmv: Double; let artikel: Int }
 struct Zeitraeume: Codable { let heute, gestern, tage3, tage7, tage30: Zeitraum }
 
 /// Gemischtes JSON-Feld (Text oder Zahl) für kompakte Tageslisten [tag, provision, bestellungen, umsatz]
@@ -57,11 +66,22 @@ func kurzDatum(_ d: Date) -> String { d.formatted(.dateTime.day().month(.twoDigi
 extension Konto {
     func summe(_ s: Spanne) -> Zeitraum {
         let a = tagText(s.von), b = tagText(s.bis)
-        var z = Zeitraum(provision: 0, bestellungen: 0, umsatz: 0)
+        var z = Zeitraum(provision: 0, bestellungen: 0, umsatz: 0, aufrufe: 0, offiziell: 1)
+        var amtlich = 0.0
         for r in tage where r.count >= 4 && r[0].t >= a && r[0].t <= b {
             z.provision += r[1].z; z.bestellungen += Int(r[2].z); z.umsatz += r[3].z
+            if r.count >= 6 { z.aufrufe! += Int(r[4].z); amtlich += r[1].z * r[5].z }
         }
+        if z.provision > 0 { z.offiziell = amtlich / z.provision }
         return z
+    }
+    func aufrufVideos(_ s: Spanne) -> [AufrufZeile] {
+        let a = tagText(s.von), b = tagText(s.bis)
+        return (videos_aufrufe ?? []).compactMap { v in
+            var n = 0, g = 0.0, art = 0
+            for r in v.t where r.count >= 4 && r[0].t >= a && r[0].t <= b { n += Int(r[1].z); g += r[2].z; art += Int(r[3].z) }
+            return n > 0 ? AufrufZeile(titel: v.titel, datum: v.datum, konto: v.konto, aufrufe: n, gmv: g, artikel: art) : nil
+        }
     }
     func videos(_ s: Spanne) -> [VideoZeile] {
         let a = tagText(s.von), b = tagText(s.bis)

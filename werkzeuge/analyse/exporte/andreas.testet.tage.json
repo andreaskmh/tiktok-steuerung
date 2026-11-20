@@ -1,0 +1,343 @@
+{
+"2026-10-22": {
+"gelesen": "2026-11-20 05:44",
+"gmv": 0.0,
+"provision": 0.0,
+"video_gmv": 0.0
+},
+"2026-10-23": {
+"gelesen": "2026-11-20 05:43",
+"gmv": 0.0,
+"provision": 0.0,
+"video_gmv": 0.0
+},
+"2026-10-24": {
+"gelesen": "2026-11-20 05:43",
+"gmv": 0.0,
+"provision": 0.0,
+"video_gmv": 0.0
+},
+"2026-10-25": {
+"gelesen": "2026-11-20 05:43",
+"gmv": 0.0,
+"provision": 0.0,
+"video_gmv": 0.0
+},
+"2026-10-26": {
+"gelesen": "2026-11-20 05:43",
+"gmv": 0.0,
+"provision": 0.0,
+"video_gmv": 0.0
+},
+"2026-10-27": {
+"gelesen": "2026-11-20 05:42",
+"gmv": 0.0,
+"provision": 0.0,
+"video_gmv": 0.0
+},
+"2026-10-28": {
+"gelesen": "2026-11-20 05:42",
+"gmv": 0.0,
+"provision": 0.0,
+"sichtkontakte": 5.0,
+"video_gmv": 0.0
+},
+"2026-10-29": {
+"gelesen": "2026-11-20 05:42",
+"gmv": 0.0,
+"provision": 0.0,
+"video_gmv": 0.0
+},
+"2026-10-30": {
+"gelesen": "2026-11-20 05:41",
+"gmv": 0.0,
+"provision": 0.0,
+"sichtkontakte": 3.0,
+"video_gmv": 0.0
+},
+"2026-10-31": {
+"ansichten": 855.0,
+"artikel": 1.0,
+"gelesen": "2026-11-20 05:41",
+"gmv": 28.99,
+"klicks": 16.0,
+"provision": 2.03,
+"sichtkontakte": 921.0,
+"video_artikel": 1.0,
+"video_gmv": 28.99
+},
+"2026-11-01": {
+"ansichten": 71700.0,
+"artikel": 13.0,
+"gelesen": "2026-11-20 05:41",
+"gerundet": [
+"sichtkontakte"
+],
+"gmv": 393.83,
+"klicks": 566.0,
+"provision": 28.93,
+"sichtkontakte": 76600.0,
+"video_artikel": 13.0,
+"video_gmv": 393.83
+},
+"2026-11-02": {
+"ansichten": 10700.0,
+"artikel": 3.0,
+"gelesen": "2026-11-20 05:40",
+"gerundet": [
+"sichtkontakte"
+],
+"gmv": 98.97,
+"klicks": 138.0,
+"provision": 6.09,
+"sichtkontakte": 11200.0,
+"video_artikel": 3.0,
+"video_gmv": 98.97
+},
+"2026-11-03": {
+"ansichten": 5500.0,
+"artikel": 2.0,
+"gelesen": "2026-11-20 05:40",
+"gerundet": [
+"sichtkontakte"
+],
+"gmv": 56.91,
+"klicks": 84.0,
+"provision": 5.62,
+"sichtkontakte": 5900.0,
+"video_artikel": 2.0,
+"video_gmv": 56.91
+},
+"2026-11-04": {
+"ansichten": 1000.0,
+"gelesen": "2026-11-20 05:40",
+"gerundet": [
+"sichtkontakte"
+],
+"gmv": 0.0,
+"klicks": 21.0,
+"provision": 0.0,
+"sichtkontakte": 1200.0,
+"video_gmv": 0.0
+},
+"2026-11-05": {
+"ansichten": 886.0,
+"gelesen": "2026-11-20 05:40",
+"gerundet": [
+"sichtkontakte"
+],
+"gmv": 0.0,
+"klicks": 45.0,
+"provision": 0.0,
+"sichtkontakte": 1000.0,
+"video_gmv": 0.0
+},
+"2026-11-06": {
+"ansichten": 1900.0,
+"artikel": 1.0,
+"gelesen": "2026-11-20 05:39",
+"gerundet": [
+"sichtkontakte"
+],
+"gmv": 32.98,
+"klicks": 17.0,
+"provision": 2.03,
+"sichtkontakte": 2200.0,
+"video_artikel": 1.0,
+"video_gmv": 32.98
+},
+"2026-11-07": {
+"ansichten": 6000.0,
+"artikel": 3.0,
+"gelesen": "2026-11-20 05:39",
+"gerundet": [
+"sichtkontakte"
+],
+"gmv": 74.92,
+"klicks": 93.0,
+"provision": 4.66,
+"sichtkontakte": 6300.0,
+"video_artikel": 3.0,
+"video_gmv": 74.92
+},
+"2026-11-08": {
+"ansichten": 10800.0,
+"artikel": 8.0,
+"gelesen": "2026-11-20 05:39",
+"gerundet": [
+"sichtkontakte"
+],
+"gmv": 35.99,
+"klicks": 250.0,
+"provision": 4.48,
+"sichtkontakte": 11700.0,
+"video_artikel": 8.0,
+"video_gmv": 35.99
+},
+"2026-11-09": {
+"ansichten": 13400.0,
+"gelesen": "2026-11-20 05:38",
+"gerundet": [
+"sichtkontakte"
+],
+"gmv": 34.83,
+"klicks": 381.0,
+"provision": 4.55,
+"sichtkontakte": 14800.0,
+"video_artikel": 2.0,
+"video_gmv": 34.83
+},
+"2026-11-10": {
+"ansichten": 6100.0,
+"artikel": 4.0,
+"gelesen": "2026-11-20 05:38",
+"gerundet": [
+"sichtkontakte"
+],
+"gmv": 11.8,
+"klicks": 133.0,
+"provision": 2.24,
+"sichtkontakte": 6600.0,
+"video_artikel": 4.0,
+"video_gmv": 11.8
+},
+"2026-11-11": {
+"ansichten": 7800.0,
+"artikel": 3.0,
+"gelesen": "2026-11-20 05:38",
+"gerundet": [
+"sichtkontakte"
+],
+"gmv": 64.48,
+"klicks": 196.0,
+"provision": 6.1,
+"sichtkontakte": 8300.0,
+"video_artikel": 3.0,
+"video_gmv": 64.48
+},
+"2026-11-12": {
+"ansichten": 4400.0,
+"artikel": 3.0,
+"gelesen": "2026-11-20 05:37",
+"gerundet": [
+"sichtkontakte"
+],
+"gmv": 74.61,
+"klicks": 84.0,
+"provision": 5.81,
+"sichtkontakte": 4600.0,
+"video_artikel": 3.0,
+"video_gmv": 74.61
+},
+"2026-11-13": {
+"ansichten": 37400.0,
+"gelesen": "2026-11-20 05:37",
+"gerundet": [
+"sichtkontakte",
+"klicks"
+],
+"gmv": 38.73,
+"klicks": 1100.0,
+"provision": 2.72,
+"sichtkontakte": 39800.0,
+"video_artikel": 6.0,
+"video_gmv": 38.73
+},
+"2026-11-14": {
+"ansichten": 33200.0,
+"artikel": 2.0,
+"gelesen": "2026-11-20 05:50",
+"gerundet": [
+"sichtkontakte",
+"klicks"
+],
+"gmv": 63.92,
+"klicks": 1100.0,
+"provision": 5.83,
+"sichtkontakte": 35300.0,
+"video_artikel": 2.0,
+"video_gmv": 63.92
+},
+"2026-11-15": {
+"ansichten": 16000.0,
+"artikel": 4.0,
+"gelesen": "2026-11-20 05:49",
+"gerundet": [
+"sichtkontakte"
+],
+"gmv": 67.32,
+"klicks": 583.0,
+"provision": 4.45,
+"sichtkontakte": 16900.0,
+"video_gmv": 67.32
+},
+"2026-11-16": {
+"ansichten": 7800.0,
+"artikel": 1.0,
+"gelesen": "2026-11-20 05:49",
+"gerundet": [
+"sichtkontakte"
+],
+"gmv": 67.2,
+"klicks": 170.0,
+"provision": 8.4,
+"sichtkontakte": 8300.0,
+"video_artikel": 1.0,
+"video_gmv": 67.2
+},
+"2026-11-17": {
+"ansichten": 7200.0,
+"artikel": 3.0,
+"gelesen": "2026-11-20 05:49",
+"gerundet": [
+"sichtkontakte"
+],
+"gmv": 69.52,
+"klicks": 167.0,
+"provision": 4.88,
+"sichtkontakte": 7600.0,
+"video_artikel": 3.0,
+"video_gmv": 69.52
+},
+"2026-11-18": {
+"ansichten": 8800.0,
+"artikel": 3.0,
+"gelesen": "2026-11-20 05:48",
+"gerundet": [
+"sichtkontakte"
+],
+"gmv": 48.56,
+"klicks": 210.0,
+"provision": 4.29,
+"sichtkontakte": 9300.0,
+"video_artikel": 3.0,
+"video_gmv": 48.56
+},
+"2026-11-19": {
+"ansichten": 24600.0,
+"artikel": 2.0,
+"gelesen": "2026-11-20 05:48",
+"gerundet": [
+"sichtkontakte"
+],
+"gmv": 25.79,
+"klicks": 426.0,
+"provision": 2.04,
+"sichtkontakte": 26200.0,
+"video_artikel": 2.0,
+"video_gmv": 25.79
+},
+"2026-11-20": {
+"ansichten": 4200.0,
+"gelesen": "2026-11-20 05:48",
+"gerundet": [
+"sichtkontakte"
+],
+"gmv": 0.0,
+"klicks": 54.0,
+"provision": 0.0,
+"sichtkontakte": 4700.0,
+"unvollstaendig": true,
+"video_gmv": 0.0
+}
+}

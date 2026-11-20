@@ -21,17 +21,64 @@ def zeitraum(rows, von, bis):
             "umsatz": r2(sum(r["umsatz"] for r in g if r["status"] != "nicht berechtigt"))}
 
 
-def konto_daten(rows, praemien, bereit=None):
+def offiziell(k):
+    """Offizielle Tageswerte von TikToks Seite „Daten“ (daten_holen.py) → {tag: {...}}."""
+    p = os.path.join(HIER, "exporte", k + ".tage.json")
+    return json.load(open(p)) if os.path.exists(p) else {}
+
+
+def videos_aufrufe(k):
+    """Top-Videos je Tag (daten_holen.py → <konto>.videotage.json) → je Video t: [[tag, aufrufe, gmv, artikel]].
+    Gleiches Video = gleicher Titel (Anfang) + Postdatum; fehlt das Datum (Lesefehler), zählt der Titel allein."""
+    p = os.path.join(HIER, "exporte", k + ".videotage.json")
+    if not os.path.exists(p):
+        return []
+    vt = json.load(open(p)); vids = {}
+    for tag, liste in sorted(vt.items()):
+        for v in liste:
+            t = v["titel"][:25]
+            schl = (t, v["datum"]) if v["datum"] else next((s for s in vids if s[0] == t), (t, ""))
+            if not v["datum"] and schl not in vids:
+                schl = (t, "")
+            e = vids.setdefault(schl, {"titel": v["titel"], "datum": v["datum"], "konto": k, "t": []})
+            if v["datum"] and not e["datum"]:
+                e["datum"] = v["datum"]
+            e["t"].append([tag, int(v["aufrufe"] or 0), r2(v["gmv"] or 0), v["artikel"]])
+    return list(vids.values())
+
+
+def mische(td, off):
+    """Tageszeilen [tag, provision, sales, umsatz, aufrufe, offiziell(0..1)]: TikTok-Zahl, wo abgelesen, sonst Export."""
+    out = []
+    for t in sorted(set(td) | set(off)):
+        e = td.get(t, [0.0, 0, 0.0])
+        o = off.get(t)
+        if o and "provision" in o:
+            ums = e[2] if ("gmv" in o.get("gerundet", []) and t in td) else o.get("gmv", e[2])
+            out.append([t, r2(o["provision"]), int(o.get("artikel", e[1])), r2(ums), int(o.get("ansichten", 0)), 1])
+        else:
+            out.append([t, r2(e[0]), e[1], r2(e[2]), 0, 0])
+    return out
+
+
+def zr_aus_tage(tage_l):
+    h = HEUTE.isoformat(); tag = lambda n: (HEUTE - D.timedelta(days=n)).isoformat()
+    def z(von, bis):
+        g = [r for r in tage_l if von <= r[0] <= bis]
+        p = sum(r[1] for r in g)
+        return {"provision": r2(p), "bestellungen": sum(r[2] for r in g), "umsatz": r2(sum(r[3] for r in g)),
+                "aufrufe": sum(r[4] for r in g), "offiziell": round(sum(r[1] * r[5] for r in g) / p, 3) if p else 1.0}
+    zr = {"heute": z(h, h), "gestern": z(tag(1), tag(1)), "tage3": z(tag(2), h), "tage7": z(tag(6), h), "tage30": z(tag(29), h)}
+    m = {r[0]: r[1] for r in tage_l}
+    verlauf = [{"tag": tag(n), "provision": r2(m.get(tag(n), 0))} for n in range(29, -1, -1)]
+    return zr, verlauf
+
+
+def konto_daten(rows, praemien, bereit=None, amtlich=None):
     aus = [r for r in rows if r["status"] == "ausgezahlt"]
     off = [r for r in rows if r["status"] == "offen"]
     weg = [r for r in rows if r["status"] == "nicht berechtigt"]
     h = HEUTE.isoformat(); tag = lambda n: (HEUTE - D.timedelta(days=n)).isoformat()
-    zr = {"heute": zeitraum(rows, h, h), "gestern": zeitraum(rows, tag(1), tag(1)), "tage3": zeitraum(rows, tag(2), h),
-          "tage7": zeitraum(rows, tag(6), h), "tage30": zeitraum(rows, tag(29), h)}
-    tage = defaultdict(float)
-    for r in rows:
-        tage[r["bestellt"]] += wert(r)
-    verlauf = [{"tag": tag(n), "provision": r2(tage.get(tag(n), 0))} for n in range(29, -1, -1)]
     k = {"ausgezahlt": r2(sum(r["provision_tats"] for r in aus)),
          "offen": r2(sum(r["provision_vorauss"] for r in off)), "offen_anzahl": len(off),
          "verloren": r2(sum(r["provision_vorauss"] for r in weg)), "bestellungen": len(rows),
@@ -64,14 +111,15 @@ def konto_daten(rows, praemien, bereit=None):
             e["betrag"] += wert(r); e["weg"] += r["status"] == "nicht berechtigt"; e["ok"] += r["status"] == "ausgezahlt"
         out = [{"id": i or "", "name": e["name"], "konto": e["konto"], "betrag": r2(e["betrag"]), "bestellungen": e["n"],
                 "quote_prozent": round(100 * e["weg"] / max(1, e["ok"] + e["weg"]), 1)} for i, e in t.items()]
-        return sorted(out, key=lambda x: -x["betrag"])[:10]
+        return sorted(out, key=lambda x: -x["betrag"])[:100]
     # Tageswerte (für jeden Zeitraum inkl. eigenem): [tag, provision, bestellungen, umsatz]
     td = defaultdict(lambda: [0.0, 0, 0.0])
     for r in rows:
         e = td[r["bestellt"]]; e[1] += 1
         if r["status"] != "nicht berechtigt":
             e[0] += wert(r); e[2] += r["umsatz"]
-    tage_l = [[t, r2(e[0]), e[1], r2(e[2])] for t, e in sorted(td.items())]
+    tage_l = mische(td, amtlich or {})
+    zr, verlauf = zr_aus_tage(tage_l)
     # Videos je Tag: id → {name, konto, t: [[tag, bestellungen, gmv, provision]]}
     vt = {}
     for r in rows:
@@ -85,7 +133,7 @@ def konto_daten(rows, praemien, bereit=None):
             "auszahlmonate": [{"monat": m, "betrag": r2(v)} for m, v in sorted(am.items())],
             "videos": top("video_id"), "produkte": top("produkt_id"),
             "offen": sorted([{"produkt": r["produkt"], "konto": r["konto"], "bestellt": r["bestellt"], "betrag": r["provision_vorauss"]}
-                             for r in off], key=lambda x: x["bestellt"], reverse=True)[:30]}
+                             for r in off], key=lambda x: x["bestellt"], reverse=True)[:200]}
 
 
 def avatar(k):
@@ -102,10 +150,18 @@ def guthaben(k):
     return json.load(open(p))["bereit"] if os.path.exists(p) else None
 
 
-liste = [dict(name=k, avatar=avatar(k), stand=stand.get(k), **konto_daten([r for r in rows if r["konto"] == k],
-              [p for p in pr if p["konto"] == k], guthaben(k))) for k in konten]
+liste = [dict(name=k, avatar=avatar(k), stand=stand.get(k), videos_aufrufe=videos_aufrufe(k), **konto_daten([r for r in rows if r["konto"] == k],
+              [p for p in pr if p["konto"] == k], guthaben(k), offiziell(k))) for k in konten]
 liste.sort(key=lambda x: -x["zeitraeume"]["tage30"]["provision"])
 alle = dict(name="Alle Accounts", avatar=None, stand=None, **konto_daten(rows, pr))
+# Alle: Tageszeilen = Summe der (gemischten) Konto-Zeilen; offiziell = Anteil der Provision aus TikTok-Zahlen
+sm = defaultdict(lambda: [0.0, 0, 0.0, 0, 0.0])
+for x in liste:
+    for t, p, n, u, a, f in x["tage"]:
+        e = sm[t]; e[0] += p; e[1] += n; e[2] += u; e[3] += a; e[4] += p * f
+alle["tage"] = [[t, r2(e[0]), e[1], r2(e[2]), e[3], round(e[4] / e[0], 3) if e[0] else 1.0] for t, e in sorted(sm.items())]
+alle["zeitraeume"], alle["verlauf"] = zr_aus_tage(alle["tage"])
+alle["videos_aufrufe"] = [v for x in liste for v in x["videos_aufrufe"]]
 bek = [x["kennzahlen"] for x in liste if x["kennzahlen"]["bereit"] is not None]   # nur Konten mit abgelesenem Guthaben
 alle["kennzahlen"]["bereit"] = r2(sum(x["bereit"] for x in bek)) if bek else None
 alle["kennzahlen"]["bank"] = r2(sum(x["bank"] for x in bek)) if bek else None

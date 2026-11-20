@@ -1,2 +1,3 @@
 - [Produkt immer über Social1](produkt-immer-ueber-social1.md) — nie manuell in TikTok suchen
 - [Upload-Speed-Regeln](upload-speed-regeln.md) — keine Pausen, Kamera-OK, Einkaufswagen-Trick, liken+speichern
+- [TikTok-Tipp-Sperren](tiktok-tipp-sperren.md) — Story-Vorfall 20.11.: nie „Poste“/oben links auf eigenem Profil, gesperrt() nach jedem Tipp

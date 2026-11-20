@@ -1,3 +1,31 @@
+# Stand Analyse / ViewKMH – 20.11.2026, ca. 06:30
+
+## Neu 20.11. früh (diese Session)
+- App heißt **ViewKMH** (Mac /Applications/ViewKMH.app, iPhone 15 Pro Max, Web gleiche Artifact-URL). Mac-Look (Grautöne, wenig Farbe),
+  hell/dunkel automatisch, iPhone dunkel = Schwarz. Account-Auswahlfeld mit Suche, Zeitraum-Kalender (2 Tipps), Seiten à 10.
+- **Offizielle TikTok-Zahlen:** `werkzeuge/analyse/daten_holen.py <konten…>` (iPhone 11) liest Seite „Daten“ je Tag (30 Tage, ältere
+  nur wenn fehlend, letzte 6 immer neu) + Top 25 Videos je Tag nach Aufrufen (7 Tage). → `exporte/<konto>.tage.json`, `.videotage.json`.
+  Gestern alle 5 Accounts = **305,01 €** (= Arturs Zahl). Likes/Kommentare gibt TikTok dort nicht.
+- **Guthaben + Prämien:** `export_holen.py --praemien <konten…>` (Belohnungen, letzte 3 Monate) → `exporte/*.guthaben.json`, `praemien.json`.
+  Stand: bereit anduri 1928,70 / ella 1786,24 / fastlane 680,73 / artur 393,33 / testet 14,59; Prämien 785,01 / 10,01 / 135,01 / 15,01 / 0.
+- **VORFALL:** versehentlich Story auf andreasfastlane gepostet (Artur gelöscht). Seitdem `gesperrt()` nach jedem Tipp (docs/AENDERUNGEN.md).
+- Morgen/Abend-Ablauf: `daten_holen.py` (alle Konten) → `export_holen.py` (Export) → `baue.py` → `app_daten.py` → `web.py` → Artifact.
+
+## Offen
+1. **andrucha.official** fehlt (nur alter Export, kein Guthaben/„Daten“): Artur meldet sie aufs iPhone 11 an (dann alles in einem Lauf).
+2. Automatisch morgens/abends: iPhone 11 per WLAN, Auto-Sperre „Nie“, am Ladegerät → geplanten Lauf einrichten.
+3. Viral-Regeln ans Research-System: Vorschlag unten, erst nach Arturs OK.
+4. Likes/Kommentare: TikTok Display API (Artur legt Entwickler-App an).
+
+## Viral-Regeln (Vorschlag, noch nicht ans Research-System gegeben)
+- **Viral:** in den ersten 3 Tagen ≥ 14 Bestellungen oder ≥ 39 € Provision (Top 10 % eigener Videos); **Mega:** ≥ 32 / ≥ 63 € (Top 5 %).
+- **Mit Aufrufen:** ≥ 50K Aufrufe in 7 Tagen und Kaufquote (Artikel ÷ Aufrufe) ≥ 0,03 % → „Nochmal machen“ (anderer Account/neuer Hook).
+- ≥ 50K Aufrufe, aber Kaufquote < 0,01 % → „Hook gut, Produkt schwach“ (nicht nochmal).
+- Liste „Nochmal machen“ wöchentlich als Produkt-IDs an Research-System (Social1-Listen) – deren Dateien nicht selbst ändern.
+
+---
+(älterer Stand darunter)
+
 # Stand Analyse / statsKMH – 20.11.2026, ca. 04:00
 
 ## Fertig

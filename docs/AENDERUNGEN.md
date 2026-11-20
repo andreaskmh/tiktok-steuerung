@@ -431,3 +431,28 @@ Neu `werkzeuge/analyse/export_holen.py` (Export aller Accounts am iPhone 11 per 
 **20.11.2026** – App heißt **statsKMH** (Artur). Neu: Zeiträume 3 Tage + eigener Zeitraum mit klarer Datumsangabe, Video-Performance
 (Sales/GMV), Kacheln „Bereits ausgezahlt“ / „Zur Auszahlung bereit“ (Guthaben per `export_holen.py --guthaben`), interaktive
 Diagramme. Stand + nächste Schritte: `docs/STAND-ANALYSE.md`.
+
+**20.11.2026 (früh)** – Offizielle TikTok-Zahlen statt Export-Rechnung (Artur: Export wich ab, z. B. anduri 113,09 statt 114,76 €).
+Neu `werkzeuge/analyse/daten_holen.py`: liest pro Account die Seite „Daten“ (Creator-Bereich → Pfeil neben „Heute | Letzte 7 Tage“)
+je Tag ab (Heute, Gestern = Reiter; ältere Tage über Benutzerdefiniert → Tag, TikTok lässt dort nur bis vorgestern zu) –
+Vorauss. Provisionen, GMV, Artikel, Sichtkontakte, Klicks, Ansichten – plus je Tag die Top 25 Videos nach Aufrufen
+(→ `exporte/<konto>.tage.json`, `exporte/<konto>.videotage.json`, fortgeschrieben). Geprüft: Summe 16.–18.11. = TikToks Bereichswert auf den Cent.
+`app_daten.py`: Tageswerte = TikTok-Zahl, wo abgelesen, sonst Export (Anteil wird angezeigt). App heißt jetzt **ViewKMH** (Artur),
+Video-Performance mit eigener Zeitraumwahl (3 Tage nur dort, nicht in der Geldstatistik – Artur), Seiten à 10, Ansicht
+„Nach Verkäufen“/„Nach Aufrufen“, Sortierung; Profilbilder ohne weißen Rand; Bestellmonat „davon … offen“.
+Likes/Kommentare zeigt TikTok auf „Daten“ nicht (→ später Display API).
+- **20.11.2026** – Eigenes iPhone-Spiegel-Fenster statt „Mirror My Phone“ (Abo gespart): `werkzeuge/kabel/spiegel.html`,
+  über `patch_oiu.py` (Schritt 7) in den Kabel-Server eingehängt → http://127.0.0.1:27893/spiegel. Klick = Tippen, halten = langer Druck,
+  ziehen = Wischen, Mausrad = Scrollen, Mac-Tastatur tippt am iPhone, Knöpfe Home/Sperre/Lauter/Leiser.
+
+**20.11.2026 (06:15) – VORFALL + Sperren.** Beim Ablesen (export_holen.py) wurde auf artur.official versehentlich eine Story gepostet:
+„Zurück“ oben links traf auf dem eigenen Profil den Stift (Story), dann tippte die Werbe-Popup-Regel („Poste…“) auf „Posten“.
+Artur hat die Story gelöscht. Neu: `gesperrt()` – nach JEDEM Tipp wird geprüft, ob ein Post-/Story-Bildschirm offen ist
+(„Veröffentlichen“, „Posten“, „Story“, „sichtbar“, „Was läuft“ …) → sofort STOPP, nichts mehr tippen. Werbe-Popup nur noch bei
+Text „Poste …“ (nie Knopf „Posten“/„Posteingang“). Eigenes Profil = „Gefolgt“ ohne „Nachricht“, dort nie oben links tippen.
+Kontoname nur links antippen (rechts sitzt „Was läuft?“). Ebenso früher am Tag: „Posteingang“ wurde als Popup getippt
+(öffnete Aktivitätsstatus) → behoben.
+
+**20.11.2026 (06:30)** – `export_holen.py --praemien`: Guthaben + Prämien (Auszahlungsverlauf → Belohnungen, Kopfzeile „N Prämien €X verdient“)
+→ praemien.json je Konto. App/Web: Account-Auswahlfeld mit Suche (für 10–20 Accounts), Zeitraum-Kalender (Start/Ende mit 2 Tipps),
+Profilbild-Cache (kein Ruckeln), iPhone-Dunkelmodus schwarz, Balken grün, Seiten bei Top-Listen/offenen Bestellungen.
