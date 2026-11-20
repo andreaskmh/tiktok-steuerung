@@ -1130,8 +1130,9 @@ def messung_auswerten():
 
 
 def punkte(k):
-    """Platzierung: Frische zählt am meisten (Today/Yesterday), dann Tempo, Verkaufskraft, Interaktion."""
-    frische = {0: 100, 1: 85, 2: 55, 3: 40, 4: 30, 5: 22, 6: 16, 7: 12}.get(k.get("tage", 999), max(0, 10 - k.get("tage", 999) // 7))
+    """Platzierung: zuerst das Alter (Artur 20.11.: jeder jüngere Tag steht immer vor dem älteren), innerhalb eines Tages
+    Tempo, Verkaufskraft, Interaktion."""
+    frische = max(0, 30 - k.get("tage", 999)) * 100                         # Abstand 100 > Rest (max. 75) → Alter entscheidet
     tempo = min(40, 8 * math.log10(max(1, zahl(k["plus_views"]))) - 24)      # 100K → 16, 1M → 24, 10M → 32
     gmv = min(15, 3 * math.log10(max(1, zahl(k["gmv"]))) - 6)                # €10K → 6, €100K → 9
     v = max(1, zahl(k["views"]))

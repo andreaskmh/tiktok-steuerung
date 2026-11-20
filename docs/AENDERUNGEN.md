@@ -537,3 +537,5 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 
 **20.11.2026 (20:10)** – iPhone: Seite war breiter als der Bildschirm (lange Handy-Auswahl mit fixedSize) → gekürzt; Schrift auf
 „groß“ begrenzt, kompaktere Abstände. Icon B (Graphit + Mint-Linie) eingebaut. Alte Fehlermeldungen aus status.json entfernt.
+
+- 20.11.2026 (abends): research.py `punkte`: Alter entscheidet zuerst (jeder Tag 100 Punkte Abstand, Rest max. 75), innerhalb eines Tages wie bisher Views/GMV/Interaktion. Warum: Artur – Listen „nach Rangliste, vorwiegend Alter“; vorher konnte ein starkes älteres Video vor einem jüngeren landen.

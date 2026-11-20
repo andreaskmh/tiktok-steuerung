@@ -3,3 +3,7 @@
 2026-11-20 19:40:29 Traceback (most recent call last):
 2026-11-20 19:40:29 Traceback (most recent call last):
 2026-11-20 19:41:00 Ende voll: 31 s, Fehler: ['STOPP andrucha.official: send_key: [Errno 65] No route to host (Foto /tmp/daten-stopp-andrucha.official.png)', 'Traceback (most recent call last):', 'Traceback (most recent call last):']
+2026-11-20 20:53:54 Start schnell: 1 Accounts
+2026-11-20 20:53:58 andrucha.official: Handy nicht erreichbar – Kabel anstecken oder WLAN prüfen (Handy entsperrt?)
+2026-11-20 20:53:58 andrucha.official: Handy nicht erreichbar – Kabel anstecken oder WLAN prüfen (Handy entsperrt?)
+2026-11-20 20:54:18 Ende schnell: 24 s, Fehler: ['andrucha.official: Handy nicht erreichbar – Kabel anstecken oder WLAN prüfen (Handy entsperrt?)', 'andrucha.official: Handy nicht erreichbar – Kabel anstecken oder WLAN prüfen (Handy entsperrt?)']
