@@ -1,4 +1,4 @@
-# Rangliste DE 20.11.2026 – Bruder
+# Rangliste DE 20.11.2026 – Andreas
 
 Gleiches Produkt steht immer nur bei einer Person.
 
