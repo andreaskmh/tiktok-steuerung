@@ -19,21 +19,40 @@ struct KmhviewApp: App {
     }
 }
 
-/// Kurz der Schriftzug auf Schwarz beim Öffnen (wie bei Revolut), dann die App
+/// Startbild: gleicher Hintergrund wie der Systemstart (StartFarbe) → kein Flackern; Logo federt rein, Schriftzug gleitet nach,
+/// dann zoomt das Logo groß und blendet in die App über (Artur 20.11.: „flüssiger, moderner“)
 struct StartBild<C: View>: View {
     @ViewBuilder let inhalt: C
-    @State private var weg = false
+    @State private var schritt = 0   // 0 = Start, 1 = Logo da, 2 = weg
     var body: some View {
         ZStack {
             inhalt
-            if !weg {
+                .scaleEffect(schritt >= 2 ? 1 : 0.94).opacity(schritt >= 2 ? 1 : 0)
+            if schritt < 3 {
                 ZStack {
-                    Color.black.ignoresSafeArea()
-                    Text("statsKMH").font(.system(size: 52, weight: .semibold)).tracking(-1.5).foregroundStyle(.white)
+                    Color("StartFarbe").ignoresSafeArea()
+                    HStack(spacing: 14) {
+                        Image("Logo").resizable().frame(width: 64, height: 64)
+                            .scaleEffect(schritt == 0 ? 0.5 : schritt == 2 ? 1.6 : 1)
+                        HStack(spacing: 0) {
+                            Text("stats").fontWeight(.regular).foregroundStyle(.secondary)
+                            Text("KMH").fontWeight(.heavy)
+                        }
+                        .font(.system(size: 38)).tracking(-0.8)
+                        .offset(x: schritt == 0 ? -16 : 0).opacity(schritt == 1 ? 1 : 0)
+                    }
+                    .opacity(schritt == 0 ? 0 : 1)
                 }
-                .transition(.opacity)
+                .opacity(schritt == 2 ? 0 : 1)
+                .allowsHitTesting(schritt < 2)
             }
         }
-        .task { try? await Task.sleep(for: .seconds(0.9)); withAnimation(.easeOut(duration: 0.35)) { weg = true } }
+        .task {
+            withAnimation(.spring(response: 0.45, dampingFraction: 0.72)) { schritt = 1 }
+            try? await Task.sleep(for: .seconds(0.85))
+            withAnimation(.easeInOut(duration: 0.4)) { schritt = 2 }
+            try? await Task.sleep(for: .seconds(0.45))
+            schritt = 3
+        }
     }
 }

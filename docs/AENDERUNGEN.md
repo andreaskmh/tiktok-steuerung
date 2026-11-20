@@ -579,3 +579,6 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - statsKMH: bunte runde Symbole (Kacheln + Karten-Überschriften, Revolut-Art); Diagramm als eigene Ansicht mit vorberechneten Punkten
   (Antippen zeichnet nur das Diagramm neu → kein Ruckeln); Account-Auswahl/„Account hinzufügen“ mit gleichem Hintergrund + Glas-Zeilen;
   Fehler unter Schnell/Voll nur vom letzten Lauf (< 6 Std.), doppelte einmal; alte andrucha-Fehler aus status.json gelöscht.
+- statsKMH Logo/App-Symbol „A Puls“ (Türkis→Blau, weiße Kurslinie, leuchtender Endpunkt; Quelle app/icon-vorschlaege/icon_puls.swift).
+  Startbild neu: Systemstart in derselben Farbe (Asset StartFarbe, app/kmhview/Info-iOS.plist) → kein Flackern; Logo federt rein,
+  Schriftzug „stats“ dünn + „KMH“ fett gleitet nach, dann Zoom/Überblendung in die App. Grund: Artur – Start unflüssig, Logo nicht modern.
