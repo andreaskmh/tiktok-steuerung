@@ -1,0 +1,156 @@
+<title>Ranglisten KMH</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: eine Spalte fürs Handy – Kopf mit Land- und Listen-Auswahl, darunter Karten wie in statsKMH, Zeilen zum Abhaken */
+:root{
+  --bg:#000;--karte:#1c1c1e;--feld:#2c2c2e;--linie:#2c2c2e;--fg:#fff;--mut:#8e8e93;
+  --gruen:#4cd964;--tuerkis:#5ac8c8;--blau:#64a8ff;--gelb:#ffcc66;
+  --glas:linear-gradient(180deg,#4a4a4e,#2a2a2d);
+  color-scheme:dark;
+  --schrift:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+}
+body{background:var(--bg);color:var(--fg);font:15px/1.35 var(--schrift);margin:0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 48px}
+h1{font-size:30px;font-weight:800;margin:4px 0 2px;letter-spacing:-.01em}
+.stand{color:var(--mut);font-size:14px;margin:0 0 14px}
+.seg{display:flex;background:var(--karte);border-radius:12px;padding:3px;gap:3px;margin-bottom:10px}
+.seg button{flex:1;min-width:0;border:0;background:transparent;color:var(--fg);font:600 15px var(--schrift);padding:8px 4px;border-radius:9px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--feld);box-shadow:inset 0 1px 0 #ffffff14}
+.seg button:focus-visible{outline:2px solid var(--blau);outline-offset:1px}
+.info{display:flex;justify-content:space-between;color:var(--mut);font-size:13px;margin:6px 2px 10px;gap:8px}
+.karte{background:var(--karte);border-radius:20px;padding:12px 14px 4px;margin-bottom:16px}
+.kt{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.kt b{font-size:19px}.kt span{color:var(--mut);font-size:13px}
+.z{display:grid;grid-template-columns:30px 24px minmax(0,1fr) auto;gap:10px;align-items:start;padding:10px 0;border-top:1px solid var(--linie)}
+.kt+.z{border-top:0}
+.hk{width:26px;height:26px;border-radius:50%;border:2px solid #48484a;background:transparent;cursor:pointer;padding:0;display:grid;place-items:center;color:#000;font:800 14px var(--schrift)}
+.hk[aria-pressed="true"]{background:var(--gruen);border-color:var(--gruen)}
+.hk:focus-visible{outline:2px solid var(--blau);outline-offset:2px}
+.nr{color:var(--mut);text-align:center;padding-top:3px;font-variant-numeric:tabular-nums}
+.m{min-width:0}
+.m a{color:var(--fg);text-decoration:none;font-weight:600;overflow-wrap:anywhere}
+.sub{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-top:5px}
+.chip{font-size:11px;padding:2px 8px;border-radius:999px;background:var(--feld);color:var(--blau);white-space:nowrap;font-weight:500}
+.cr{font-size:12px;color:var(--mut);overflow-wrap:anywhere}
+.r{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.r b{font-variant-numeric:tabular-nums}
+.alt{font-size:11px;padding:1px 7px;border-radius:999px;background:var(--feld);color:var(--mut);white-space:nowrap}
+.alt.neu{color:var(--gruen);background:#4cd96422}.alt.gestern{color:var(--tuerkis);background:#5ac8c81a}
+details{grid-column:3/5;background:#141416;border-radius:12px;padding:8px 12px;margin-top:2px;font-size:14px;line-height:1.45}
+summary{color:var(--gelb);font-size:13px;font-weight:600;cursor:pointer}
+details[open] summary{margin-bottom:6px}
+details p{margin:0 0 8px}
+.fertig .m,.fertig .r,.fertig .nr{opacity:.35}.fertig .m a{text-decoration:line-through}
+.leer{color:var(--mut);text-align:center;padding:40px 10px}
+.hinweis{color:var(--mut);font-size:12px;margin-top:6px}
+@media (prefers-reduced-motion:no-preference){.hk{transition:background .15s,border-color .15s}}
+</style>
+
+<h1>Ranglisten</h1>
+<p class="stand" id="stand">Lädt …</p>
+<div class="seg" role="group" aria-label="Land">
+  <button id="land-de" data-land="de" aria-pressed="true">DE</button>
+  <button id="land-us" data-land="us" aria-pressed="false">USA</button>
+</div>
+<div class="seg" role="group" aria-label="Liste">
+  <button id="wer-artur" data-wer="Artur" aria-pressed="true">Artur</button>
+  <button id="wer-andreas" data-wer="Andreas" aria-pressed="false">Andreas</button>
+  <button id="wer-slides" data-wer="SLIDES" aria-pressed="false">SLIDES</button>
+</div>
+<div class="info"><span id="zaehler"></span><span id="sync"></span></div>
+<main id="liste"><p class="leer">Rangliste wird geladen …</p></main>
+<p class="hinweis">Kreis antippen = erledigt (nur für euch, gilt auf allen Geräten). Produktname antippen öffnet das Video in TikTok.</p>
+
+<script>
+const esc = t => String(t ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+const fett = t => esc(t).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\n/g,"<br>");
+let wahl = {land:"de", wer:"Artur"};
+try { Object.assign(wahl, JSON.parse(localStorage.getItem("wahl") || "{}")); } catch(e) {}
+const daten = {};
+let haken = {};          // video-id → true
+let db = null;
+
+function lokalLaden(){ try { haken = JSON.parse(localStorage.getItem("haken") || "{}"); } catch(e) { haken = {}; } }
+function lokalSpeichern(){ try { localStorage.setItem("haken", JSON.stringify(haken)); } catch(e) {} }
+
+function zeile(v){
+  const fertig = !!haken[v.v];
+  const alt = v.alter === "Today" ? "neu" : v.alter === "Yesterday" ? "gestern" : "";
+  let extra = "";
+  if (v.skript) extra += `<span class="chip" style="color:var(--gelb)">🌐 ${esc(v.sprache)} · Skript</span>`;
+  else if (v.standard.length) extra += `<span class="chip" style="color:var(--gelb)">🎵 Standard-Skript</span>`;
+  let det = "";
+  if (v.skript || v.standard.length) {
+    let inhalt = v.skript ? `<div>${fett(v.skript)}</div>` : "";
+    if (v.standard.length) inhalt += (v.skript ? '<p style="margin-top:10px;color:var(--gelb)">Standard-Skripte</p>' : "") +
+      v.standard.map(([titel, text]) => `<p><b>${esc(titel)}:</b> ${esc(text)}</p>`).join("");
+    det = `<details><summary>${v.skript ? "Skript auf Deutsch" : "Nur Musik – Standard-Skripte"}</summary>${inhalt}</details>`;
+  }
+  return `<div class="z${fertig ? " fertig" : ""}" data-v="${esc(v.v)}">
+    <button class="hk" aria-pressed="${fertig}" aria-label="Video ${v.nr} erledigt">${fertig ? "✓" : ""}</button>
+    <span class="nr">${v.nr}</span>
+    <div class="m"><a href="${esc(v.url)}" target="_blank" rel="noopener">${esc(v.produkt)}</a>
+      <div class="sub"><span class="chip">${esc(v.art)}</span>${extra}<span class="cr">@${esc(v.creator)}</span></div></div>
+    <div class="r"><b>+${esc(v.plus)}</b><span class="alt ${alt}">${esc(v.alter)}</span></div>
+    ${det}</div>`;
+}
+
+function zeigen(){
+  document.querySelectorAll("[data-land]").forEach(b => b.setAttribute("aria-pressed", b.dataset.land === wahl.land));
+  document.querySelectorAll("[data-wer]").forEach(b => b.setAttribute("aria-pressed", b.dataset.wer === wahl.wer));
+  const d = daten[wahl.land], el = document.getElementById("liste");
+  if (!d) { el.innerHTML = '<p class="leer">Rangliste wird geladen …</p>'; return; }
+  document.getElementById("stand").textContent = `Stand ${d.stand} · Research ${d.datum}`;
+  const teile = d.listen[wahl.wer] || [];
+  const alle = teile.flatMap(t => t.videos);
+  const erledigt = alle.filter(v => haken[v.v]).length;
+  document.getElementById("zaehler").textContent = `${erledigt} von ${alle.length} erledigt`;
+  el.innerHTML = teile.length ? teile.map(t =>
+    `<section class="karte"><div class="kt"><b>${esc(t.titel)}</b><span>${t.videos.length} Videos</span></div>${t.videos.map(zeile).join("")}</section>`
+  ).join("") : '<p class="leer">Keine Videos in dieser Liste.</p>';
+}
+
+document.addEventListener("click", async e => {
+  const b = e.target.closest("button");
+  if (!b) return;
+  if (b.dataset.land || b.dataset.wer) {
+    if (b.dataset.land) wahl.land = b.dataset.land;
+    if (b.dataset.wer) wahl.wer = b.dataset.wer;
+    try { localStorage.setItem("wahl", JSON.stringify(wahl)); } catch(e) {}
+    zeigen(); return;
+  }
+  if (b.classList.contains("hk")) {
+    const v = b.closest(".z").dataset.v, an = !haken[v];
+    if (an) haken[v] = true; else delete haken[v];
+    zeigen();
+    if (db) {
+      try { an ? await db.collection("haken").doc(v).set({an: true, zeit: Date.now()}) : await db.collection("haken").doc(v).delete(); }
+      catch(err) { document.getElementById("sync").textContent = "Haken nicht gespeichert"; }
+    } else lokalSpeichern();
+  }
+});
+
+async function datenLaden(){
+  for (const l of ["de", "us"]) {
+    try { const r = await fetch(`daten-${l}.json`, {cache: "no-store"}); if (r.ok) daten[l] = await r.json(); } catch(e) {}
+  }
+  if (!daten.de && !daten.us) document.getElementById("liste").innerHTML = '<p class="leer">Rangliste konnte nicht geladen werden. Seite neu laden.</p>';
+  zeigen();
+}
+
+async function hakenVerbinden(){
+  lokalLaden(); zeigen();
+  db = window.claude ? await window.claude.use("db") : null;
+  const s = document.getElementById("sync");
+  if (!db) { s.textContent = "Haken nur auf diesem Gerät"; return; }
+  const t = setTimeout(() => s.textContent = "Haken werden geladen …", 10000);
+  db.collection("haken").onSnapshot(snap => {
+    if (!snap.metadata.fromCache) { clearTimeout(t); s.textContent = "Haken für alle"; }
+    const neu = {}; snap.docs.forEach(d => { if (d.exists) neu[d.id] = true; });
+    haken = neu; zeigen();
+  }, () => { clearTimeout(t); s.textContent = "Haken gerade nicht erreichbar"; });
+}
+
+datenLaden();
+hakenVerbinden();
+</script>

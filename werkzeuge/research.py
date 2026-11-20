@@ -1326,6 +1326,21 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
                      f'<span class="cr">@{esc(k["creator"])}</span></div></td><td><span class="chip {alt}">{esc(k["alter"])}</span></td>'
                      f'<td class="v">{esc(k["plus_views"])}</td></tr>' + skript(k, art))
         return "".join(r) + "</table>"
+    # Artur 20.11.: Daten für die Online-Seite (claude.ai, fester Link) – werkzeuge/ranglisten_seite.py veröffentlicht sie
+    def roh(i, z):
+        pk, n, art = z
+        k, v = kand[n], kand[n]["video_id"]
+        nur_musik = (v in skr and "nur musik" in skr[v][1].lower()) or ("BOF" in art.split("+") and v in musik and v not in skr)
+        return {"nr": i, "v": v, "produkt": k["produkt"][:90], "art": art, "alter": k["alter"], "plus": k["plus_views"],
+                "creator": k["creator"], "url": f"https://www.tiktok.com/@{k['creator']}/video/{v}",
+                "sprache": skr[v][0] if v in skr else "", "skript": skr[v][1] if v in skr else "",
+                "standard": [list(x) for x in standard(k)] if nur_musik else []}
+    seite = PROJ / "uebergabe" / "ranglisten-seite"
+    seite.mkdir(parents=True, exist_ok=True)
+    (seite / f"daten-{land}.json").write_text(json.dumps({
+        "land": land.upper(), "datum": datum, "stand": time.strftime("%d.%m.%Y %H:%M"),
+        "listen": {**{p: [{"titel": a, "videos": [roh(i, z) for i, z in enumerate(t, 1)]} for a, t in abschnitte[p]] for p in PERSONEN},
+                   "SLIDES": [{"titel": "SLIDES", "videos": [roh(i, z) for i, z in enumerate(slides, 1)]}]}}, ensure_ascii=False))
     seiten = {p: "".join(f"<h2>{a} ({len(t)})</h2>{tabelle(t)}" for a, t in abschnitte[p]) for p in PERSONEN}
     seiten["slides"] = f"<h2>SLIDES ({len(slides)})</h2>{tabelle(slides)}"
     for wer, inhalt in seiten.items():
