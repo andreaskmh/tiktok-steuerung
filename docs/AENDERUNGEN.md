@@ -437,7 +437,7 @@ Neu `werkzeuge/analyse/daten_holen.py`: liest pro Account die Seite „Daten“ 
 je Tag ab (Heute, Gestern = Reiter; ältere Tage über Benutzerdefiniert → Tag, TikTok lässt dort nur bis vorgestern zu) –
 Vorauss. Provisionen, GMV, Artikel, Sichtkontakte, Klicks, Ansichten – plus je Tag die Top 25 Videos nach Aufrufen
 (→ `exporte/<konto>.tage.json`, `exporte/<konto>.videotage.json`, fortgeschrieben). Geprüft: Summe 16.–18.11. = TikToks Bereichswert auf den Cent.
-`app_daten.py`: Tageswerte = TikTok-Zahl, wo abgelesen, sonst Export (Anteil wird angezeigt). App heißt jetzt **ViewKMH** (Artur),
+`app_daten.py`: Tageswerte = TikTok-Zahl, wo abgelesen, sonst Export (Anteil wird angezeigt). App heißt jetzt **viewKMH** (Artur),
 Video-Performance mit eigener Zeitraumwahl (3 Tage nur dort, nicht in der Geldstatistik – Artur), Seiten à 10, Ansicht
 „Nach Verkäufen“/„Nach Aufrufen“, Sortierung; Profilbilder ohne weißen Rand; Bestellmonat „davon … offen“.
 Likes/Kommentare zeigt TikTok auf „Daten“ nicht (→ später Display API).
@@ -485,3 +485,16 @@ vom linken Rand (kein Tipp); Profil-Reiter mit Beschriftung „Profil“; länge
   Hinweis „Einschalten“ bestätigen) → Blatt zu → hoch. Am iPhone getestet (an→bleibt, aus→an), Test-Beitrag verworfen.
   Warum: KI-Bilder ohne Label; das C2PA-Kennzeichen von ChatGPT geht beim Text-Rendern (Playwright-JPG) verloren –
   nicht absichtlich entfernt (alte Regel REZEPT-SLIDESHOW.md: „C2PA nicht gezielt entfernen“).
+
+## 20.11.2026 17 Uhr – Research DE: Übernahme statt „nie zweimal“, Artur arbeitet unsere BOF-Liste ab
+- Artur: „eigene BOF 19.11.“ war einmalig; ab heute arbeitet er `BOF DE <datum>` ab. Nicht Erledigtes von gestern soll
+  heute wieder rein (vorher flog alles raus, was an einem früheren Tag in einer Liste war – 579 Videos).
+- `research.py`: `frueher_gespeichert()` gibt die Art (BOF/SLIDES/REACTIONS) zurück; `filtern de` schließt früher
+  Gespeichertes nicht mehr aus und trägt die Art in `de-sortiert.json` ein (USA unverändert: nie zweimal).
+  `gemacht_abgleich()`: erledigt = was seit der letzten Momentaufnahme aus unseren `BOF DE …`-Listen fehlt.
+- docs/RESEARCH.md und die geplante Aufgabe angepasst. Sicherung: scratchpad research.py.vor-uebernahme.
+- **20.11.2026** – iPhone-Spiegel neu gestaltet: randloses Fenster mit gezeichnetem iPhone (schmaler Rahmen, Metallkante, iPhone-Ecken),
+  Knöpfe als Milchglas-Pille über der Dynamic Island (erscheint beim Drüberfahren), Grün = Vollbild (iPhone mittig auf Schwarz, Esc beendet).
+  Flüssiger ohne Kabel: patch_oiu.py Schritt 7 – Live-Bild 60 statt 30 Bilder/s, WLAN 6 statt 2 Mbit/s (iPhone wird etwas wärmer).
+- **20.11.2026** – iPhone-Spiegel: Ziehen irgendwo auf dem iPhone verschiebt immer das Fenster (performDrag, auch im Hintergrund);
+  das WLAN-Livebild nimmt keine Klicks mehr an (vorher startete macOS manchmal „Bild herausziehen“).

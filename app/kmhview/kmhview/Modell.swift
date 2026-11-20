@@ -7,7 +7,7 @@ import AppKit
 #endif
 
 struct Daten: Codable { let stand: String; let konten: [Konto] }
-let appName = "ViewKMH"
+let appName = "viewKMH"
 struct Konto: Codable, Identifiable, Equatable {
     static func == (a: Konto, b: Konto) -> Bool { a.name == b.name }
     var id: String { name }

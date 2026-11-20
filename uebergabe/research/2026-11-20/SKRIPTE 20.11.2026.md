@@ -724,3 +724,138 @@ https://www.tiktok.com/@reagans.shop/video/7708600759834742030
 **DEUTSCH:**
 **Hook:** Der Adventskalender, über den gerade alle reden.
 **Skript:** _(nur Musik – Slideshow, Text auf die Bilder, eigenen Trend-Sound nehmen)_ Bild 1: Hook · Bild 2: Kalender ganz · Bild 3: Türchen auf · Bild 4: Preis + Warenkorb.
+
+<!-- de-245 -->
+## DE SLIDES Nr 245 · Today · +131.5K Views · Sprache en · Probiotikum Gummibonbons für Frauen | Intimflora & pH‑Wert ausgleichen
+https://www.tiktok.com/@sparradar1/video/7710183926500740385
+
+**Original:**
+> Oh-oh-oh-oh-oh So I'ma give it to you, baby One and two, one of three and four Come and let me know if you want something more You know what I like, like it right You boy talk, that talk to me all night
+
+**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+
+<!-- de-224 -->
+## DE SLIDES Nr 224 · Yesterday · +1.2M Views · Sprache en · Pukka Bio Tee Adventskalender 2026, Geschenkset, 24 Teebeutel, vegan, 
+https://www.tiktok.com/@socialmediacreations/video/7709905379257355552
+
+**Original:**
+> I've got feathers in my hair I get down to be poetry And I just collect your trash I can blame most anything I'm a Brooklyn baby
+
+**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+
+<!-- de-228 -->
+## DE SLIDES Nr 228 · Yesterday · +304.4K Views · Sprache en · Tatort Escape Adventskalender: Krimi-Rätsel in 24 Teilen
+https://www.tiktok.com/@socialmediacreations/video/7709900738503232800
+
+**Original:**
+> You've got to shake your ducies!
+
+**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+
+<!-- de-234 -->
+## DE SLIDES Nr 234 · Yesterday · +188.3K Views · Sprache en · WindBoss Gold Shilajit Gummies - 30 Stück Bio-Gummibärchen mit Granata
+https://www.tiktok.com/@shadowluna_twins/video/7709970992231189793
+
+**Original:**
+> I'm in need of one thing and it's running through my brain Let that bitch go, cause she breaking windows I'm saying to Joel, don't do these niggas not have shame Your girl, she a whore, but you show her like she gold Look at how she tree and sun, time don't use a tender month When you call, she do not come, that is not your whore I don't think he knows, what a shame, he's a whore Acting like she likes him for that money He's a flock of flock of all my guys arrive Cause they all shout as shout as if I wanna pop this bottle Then I'ma pop that bottle Lying with a fine ass model, she wanna ride this saddle I can see you don't want battle, your voice it shakes and rattles I'm in need of one thing and it's running through my brain Let that bitch go, cause she breaking windows I'm saying to Joel, don't do these niggas not have shame Your girl, she a whore, but you show her like she gold Why do all these bitches keep on shooting?
+
+**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+
+<!-- de-244 -->
+## DE BOF Nr 244 · Yesterday · +133.8K Views · Sprache ru · Ariel Waschpulver, effektive Reinigung und frischer Duft, Variante 7 k
+https://www.tiktok.com/@rabbitshopde/video/7709938839061564705
+
+**Original:**
+> огромный мешок 10 килограмм стирального порошка от ариэля сейчас стоит 20 евро на черную пятницу я не знаю что может быть выгоднее ссылочку для вас оставляю вот здесь вот оранжевая корзиночка нажимаете на нее переходите заказывайте только на черную пятницу такая шикарная цена 20 евро за 10 килограмм но думаю о том что ариэль хороший порошок рассказывать не нужно об этом и так все прекрасно знают абсолютно моя рекомендация классный порошок мне прислали 10 килограмм я конечно очень рада спасибо большое я тоже люблю порошок ариэль поэтому буду им пользоваться с удовольствием запах хочу сказать стоит на всю кухню очень интенсивный запах у ариэля потому что никакие полоски вателем ему не нужны он сам очень интенсивно пахнет
+
+**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+
+<!-- de-257 -->
+## DE SLIDES Nr 257 · Yesterday · +81.8K Views · Sprache en · Besondere herzförmige Wohndekoration für Mama, künstlerisches Wohnacce
+https://www.tiktok.com/@elisesahin/video/7709871594054651168
+
+**Original:**
+> Shift my paradigm Ooh I'm drifting from my innocence I wanna be a kid again Ooh
+
+**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+
+<!-- de-251 -->
+## DE BOF+SLIDES Nr 251 · Yesterday · +97.3K Views · Sprache en · Blechschild Metallposter Wanddekoration GTA 6 Retro Poster Kunstdruck 
+https://www.tiktok.com/@zuwideals/video/7710008550122147105
+
+**Original:**
+> Don't be so quick to walk away, dance with me, I wanna rock your body, please stay, dance with me, you don't have to admit you wanna play, dance with me, just let me rock you, till the break of day, dance with me.
+
+**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+
+<!-- de-129 -->
+## DE SLIDES Nr 129 · Yesterday · +88.1K Views · Sprache ru · ALLJOY Beinomassagegerät – Geschenk für Vater und Mutter; Beinomassage
+https://www.tiktok.com/@baks_kater/video/7709833895520308512
+
+**Original:**
+> Вот после рабочего дня тяжелого это просто будет идеально. Так потому что это профессиональные штучки. И лимфу разгоняет, смотри, просто массажирует. Если я закрою глаза, и я думаю, что это кто-то делает. Это потому что профессиональный вот такой вот массажер для ног. После тяжелого рабочего дня, кстати, он и нагревает. Смотрите, какой пульт. В данный момент массажируются именно вот эти части ног. Смотрите, и нагревается, и сдавливается. Там все правильно распределено, как все положено. Поэтому сейчас большие скидки на эти штучки идут в TikTok шопе. Ссылку оставляю в корзинке. Корзинка внизу. Нажимайте и заказывайте.
+
+**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+
+<!-- de-237 -->
+## DE SLIDES Nr 237 · Yesterday · +167.3K Views · Sprache en · Elusa 501 - Extrait de Parfum - Unisex - süß/würzig/cremig
+https://www.tiktok.com/@schnaepchenking/video/7709897328567553313
+
+**Original:**
+> It's time, baby If it won't be, if it won't be If it won't be, if it won't be
+
+**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+
+<!-- de-254 -->
+## DE SLIDES Nr 254 · Yesterday · +86.8K Views · Sprache en · Elusa 383 - Extrait de Parfum - Unisex - süß/frisch/fruchtig
+https://www.tiktok.com/@nolantestet/video/7709780232458243361
+
+**Original:**
+> I feel right, the music sounds right out with you Love might bring us back together, I feel so good I feel right, the music sounds right out with you Love might bring us back together, I feel so good
+
+**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+
+<!-- de-229 -->
+## DE SLIDES Nr 229 · 2 days ago · +278.3K Views · Sprache en · Purelei Tiny Heart Armband mit kleinem Herz, filigrane Armkette aus Ed
+https://www.tiktok.com/@schnaepchenking/video/7709539744673172769
+
+**Original:**
+> It's time, baby If it won't be, if it won't be If it won't be, if it won't be
+
+**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+
+<!-- de-104 -->
+## DE SLIDES Nr 104 · 2 days ago · +78.9K Views · Sprache en · Herren-Kapuzenjacke im Y2K-Techwear-Stil, leicht, wasser- und winddich
+https://www.tiktok.com/@produktwolf/video/7709479560651246850
+
+**Original:**
+> Come on! Bro, I can't even feel my hands. Wait, how's he not freezing? Oh, I need that. Okay, this is soft. Bro, how are you not freezing? That jacket looks so thin. That's what I thought. Look inside. It's fleece-lined, even the hood. I'm actually warm. Okay, where'd you get it? TikTok shop. Tap the orange button down here.
+
+**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+
+<!-- de-240 -->
+## DE SLIDES Nr 240 · 2 days ago · +149.3K Views · Sprache en · Purelei Tiny Heart Armband mit kleinem Herz, filigrane Armkette aus Ed
+https://www.tiktok.com/@schnaepchenking/video/7709551134414736673
+
+**Original:**
+> It's time, baby If it won't be, if it won't be If it won't be, if it won't be
+
+**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+
+<!-- de-242 -->
+## DE SLIDES Nr 242 · 2 days ago · +145.5K Views · Sprache ru · Gutes Dutzend 12er-Geschenkset je 60g
+https://www.tiktok.com/@veselyedeti/video/7709415160049405217
+
+**Original:**
+> Я решила всем на Рождество сделать вот такие подарки. Вот такой вот маленький разный-разный мед. Это обалденный подарок, шикардосный просто. Он прозрачный, как слеза. Ой, что, не лезет? Так, ложка у нас не лезет. Так, давай попробуем вилочкой. Попробуй. Очень вкусный. Вкусно? Со вкусом. Качество меда очень помогает нашему здоровью. В общем, будьте все здоровы.
+
+**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+
+<!-- de-247 -->
+## DE SLIDES Nr 247 · 2 days ago · +110.8K Views · Sprache en · Red Bull Iced Vanilla Berry 250 ml – 3er Pack Iced Edition
+https://www.tiktok.com/@alsytestet/video/7709629103720107296
+
+**Original:**
+> I know that you will never feel the same, nohhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+
+**DEUTSCH:** _(Claude schreibt: Hook + Skript)_

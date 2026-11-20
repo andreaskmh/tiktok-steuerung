@@ -9,6 +9,7 @@
   3. Neue Aktion „hid“: rohe Tastatur-Codes [[modifier, usage], …] (für deutsches Tastaturlayout, Umlaute, #).
   4. Neuer Abruf GET /api/devices/<id>/png: aktuelles Bild verlustfrei als PNG (für Stock-Bilder).
   5. Ruhender Bildschirm: Bild alle 0,15 s statt 0,5 s (Tipps schneller).
+  7. Flüssigeres Live-Bild für die App iPhone-Spiegel: MJPEG 60 statt 30 Bilder/s, WLAN 6 statt 2 Mbit/s (20.11.2026).
 """
 import pathlib, sys, glob
 
@@ -100,5 +101,9 @@ ersetze("coredevice.py",
         "                else: await connection.press(held(int(modifier), int(usage)))\n"
         "                if args.get('pause'): await asyncio.sleep(float(args['pause']))\n",
         "connection.press_kurz(held(")
+
+# 7. Flüssiges Live-Bild (App iPhone-Spiegel, Andreas 20.11.2026: „laggt, läuft auf 30 FPS“).
+ersetze("http.py", "def stream(self, device, fps=30):", "def stream(self, device, fps=60):  # TS", "fps=60):  # TS")
+ersetze("coredevice.py", "WIFI_MAX_BITRATE = 2_000_000", "WIFI_MAX_BITRATE = 6_000_000  # TS: wie Xcode, flüssiger", "6_000_000  # TS")
 
 print("fertig – Server neu starten: open-iphone-use stop && open-iphone-use serve")

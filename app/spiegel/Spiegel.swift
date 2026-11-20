@@ -9,10 +9,63 @@ import WebKit
 
 let SERVER = URL(string: "http://127.0.0.1:27893/")!
 let speicher = UserDefaults.standard
+let RAND: CGFloat = 0.04        // iPhone-Rahmen, Anteil der Bildschirmbreite
+let ECKE: CGFloat = 0.12        // Bildschirm-Ecke, Anteil der Bildschirmbreite (iPhone 11 ≈ 0,10, iPhone 15 ≈ 0,14)
+
+/// Randloses Fenster, das trotzdem Tastatur-Fokus bekommt (⌘W, ⌘M, Esc).
+final class RandlosFenster: NSWindow {
+    override var canBecomeKey: Bool { true }
+    override var canBecomeMain: Bool { true }
+    override func cancelOperation(_ s: Any?) { (delegate as? SpiegelFenster)?.vollbildAus() }   // Esc
+}
 
 /// Klicks landen hier statt im Bild: Fenster lässt sich überall ziehen, Rechtsklick öffnet das Menü.
 final class Deckel: NSView {
     override var mouseDownCanMoveWindow: Bool { true }
+    override func acceptsFirstMouse(for e: NSEvent?) -> Bool { true }       // auch im Hintergrund sofort ziehen
+    override func mouseDown(with e: NSEvent) { window?.performDrag(with: e) }  // ausdrücklich verschieben, nie Bild herausziehen
+}
+
+/// Livebild (WLAN) ohne Maus: Klicks gehen durch auf den Deckel.
+final class StummesWeb: WKWebView {
+    override func hitTest(_ p: NSPoint) -> NSView? { nil }
+}
+
+/// Das gezeichnete iPhone: schmaler dunkler Rahmen mit feiner Kante, darin der Bildschirm mit iPhone-Ecken.
+final class Geraet: NSView {
+    let bildschirm = NSView()
+    let vorschau: AVCaptureVideoPreviewLayer
+
+    init(sitzung: AVCaptureSession) {
+        vorschau = AVCaptureVideoPreviewLayer(session: sitzung)
+        super.init(frame: .zero)
+        wantsLayer = true
+        layer!.backgroundColor = NSColor(calibratedWhite: 0.07, alpha: 1).cgColor
+        layer!.borderColor = NSColor(calibratedWhite: 0.38, alpha: 1).cgColor     // Metallkante
+        layer!.cornerCurve = .continuous
+        bildschirm.wantsLayer = true
+        bildschirm.layer!.backgroundColor = NSColor.black.cgColor
+        bildschirm.layer!.cornerCurve = .continuous
+        bildschirm.layer!.masksToBounds = true
+        vorschau.videoGravity = .resizeAspectFill
+        bildschirm.layer!.addSublayer(vorschau)
+        addSubview(bildschirm)
+    }
+    required init?(coder: NSCoder) { nil }
+
+    override func layout() {
+        super.layout()
+        let rand = bounds.width * RAND / (1 + 2 * RAND)
+        bildschirm.frame = bounds.insetBy(dx: rand, dy: rand)
+        let ecke = bildschirm.frame.width * ECKE
+        bildschirm.layer!.cornerRadius = ecke
+        layer!.cornerRadius = ecke + rand
+        layer!.borderWidth = max(1, rand * 0.18)
+        CATransaction.begin(); CATransaction.setDisableActions(true)
+        vorschau.frame = bildschirm.bounds
+        CATransaction.commit()
+        window?.invalidateShadow()
+    }
 }
 
 struct Quelle: Equatable {
@@ -49,13 +102,15 @@ final class Spiegel: NSObject, NSApplicationDelegate {
         wlanHolen()
     }
 
-    func hauptmenue() {                               // ⌘Q, ⌘H, ⌘N, ⌘M, ⌘W
+    func hauptmenue() {          // Fenster-Befehle ohne Ziel: gehen an das vorderste Spiegel-Fenster
         let leiste = NSMenu(), app = NSMenu(), ablage = NSMenu(title: "Ablage"), fenst = NSMenu(title: "Fenster")
         app.addItem(withTitle: "iPhone-Spiegel ausblenden", action: #selector(NSApplication.hide), keyEquivalent: "h")
         app.addItem(withTitle: "iPhone-Spiegel beenden", action: #selector(NSApplication.terminate), keyEquivalent: "q")
         ablage.addItem(withTitle: "Neues Fenster (weiteres iPhone)", action: #selector(neuesFenster), keyEquivalent: "n").target = self
-        fenst.addItem(withTitle: "Minimieren", action: #selector(NSWindow.performMiniaturize), keyEquivalent: "m")
-        fenst.addItem(withTitle: "Schließen", action: #selector(NSWindow.performClose), keyEquivalent: "w")
+        fenst.addItem(withTitle: "Minimieren", action: #selector(SpiegelFenster.minimieren), keyEquivalent: "m")
+        fenst.addItem(withTitle: "Vollbild", action: #selector(SpiegelFenster.vollbild), keyEquivalent: "f")
+            .keyEquivalentModifierMask = [.command, .control]
+        fenst.addItem(withTitle: "Schließen", action: #selector(SpiegelFenster.schliessen), keyEquivalent: "w")
         for m in [app, ablage, fenst] { leiste.addItem(withTitle: m.title, action: nil, keyEquivalent: "").submenu = m }
         NSApp.mainMenu = leiste
         NSApp.windowsMenu = fenst
@@ -102,7 +157,7 @@ final class Spiegel: NSObject, NSApplicationDelegate {
             let liste = (daten.flatMap { try? JSONSerialization.jsonObject(with: $0) } as? [[String: Any]]) ?? []
             let neu = liste.compactMap { d -> Quelle? in
                 guard d["frame_id"] is String, let id = d["device_id"] as? String else { return nil }
-                return Quelle(id: id, name: "\(d["name"] as? String ?? "iPhone") (WLAN-Server)")
+                return Quelle(id: id, name: "\(d["name"] as? String ?? "iPhone") (WLAN)")
             }
             DispatchQueue.main.async { if neu != self.wlan { self.wlan = neu }; self.alleVerbinden() }
         }.resume()
@@ -118,55 +173,93 @@ final class SpiegelFenster: NSObject, NSWindowDelegate, NSMenuDelegate {
     let nr: Int
     var wahl: String?                  // fest gewähltes iPhone; nil = automatisch das nächste freie
     var aktiv: Quelle?
-    let fenster = NSWindow(contentRect: NSRect(x: 200, y: 200, width: 300, height: 650),
-                           styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-                           backing: .buffered, defer: false)
+    let fenster = RandlosFenster(contentRect: NSRect(x: 200, y: 200, width: 320, height: 680),
+                                 styleMask: [.borderless, .resizable, .miniaturizable, .closable],
+                                 backing: .buffered, defer: false)
     let sitzung = AVCaptureSession()
-    let web = WKWebView()
+    let web = StummesWeb()
     let hinweis = NSTextField(labelWithString: "iPhone anstecken oder\nKabel-Server starten …")
+    let geraet: Geraet
+    let leiste = NSVisualEffectView()            // Knopf-Pille über der Dynamic Island
+    var format = NSSize(width: 9, height: 19.5)   // Bildschirm-Seitenverhältnis
+    var verhaeltnis: NSLayoutConstraint!
+    var abstand: [NSLayoutConstraint] = []
+    var vorVollbild: NSRect?
 
     init(app: Spiegel, nr: Int, wahl: String?) {
         self.app = app; self.nr = nr; self.wahl = wahl
+        geraet = Geraet(sitzung: sitzung)
         super.init()
-        let ansicht = NSView()
-        ansicht.wantsLayer = true
-        ansicht.layer!.backgroundColor = NSColor.black.cgColor
-        ansicht.layer!.cornerRadius = 28
-        ansicht.layer!.masksToBounds = true
-        let vorschau = AVCaptureVideoPreviewLayer(session: sitzung)
-        vorschau.videoGravity = .resizeAspect
-        vorschau.frame = ansicht.bounds
-        vorschau.autoresizingMask = [.layerWidthSizable, .layerHeightSizable]
-        ansicht.layer!.addSublayer(vorschau)
+        let flaeche = NSView()                  // Fensterinhalt: durchsichtig, im Vollbild schwarz
+        flaeche.wantsLayer = true
+        flaeche.addTrackingArea(NSTrackingArea(rect: .zero, options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect],
+                                               owner: self, userInfo: nil))
         web.setValue(false, forKey: "drawsBackground")
         web.isHidden = true
         hinweis.alignment = .center
-        hinweis.textColor = .lightGray
+        hinweis.textColor = .secondaryLabelColor
+        hinweis.font = .systemFont(ofSize: 13, weight: .medium)
+        for v in [web, hinweis] as [NSView] {
+            v.translatesAutoresizingMaskIntoConstraints = false
+            geraet.bildschirm.addSubview(v)
+        }
         let deckel = Deckel()
         deckel.menu = NSMenu()
         deckel.menu!.delegate = self
-        deckel.addTrackingArea(NSTrackingArea(rect: .zero, options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect],
-                                              owner: self, userInfo: nil))
-        for v in [web, hinweis, deckel] as [NSView] {
-            v.translatesAutoresizingMaskIntoConstraints = false
-            ansicht.addSubview(v)
-        }
-        NSLayoutConstraint.activate([hinweis.centerXAnchor.constraint(equalTo: ansicht.centerXAnchor),
-                                     hinweis.centerYAnchor.constraint(equalTo: ansicht.centerYAnchor)]
-            + [web, deckel].flatMap { [$0.topAnchor.constraint(equalTo: ansicht.topAnchor),
-                                       $0.bottomAnchor.constraint(equalTo: ansicht.bottomAnchor),
-                                       $0.leadingAnchor.constraint(equalTo: ansicht.leadingAnchor),
-                                       $0.trailingAnchor.constraint(equalTo: ansicht.trailingAnchor)] })
 
-        fenster.contentView = ansicht
+        // Knöpfe: echte macOS-Ampel, in einer Milchglas-Pille
+        leiste.material = .hudWindow
+        leiste.blendingMode = .withinWindow
+        leiste.state = .active
+        leiste.wantsLayer = true
+        leiste.layer!.cornerRadius = 13
+        leiste.alphaValue = 0
+        let knoepfe = [(NSWindow.ButtonType.closeButton, #selector(schliessen)),
+                       (.miniaturizeButton, #selector(minimieren)), (.zoomButton, #selector(vollbild))]
+            .compactMap { typ, aktion -> NSButton? in
+                let k = NSWindow.standardWindowButton(typ, for: [.titled, .closable, .miniaturizable, .resizable])
+                k?.target = self; k?.action = aktion
+                return k
+            }
+        let reihe = NSStackView(views: knoepfe)
+        reihe.spacing = 8
+        reihe.translatesAutoresizingMaskIntoConstraints = false
+        leiste.addSubview(reihe)
+
+        for v in [geraet, deckel, leiste] as [NSView] {
+            v.translatesAutoresizingMaskIntoConstraints = false
+            flaeche.addSubview(v)
+        }
+        verhaeltnis = geraet.widthAnchor.constraint(equalTo: geraet.heightAnchor, multiplier: 9 / 19.5)
+        abstand = [geraet.heightAnchor.constraint(lessThanOrEqualTo: flaeche.heightAnchor),
+                   geraet.widthAnchor.constraint(lessThanOrEqualTo: flaeche.widthAnchor),
+                   geraet.heightAnchor.constraint(equalTo: flaeche.heightAnchor)]
+        abstand[2].priority = .defaultHigh          // so groß wie möglich, Seitenverhältnis bleibt
+        NSLayoutConstraint.activate(abstand + [verhaeltnis,
+            geraet.centerXAnchor.constraint(equalTo: flaeche.centerXAnchor),
+            geraet.centerYAnchor.constraint(equalTo: flaeche.centerYAnchor),
+            deckel.topAnchor.constraint(equalTo: geraet.topAnchor), deckel.bottomAnchor.constraint(equalTo: geraet.bottomAnchor),
+            deckel.leadingAnchor.constraint(equalTo: geraet.leadingAnchor), deckel.trailingAnchor.constraint(equalTo: geraet.trailingAnchor),
+            leiste.centerXAnchor.constraint(equalTo: geraet.centerXAnchor),
+            leiste.topAnchor.constraint(equalTo: geraet.bildschirm.topAnchor, constant: 0),
+            leiste.heightAnchor.constraint(equalToConstant: 26),
+            reihe.centerXAnchor.constraint(equalTo: leiste.centerXAnchor), reihe.centerYAnchor.constraint(equalTo: leiste.centerYAnchor),
+            leiste.widthAnchor.constraint(equalTo: reihe.widthAnchor, constant: 22),
+            hinweis.centerXAnchor.constraint(equalTo: geraet.bildschirm.centerXAnchor),
+            hinweis.centerYAnchor.constraint(equalTo: geraet.bildschirm.centerYAnchor)]
+            + [web.topAnchor.constraint(equalTo: geraet.bildschirm.topAnchor),
+               web.bottomAnchor.constraint(equalTo: geraet.bildschirm.bottomAnchor),
+               web.leadingAnchor.constraint(equalTo: geraet.bildschirm.leadingAnchor),
+               web.trailingAnchor.constraint(equalTo: geraet.bildschirm.trailingAnchor)])
+
+        fenster.contentView = flaeche
         fenster.delegate = self
         fenster.isReleasedWhenClosed = false
-        fenster.titleVisibility = .hidden
-        fenster.titlebarAppearsTransparent = true
         fenster.backgroundColor = .clear
         fenster.isOpaque = false
         fenster.hasShadow = true
         fenster.isMovableByWindowBackground = true
+        fenster.minSize = NSSize(width: 160, height: 330)
         let name = nr == 0 ? "Spiegel" : "Spiegel-\(nr)"         // 0 = Position aus der Ein-Fenster-Fassung
         if !fenster.setFrameUsingName(name),
            let rechts = app.fenster.map({ $0.fenster.frame }).max(by: { $0.maxX < $1.maxX }) {
@@ -175,36 +268,68 @@ final class SpiegelFenster: NSObject, NSWindowDelegate, NSMenuDelegate {
         }
         fenster.setFrameAutosaveName(name)
         ebeneAnwenden()
-        knoepfe(0)       // Schließen/Minimieren/Vergrößern nur bei Maus über dem Fenster (sonst verdecken sie die Uhr)
         fenster.makeKeyAndOrderFront(nil)
     }
 
-    func knoepfe(_ alpha: CGFloat) {
-        for k in [NSWindow.ButtonType.closeButton, .miniaturizeButton, .zoomButton] {
-            fenster.standardWindowButton(k)?.animator().alphaValue = alpha
-        }
-    }
     // Objective-C-Namen ausdrücklich: ohne sie heißt die Methode „mouseEnteredWith:“ und die Maus-Meldung kommt nie an.
-    @objc(mouseEntered:) func mouseEntered(with e: NSEvent) { knoepfe(1) }
-    @objc(mouseExited:) func mouseExited(with e: NSEvent) { knoepfe(0) }
+    @objc(mouseEntered:) func mouseEntered(with e: NSEvent) { leiste.animator().alphaValue = 1 }
+    @objc(mouseExited:) func mouseExited(with e: NSEvent) { leiste.animator().alphaValue = 0 }
+
+    @objc func schliessen() { fenster.close() }
+    @objc func minimieren() { fenster.miniaturize(nil) }
+
+    @objc func vollbild() {
+        if vorVollbild != nil { return vollbildAus() }
+        guard let schirm = fenster.screen else { return }
+        vorVollbild = fenster.frame
+        NSApp.presentationOptions = [.autoHideMenuBar, .autoHideDock]
+        fenster.contentView!.layer!.backgroundColor = NSColor.black.cgColor
+        fenster.contentAspectRatio = .zero
+        fenster.isMovable = false
+        fenster.level = .floating
+        abstand.forEach { $0.constant = -48 }       // etwas Luft um das iPhone
+        fenster.setFrame(schirm.frame, display: true, animate: true)
+    }
+
+    func vollbildAus() {
+        guard let alt = vorVollbild else { return }
+        vorVollbild = nil
+        NSApp.presentationOptions = []
+        fenster.contentView!.layer!.backgroundColor = nil
+        fenster.isMovable = true
+        abstand.forEach { $0.constant = 0 }
+        fenster.setFrame(alt, display: true, animate: true)
+        seitenverhaeltnis(format)
+        ebeneAnwenden()
+    }
 
     func windowWillClose(_ n: Notification) {
+        vollbildAus()
         sitzung.stopRunning()
         web.loadHTMLString("", baseURL: nil)
         app.geschlossen(self)
     }
 
     func ebeneAnwenden() {
+        guard vorVollbild == nil else { return }
         // „schreibtisch“: liegt hinter allen Fenstern direkt über dem Hintergrundbild, wie ein Widget.
         let e = app.ebene
         fenster.level = e == "vorne" ? .floating
             : e == "schreibtisch" ? NSWindow.Level(Int(CGWindowLevelForKey(.desktopIconWindow)) - 1) : .normal
     }
 
-    func seitenverhaeltnis(_ b: Int32, _ h: Int32) {
-        fenster.contentAspectRatio = NSSize(width: Int(b), height: Int(h))
+    /// Bildschirmformat → Form des gezeichneten iPhones und des Fensters.
+    func seitenverhaeltnis(_ bild: NSSize) {
+        format = bild
+        let geraetGroesse = NSSize(width: bild.width * (1 + 2 * RAND), height: bild.height + 2 * RAND * bild.width)
+        verhaeltnis.isActive = false
+        verhaeltnis = geraet.widthAnchor.constraint(equalTo: geraet.heightAnchor,
+                                                    multiplier: geraetGroesse.width / geraetGroesse.height)
+        verhaeltnis.isActive = true
+        guard vorVollbild == nil else { return }
+        fenster.contentAspectRatio = geraetGroesse
         var f = fenster.frame
-        f.size.width = f.height * CGFloat(b) / CGFloat(h)
+        f.size.width = (f.height * geraetGroesse.width / geraetGroesse.height).rounded()
         fenster.setFrame(f, display: true)
     }
 
@@ -220,19 +345,20 @@ final class SpiegelFenster: NSObject, NSWindowDelegate, NSMenuDelegate {
         web.loadHTMLString("", baseURL: nil)
         web.isHidden = ziel?.kabel != nil || ziel == nil
         hinweis.isHidden = ziel != nil
-        guard let ziel else { return }
-        if let geraet = ziel.kabel {
-            guard let eingang = try? AVCaptureDeviceInput(device: geraet), sitzung.canAddInput(eingang) else { return }
+        guard let ziel else { return seitenverhaeltnis(NSSize(width: 9, height: 19.5)) }
+        if let quelle = ziel.kabel {
+            guard let eingang = try? AVCaptureDeviceInput(device: quelle), sitzung.canAddInput(eingang) else { return }
             sitzung.addInput(eingang)
-            let d = CMVideoFormatDescriptionGetDimensions(geraet.activeFormat.formatDescription)
-            if d.width > 0, d.height > 0 { seitenverhaeltnis(d.width, d.height) }
+            let d = CMVideoFormatDescriptionGetDimensions(quelle.activeFormat.formatDescription)
+            if d.width > 0, d.height > 0 { seitenverhaeltnis(NSSize(width: Int(d.width), height: Int(d.height))) }
             DispatchQueue.global().async { self.sitzung.startRunning() }
         } else {
             // shortcut: festes iPhone-Format 9:19,5 (iPhone X bis 17), bei iPad/iPhone SE echte Bildgröße auslesen.
-            seitenverhaeltnis(9, 19)
+            seitenverhaeltnis(NSSize(width: 9, height: 19.5))
             web.loadHTMLString("""
-                <body style="margin:0;background:#000;overflow:hidden">
-                <img src="api/devices/\(ziel.id)/stream" style="width:100vw;height:100vh;object-fit:contain"
+                <body style="margin:0;background:#000;overflow:hidden;pointer-events:none;-webkit-user-select:none">
+                <img draggable="false" src="api/devices/\(ziel.id)/stream"
+                     style="width:100vw;height:100vh;object-fit:cover;-webkit-user-drag:none;pointer-events:none"
                      onerror="setTimeout(()=>{this.src=this.src},1000)">
                 """, baseURL: SERVER)
         }
@@ -259,8 +385,9 @@ final class SpiegelFenster: NSObject, NSWindowDelegate, NSMenuDelegate {
             i.target = self; i.representedObject = wert; i.state = app.ebene == wert ? .on : .off
         }
         m.addItem(.separator())
-        m.addItem(withTitle: "Minimieren", action: #selector(NSWindow.performMiniaturize), keyEquivalent: "m").target = fenster
-        m.addItem(withTitle: "Schließen", action: #selector(NSWindow.performClose), keyEquivalent: "w").target = fenster
+        for (titel, aktion) in [("Vollbild", #selector(vollbild)), ("Minimieren", #selector(minimieren)), ("Schließen", #selector(schliessen))] {
+            m.addItem(withTitle: titel, action: aktion, keyEquivalent: "").target = self
+        }
     }
 }
 

@@ -1,7 +1,7 @@
 # Stand Analyse / ViewKMH – 20.11.2026, ca. 06:30
 
 ## Neu 20.11. früh (diese Session)
-- App heißt **ViewKMH** (Mac /Applications/ViewKMH.app, iPhone 15 Pro Max, Web gleiche Artifact-URL). Mac-Look (Grautöne, wenig Farbe),
+- App heißt **viewKMH** (Mac /Applications/viewKMH.app, iPhone 15 Pro Max, Web gleiche Artifact-URL). Mac-Look (Grautöne, wenig Farbe),
   hell/dunkel automatisch, iPhone dunkel = Schwarz. Account-Auswahlfeld mit Suche, Zeitraum-Kalender (2 Tipps), Seiten à 10.
 - **Offizielle TikTok-Zahlen:** `werkzeuge/analyse/daten_holen.py <konten…>` (iPhone 11) liest Seite „Daten“ je Tag (30 Tage, ältere
   nur wenn fehlend, letzte 6 immer neu) + Top 25 Videos je Tag nach Aufrufen (7 Tage). → `exporte/<konto>.tage.json`, `.videotage.json`.

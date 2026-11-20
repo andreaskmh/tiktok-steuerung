@@ -14,7 +14,7 @@ Geplante Aufgabe „tiktok-research-taeglich“ (Claude-App, Auto-Modus) führt 
 | `Quality USA <datum>` | Jemand zeigt das Produkt echt, **nur wenn es das Produkt oder etwas Ähnliches im TikTok Shop DE gibt**: Technik/Gadgets, Staubsauger, Haushalt, Schlafen, Gaming, Werkzeug, Auto | reine US-Marken/US-Mode, Damenmode, Deko-Kleinkram, Beauty; Produkt in DE nicht vorhanden |
 
 - DE: Videos höchstens 1 Woche alt. USA: älter ist ok (Deutsche setzen langsam um), Sprache egal, nicht verfügbare Videos überspringen.
-- Produkte, die schon öfter viral waren, mit **anderer Hook** wieder aufnehmen. Dasselbe Video kommt nie zweimal (auch nicht nach dem Nachmachen/Abhaken); Rangliste markiert „Produkt schon gepostet“.
+- Produkte, die schon öfter viral waren, mit **anderer Hook** wieder aufnehmen. Ein erledigtes Video kommt nie wieder (DE: Nicht-Erledigtes wird übernommen, s. Schritt 0); Rangliste markiert „Produkt schon gepostet“.
 - Ersetzbare Produkte (Hosen, T-Shirts, Staubsauger, Nass-/Trockensauger …) zählen als „gibt es in DE“.
 - Today/Yesterday haben bei Umsetzung und Produktbestellung absoluten Vorrang (Rangliste).
 
@@ -22,10 +22,13 @@ Geplante Aufgabe „tiktok-research-taeglich“ (Claude-App, Auto-Modus) führt 
 Vorher: kein Posten-Stapel aktiv (`pgrep -f post_mensch.py`), keine Sperre `~/.tiktok-research/.laeuft` mit lebender PID.
 Erster Lauf des Tages ohne `--frisch`, weitere Läufe am selben Tag mit `--frisch` (liest alles neu, alte Nummern bleiben).
 
-**0. Gemacht-Abgleich (vor jedem Lauf):** `python3 werkzeuge/research.py gemacht-abgleich` vergleicht Arturs eigene Listen
-(`eigene …`, `reactions …`) mit der letzten Momentaufnahme (`~/.tiktok-research/artur-listen.json`): was dort fehlt, hat Artur
-erledigt → in `gemacht.json` und aus unseren Listen. **Seit 19.11. abends zählt nur `eigene BOF …`:** alles darin + was er dort rausnimmt = gemacht
-(er arbeitet nur seine BOF-Liste ab). Seine anderen Listen (Slides, Reactions, USA, neue Idee) zählen nicht. Danach wird die neue Momentaufnahme gespeichert. Arturs Listen nie ändern.
+**0. Gemacht-Abgleich (vor jedem Lauf):** `python3 werkzeuge/research.py gemacht-abgleich`. **Seit 20.11.2026 arbeitet Artur
+unsere `BOF DE <datum>`-Listen ab** (einmalig zählte `eigene BOF 19.11.2026` komplett als erledigt). Was er dort seit der letzten
+Momentaufnahme (`~/.tiktok-research/artur-listen.json`) rausgenommen hat = erledigt → `gemacht.json`, kommt nie wieder. Arturs
+eigene Listen zählen nicht mehr. Momentaufnahme nach jedem Lauf (am Ende nochmal `gemacht-abgleich`, wenn die Listen fertig sind).
+**Übernahme DE (Artur 20.11.):** Nicht Erledigtes aus unseren DE-Listen früherer Tage kommt wieder in die heutige Liste derselben
+Art (`filtern de` trägt die Art in `de-sortiert.json` ein, nicht neu ansehen), solange es noch auf Social1 steht, ≤ 7 Tage alt und
+bis Seite 50 (BOF/SLIDES) ist. USA: weiterhin nie zweimal.
 
 **Deutschland**
 1. `python3 werkzeuge/research.py lesen de [--frisch]`

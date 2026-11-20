@@ -353,20 +353,18 @@ UNSERE = re.compile(r"^(BOF DE|SLIDES DE|Reactions DE|SLIDES USA|Quality USA) \d
 
 
 def gemacht_abgleich():
-    """Arturs „eigene BOF …“-Listen: alles darin + was er seit der letzten Momentaufnahme entfernt hat, ist erledigt (seine anderen
-    Listen zählen nicht, Artur 19.11. abends) → gemacht.json + aus unseren Listen (Artur 19.11.). Arturs Listen werden nur gelesen, nie geändert."""
+    """Seit 20.11.2026 arbeitet Artur UNSERE „BOF DE …“-Listen ab (vorher einmalig „eigene BOF 19.11.“): was er dort seit der
+    letzten Momentaufnahme rausgenommen hat, ist erledigt → gemacht.json + aus unseren Listen. Nicht Erledigtes wandert in die
+    Liste des nächsten Tages (filtern). Arturs eigene Listen zählen nicht mehr."""
     aktionen_laden()
     ls = (s1("getVideoLists").get("data") or {}).get("lists") or []
-    artur = [l for l in ls if re.match(r"^(eigene|reactions|neue idee)", l.get("name", ""), re.I) and not UNSERE.match(l.get("name", ""))]
+    artur = [l for l in ls if re.match(r"^BOF DE ", l.get("name", "")) and UNSERE.match(l.get("name", ""))]
     jetzt = {l["_id"]: {"name": l["name"], "videos": listen_videos(l["_id"])} for l in artur}
     alt = json.loads(ARTUR_STAND.read_text()) if ARTUR_STAND.exists() else {}
     weg = set()
     for lid, l in jetzt.items():
-        if not re.match(r"^eigene bof", l["name"], re.I):     # Artur 19.11.: abgearbeitet wird nur „eigene BOF …“, sonst nichts
-            continue
-        weg |= set(l["videos"])                                # was dort steht, macht er selbst
-        if lid in alt:
-            weg |= set(alt[lid]["videos"]) - set(l["videos"])  # was er dort rausgenommen hat, ist erledigt
+        if lid in alt:                                         # shortcut: zählt auch, was ein abgebrochenes `sortieren` rausnahm
+            weg |= set(alt[lid]["videos"]) - set(l["videos"])  # was Artur dort rausgenommen hat, ist erledigt
     weg -= gemacht()
     if weg:
         gemacht_merken(weg)
@@ -376,16 +374,19 @@ def gemacht_abgleich():
                 if n:
                     print(f"{l['name']}: {n} erledigte raus")
     ARTUR_STAND.write_text(json.dumps(jetzt, ensure_ascii=False))
-    print(f"FERTIG gemacht-abgleich: {len(artur)} Artur-Listen, {len(weg)} neu erledigt, gemacht.json hat {len(gemacht())}")
+    print(f"FERTIG gemacht-abgleich: {len(artur)} BOF-DE-Listen, {len(weg)} neu erledigt, gemacht.json hat {len(gemacht())}")
 
 
 def frueher_gespeichert():
-    """Alle Videos, die an früheren Tagen schon in einer Research-Liste gelandet sind (egal ob inzwischen nachgemacht und
-    aus der Liste entfernt) → kommen nie ein zweites Mal rein. Gleiches Produkt mit anderem Video (neue Hook) bleibt erlaubt."""
-    ids = set()
-    for f in (PROJ / "uebergabe" / "research").glob("*/gespeichert-*.json"):
+    """{video_id: Liste-Art} aller Videos, die an früheren Tagen schon in einer Research-Liste gelandet sind.
+    USA: kommen nie ein zweites Mal rein. DE (Artur 20.11.2026): nicht Erledigtes wandert in die heutige Liste derselben Art."""
+    ids = {}
+    for f in sorted((PROJ / "uebergabe" / "research").glob("*/gespeichert-*.json")):
         if f.parent.name != HEUTE.isoformat():
-            ids |= set(json.loads(f.read_text()))
+            art = "REACTIONS" if "Reactions" in f.name else "SLIDES" if "SLIDES" in f.name else "BOF"
+            for v in json.loads(f.read_text()):
+                if v:
+                    ids[v] = "BOF+SLIDES" if {ids.get(v), art} == {"BOF", "SLIDES"} else art
     return ids
 
 
@@ -415,7 +416,7 @@ def filtern(land):
             grund = "doppelt"
         elif k["video_id"] in schon:
             grund = "schon gemacht (gemacht.json)"
-        elif k["video_id"] in frueher:
+        elif k["video_id"] in frueher and land != "de":
             grund = "schon an früherem Tag in einer Liste"
         elif tage > REGELN["max_alter_tage"][land]:
             grund = f"zu alt ({k['alter']})"
@@ -442,6 +443,14 @@ def filtern(land):
             k["neu"] = True
     rein.sort(key=lambda k: k["nr"])
     (ORDNER / f"{land}-kandidaten.json").write_text(json.dumps(rein, ensure_ascii=False, indent=1))
+    if land == "de":                                          # Übernahme von früheren Tagen: Art von damals, nicht neu ansehen
+        sort = ORDNER / "de-sortiert.json"
+        so = json.loads(sort.read_text()) if sort.exists() else {}
+        neu = {str(k["nr"]): frueher[k["video_id"]] for k in rein
+               if k["video_id"] in frueher and str(k["nr"]) not in so and frueher[k["video_id"]] != "REACTIONS"}
+        if neu:
+            sort.write_text(json.dumps({**so, **neu}, ensure_ascii=False, indent=1))
+            print(f"Übernahme von früheren Tagen: {len(neu)} Videos → de-sortiert.json")
     promis = [str(k["nr"]) for k in rein if k.get("promi")]
     (ORDNER / f"{land}-promis.txt").write_text(" ".join(promis))   # → speichern <land> "Reactions DE <datum>" "$(cat …)"
     if promis:
