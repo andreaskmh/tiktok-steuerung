@@ -442,7 +442,7 @@ Video-Performance mit eigener Zeitraumwahl (3 Tage nur dort, nicht in der Geldst
 „Nach Verkäufen“/„Nach Aufrufen“, Sortierung; Profilbilder ohne weißen Rand; Bestellmonat „davon … offen“.
 Likes/Kommentare zeigt TikTok auf „Daten“ nicht (→ später Display API).
 - **20.11.2026** – Eigenes iPhone-Spiegel-Fenster statt „Mirror My Phone“ (Abo gespart): `werkzeuge/kabel/spiegel.html`,
-  über `patch_oiu.py` (Schritt 7) in den Kabel-Server eingehängt → http://127.0.0.1:27893/spiegel. Klick = Tippen, halten = langer Druck,
+  + `spiegel.js`, über `patch_oiu.py` (Schritt 7) in den Kabel-Server eingehängt (Server erlaubt nur Skripte als eigene Datei) → http://127.0.0.1:27893/spiegel. Klick = Tippen, halten = langer Druck,
   ziehen = Wischen, Mausrad = Scrollen, Mac-Tastatur tippt am iPhone, Knöpfe Home/Sperre/Lauter/Leiser.
 
 **20.11.2026 (06:15) – VORFALL + Sperren.** Beim Ablesen (export_holen.py) wurde auf artur.official versehentlich eine Story gepostet:
@@ -456,3 +456,17 @@ Kontoname nur links antippen (rechts sitzt „Was läuft?“). Ebenso früher am
 **20.11.2026 (06:30)** – `export_holen.py --praemien`: Guthaben + Prämien (Auszahlungsverlauf → Belohnungen, Kopfzeile „N Prämien €X verdient“)
 → praemien.json je Konto. App/Web: Account-Auswahlfeld mit Suche (für 10–20 Accounts), Zeitraum-Kalender (Start/Ende mit 2 Tipps),
 Profilbild-Cache (kein Ruckeln), iPhone-Dunkelmodus schwarz, Balken grün, Seiten bei Top-Listen/offenen Bestellungen.
+- **20.11.2026** – Eigene Mac-App **iPhone-Spiegel** (`app/spiegel/`, bauen: `zsh app/spiegel/bauen.sh` → /Applications) statt
+  „Mirror My Phone“: nur Zuschauen. Kabel wie QuickTime (CoreMediaIO gibt das iPhone als Kamera frei), ohne Kabel das WLAN-Live-Bild
+  des Kabel-Servers (open-iphone-use muss laufen). Fenster ohne Rand, Ampel-Knöpfe erscheinen beim Drüberfahren (Schließen = App zu,
+  Minimieren, Dock-Klick holt zurück), ⌘W/⌘M/⌘Q; Rechtsklick: Vordergrund / normal / Schreibtisch, iPhone-Wahl.
+  Signiert mit dem Apple-Development-Zertifikat, damit „Kamera erlauben“ nur einmal kommt (ad-hoc fragt nach jedem Neubau).
+- **20.11.2026** – Web-Spiegel (`/spiegel`, spiegel.html/.js, patch_oiu.py Schritt 7) wieder entfernt: Andreas will nur zuschauen,
+  als eigenes Fenster statt Website → App iPhone-Spiegel.
+- **20.11.2026** – iPhone-Spiegel: eigenes App-Symbol (`app/spiegel/icon.swift`, beim Bauen erzeugt) und mehrere iPhones gleichzeitig –
+  ein Fenster pro iPhone (⌘N / Rechtsklick „Neues Fenster“ nimmt das nächste freie iPhone, im Rechtsklick fest wählbar).
+  Fenster samt Position und iPhone-Wahl kommen beim nächsten Start wieder.
+
+**20.11.2026 (07:00)** – andrucha.official am iPhone 15 Pro Max abgelesen. `creator_oeffnen()` (Profilknopf, sonst TikTok Studio →
+Monetarisierung → TikTok Shop für Creator*innen); Rückweg: auf bekannten Shop-/Studio-Seiten X oben links, sonst Zurück-Wischgeste
+vom linken Rand (kein Tipp); Profil-Reiter mit Beschriftung „Profil“; längere Ladezeiten (30 s); Dunkelmodus-OCR („Taд“).

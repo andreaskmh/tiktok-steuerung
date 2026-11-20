@@ -14,7 +14,7 @@ import os, sys, re, time, json, datetime as D, pathlib
 HIER = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HIER.parent)); sys.path.insert(0, str(HIER))
 import kabel as K, seh
-from export_holen import Stopp, rot_popup, tipp, warte, tipp_text, tiktok_profil, konto_wechseln, EXP
+from export_holen import Stopp, rot_popup, creator_oeffnen, tipp, warte, tipp_text, tiktok_profil, konto_wechseln, EXP
 
 MONATE = {"jan": 1, "feb": 2, "mär": 3, "mar": 3, "apr": 4, "mai": 5, "jun": 6, "jul": 7, "aug": 8, "sep": 9, "okt": 10,
           "oct": 10, "nov": 11, "dez": 12, "dec": 12}
@@ -166,10 +166,11 @@ def tag_waehlen(d):
     tipp(*p, 2)
     warte("Datumsbereich", 6)
     tx = seh.lesen()
-    q = [(x, y) for t, x, y in tx if t.strip() == "Tag" and y > 150]
-    if not q:
+    q = [(x, y) for t, x, y in tx if t.strip().startswith("Ta") and len(t.strip()) <= 4 and y > 150]   # OCR liest auch „Taд“
+    if q:
+        tipp(*q[0], 1.5)
+    elif not kalender_tage(tx):   # rot markiertes „Tag“ (schon gewählt) liest die Erkennung im Dunkelmodus nicht
         raise Stopp("Auswahl „Tag“ fehlt")
-    tipp(*q[0], 1.5)
     for _ in range(16):
         tx = seh.lesen()
         if any(tag_passt(t, d) and str(d.year) in t for t, x, y in tx if y > 560):
@@ -198,7 +199,7 @@ def tag_waehlen(d):
 
 
 def oeffne_daten():
-    tipp_text("TikTok Shop für Creator", w=5)
+    creator_oeffnen()
     for _ in range(3):                # Werbe-Popup (Artur 20.11.: auf Rot tippen, dann zurück)
         tx = seh.lesen()
         rot = rot_popup(tx) or seh.finde("Aufgaben anzeigen", tx)
@@ -214,7 +215,7 @@ def oeffne_daten():
     else:
         raise Stopp("„Letzte 7 Tage“ nicht gefunden")
     tipp(314, p[1], 3)
-    warte("Schlüsseldaten", 12)
+    warte("Schlüsseldaten", 30)
 
 
 def lies_tag():

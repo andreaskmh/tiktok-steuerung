@@ -21,3 +21,4 @@ vmaus/*.pkg
 # Research: Vorschaubilder/Sammelbilder nicht ins Repo (groß, jederzeit neu ladbar)
 uebergabe/research/*/*-bilder/
 uebergabe/research/*/*.jpg
+app/spiegel/build/

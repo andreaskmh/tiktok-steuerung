@@ -12,7 +12,9 @@
 - Morgen/Abend-Ablauf: `daten_holen.py` (alle Konten) → `export_holen.py` (Export) → `baue.py` → `app_daten.py` → `web.py` → Artifact.
 
 ## Offen
-1. **andrucha.official** fehlt (nur alter Export, kein Guthaben/„Daten“): Artur meldet sie aufs iPhone 11 an (dann alles in einem Lauf).
+1. ~~andrucha~~ erledigt 20.11. am iPhone 15 Pro Max (UDID 00008130-00163088368A001C, `TS_IPHONE_UDID` setzen): Konto „Ausgesetzt“,
+   alles 0 €, bereit 49,42 €, Prämie 5 €. Creator-Bereich dort ohne Profilknopf → `creator_oeffnen()` geht über TikTok Studio
+   (Artur: Showcase ginge auch). Alle 6 Accounts: bereit 4.853,01 €, Prämien 950,04 €, gestern 305,01 €.
 2. Automatisch morgens/abends: iPhone 11 per WLAN, Auto-Sperre „Nie“, am Ladegerät → geplanten Lauf einrichten.
 3. Viral-Regeln ans Research-System: Vorschlag unten, erst nach Arturs OK.
 4. Likes/Kommentare: TikTok Display API (Artur legt Entwickler-App an).

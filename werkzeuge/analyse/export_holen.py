@@ -73,6 +73,17 @@ def tipp_text(muster, sek=12, w=2, **kw):
     return x, y
 
 
+def creator_oeffnen():
+    """Profil → Creator-Bereich. Meist Knopf „TikTok Shop für Creator*innen“ auf dem Profil; bei manchen Konten (andrucha)
+    nur über TikTok Studio → Monetarisierung → „TikTok Shop für Creator*innen“ (20.11.2026)."""
+    if seh.finde("TikTok Shop für Creator"):
+        tipp_text("TikTok Shop für Creator", w=5)
+        return
+    tipp_text("TikTok Studio", w=4)
+    warte("Monetarisierung", 10)
+    tipp_text("Creator*innen", w=5, unter=380)
+
+
 def tiktok_profil():
     K.taste("home"); time.sleep(1.2)
     tipp_text("Suchen", w=1.2)
@@ -90,12 +101,19 @@ def tiktok_profil():
         q = next((seh.finde(w, tx, genau=True) for w in POPUP if seh.finde(w, tx, genau=True)), None)
         if q:
             tipp(*q, 1.5)
+        elif seh.finde("Profil", tx, genau=True, unter=650):
+            tipp(*seh.finde("Profil", tx, genau=True, unter=650), 2)      # untere Leiste mit Beschriftung (z. B. iPhone 15)
+            K.ziehe(167, 250, 167, 650, 0.3); time.sleep(1.5)            # Profil nach oben scrollen
         elif seh.finde("Posteingang", tx, genau=True) or seh.finde("Für dich", tx):
             tipp(299, 681, 2.5)       # Hauptseite mit unterer Leiste → Profil-Reiter (nur hier, sonst trifft der Tipp Inhalte)
         elif seh.finde("Exportverlauf", tx):
             tipp(310, 129, 1.5)       # Download-Blatt zu
+        elif any(seh.finde(w, tx) for w in ("Hallo ", "Auszahlungsübersicht", "Auszahlungsverlauf", "Meistbesucht",
+                                              "Schlüsseldaten", "Monetarisierung", "Partnerbestellungen",
+                                              "TikTok Shop Toolkit", "Letzte 7 Tage", "Gelegenheiten für Creator")):
+            tipp(22, 58, 2.5)         # bekannte Shop-/Studio-Seiten: oben links ist X bzw. Pfeil zurück (kein Profil → kein Story-Stift)
         else:
-            tipp(22, 58, 2.5)         # sonst immer zurück (oben links)
+            K.ziehe(2, 380, 260, 380, 0.3); time.sleep(2)   # Zurück-Wischgeste vom linken Rand (kein Tipp → trifft keinen Knopf)
     raise Stopp("eigenes Profil nicht gefunden")
 
 
@@ -128,7 +146,7 @@ def guthaben():
     """„Verfügbare Auszahlung“ (= zur Auszahlung bereit) auf der Auszahlungsübersicht ablesen → exporte/<konto>.guthaben.json.
     Nur lesen – „Abheben“ liegt direkt darunter und wird nie getippt."""
     import json, re
-    _, y = warte("Verfügbare Auszahlung", 10)
+    _, y = warte("Verfügbare Auszahlung", 30)
     for t, a, b in seh.lesen():
         m = re.search(r"([\d.]+,\d{2})", t.replace(" ", ""))
         if m and y < b < y + 45:
@@ -144,7 +162,7 @@ def praemien():
     """Einnahmen → Betrag „Verfügbare Auszahlung“ → Auszahlungsverlauf → Reiter „Belohnungen“: alle „+x,xx €“ summieren
     → praemien.json (Zeile je Konto ersetzt). Nur lesen; „Abheben“ liegt 40 Punkte unter dem Betrag und wird nie getippt."""
     import json, re
-    x, y = warte("Verfügbare Auszahlung", 10)
+    x, y = warte("Verfügbare Auszahlung", 30)
     betrag = [(a, b) for t, a, b in seh.lesen() if "€" in t and y < b < y + 45]
     if not betrag:
         raise Stopp("Betrag „Verfügbare Auszahlung“ fehlt")
@@ -182,7 +200,7 @@ def praemien():
 
 
 def nur_guthaben():
-    tipp_text("TikTok Shop für Creator", w=5)
+    creator_oeffnen()
     for _ in range(3):
         rot = rot_popup(seh.lesen())
         if not rot:
@@ -212,7 +230,7 @@ PRAEMIEN = "--praemien" in sys.argv
 
 
 def export():
-    tipp_text("TikTok Shop für Creator", w=5)
+    creator_oeffnen()
     for _ in range(3):                # Werbe-Popup (Artur 20.11.: auf Rot tippen, dann zurück)
         tx = seh.lesen()
         rot = rot_popup(tx) or seh.finde("Aufgaben anzeigen", tx)
