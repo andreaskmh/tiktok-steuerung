@@ -1294,7 +1294,7 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
         alt.unlink()
     for name, text in dateien.items():
         (ORDNER / name).write_text(text)
-        (desk / schoen(name)).write_text(text)
+        # Artur 20.11.: .md nur im Projekt – in Dokumente nur die endgültige Version (HTML + PDF)
     # Artur 20.11.: dieselben Dateien als HTML-Tabelle (iPhone-Vorschau in WhatsApp/AirDrop/Dateien), Produkt = Link
     esc = lambda t: str(t).replace("&", "&amp;").replace("<", "&lt;").replace('"', "&quot;")
     def badge(k, art=""):

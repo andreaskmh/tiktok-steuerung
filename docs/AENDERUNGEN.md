@@ -558,3 +558,4 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - 20.11.2026 (spät): Ranglisten-HTML ohne Seitwärts-Scrollen (feste Spaltenbreiten, Umbruch), Skripte ohne JavaScript aufklappbar; zusätzlich PDF in iPhone-Breite (Google Chrome headless, Skripte aufgeklappt), weil Links in der WhatsApp/AirDrop-Vorschau nur im PDF funktionieren.
 - 20.11.2026 (spät): HTML-Ranglisten: Nummer antippen = eigener Haken (nur für Artur/Andreas, pro Gerät im Browser gespeichert, kein Bezug zu Social1/gemacht). Zeile wird blass + durchgestrichen.
 - 20.11.2026 (spät): Ablage Dokumente/Ranglisten: vor dem Schreiben werden die Dateien des Landes im Tagesordner gelöscht – nur die aktuelle Version liegt drin.
+- 20.11.2026 (spät): .md-Ranglisten nicht mehr in Dokumente/Ranglisten (nur HTML + PDF). Warum: Artur – nur die endgültige Version im Ordner.
