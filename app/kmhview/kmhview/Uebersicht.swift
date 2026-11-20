@@ -65,10 +65,11 @@ struct Uebersicht: View {
                     }
                     fuss
                 }
-                .padding(.horizontal, 18).padding(.bottom, 30)
+                .padding(.horizontal, randAussen).padding(.bottom, 30)
                 .frame(maxWidth: 720).frame(maxWidth: .infinity)
             }
             .background(Hintergrund())
+            .dynamicTypeSize(...DynamicTypeSize.large)   // große iPhone-Schrift nicht weiter aufblähen (sonst „reingezoomt“, Artur 20.11.)
             .tint(Color.akzent)   // keine blaue Systemfarbe (Mac-Look)
             .refreshable { s.laden() }
             .task {   // Fortschritt vom Mac: alle 4 s, wenn etwas läuft/wartet, sonst alle 20 s
@@ -223,6 +224,12 @@ struct Aktualisieren: View {
     }
 }
 
+#if os(iOS)
+let randAussen: CGFloat = 12, randInnen: CGFloat = 14   // iPhone: kompakter
+#else
+let randAussen: CGFloat = 18, randInnen: CGFloat = 18
+#endif
+
 struct Hintergrund: View {
     @Environment(\.colorScheme) var schema
     var body: some View {
@@ -245,7 +252,7 @@ struct Karte<C: View>: View {
             }
             inhalt
         }
-        .padding(18)
+        .padding(randInnen)
         .background(Color.flaeche, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).strokeBorder(Color.linie, lineWidth: 0.5))
     }
@@ -443,7 +450,7 @@ struct Hero: View {
             }
             VStack(alignment: .leading, spacing: 4) {
                 Text("Vorauss. Provisionen").font(.subheadline).foregroundStyle(.secondary)
-                Text(euro(z.provision)).font(.system(size: 44, weight: .bold, design: .rounded))
+                Text(euro(z.provision)).font(.system(size: 40, weight: .bold, design: .rounded))
                     .contentTransition(.numericText()).minimumScaleFactor(0.6).lineLimit(1)
                 Text("\(zahl(z.bestellungen)) Sales · \(euro(z.umsatz, kurz: true)) GMV" + ((z.aufrufe ?? 0) > 0 ? " · \(aufrufeText(z.aufrufe!)) Aufrufe" : ""))
                     .font(.footnote).foregroundStyle(.secondary)
@@ -489,7 +496,7 @@ struct Hero: View {
             .frame(height: 150).padding(.top, 26)
             Text("Verlauf: letzte 30 Tage, Provision je Bestelltag – Tag antippen für den Wert").font(.caption2).foregroundStyle(.secondary)
         }
-        .padding(20)
+        .padding(randInnen + 2)
         .background(Color.flaeche, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).strokeBorder(Color.linie, lineWidth: 0.5))
     }

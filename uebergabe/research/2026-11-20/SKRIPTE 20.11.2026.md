@@ -1106,3 +1106,53 @@ https://www.tiktok.com/@urtechdaddy/video/7709250683748355359
 
 **DEUTSCH:** **Hook:** Wenn der Strom mal tagelang weg ist, läuft mein Kühlschrank trotzdem weiter.
 **Skript:** Genau dafür hab ich mir diese Powerstation geholt. Mit dem Solarpanel lade ich mehr rein, als der Kühlschrank verbraucht – und hab noch Strom übrig für Handy, Licht und alles Wichtige im Notfall. Mein Vater hat immer gesagt: Rechne mit dem Schlimmsten und hoffe auf das Beste. Meine Familie ist versorgt. Link ist unten.
+
+<!-- de-394 -->
+## DE SLIDES Nr 394 · 2 days ago · +189.6K Views · Sprache en · ONE MEMORY NOIR/AURA Damenparfum 30 ml x 2 | Elegantes Geschenkset | F
+https://www.tiktok.com/@produktwolf/video/7709544096725044502
+
+**Original:**
+> I'm sitting with Leon. You sit with Ben, okay? Wait, is that your perfume? Yeah. Is it too much? Babe, I'm trying to behave. My car still smells like you. I want to see you again. Just us this time. I put you onto that perfume and you stole my date? Get Noir and Aura together in the orange cart, babe.
+
+**DEUTSCH:** **Hook:** „Ist das etwa dein Parfüm?“ – und plötzlich ist mein Date weg.
+**Skript:** (Mini-Szene, 2 Personen) „Du sitzt bei Ben, ich bei Leon, okay?“ – „Moment… ist das dein Parfüm?“ – „Zu viel?“ – „Ich versuch hier brav zu bleiben.“ – „Mein Auto riecht immer noch nach dir. Nächstes Mal nur wir zwei.“ – „Ich hab dir das Parfüm gezeigt und du klaust mir mein Date?!“ Noir und Aura gibt’s im Doppelpack im orangenen Einkaufswagen.
+
+<!-- us-761 -->
+## US QUALITY Nr 761 · Yesterday · +1.2M Views · Sprache en · 【2026 Newly Upgraded】Trucozie T350 Rechargeable Cordless Vacuums, 8-in
+https://www.tiktok.com/@stephanie_ann_05/video/7709971801320819999
+
+**Original:**
+> I got a Dyson. I got a Homica. Which one's better for pet hair and allergies? That budget vacuum can't compete with my Dyson. I can pick up piles of dog hair. Oh, what just happened? Got clogged up. It's supposed to have an anti-tangle brush roll, but I'm definitely going to have to use some scissors. But hey, mine's got a 40-minute runtime and it's got a HEPA filter. Don't even worry about that. It does amazing on hard floors. I don't think it did so well. And pick that up for a second. Oh, yeah. I don't even want to know how much that cost you, but let's see how my budget Homica vacuum does. Mine doesn't get clogged like yours and it actually has an anti-tangle brush roller that works. Mine also has a HEPA filter and it has a longer runtime than yours at 45 minutes. Now let's see if it does better on the hard floors. Shake test. Nothing comes out. I mean, does your vacuum even stand up on its own? No. What? That sucks. Mine stands up on its own and I can adjust the height. Mine even has a green dirt reveal light. Oh, man. All right. Tell me how much you paid for that thing. I mean, it's a Dyson, so 500 bucks. Yeah, that's definitely a ripoff because my Homica vacuum is normally under $100, but because it's the Black Friday sale, you can get coupons for even less. And now they released an option that comes with their new charging dock that houses all of the attachments and it charges the vacuum. Unfortunately, these are selling really fast for Black Friday, though, so if you
+
+**DEUTSCH:** **Hook:** 500 € Dyson gegen Akku-Sauger für einen Bruchteil – wer schafft die Hundehaare?
+**Skript:** Dyson vs. günstiger Akkusauger. Der Dyson verstopft bei den Haaren, Bürste muss mit der Schere frei. Der Günstige hat eine Anti-Verheddern-Bürste, HEPA-Filter und läuft 45 statt 40 Minuten. Schütteltest: nichts fällt raus. Steht von allein, Höhe verstellbar, grünes Licht zeigt jeden Krümel. Und der Preis? Ein Bruchteil vom Dyson. Link ist im Einkaufswagen.
+
+<!-- us-762 -->
+## US QUALITY Nr 762 · Yesterday · +414.6K Views · Sprache en · SEESE Turbo Jet Leaf Blower,Cordless Leaf Blower, Violent Turbo Fan, P
+https://www.tiktok.com/@bom_jackji4/video/7709841837258738957
+
+**Original:**
+> No matter what your budget is, I recommend everyone get one of these. It's on a massive Black Friday clearance sale right now. You guys know I test all kinds of viral TikTok shop products to see if they're actually worth your money. Now this right here is the viral handheld blower. Honestly, it makes my yard look like I just hired a professional landscaper to take care of it a few days ago. This tool was still $100 and everyone thought it was too expensive. Yesterday, the price dropped to $50. Good thing you didn't buy it then, because now it's even more heavily discounted and comes with free shipping. After mowing your lawn, you should really stop struggling with those old-fashioned cleaning tools. They just take up too much time and effort. All you have to do is point it at the grass clippings and pull the trigger. Check this out. It also works great for all kinds of everyday cleanup jobs. Whether it's dust on your furniture, leaves in your yard, or debris on your sidewalk, you can just grab it and go. No more struggling to drag that bulky leaf blower out of the garage. And this is the brand new 1000 gram version, with an upgraded battery that lasts way longer than the old models. It also comes with a brand new carrying case, plus a charger, earplugs, and everything you need. Black Friday deals are seriously good right now. Whether you're getting one for yourself or as a gift for someone else, it's a great choice. I've left the shopping link right below the video.
+
+**DEUTSCH:** **Hook:** Egal wie dein Budget ist – so ein Ding sollte jeder haben.
+**Skript:** Das ist der virale Akku-Bläser. Rasen gemäht, einmal draufhalten, Abzug drücken – Schnittgut weg, Blätter weg, Einfahrt sauber. Geht auch für Staub, Werkstatt oder Schnee vom Auto. Kein schwerer Laubbläser aus der Garage mehr. Gerade im Black-Friday-Angebot deutlich günstiger, mit zwei Akkus. Schau in den Einkaufswagen, solange der Preis noch so ist.
+
+<!-- us-783 -->
+## US SLIDES Nr 783 · 2 days ago · +130.4K Views · Sprache en · LACIKOSZ Women's Faux Suede Fuzzy Knee-High Platform Snow Boots - Roun
+https://www.tiktok.com/@kierranoahshiloh/video/7709647359315119374
+
+**Original:**
+> Bottle street swoopin' and clean up the street Cool like Cushin' new shoes on the feet Moe at your toe when you talkin' to me Lotta Daytona at Miami Beach Pay me a M for the end of the week Close to me and you head up the fleet I make a killin' and I rap on the beat In my car terapedia, massage in the seats All of the hatin' that make me a beast Move with the ladies, no tap on the beat News who told me back in Cushikou Get rich and don't go broke and that isn't order Might need me a speedball, I got all this water Might take me a free girl, I go cross the water She can't with her D throwin' one on the swallow My niggas is leaping, we all immortal Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Inside Insid
+
+**DEUTSCH:** (Nur Musik, Slideshow) **Hook-Text Bild 1:** „Die Stiefel, nach denen mich diesen Winter alle fragen 👢“
+**Skript (Texte Bild 2–4):** „Kuschelig warm bis zum Knie“ – „Plateau = 5 cm größer, ohne wehzutun“ – „Passt zu Jeans und Leggings“ – letztes Bild: „Link im Einkaufswagen 🧡“. Trend-Sound drunter, max. 5 Bilder.
+
+<!-- us-781 -->
+## US QUALITY Nr 781 · 2 days ago · +138K Views · Sprache en · CINMOORE 4G LTE Car Security Camera for Parking, 1080P 360° Rotating C
+https://www.tiktok.com/@qinmgqdv7kc/video/7709268950370110733
+
+**Original:**
+> Just peel it off, stick it on, scan the QR code, and boom, your car has its own sentry mode. If you're tired of finding scratches and dents with no idea who did it, this is a game changer. The SendMore DC-1 has a built-in battery, so there's no hard wiring, no complicated installation, and no need to tap into your car battery. Its 360-degree rotating camera lets you check different angles right from your phone, even when you're away from your car. It can detect suspicious activity, send alerts to your phone, and record important footage to help protect your ride. If your car doesn't have built-in parking surveillance, tap the yellow cart and check it out.
+
+**DEUTSCH:** **Hook:** Kratzer am Auto und keine Ahnung, wer’s war? Das ist vorbei.
+**Skript:** Einfach aufkleben, QR-Code scannen – fertig, dein Auto hat jetzt einen Wächter-Modus. Eingebauter Akku, also nichts verkabeln und nicht an die Autobatterie. Die Kamera dreht sich 360 Grad, du schaust vom Handy aus rein, auch wenn du gar nicht da bist. Bewegt sich jemand am Auto, kriegst du eine Nachricht und es wird aufgenommen. Wenn dein Auto so was nicht hat: gelber Einkaufswagen.
