@@ -124,6 +124,16 @@ def geraet_hinzufuegen(udid):
         log(f"Handy {udid} nicht anmeldbar: {e}")
 
 
+def geraet_entfernen(udid):
+    try:
+        geraete = json.load(urllib.request.urlopen("http://127.0.0.1:27893/api/devices", timeout=10))
+        for g in geraete:
+            if g["udid"] == udid:
+                urllib.request.urlopen(urllib.request.Request(f"http://127.0.0.1:27893/api/devices/{g['device_id']}", method="DELETE"), timeout=30)
+    except Exception as e:
+        log(f"Handy {udid} nicht freigegeben: {e}")
+
+
 def verstaendlich(z, k):
     """Technische Meldung → kurzer deutscher Satz für die App."""
     z = z.split(" (Foto ")[0]
@@ -209,6 +219,9 @@ def lauf(art, udid=None):
     schreibe(STATUS, dict(st, laeuft=False, ende=D.datetime.now().isoformat(timespec="seconds"), dauer_sek=round(dauer),
                           fertig=gesamt, gesamt=gesamt, rest_sek=0, schritt="fertig", fehler=fehler))
     log(f"Ende {art}: {round(dauer)} s, Fehler: {fehler}")
+    for u in ok_geraete:   # Handys außer dem Daten-iPhone 11 wieder freigeben (sonst bleibt deren Kamera schwarz, Artur 21.11.)
+        if u != GERAETE[0][0]:
+            geraet_entfernen(u)
 
 
 def wache():

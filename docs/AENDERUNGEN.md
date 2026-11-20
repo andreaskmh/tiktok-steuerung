@@ -589,3 +589,5 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - 21.11.2026 Eigentliche Ursache „Handy nicht erreichbar“: Steuer-Server lieferte Bilder, aber jede Eingabe übers WLAN → „No route to host“
   (beide iPhones). Server-Neustart behebt es. `aktualisieren.py` prüft jetzt vor jedem Handy eine Probe-Eingabe (Home-Taste) und startet
   den Server bei Bedarf selbst neu.
+- 21.11.2026 Kamera am iPhone 15 war schwarz, solange der Steuer-Server dessen Bildschirm mitschnitt → iPhone 15 beim Server abgemeldet.
+  `aktualisieren.py` meldet nach jedem Lauf alle Handys außer dem Daten-iPhone 11 wieder ab.
