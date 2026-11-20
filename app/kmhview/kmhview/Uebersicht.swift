@@ -2,26 +2,26 @@ import SwiftUI
 import Charts
 
 // Mac-Look (Artur 20.11.): Grautöne wie die getönten Dock-Symbole, Farbe nur gedämpft in kleinen Symbolen; hell/dunkel automatisch
-func hd(_ hell: UInt32, _ dunkel: UInt32) -> Color {
+func hd(_ hell: UInt32, _ dunkel: UInt32, _ ah: CGFloat = 1, _ ad: CGFloat = 1) -> Color {
     func c(_ x: UInt32) -> (CGFloat, CGFloat, CGFloat) { (CGFloat(x >> 16 & 255) / 255, CGFloat(x >> 8 & 255) / 255, CGFloat(x & 255) / 255) }
     let (a, b) = (c(hell), c(dunkel))
     #if os(iOS)
-    return Color(UIColor { $0.userInterfaceStyle == .dark ? UIColor(red: b.0, green: b.1, blue: b.2, alpha: 1) : UIColor(red: a.0, green: a.1, blue: a.2, alpha: 1) })
+    return Color(UIColor { $0.userInterfaceStyle == .dark ? UIColor(red: b.0, green: b.1, blue: b.2, alpha: ad) : UIColor(red: a.0, green: a.1, blue: a.2, alpha: ah) })
     #else
-    return Color(NSColor(name: nil) { $0.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua ? NSColor(red: b.0, green: b.1, blue: b.2, alpha: 1) : NSColor(red: a.0, green: a.1, blue: a.2, alpha: 1) })
+    return Color(NSColor(name: nil) { $0.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua ? NSColor(red: b.0, green: b.1, blue: b.2, alpha: ad) : NSColor(red: a.0, green: a.1, blue: a.2, alpha: ah) })
     #endif
 }
-extension Color {   // Broker-App-Look (Artur 20.11. abends): Schwarz/Weiß, flache graue Kacheln, Grün/Rot nur für Zahlen
-    static let grund = hd(0xFFFFFF, 0x000000)        // Seitenhintergrund
-    static let flaeche = hd(0xF2F2F4, 0x161618)      // Kacheln
-    static let linie = hd(0xE3E3E6, 0x2A2A2D)        // feine Linien
-    static let mulde = hd(0xF2F2F4, 0x161618)
-    static let symbolGrund = hd(0xE9E9EC, 0x242427)  // gewählte Zeile, kleine Symbole
-    static let akzent = hd(0x000000, 0xFFFFFF)       // Linie, Auswahl, Knöpfe
+extension Color {   // Revolut-artig (Artur 20.11. nachts): Blau-Grau-Verlauf, halbdurchsichtige Glas-Karten, Türkis/Rot für Zahlen
+    static let grund = hd(0xEEF1F5, 0x12161D)                  // Grundton (unter dem Verlauf)
+    static let flaeche = hd(0xFFFFFF, 0xFFFFFF, 0.78, 0.075)     // Glas-Karten
+    static let linie = hd(0x000000, 0xFFFFFF, 0.08, 0.10)
+    static let mulde = hd(0x000000, 0xFFFFFF, 0.06, 0.08)        // Spur der Umschalter
+    static let symbolGrund = hd(0x000000, 0xFFFFFF, 0.07, 0.12)  // gewählter Umschalter / Zeile
+    static let akzent = hd(0x101318, 0xFFFFFF)                  // Hauptknopf, Auswahl
     static let akzent2 = akzent
-    static let gut = hd(0x1FA34A, 0x2FD158)
+    static let gut = hd(0x109A7C, 0x34D6AE)
     static let warn = hd(0xC98A2E, 0xE0A95A)
-    static let schlecht = hd(0xE0352B, 0xFF453A)
+    static let schlecht = hd(0xE0414A, 0xFF5C63)
 }
 let verlaufFarbe = LinearGradient(colors: [.gut, .gut], startPoint: .top, endPoint: .bottom)   // Balken (Artur: nicht grau)
 
@@ -42,10 +42,8 @@ struct Uebersicht: View {
         NavigationStack {
           ScrollViewReader { proxy in
             ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: 14) {
                     kopf
-                    Aktualisieren()
-                    if let d = s.daten { KontoWahl(konten: d.konten, auswahl: $auswahl) }
                     if let k = konto {
                         Hero(k: k, periode: $periode, eigen: $eigen)
                         Kacheln(k: k)
@@ -62,12 +60,14 @@ struct Uebersicht: View {
                         TopListe(titel: "Top-Videos", eintraege: k.videos, video: true, zeigeKonto: k.istAlle)
                         TopListe(titel: "Top-Produkte", eintraege: k.produkte, video: false, zeigeKonto: k.istAlle)
                         if !k.offen.isEmpty { OffeneListe(k: k) }
+                        Aktualisieren()
                     } else {
+                        Aktualisieren()
                         ContentUnavailableView("Keine Daten", systemImage: "tray")
                     }
                     fuss
                 }
-                .padding(.horizontal, randAussen + 6).padding(.bottom, 30)
+                .padding(.horizontal, randAussen).padding(.bottom, 30)
                 .frame(maxWidth: 720).frame(maxWidth: .infinity)
             }
             .coordinateSpace(name: "blatt")
@@ -98,25 +98,22 @@ struct Uebersicht: View {
     }
 
     var kopf: some View {
-        HStack(alignment: .firstTextBaseline) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(appName).font(.system(size: 34, weight: .bold))
-                if let d = s.daten {
-                    Text("Stand " + d.stand.replacingOccurrences(of: "T", with: " · ")).font(.footnote).foregroundStyle(.secondary)
-                }
-            }
-            Spacer()
+        HStack(spacing: 10) {
+            if let d = s.daten { KontoWahl(konten: d.konten, auswahl: $auswahl) }
+            else { Text(appName).font(.title2.weight(.bold)); Spacer() }
             #if os(iOS)
             Button { waehlen = true } label: {
                 Image(systemName: s.hatOrdner ? "icloud.fill" : "icloud.and.arrow.down")
-                    .font(.system(size: 16, weight: .semibold)).frame(width: 38, height: 38)
+                    .font(.system(size: 16, weight: .semibold)).frame(width: 44, height: 44)
                     .background(Color.flaeche, in: Circle())
             }.buttonStyle(.plain)
             #else
-            Button { s.laden() } label: { Image(systemName: "arrow.clockwise") }.buttonStyle(.borderless)
+            Button { s.laden() } label: {
+                Image(systemName: "arrow.clockwise").font(.system(size: 15, weight: .semibold)).frame(width: 40, height: 40).background(Color.flaeche, in: Circle())
+            }.buttonStyle(.plain)
             #endif
         }
-        .padding(.top, 14)
+        .padding(.top, 8)
         .overlay(alignment: .bottomLeading) {
             if let f = s.fehler { Text(f).font(.caption).foregroundStyle(Color.warn).offset(y: 18) }
         }
@@ -166,7 +163,7 @@ struct Aktualisieren: View {
                 }
             } else {
                 HStack {
-                    Text("Daten aktualisieren").font(.title3.weight(.bold))
+                    Text("Daten aktualisieren  ›").font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
                     Spacer()
                     if let e = st?.ende { Text("zuletzt " + datum(e).formatted(.dateTime.day().month().hour().minute().locale(deDE))).font(.caption).foregroundStyle(.secondary) }
                 }
@@ -226,9 +223,9 @@ struct Aktualisieren: View {
                 }
                 Text(unter).font(.caption2).opacity(0.6).lineLimit(2).multilineTextAlignment(.leading)
             }
-            .foregroundStyle(Color.grund)
+            .foregroundStyle(art == "schnell" ? hd(0xFFFFFF, 0x000000) : Color.primary)
             .padding(.horizontal, 16).padding(.vertical, 14).frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.akzent.opacity(0.92), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .background(art == "schnell" ? Color.akzent : Color.symbolGrund, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain).disabled(gesperrt).opacity(gesperrt ? 0.5 : 1)
@@ -244,7 +241,11 @@ let randAussen: CGFloat = 18, randInnen: CGFloat = 18
 struct Hintergrund: View {
     @Environment(\.colorScheme) var schema
     var body: some View {
-        Color.grund.ignoresSafeArea()
+        ZStack {
+            Color.grund
+            LinearGradient(colors: [hd(0xD6DEE8, 0x3A4656), hd(0xE8ECF1, 0x1D232D), Color.grund], startPoint: .top, endPoint: .center)
+            RadialGradient(colors: [hd(0xC9D8E6, 0x4E6276, 1, 0.55), .clear], center: UnitPoint(x: 0.85, y: 0.02), startRadius: 0, endRadius: 420)
+        }.ignoresSafeArea()
     }
 }
 
@@ -256,14 +257,15 @@ struct Karte<C: View>: View {
         VStack(alignment: .leading, spacing: 14) {
             if let t = titel {
                 HStack {
-                    Text(t).font(.title3.weight(.bold))
+                    Text(t + "  ›").font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
                     Spacer()
                     if let r = rechts { Text(r).font(.caption.weight(.medium)).foregroundStyle(.secondary).multilineTextAlignment(.trailing) }
                 }
             }
             inhalt
         }
-        .padding(.vertical, 8)
+        .padding(16)
+        .background(Color.flaeche, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
     }
 }
 
@@ -301,17 +303,18 @@ struct KontoWahl: View {
     var body: some View {
         let k = konten.first { $0.name == auswahl } ?? konten[0]
         Button { offen = true } label: {
-            HStack(spacing: 12) {
-                Avatar(konto: k, name: k.name, groesse: 36)
-                VStack(alignment: .leading, spacing: 1) {
-                    Text(titel(k)).font(.headline).lineLimit(1)
-                    Text("\(konten.count - 1) Accounts · Antippen zum Wechseln").font(.caption).foregroundStyle(.secondary)
+            HStack(spacing: 10) {
+                Avatar(konto: k, name: k.name, groesse: 44)
+                HStack(spacing: 8) {
+                    Image(systemName: "magnifyingglass").font(.system(size: 15, weight: .semibold))
+                    Text(titel(k)).font(.subheadline.weight(.medium)).lineLimit(1)
+                    Spacer(minLength: 4)
+                    Text("\(konten.count - 1) Accounts").font(.caption).foregroundStyle(.secondary)
                 }
-                Spacer()
-                Image(systemName: "chevron.up.chevron.down").font(.footnote.weight(.semibold)).foregroundStyle(.secondary)
+                .padding(.horizontal, 14).frame(height: 44)
+                .background(Color.flaeche, in: Capsule())
             }
-            .padding(14).contentShape(Rectangle())
-            .background(Color.flaeche, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .sheet(isPresented: $offen) {
@@ -437,12 +440,20 @@ struct Hero: View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 8) {   // welcher Account gerade gezeigt wird – auch ohne nach oben zu scrollen
                 Avatar(konto: k, name: k.name, groesse: 22)
-                Text(k.istAlle ? "Alle Accounts" : k.name).font(.footnote.weight(.semibold))
+                Text(k.istAlle ? "Alle Accounts" : k.name).font(.footnote.weight(.semibold)).foregroundStyle(.secondary)
             }
             VStack(alignment: .leading, spacing: 4) {
-                Text("Vorauss. Provisionen").font(.headline).foregroundStyle(.secondary)
-                Text(euro(z.provision)).font(.system(size: 42, weight: .bold))
-                    .contentTransition(.numericText()).minimumScaleFactor(0.6).lineLimit(1)
+                Text("Vorauss. Provisionen").font(.subheadline.weight(.medium)).foregroundStyle(.secondary)
+                let tage = (Calendar.current.dateComponents([.day], from: sp.von, to: sp.bis).day ?? 0) + 1
+                let vor = k.summe(Spanne(von: Calendar.current.date(byAdding: .day, value: -tage, to: sp.von)!, bis: Calendar.current.date(byAdding: .day, value: -1, to: sp.von)!)).provision
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text(euro(z.provision)).font(.system(size: 34, weight: .bold))
+                        .contentTransition(.numericText()).minimumScaleFactor(0.6).lineLimit(1)
+                    if periode != .heute, vor > 0 || z.provision > 0 {   // Veränderung zum gleich langen Zeitraum davor (heute läuft noch → kein Vergleich)
+                        Text((z.provision >= vor ? "▲ " : "▼ ") + euro(abs(z.provision - vor)))
+                            .font(.subheadline.weight(.semibold)).monospacedDigit().foregroundStyle(z.provision >= vor ? Color.gut : Color.schlecht)
+                    }
+                }
                 Text("\(zahl(z.bestellungen)) Sales · \(euro(z.umsatz, kurz: true)) GMV" + ((z.aufrufe ?? 0) > 0 ? " · \(aufrufeText(z.aufrufe!)) Aufrufe" : ""))
                     .font(.footnote).foregroundStyle(.secondary)
                 Text(quelleText(z.offiziell ?? 0)).font(.caption2.weight(.semibold))
@@ -456,10 +467,12 @@ struct Hero: View {
             }
             let schnitt = k.verlauf.isEmpty ? 0 : k.verlauf.reduce(0) { $0 + $1.provision } / Double(k.verlauf.count)
             Chart {
-              RuleMark(y: .value("Ø", schnitt)).foregroundStyle(Color.secondary.opacity(0.7)).lineStyle(StrokeStyle(lineWidth: 2, lineCap: .round, dash: [0.5, 6]))
+              RuleMark(y: .value("Ø", schnitt)).foregroundStyle(Color.secondary.opacity(0.6)).lineStyle(StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [0.5, 5]))
               ForEach(k.verlauf) { t in
+                AreaMark(x: .value("Tag", tagDatum(t.tag)), y: .value("€", t.provision))
+                    .foregroundStyle(LinearGradient(colors: [Color.gut.opacity(0.22), Color.gut.opacity(0)], startPoint: .top, endPoint: .bottom))
                 LineMark(x: .value("Tag", tagDatum(t.tag)), y: .value("€", t.provision))
-                    .foregroundStyle(Color.akzent).lineStyle(StrokeStyle(lineWidth: 2.6, lineCap: .round, lineJoin: .round))
+                    .foregroundStyle(Color.gut).lineStyle(StrokeStyle(lineWidth: 2.2, lineCap: .round, lineJoin: .round))
                 if let p = punkt, p.tag == t.tag {
                     RuleMark(x: .value("Tag", tagDatum(p.tag))).foregroundStyle(Color.akzent.opacity(0.5)).lineStyle(StrokeStyle(lineWidth: 1, dash: [3, 3]))
                         .annotation(position: .top, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {
@@ -485,11 +498,15 @@ struct Hero: View {
                         }
                 }
             }
-            .chartXAxis(.hidden).chartYAxis(.hidden)
-            .frame(height: 210).padding(.top, 30).padding(.horizontal, -randAussen)   // Linie bis an den Rand
+            .chartXAxis { AxisMarks(values: .stride(by: .day, count: 5)) { _ in AxisValueLabel(format: .dateTime.day()).foregroundStyle(Color.secondary) } }
+            .chartYScale(domain: 0...max(1, (k.verlauf.map(\.provision).max() ?? 1) * 1.08))
+            .chartYAxis { AxisMarks(position: .trailing, values: [k.verlauf.map(\.provision).max() ?? 0]) { v in
+                AxisValueLabel { if let d = v.as(Double.self) { Text(euro(d, kurz: true)).font(.caption2).foregroundStyle(.secondary) } } } }
+            .frame(height: 170).padding(.top, 26)
             Text("Verlauf: letzte 30 Tage, Provision je Bestelltag · gepunktet = Durchschnitt · Tag antippen für den Wert").font(.caption2).foregroundStyle(.secondary)
         }
-        .padding(.vertical, 8)
+        .padding(16)
+        .background(Color.flaeche, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
     }
 }
 
@@ -498,15 +515,17 @@ struct ZeitTabs: View {
     @Binding var periode: Periode; var ohne: [Periode] = []; var beiWahl: () -> Void = {}
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 20) {
+            HStack(spacing: 2) {
                 ForEach(Periode.allCases.filter { !ohne.contains($0) }) { p in
                     Button { periode = p; beiWahl() } label: {
-                        Text(p.rawValue).font(.subheadline.weight(.bold))
-                            .foregroundStyle(periode == p ? Color.primary : Color.secondary.opacity(0.7))
-                            .padding(.vertical, 6).contentShape(Rectangle())
+                        Text(p.rawValue).font(.footnote.weight(.semibold))
+                            .foregroundStyle(periode == p ? Color.primary : Color.secondary)
+                            .padding(.horizontal, 12).padding(.vertical, 7)
+                            .background(periode == p ? Color.symbolGrund : .clear, in: Capsule()).contentShape(Capsule())
                     }.buttonStyle(.plain)
                 }
             }
+            .padding(3).background(Color.mulde, in: Capsule())
         }
     }
 }
@@ -579,14 +598,16 @@ struct VideoStatistik: View {
                 Mini(titel: "GMV", wert: euro(l.reduce(0) { $0 + $1.gmv }, kurz: true))
                 Mini(titel: "Provision", wert: euro(l.reduce(0) { $0 + $1.provision }, kurz: true))
             }
-            HStack(spacing: 18) {   // Reiter wie „Portfolio  Cash“: gewählt weiß, sonst grau
+            HStack(spacing: 2) {   // Umschalter wie „Top-Gewinner / Top-Verlierer“
                 ForEach(VideoAnsicht.allCases) { a in
                     Button { ansicht = a } label: {
-                        Text(a.rawValue).font(.headline.weight(.bold)).foregroundStyle(ansicht == a ? Color.primary : Color.secondary.opacity(0.7))
+                        Text(a.rawValue).font(.footnote.weight(.semibold)).foregroundStyle(ansicht == a ? Color.primary : Color.secondary)
+                            .frame(maxWidth: .infinity).padding(.vertical, 8)
+                            .background(ansicht == a ? Color.symbolGrund : .clear, in: Capsule()).contentShape(Capsule())
                     }.buttonStyle(.plain)
                 }
             }
-            .padding(.top, 4)
+            .padding(3).background(Color.mulde, in: Capsule())
                 .onChange(of: ansicht) { _, a in sortierung = a == .verkauf ? .provision : .aufrufe; seite = 0 }
             HStack {
                 Text("\(alle.count) Videos · Zeitraum oben")
@@ -669,7 +690,7 @@ struct Mini: View {
             Text(wert).font(.headline.weight(.bold)).monospacedDigit().lineLimit(1).minimumScaleFactor(0.7)
         }
         .frame(maxWidth: .infinity, alignment: .leading).padding(12)
-        .background(Color.flaeche, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .background(Color.mulde, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 }
 
@@ -715,7 +736,7 @@ struct Rangliste: View {
                     Image(systemName: auswahl == alle.name ? "checkmark.circle.fill" : "circle").foregroundStyle(auswahl == alle.name ? Color.akzent : Color.secondary.opacity(0.4))
                 }
                 .padding(8).contentShape(Rectangle())
-                .background(auswahl == alle.name ? Color.flaeche : .clear, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .background(auswahl == alle.name ? Color.symbolGrund : .clear, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
             }.buttonStyle(.plain)
             ForEach(konten) { k in
                 let an = k.name == auswahl
@@ -740,7 +761,7 @@ struct Rangliste: View {
                         Image(systemName: an ? "checkmark.circle.fill" : "circle").foregroundStyle(an ? Color.akzent : Color.secondary.opacity(0.4))
                     }
                     .padding(8).contentShape(Rectangle())
-                    .background(an ? Color.flaeche : .clear, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .background(an ? Color.symbolGrund : .clear, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
                 }.buttonStyle(.plain)
             }
         }

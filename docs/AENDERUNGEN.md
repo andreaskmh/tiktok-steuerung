@@ -572,3 +572,7 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - statsKMH Design an Arturs Vorlage (Broker-App-Screenshots) angepasst: echtes Schwarz/Weiß, Abschnitte ohne Rahmen mit großen fetten Überschriften,
   Hauptzahl groß, Verlauf als reine weiße Linie bis an den Rand mit gepunkteter Durchschnittslinie (ohne Achsen), Zeitraum als schlichte Textreihe,
   flache graue Kacheln (ohne Symbole), Ansicht-Reiter als Text, Aktualisieren-Knöpfe als helle Pillen. Gilt für iPhone und Mac. Alte Fassung: Git-Verlauf.
+- statsKMH Design noch am selben Abend auf Arturs zweite Vorlage (Revolut-Video) umgestellt: Blau-Grau-Verlauf als Hintergrund, halbdurchsichtige Glas-Karten
+  mit kleiner grauer Überschrift „›“, oben runder Account-Kreis + Such-Kapsel zum Wechseln, Zahl mit ▲/▼ ggü. gleich langem Zeitraum davor (nicht bei „Heute“),
+  türkise Linie mit Fläche + Tagesachse, Umschalter als graue Kapsel, „Schnell“ als weiße Kapsel, Aktualisieren-Karte nach unten.
+  Neu: Startbild „statsKMH“ auf Schwarz (0,9 s, App.swift).
