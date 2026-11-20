@@ -74,11 +74,11 @@ bis Seite 50 (BOF/SLIDES) ist. USA: weiterhin nie zweimal.
 - Nur **fremdsprachige** Videos (auch Englisch) bekommen ein Skript, deutsch gesprochene nicht. Sie stehen in
   `uebergabe/research/<datum>/SKRIPTE <TT.MM.JJJJ>.md`. Jeden Platzhalter „**DEUTSCH:** _(Claude schreibt…)_“ ersetzen durch
   **Hook:** (1 Satz) + **Skript:** (kurze Sätze, so wie man es in DE sagt, nicht wörtlich übersetzt, Preis/Deal-Logik an DE anpassen).
-- Am Ende **immer im Chat anhängen** (SendUserFile, Artur 19.11.): `de-rangliste.html`, `us-rangliste.html` (mit Vorschaubildern, nur Videos, die in den Listen sind) und die SKRIPTE-Datei.
+- Am Ende **immer im Chat anhängen** (SendUserFile, Artur 19.11.): die Ranglisten je Liste (`de-rangliste-bof/-reactions/-slides.md`, `us-rangliste-quality/-slides.md`), `de-rangliste.html`, `us-rangliste.html` (mit Vorschaubildern, nur Videos, die in den Listen sind) und die SKRIPTE-Datei.
 
 ## Rangliste (Punkte)
-Frische (Today 100, Yesterday 85, 2 Tage 55 … 7 Tage 12, danach weniger) + Tempo (+Views, log) + Creator-Umsatz (log)
-+ Likes/Kommentare pro View + 🔥-Bonus. Ausgabe `<land>-rangliste.md`.
+Frische (Today 100, Yesterday 85, 2 Tage 55 … 7 Tage 12, danach weniger) + Tempo (+Views, log, max. 40) + Video-Umsatz (Social1 `gmv` des Videos, log: €1K → 6, €10K → 9, max. 15)
++ Likes/Kommentare pro View (max. 15). Seit 21.11. ohne Creator-GMV und ohne 🔥 (Artur 20.11.). Ausgabe `<land>-rangliste.md` + je Liste extra `<land>-rangliste-bof|reactions|slides|quality.md/.html` (Artur 20.11., Platz-Nr. je Datei neu).
 
 ## Zeiten
 Start 7 / 13 / 19 Uhr. Stündliche Messung (`research.py messen`, launchd `de.tiktoksteuerung.research-messen`) protokolliert Seite 1

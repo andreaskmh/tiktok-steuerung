@@ -1,0 +1,10 @@
+… 50/173
+… 100/173
+Traceback (most recent call last):
+  File "/Users/andreask/Documents/Coding/TikTok-Steuerung/werkzeuge/research.py", line 1241, in <module>
+    sperre_setzen()
+  File "/Users/andreask/Documents/Coding/TikTok-Steuerung/werkzeuge/research.py", line 615, in sortieren
+    s1("removeVideosFromList", lid, [p["videoId"]])
+  File "/Users/andreask/Documents/Coding/TikTok-Steuerung/werkzeuge/research.py", line 191, in s1
+    raise RuntimeError(f"Social1 {name}: Status {a['s']} {a['t'][:200]}")
+RuntimeError: Social1 removeVideosFromList: Status 0 TypeError: Load failed

@@ -244,7 +244,7 @@ def karte_aus_api(v):
     return {"rang": str(v.get("ranking", "")), "plus_views": _kurz(v.get("view_gain")), "feuer": False, "ad": bool(v.get("is_ad")),
             "produkt": p.get("name", ""), "produkt_id": str(v.get("product_id") or p.get("product_id") or ""),
             "produkt_bild": p.get("img_url", ""), "video_id": str(v.get("video_id", "")), "vorschau": v.get("thumbnail", ""),
-            "creator": v.get("handle", ""), "alter": _alter_text(v.get("time_posted")), "gmv": _kurz(v.get("med_gmv_revenue"), True),
+            "creator": v.get("handle", ""), "alter": _alter_text(v.get("time_posted")), "gmv": _kurz(v.get("med_gmv_revenue"), True), "video_gmv": v.get("gmv") or 0,
             "views": _kurz(v.get("views")), "likes": _kurz(v.get("likes")), "kommentare": _kurz(v.get("comments")),
             "zuwachs": _kurz(v.get("view_gain")), "time_posted": v.get("time_posted", ""), "slideshow": bool(v.get("is_slideshow")),
             "ki": bool(v.get("is_ai")), "preis": p.get("price_display", ""), "shop": v.get("shop_name", "")}
@@ -602,7 +602,9 @@ def sortieren(land, liste):
         p = {f: v.get(f) for f in ("videoId", "isAd", "description", "handle", "timePosted")}
         p["product"] = {f: (v.get("product") or {}).get(f, "") for f in ("productId", "name", "priceDisplay", "imgUrl")}
         pakete.append(p)
-    rang = lambda p: punkte(kand[p["videoId"]]) if p["videoId"] in kand else -1
+    # Artur 20.11.: Reihenfolge 1:1 aus <land>-rangliste.md übernehmen (Platz 1 zuerst), Videos ohne Ranglisten-Platz ans Ende
+    platz = {m: i for i, m in enumerate(re.findall(r"/video/(\d+) \|", (ORDNER / f"{land}-rangliste.md").read_text()))}
+    rang = lambda p: -platz.get(p["videoId"], 10 ** 6)
     # Geprüft 19.11. abends: Social1 zeigt die Liste in Hinzufüge-Reihenfolge, das ZUERST Hinzugefügte steht OBEN
     # (= Reihenfolge von getVideoListDetail). Also Platz 1 zuerst einlegen, Unbekannte (ohne Kandidat) ans Ende.
     reihe = sorted(pakete, key=rang, reverse=True)
@@ -612,7 +614,11 @@ def sortieren(land, liste):
     while k < len(soll) and jetzt[:k + 1] == soll[:k + 1]:
         k += 1
     for n, p in enumerate(reihe[k:], 1):
-        s1("removeVideosFromList", lid, [p["videoId"]])
+        try:                                                   # 20.11.: auch remove kann mit „Load failed“ abbrechen
+            s1("removeVideosFromList", lid, [p["videoId"]])
+        except RuntimeError:
+            time.sleep(10)
+            s1("removeVideosFromList", lid, [p["videoId"]])
         try:                                                   # 20.11.: „Load failed“ brach hier ab, Video war raus
             r = s1("addVideoToList", lid, p)
         except RuntimeError as e:
@@ -1130,14 +1136,14 @@ def messung_auswerten():
 
 
 def punkte(k):
-    """Platzierung: zuerst das Alter (Artur 20.11.: jeder jüngere Tag steht immer vor dem älteren), innerhalb eines Tages
-    Tempo, Verkaufskraft, Interaktion."""
-    frische = max(0, 30 - k.get("tage", 999)) * 100                         # Abstand 100 > Rest (max. 75) → Alter entscheidet
+    """Platzierung: Frische zählt am meisten (Today/Yesterday), dann Tempo, Video-Umsatz, Interaktion.
+    Artur 20.11.: Creator-GMV und 🔥 raus (sagen nichts übers Video), dafür Umsatz genau dieses Videos."""
+    frische = {0: 100, 1: 85, 2: 55, 3: 40, 4: 30, 5: 22, 6: 16, 7: 12}.get(k.get("tage", 999), max(0, 10 - k.get("tage", 999) // 7))
     tempo = min(40, 8 * math.log10(max(1, zahl(k["plus_views"]))) - 24)      # 100K → 16, 1M → 24, 10M → 32
-    gmv = min(15, 3 * math.log10(max(1, zahl(k["gmv"]))) - 6)                # €10K → 6, €100K → 9
+    umsatz = min(15, 3 * math.log10(max(1, float(k.get("video_gmv") or 0))) - 3)   # €100 → 3, €1K → 6, €10K → 9, €100K → 12
     v = max(1, zahl(k["views"]))
     inter = min(15, 100 * (zahl(k["likes"]) + 3 * zahl(k["kommentare"])) / v)
-    return round(frische + max(0, tempo) + max(0, gmv) + inter + (5 if k.get("feuer") else 0), 1)
+    return round(frische + max(0, tempo) + max(0, umsatz) + inter, 1)
 
 
 def rangliste(land):
@@ -1146,42 +1152,46 @@ def rangliste(land):
     gemacht = gepostete_produkte()
     zeilen = sorted(((punkte(kand[n]), n, art) for n, art in sort.items() if n in kand and not art.endswith("?")
                      and int(kand[n].get("seite") or 0) <= seiten_max(f"{art.split('+')[0]} {land.upper()}")),   # wie speichern
-                    reverse=True)
-    aus = [f"# Rangliste {land.upper()} {HEUTE.strftime('%d.%m.%Y')}", "",
-           "| Platz | Punkte | Liste | Alter | +Views | Produkt | Creator | Link |", "|---|---|---|---|---|---|---|---|"]
-    for i, (p, n, art) in enumerate(zeilen, 1):
-        k = kand[n]
-        if k["produkt_id"] in gemacht:
-            art += " (Produkt schon gepostet)"
-        aus.append(f"| {i} | {p} | {art} | {k['alter']} | {k['plus_views']} | {k['produkt'][:50].replace('|', '/')} | @{k['creator']} | "
-                   f"https://www.tiktok.com/@{k['creator']}/video/{k['video_id']} |")
-    f = ORDNER / f"{land}-rangliste.md"
-    f.write_text("\n".join(aus) + "\n")
-    # Artur 20.11.2026: Rangliste als Seite mit Vorschaubildern (Social1-Vorschau, sonst <land>-bilder/)
-    esc = lambda t: str(t).replace("&", "&amp;").replace("<", "&lt;").replace('"', "&quot;")
-    karten = []
-    for i, (p, n, art) in enumerate(zeilen, 1):
-        k = kand[n]
-        bild, lokal = k["vorschau"], f"{land}-bilder/{k['video_id']}.jpg"
-        schon = " schon" if k["produkt_id"] in gemacht else ""
-        karten.append(f'<a class="k{schon}" href="https://www.tiktok.com/@{esc(k["creator"])}/video/{k["video_id"]}" target="_blank">'
-                      f'<img loading="lazy" src="{esc(bild)}" onerror="this.onerror=null;this.src=\'{lokal}\'" alt=""><b>{i}</b><i>{esc(art)}</i>'
-                      f'<span>{esc(k["alter"])} · +{esc(k["plus_views"])}{" · Produkt schon gepostet" if schon else ""}</span>'
-                      f'<span class="p">{esc(k["produkt"][:70])}</span><span>@{esc(k["creator"])} · Seite {esc(k.get("seite", "?"))}</span></a>')
-    titel = f"Rangliste {land.upper()} {HEUTE.strftime('%d.%m.%Y')}"
-    (ORDNER / f"{land}-rangliste.html").write_text(
-        f'<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>{titel}</title><style>'
-        'body{font:13px -apple-system,sans-serif;margin:16px;background:#fff;color:#111}'
-        '@media(prefers-color-scheme:dark){body{background:#111;color:#eee}.k{background:#222!important}}'
-        '.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}'
-        '.k{position:relative;display:flex;flex-direction:column;gap:2px;background:#f3f3f3;border-radius:8px;overflow:hidden;'
-        'color:inherit;text-decoration:none;padding-bottom:6px}.k span,.k i{padding:0 6px}.k.schon{opacity:.55}'
-        '.k img{width:100%;aspect-ratio:9/16;object-fit:cover;background:#999}.p{font-weight:600}'
-        '.k b{position:absolute;top:6px;left:6px;background:#000c;color:#fe2c55;padding:2px 7px;border-radius:6px;font-size:15px}'
-        f'</style><h1>{titel}</h1><p>{len(zeilen)} Videos · Platz 1 = beste Punkte · blass = Produkt schon gepostet · '
-        f'Klick öffnet TikTok</p><div class="g">{"".join(karten)}</div>')
-    print("\n".join(aus[4:14]))
-    print(f"FERTIG rangliste: {f}")
+                    reverse=True)   # Gleichstand: Nr als Text absteigend – sortieren nutzt denselben Schlüssel
+    # Artur 20.11.2026: jede Liste (BOF, SLIDES, REACTIONS, QUALITY) zusätzlich als eigene Datei, Platz-Nr. je Datei neu
+    arten = sorted({t for z in zeilen for t in z[2].split("+")})
+    for endung, zusatz, teil in [("", "", zeilen)] + [(f"-{a.lower()}", f" – {a}", [z for z in zeilen if a in z[2].split("+")])
+                                                      for a in arten]:
+        aus = [f"# Rangliste {land.upper()} {HEUTE.strftime('%d.%m.%Y')}{zusatz}", "",
+               "| Platz | Punkte | Liste | Alter | +Views | Produkt | Creator | Link |", "|---|---|---|---|---|---|---|---|"]
+        for i, (p, n, art) in enumerate(teil, 1):
+            k = kand[n]
+            if k["produkt_id"] in gemacht:
+                art += " (Produkt schon gepostet)"
+            aus.append(f"| {i} | {p} | {art} | {k['alter']} | {k['plus_views']} | {k['produkt'][:50].replace('|', '/')} | @{k['creator']} | "
+                       f"https://www.tiktok.com/@{k['creator']}/video/{k['video_id']} |")
+        f = ORDNER / f"{land}-rangliste{endung}.md"
+        f.write_text("\n".join(aus) + "\n")
+        # Artur 20.11.2026: Rangliste als Seite mit Vorschaubildern (Social1-Vorschau, sonst <land>-bilder/)
+        esc = lambda t: str(t).replace("&", "&amp;").replace("<", "&lt;").replace('"', "&quot;")
+        karten = []
+        for i, (p, n, art) in enumerate(teil, 1):
+            k = kand[n]
+            bild, lokal = k["vorschau"], f"{land}-bilder/{k['video_id']}.jpg"
+            schon = " schon" if k["produkt_id"] in gemacht else ""
+            karten.append(f'<a class="k{schon}" href="https://www.tiktok.com/@{esc(k["creator"])}/video/{k["video_id"]}" target="_blank">'
+                          f'<img loading="lazy" src="{esc(bild)}" onerror="this.onerror=null;this.src=\'{lokal}\'" alt=""><b>{i}</b><i>{esc(art)}</i>'
+                          f'<span>{esc(k["alter"])} · +{esc(k["plus_views"])}{" · Produkt schon gepostet" if schon else ""}</span>'
+                          f'<span class="p">{esc(k["produkt"][:70])}</span><span>@{esc(k["creator"])} · Seite {esc(k.get("seite", "?"))}</span></a>')
+        titel = f"Rangliste {land.upper()} {HEUTE.strftime('%d.%m.%Y')}{zusatz}"
+        (ORDNER / f"{land}-rangliste{endung}.html").write_text(
+            f'<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>{titel}</title><style>'
+            'body{font:13px -apple-system,sans-serif;margin:16px;background:#fff;color:#111}'
+            '@media(prefers-color-scheme:dark){body{background:#111;color:#eee}.k{background:#222!important}}'
+            '.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}'
+            '.k{position:relative;display:flex;flex-direction:column;gap:2px;background:#f3f3f3;border-radius:8px;overflow:hidden;'
+            'color:inherit;text-decoration:none;padding-bottom:6px}.k span,.k i{padding:0 6px}.k.schon{opacity:.55}'
+            '.k img{width:100%;aspect-ratio:9/16;object-fit:cover;background:#999}.p{font-weight:600}'
+            '.k b{position:absolute;top:6px;left:6px;background:#000c;color:#fe2c55;padding:2px 7px;border-radius:6px;font-size:15px}'
+            f'</style><h1>{titel}</h1><p>{len(teil)} Videos · Platz 1 = beste Punkte · blass = Produkt schon gepostet · '
+            f'Klick öffnet TikTok</p><div class="g">{"".join(karten)}</div>')
+        print("\n".join(aus[4:14]))
+        print(f"FERTIG rangliste: {f}")
 
 
 if __name__ == "__main__":
