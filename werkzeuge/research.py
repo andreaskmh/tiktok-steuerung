@@ -1341,6 +1341,9 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
         "land": land.upper(), "datum": datum, "stand": time.strftime("%d.%m.%Y %H:%M"),
         "listen": {**{p: [{"titel": a, "videos": [roh(i, z) for i, z in enumerate(t, 1)]} for a, t in abschnitte[p]] for p in PERSONEN},
                    "SLIDES": [{"titel": "SLIDES", "videos": [roh(i, z) for i, z in enumerate(slides, 1)]}]}}, ensure_ascii=False))
+    heim = pathlib.Path.home() / ".tiktok-research" / "seite"     # für werkzeuge/ranglisten_server.py (Seite im WLAN)
+    if heim.exists():
+        (heim / f"daten-{land}.json").write_bytes((seite / f"daten-{land}.json").read_bytes())
     seiten = {p: "".join(f"<h2>{a} ({len(t)})</h2>{tabelle(t)}" for a, t in abschnitte[p]) for p in PERSONEN}
     seiten["slides"] = f"<h2>SLIDES ({len(slides)})</h2>{tabelle(slides)}"
     for wer, inhalt in seiten.items():

@@ -55,7 +55,7 @@ details p{margin:0 0 8px}
 <div class="seg" role="group" aria-label="Liste">
   <button id="wer-artur" data-wer="Artur" aria-pressed="true">Artur</button>
   <button id="wer-andreas" data-wer="Andreas" aria-pressed="false">Andreas</button>
-  <button id="wer-slides" data-wer="SLIDES" aria-pressed="false">SLIDES</button>
+  <button id="wer-slides" data-wer="SLIDES" aria-pressed="false">Slideshows</button>
 </div>
 <div class="info"><span id="zaehler"></span><span id="sync"></span></div>
 <main id="liste"><p class="leer">Rangliste wird geladen …</p></main>
@@ -63,6 +63,7 @@ details p{margin:0 0 8px}
 
 <script>
 const esc = t => String(t ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+const nenn = t => String(t ?? "").replace(/SLIDES/g, "Slideshows");   // Artur 20.11.: „Slideshows“ statt „SLIDES“
 const fett = t => esc(t).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\n/g,"<br>");
 let wahl = {land:"de", wer:"Artur"};
 try { Object.assign(wahl, JSON.parse(localStorage.getItem("wahl") || "{}")); } catch(e) {}
@@ -90,7 +91,7 @@ function zeile(v){
     <button class="hk" aria-pressed="${fertig}" aria-label="Video ${v.nr} erledigt">${fertig ? "✓" : ""}</button>
     <span class="nr">${v.nr}</span>
     <div class="m"><a href="${esc(v.url)}" target="_blank" rel="noopener">${esc(v.produkt)}</a>
-      <div class="sub"><span class="chip">${esc(v.art)}</span>${extra}<span class="cr">@${esc(v.creator)}</span></div></div>
+      <div class="sub"><span class="chip">${esc(nenn(v.art))}</span>${extra}<span class="cr">@${esc(v.creator)}</span></div></div>
     <div class="r"><b>+${esc(v.plus)}</b><span class="alt ${alt}">${esc(v.alter)}</span></div>
     ${det}</div>`;
 }
@@ -99,6 +100,7 @@ function zeigen(){
   document.querySelectorAll("[data-land]").forEach(b => b.setAttribute("aria-pressed", b.dataset.land === wahl.land));
   document.querySelectorAll("[data-wer]").forEach(b => b.setAttribute("aria-pressed", b.dataset.wer === wahl.wer));
   const d = daten[wahl.land], el = document.getElementById("liste");
+  const offen = new Set([...el.querySelectorAll("details[open]")].map(x => x.closest(".z").dataset.v));   // aufgeklappte Skripte behalten
   if (!d) { el.innerHTML = '<p class="leer">Rangliste wird geladen …</p>'; return; }
   document.getElementById("stand").textContent = `Stand ${d.stand} · Research ${d.datum}`;
   const teile = d.listen[wahl.wer] || [];
@@ -106,8 +108,9 @@ function zeigen(){
   const erledigt = alle.filter(v => haken[v.v]).length;
   document.getElementById("zaehler").textContent = `${erledigt} von ${alle.length} erledigt`;
   el.innerHTML = teile.length ? teile.map(t =>
-    `<section class="karte"><div class="kt"><b>${esc(t.titel)}</b><span>${t.videos.length} Videos</span></div>${t.videos.map(zeile).join("")}</section>`
+    `<section class="karte"><div class="kt"><b>${esc(nenn(t.titel))}</b><span>${t.videos.length} Videos</span></div>${t.videos.map(zeile).join("")}</section>`
   ).join("") : '<p class="leer">Keine Videos in dieser Liste.</p>';
+  el.querySelectorAll(".z").forEach(z => { if (offen.has(z.dataset.v)) z.querySelector("details")?.setAttribute("open", ""); });
 }
 
 document.addEventListener("click", async e => {
@@ -123,7 +126,10 @@ document.addEventListener("click", async e => {
     const v = b.closest(".z").dataset.v, an = !haken[v];
     if (an) haken[v] = true; else delete haken[v];
     zeigen();
-    if (db) {
+    if (mac) {
+      try { const r = await fetch("haken", {method: "POST", body: JSON.stringify({v, an})}); if (!r.ok) throw 0; }
+      catch(err) { document.getElementById("sync").textContent = "Haken nicht gespeichert – Mac erreichbar?"; }
+    } else if (db) {
       try { an ? await db.collection("haken").doc(v).set({an: true, zeit: Date.now()}) : await db.collection("haken").doc(v).delete(); }
       catch(err) { document.getElementById("sync").textContent = "Haken nicht gespeichert"; }
     } else lokalSpeichern();
@@ -138,9 +144,23 @@ async function datenLaden(){
   zeigen();
 }
 
+// Artur 20.11.: läuft die Seite vom Mac (werkzeuge/ranglisten_server.py), liegen die Haken dort – für alle Handys im WLAN
+let mac = false;
+async function macHaken(){
+  try { const r = await fetch("haken", {cache: "no-store"}); if (!r.ok) return false;
+        const neu = await r.json(); document.getElementById("sync").textContent = "Haken für alle";
+        if (JSON.stringify(neu) !== JSON.stringify(haken)) { haken = neu; zeigen(); } return true; }
+  catch(e) { if (mac) document.getElementById("sync").textContent = "Mac gerade nicht erreichbar"; return false; }
+}
 async function hakenVerbinden(){
   lokalLaden(); zeigen();
-  db = window.claude ? await window.claude.use("db") : null;
+  if (location.protocol === "http:" && await macHaken()) {
+    mac = true;
+    setInterval(macHaken, 5000);                  // Haken der anderen Handys alle 5 s holen
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) macHaken(); });
+    return;
+  }
+  db =window.claude ? await window.claude.use("db") : null;
   const s = document.getElementById("sync");
   if (!db) { s.textContent = "Haken nur auf diesem Gerät"; return; }
   const t = setTimeout(() => s.textContent = "Haken werden geladen …", 10000);
