@@ -1203,7 +1203,7 @@ def pdf_machen(html, ziel):
     if not chrome.exists():
         return print("Hinweis: kein Google Chrome → keine PDF")
     tmp = ORDNER / "_pdf.html"
-    tmp.write_text(html.replace("</style>", "@page{size:430px 932px;margin:0}th{position:static}</style>"))
+    tmp.write_text(html.replace("</style>", "@page{size:430px 932px;margin:0}th{position:static}tr.fertig td{opacity:1}</style>"))
     subprocess.run([str(chrome), "--headless=new", "--disable-gpu", "--no-pdf-header-footer", f"--print-to-pdf={ziel}",
                     tmp.as_uri()], capture_output=True, timeout=90)
     tmp.unlink(missing_ok=True)
@@ -1321,7 +1321,7 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
         for i, (pk, n, art) in enumerate(teil, 1):
             k = kand[n]
             alt = {"Today": "neu", "Yesterday": "gestern"}.get(k["alter"], "alt")
-            r.append(f'<tr><td><span class="nr">{i}</span></td><td><a href="https://www.tiktok.com/@{esc(k["creator"])}/video/{k["video_id"]}">'
+            r.append(f'<tr><td><label class="hk"><input type="checkbox" data-v="{k["video_id"]}"><span class="nr">{i}</span></label></td><td><a href="https://www.tiktok.com/@{esc(k["creator"])}/video/{k["video_id"]}">'
                      f'{esc(k["produkt"][:60])}</a><div class="sub"><span class="chip">{esc(art)}</span>{badge(k, art)}'
                      f'<span class="cr">@{esc(k["creator"])}</span></div></td><td><span class="chip {alt}">{esc(k["alter"])}</span></td>'
                      f'<td class="v">{esc(k["plus_views"])}</td></tr>' + skript(k, art))
@@ -1338,7 +1338,7 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
                 'html{background:#161618}body{font:15px -apple-system,sans-serif;margin:0;padding:14px 12px 40px;background:var(--bg);color:var(--fg)}'
                 'h1{font-size:22px;font-weight:700;margin:4px 0 2px;color:#fff}.st{color:var(--mut);font-size:13px;margin:0 0 4px}'
                 'h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gruen);margin:22px 0 6px}'
-                'table{border-collapse:separate;border-spacing:0;width:100%;table-layout:fixed}th:nth-child(1){width:38px}th:nth-child(3){width:76px}th:nth-child(4){width:58px}td{overflow-wrap:anywhere}th{position:sticky;top:0;background:var(--kopf);color:var(--mut);font-size:11px;'
+                'table{border-collapse:separate;border-spacing:0;width:100%;table-layout:fixed}th:nth-child(1){width:38px}input{position:absolute;opacity:0;width:0;height:0}.hk{cursor:pointer}input:checked+.nr{background:#4cd964;color:#000}tr.fertig td:not(:first-child){opacity:.35}tr.fertig a{text-decoration:line-through}th:nth-child(3){width:76px}th:nth-child(4){width:58px}td{overflow-wrap:anywhere}th{position:sticky;top:0;background:var(--kopf);color:var(--mut);font-size:11px;'
                 'text-transform:uppercase;letter-spacing:.06em;text-align:left;padding:8px 6px;z-index:1;border-bottom:1px solid var(--line)}'
                 'td{padding:10px 6px;border-bottom:1px solid var(--line);vertical-align:top}'
                 '.nr{display:inline-block;min-width:28px;text-align:center;padding:4px 0;border-radius:9px;background:var(--glas);'
@@ -1350,7 +1350,12 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
                 '.v{font-weight:700;color:#fff;white-space:nowrap}tr.skr td{padding-top:0}tr:has(+tr.skr) td{border-bottom:0}'
                 'details{background:#1f1f22;border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.45}'
                 'summary{color:#ffcc66;font-size:13px;font-weight:600}details[open] summary{margin-bottom:6px}details p{margin:0 0 8px}'
-                f'</style><h1>{wer if wer != "slides" else "SLIDES"}</h1><p class="st">Rangliste {land.upper()} · {datum}</p>{inhalt}')
+                f'</style><h1>{wer if wer != "slides" else "SLIDES"}</h1><p class="st">Rangliste {land.upper()} · {datum} · Nummer antippen = erledigt</p>{inhalt}'
+                # Artur 20.11.: Haken nur für ihn/Andreas, pro Gerät gemerkt (localStorage, klappt in Safari, nicht in der WhatsApp-Vorschau)
+                '<script>const K=document.title;let h={};try{h=JSON.parse(localStorage.getItem(K)||"{}")}catch(e){}'
+                'document.querySelectorAll("input[data-v]").forEach(c=>{const z=c.closest("tr");c.checked=!!h[c.dataset.v];'
+                'z.classList.toggle("fertig",c.checked);c.onchange=()=>{h[c.dataset.v]=c.checked;z.classList.toggle("fertig",c.checked);'
+                'try{localStorage.setItem(K,JSON.stringify(h))}catch(e){}}})</script>')
         name = f"{land}-rangliste-{wer.lower()}.html"
         (ORDNER / name).write_text(html)
         (desk / schoen(name)).write_text(html)
