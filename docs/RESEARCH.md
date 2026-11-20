@@ -63,7 +63,8 @@ bis Seite 50 (BOF/SLIDES) ist. USA: weiterhin nie zweimal.
 4. **Zurzeit deaktiviert (Artur 19.11.: `amazon_aktiv: false` in research_regeln.json – Schritt auslassen).** Nur für `QUALITY`: Amazon.es suchen (`amazon <spanisches/englisches Suchwort>`), passendstes Produkt (gute Bewertungen, Preis passt) →
    `wagen <ASIN>`. **Nie kaufen, nie zur Kasse, nie „Comprar ya“.** Captcha/Login → STOPP, Artur.
 5. `speichern us "SLIDES USA <datum>" …` und `speichern us "Quality USA <datum>" …`, dann `rangliste us`.
-6. (weiter mit „Skripte“ unten)
+6. Slideshow-Vorbilder (Artur 20.11., ~1 Min.): `python3 werkzeuge/research.py vorbilder` → `uebergabe/ausgang/social1-vorbilder.json`.
+7. (weiter mit „Skripte“ unten)
 
 **Skripte (nach DE und USA, Artur 19.11.)**
 - **Nie Social1-„Transcribe“ benutzen (kostet Credits, Artur 19.11.).** Transkripte macht `werkzeuge/transkript.py` lokal:

@@ -505,3 +505,4 @@ vom linken Rand (kein Tipp); Profil-Reiter mit Beschriftung „Profil“; länge
   bis zur Seitengrenze der Liste (wie `speichern`), vorher auch Seite > 50.
 - `speichern`: Nummern, die beim neuen Lesen nicht mehr unter den Kandidaten sind, werden übersprungen (vorher KeyError
   beim USA-Abendlauf 20.11.).
+- Vorbilder-Research (klickguru) läuft jetzt in jeder Research-Runde (7/13/19 Uhr) nach USA mit (Artur 20.11.).
