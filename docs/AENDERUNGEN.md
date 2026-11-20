@@ -555,3 +555,4 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - 20.11.2026 (spät): Steht im deutschen Skript „nur Musik“, kommen Arturs 2 Standard-Skripte (Black Friday + Preisfehler) mit Produktname dazu – in .md und HTML, alle Listen. Warum: Artur.
 - 20.11.2026 (spät): Standard-Skripte mit Platzhaltern „(Produkt)“ und „(Preis)“ statt automatisch eingesetzt. Warum: Artur schaut Produkt und Preis selbst nach.
 - 20.11.2026 (spät): Standard-Skripte beschriftet „Black-Friday-Skript“ / „Normales Standard-Skript“ statt 1./2.
+- 20.11.2026 (spät): Ranglisten-HTML ohne Seitwärts-Scrollen (feste Spaltenbreiten, Umbruch), Skripte ohne JavaScript aufklappbar; zusätzlich PDF in iPhone-Breite (Google Chrome headless, Skripte aufgeklappt), weil Links in der WhatsApp/AirDrop-Vorschau nur im PDF funktionieren.

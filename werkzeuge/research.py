@@ -1197,6 +1197,18 @@ def rangliste(land):
     personen_und_desktop(land, zeilen, kand, gemacht)
 
 
+def pdf_machen(html, ziel):
+    """Artur 20.11.: PDF in iPhone-Breite (Links funktionieren auch in der WhatsApp/AirDrop-Vorschau, HTML-Links dort nicht)."""
+    chrome = pathlib.Path("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
+    if not chrome.exists():
+        return print("Hinweis: kein Google Chrome → keine PDF")
+    tmp = ORDNER / "_pdf.html"
+    tmp.write_text(html.replace("</style>", "@page{size:430px 932px;margin:0}th{position:static}</style>"))
+    subprocess.run([str(chrome), "--headless=new", "--disable-gpu", "--no-pdf-header-footer", f"--print-to-pdf={ziel}",
+                    tmp.as_uri()], capture_output=True, timeout=90)
+    tmp.unlink(missing_ok=True)
+
+
 PERSONEN = ("Artur", "Andreas")                               # Artur 20.11.2026: teilen sich BOF/Reactions/Quality
 
 
@@ -1285,8 +1297,7 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
     esc = lambda t: str(t).replace("&", "&amp;").replace("<", "&lt;").replace('"', "&quot;")
     def badge(k, art=""):
         v = k["video_id"]
-        knopf = lambda t: (f'<a class="chip sp" href="#s{v}" onclick="document.getElementById(\'s{v}\').toggleAttribute(\'open\');'
-                           f'return false">{t}</a>')
+        knopf = lambda t: f'<span class="chip sp">{t}</span>'
         if v in skr:
             return knopf(f"🌐 {skr[v][0]} · Skript")
         return knopf("🎵 Standard-Skript") if "BOF" in art.split("+") and v in musik else ""
@@ -1327,7 +1338,7 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
                 'html{background:#161618}body{font:15px -apple-system,sans-serif;margin:0;padding:14px 12px 40px;background:var(--bg);color:var(--fg)}'
                 'h1{font-size:22px;font-weight:700;margin:4px 0 2px;color:#fff}.st{color:var(--mut);font-size:13px;margin:0 0 4px}'
                 'h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gruen);margin:22px 0 6px}'
-                'table{border-collapse:separate;border-spacing:0;width:100%}th{position:sticky;top:0;background:var(--kopf);color:var(--mut);font-size:11px;'
+                'table{border-collapse:separate;border-spacing:0;width:100%;table-layout:fixed}th:nth-child(1){width:38px}th:nth-child(3){width:76px}th:nth-child(4){width:58px}td{overflow-wrap:anywhere}th{position:sticky;top:0;background:var(--kopf);color:var(--mut);font-size:11px;'
                 'text-transform:uppercase;letter-spacing:.06em;text-align:left;padding:8px 6px;z-index:1;border-bottom:1px solid var(--line)}'
                 'td{padding:10px 6px;border-bottom:1px solid var(--line);vertical-align:top}'
                 '.nr{display:inline-block;min-width:28px;text-align:center;padding:4px 0;border-radius:9px;background:var(--glas);'
@@ -1337,12 +1348,13 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
                 'box-shadow:inset 0 1px 0 #ffffff12}.chip.neu{color:var(--gruen);background:#4cd96422}.chip.gestern{color:var(--tuerkis);background:#5ac8c81a}'
                 '.chip.alt{color:var(--mut)}.chip.sp{color:#ffcc66;background:#ffcc661c}.cr{font-size:12px;color:var(--mut)}'
                 '.v{font-weight:700;color:#fff;white-space:nowrap}tr.skr td{padding-top:0}tr:has(+tr.skr) td{border-bottom:0}'
-                'details:not([open]){display:none}details{background:#1f1f22;border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.45}'
-                'summary{color:#ffcc66;font-size:12px;margin-bottom:6px;list-style:none}details p{margin:0 0 8px}'
+                'details{background:#1f1f22;border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.45}'
+                'summary{color:#ffcc66;font-size:13px;font-weight:600}details[open] summary{margin-bottom:6px}details p{margin:0 0 8px}'
                 f'</style><h1>{wer if wer != "slides" else "SLIDES"}</h1><p class="st">Rangliste {land.upper()} · {datum}</p>{inhalt}')
         name = f"{land}-rangliste-{wer.lower()}.html"
         (ORDNER / name).write_text(html)
         (desk / schoen(name)).write_text(html)
+        pdf_machen(html.replace("<details ", "<details open "), desk / schoen(name).replace(".html", ".pdf"))
     print(f"FERTIG Aufteilung {', '.join(PERSONEN)} + Ablage: {desk}")
 
 
