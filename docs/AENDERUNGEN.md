@@ -576,3 +576,6 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
   mit kleiner grauer Überschrift „›“, oben runder Account-Kreis + Such-Kapsel zum Wechseln, Zahl mit ▲/▼ ggü. gleich langem Zeitraum davor (nicht bei „Heute“),
   türkise Linie mit Fläche + Tagesachse, Umschalter als graue Kapsel, „Schnell“ als weiße Kapsel, Aktualisieren-Karte nach unten.
   Neu: Startbild „statsKMH“ auf Schwarz (0,9 s, App.swift).
+- statsKMH: bunte runde Symbole (Kacheln + Karten-Überschriften, Revolut-Art); Diagramm als eigene Ansicht mit vorberechneten Punkten
+  (Antippen zeichnet nur das Diagramm neu → kein Ruckeln); Account-Auswahl/„Account hinzufügen“ mit gleichem Hintergrund + Glas-Zeilen;
+  Fehler unter Schnell/Voll nur vom letzten Lauf (< 6 Std.), doppelte einmal; alte andrucha-Fehler aus status.json gelöscht.

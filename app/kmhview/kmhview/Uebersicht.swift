@@ -22,6 +22,16 @@ extension Color {   // Revolut-artig (Artur 20.11. nachts): Blau-Grau-Verlauf, h
     static let gut = hd(0x109A7C, 0x34D6AE)
     static let warn = hd(0xC98A2E, 0xE0A95A)
     static let schlecht = hd(0xE0414A, 0xFF5C63)
+    static let blau = hd(0x2F6FEB, 0x4C8DFF), lila = hd(0x8E44D9, 0xB57BFF), orange = hd(0xE8820C, 0xFF9F2E)
+    static let pink = hd(0xD6336C, 0xFF5C9A), gelb = hd(0xC79A00, 0xFFD23F)
+}
+/// Rundes buntes Symbol (Revolut-Liste: Krypto lila, Verknüpft türkis …)
+struct Symbol: View {
+    let name: String; let farbe: Color; var groesse: CGFloat = 30
+    var body: some View {
+        Image(systemName: name).font(.system(size: groesse * 0.47, weight: .bold)).foregroundStyle(.white)
+            .frame(width: groesse, height: groesse).background(farbe.gradient, in: Circle())
+    }
 }
 let verlaufFarbe = LinearGradient(colors: [.gut, .gut], startPoint: .top, endPoint: .bottom)   // Balken (Artur: nicht grau)
 
@@ -163,6 +173,7 @@ struct Aktualisieren: View {
                 }
             } else {
                 HStack {
+                    Symbol(name: "arrow.triangle.2.circlepath", farbe: .blau, groesse: 26)
                     Text("Daten aktualisieren  ›").font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
                     Spacer()
                     if let e = st?.ende { Text("zuletzt " + datum(e).formatted(.dateTime.day().month().hour().minute().locale(deDE))).font(.caption).foregroundStyle(.secondary) }
@@ -195,8 +206,8 @@ struct Aktualisieren: View {
                             .font(.caption).foregroundStyle(ctx.date.timeIntervalSince(g) > 90 ? Color.warn : .secondary)
                     }
                 }
-                if let f = st?.fehler, !f.isEmpty {
-                    ForEach(f.prefix(3), id: \.self) { Text($0).font(.caption2).foregroundStyle(Color.warn).lineLimit(2) }
+                if let f = st?.fehler, !f.isEmpty, Date().timeIntervalSince(datum(st?.ende)) < 6 * 3600 {
+                    ForEach(f.reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } }.prefix(3), id: \.self) { Text($0).font(.caption2).foregroundStyle(Color.warn).lineLimit(2) }
                 }
                 #if os(iOS)
                 if !s.hatOrdner { Text("Erst oben rechts (Wolke) den iCloud-Ordner „statsKMH“ wählen.").font(.caption).foregroundStyle(Color.warn) }
@@ -252,11 +263,14 @@ struct Hintergrund: View {
 struct Karte<C: View>: View {
     var titel: String? = nil
     var rechts: String? = nil
+    var symbol: String? = nil
+    var farbe: Color = .gut
     @ViewBuilder let inhalt: C
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             if let t = titel {
-                HStack {
+                HStack(spacing: 10) {
+                    if let sy = symbol { Symbol(name: sy, farbe: farbe, groesse: 26) }
                     Text(t + "  ›").font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
                     Spacer()
                     if let r = rechts { Text(r).font(.caption.weight(.medium)).foregroundStyle(.secondary).multilineTextAlignment(.trailing) }
@@ -332,7 +346,9 @@ struct KontoWahl: View {
                             if x.name == auswahl { Image(systemName: "checkmark").foregroundStyle(Color.akzent) }
                         }.contentShape(Rectangle())
                     }.buttonStyle(.plain)
+                    .listRowBackground(Color.flaeche)
                 }
+                .scrollContentBackground(.hidden).background(Hintergrund())
                 .searchable(text: $suche, prompt: "Account suchen")
                 .navigationTitle("Account wählen")
                 .toolbar {
@@ -360,6 +376,7 @@ struct KontoNeu: View {
             Form {
                 Section {
                     TextField("TikTok-Name, z. B. anduri.official", text: $name)
+                        .listRowBackground(Color.flaeche)
                         #if os(iOS)
                         .textInputAutocapitalization(.never).autocorrectionDisabled()
                         #endif
@@ -369,6 +386,7 @@ struct KontoNeu: View {
                 }
                 if fehler { Text("Konnte nicht gespeichert werden – iCloud-Ordner gewählt?").foregroundStyle(Color.warn) }
             }
+            .scrollContentBackground(.hidden).background(Hintergrund())
             .navigationTitle("Account hinzufügen")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Abbrechen") { weg() } }
@@ -429,11 +447,6 @@ struct BereichWahl: View {
 
 struct Hero: View {
     let k: Konto; @Binding var periode: Periode; @Binding var eigen: Spanne
-    @State private var gewaehlt: Date?
-    var punkt: Tag? {
-        guard let g = gewaehlt else { return nil }
-        return k.verlauf.min { abs(tagDatum($0.tag).timeIntervalSince(g)) < abs(tagDatum($1.tag).timeIntervalSince(g)) }
-    }
     var body: some View {
         let sp = periode.spanne(eigen: eigen)
         let z = k.summe(sp)
@@ -465,48 +478,65 @@ struct Hero: View {
             if periode == .eigen {
                 BereichWahl(spanne: $eigen)
             }
-            let schnitt = k.verlauf.isEmpty ? 0 : k.verlauf.reduce(0) { $0 + $1.provision } / Double(k.verlauf.count)
-            Chart {
-              RuleMark(y: .value("Ø", schnitt)).foregroundStyle(Color.secondary.opacity(0.6)).lineStyle(StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [0.5, 5]))
-              ForEach(k.verlauf) { t in
-                AreaMark(x: .value("Tag", tagDatum(t.tag)), y: .value("€", t.provision))
-                    .foregroundStyle(LinearGradient(colors: [Color.gut.opacity(0.22), Color.gut.opacity(0)], startPoint: .top, endPoint: .bottom))
-                LineMark(x: .value("Tag", tagDatum(t.tag)), y: .value("€", t.provision))
-                    .foregroundStyle(Color.gut).lineStyle(StrokeStyle(lineWidth: 2.2, lineCap: .round, lineJoin: .round))
-                if let p = punkt, p.tag == t.tag {
-                    RuleMark(x: .value("Tag", tagDatum(p.tag))).foregroundStyle(Color.akzent.opacity(0.5)).lineStyle(StrokeStyle(lineWidth: 1, dash: [3, 3]))
-                        .annotation(position: .top, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {
-                            VStack(spacing: 1) {
-                                Text(euro(p.provision)).font(.caption.weight(.bold)).monospacedDigit()
-                                Text(tagDatum(p.tag).formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated).locale(deDE))).font(.caption2)
-                            }
-                            .padding(.horizontal, 8).padding(.vertical, 4)
-                            .background(Color.akzent, in: RoundedRectangle(cornerRadius: 8, style: .continuous)).foregroundStyle(Color.grund)
-                        }
-                    PointMark(x: .value("Tag", tagDatum(p.tag)), y: .value("€", p.provision)).foregroundStyle(Color.akzent).symbolSize(70)
-                }
-              }
-            }
-            .chartOverlay { proxy in   // Tippen wählt einen Tag (Ziehen würde mit dem Scrollen kämpfen → Ruckeln)
-                GeometryReader { geo in
-                    Rectangle().fill(.clear).contentShape(Rectangle())
-                        .onTapGesture { ort in
-                            guard let ebene = proxy.plotFrame else { return }
-                            let x = ort.x - geo[ebene].origin.x
-                            let d: Date? = proxy.value(atX: x)
-                            gewaehlt = (gewaehlt != nil && d.map { abs($0.timeIntervalSince(gewaehlt!)) < 43200 } == true) ? nil : d
-                        }
-                }
-            }
-            .chartXAxis { AxisMarks(values: .stride(by: .day, count: 5)) { _ in AxisValueLabel(format: .dateTime.day()).foregroundStyle(Color.secondary) } }
-            .chartYScale(domain: 0...max(1, (k.verlauf.map(\.provision).max() ?? 1) * 1.08))
-            .chartYAxis { AxisMarks(position: .trailing, values: [k.verlauf.map(\.provision).max() ?? 0]) { v in
-                AxisValueLabel { if let d = v.as(Double.self) { Text(euro(d, kurz: true)).font(.caption2).foregroundStyle(.secondary) } } } }
-            .frame(height: 170).padding(.top, 26)
+            VerlaufChart(k: k).equatable()
             Text("Verlauf: letzte 30 Tage, Provision je Bestelltag · gepunktet = Durchschnitt · Tag antippen für den Wert").font(.caption2).foregroundStyle(.secondary)
         }
         .padding(16)
         .background(Color.flaeche, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+    }
+}
+
+/// 30-Tage-Verlauf. Eigene Ansicht mit eigenem Zustand: Tippen zeichnet nur das Diagramm neu (sonst ruckelt es, Artur 20.11.)
+struct VerlaufChart: View, Equatable {
+    let k: Konto
+    struct P: Identifiable { let id: String; let d: Date; let w: Double }
+    let punkte: [P], schnitt: Double, hoch: Double
+    @State private var gewaehlt: P?
+    init(k: Konto) {
+        self.k = k
+        punkte = k.verlauf.map { P(id: $0.tag, d: tagDatum($0.tag), w: $0.provision) }
+        schnitt = punkte.isEmpty ? 0 : punkte.reduce(0) { $0 + $1.w } / Double(punkte.count)
+        hoch = punkte.map(\.w).max() ?? 0
+    }
+    static func == (a: Self, b: Self) -> Bool { a.k.name == b.k.name && a.punkte.count == b.punkte.count && a.hoch == b.hoch && a.schnitt == b.schnitt }
+    var body: some View {
+        Chart {
+            RuleMark(y: .value("Ø", schnitt)).foregroundStyle(Color.secondary.opacity(0.6)).lineStyle(StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [0.5, 5]))
+            ForEach(punkte) { t in
+                AreaMark(x: .value("Tag", t.d), y: .value("€", t.w))
+                    .foregroundStyle(LinearGradient(colors: [Color.gut.opacity(0.22), Color.gut.opacity(0)], startPoint: .top, endPoint: .bottom))
+                LineMark(x: .value("Tag", t.d), y: .value("€", t.w))
+                    .foregroundStyle(Color.gut).lineStyle(StrokeStyle(lineWidth: 2.2, lineCap: .round, lineJoin: .round))
+            }
+            if let p = gewaehlt {
+                RuleMark(x: .value("Tag", p.d)).foregroundStyle(Color.akzent.opacity(0.5)).lineStyle(StrokeStyle(lineWidth: 1, dash: [3, 3]))
+                    .annotation(position: .top, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {
+                        VStack(spacing: 1) {
+                            Text(euro(p.w)).font(.caption.weight(.bold)).monospacedDigit()
+                            Text(p.d.formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated).locale(deDE))).font(.caption2)
+                        }
+                        .padding(.horizontal, 8).padding(.vertical, 4)
+                        .background(Color.akzent, in: RoundedRectangle(cornerRadius: 8, style: .continuous)).foregroundStyle(Color.grund)
+                    }
+                PointMark(x: .value("Tag", p.d), y: .value("€", p.w)).foregroundStyle(Color.akzent).symbolSize(70)
+            }
+        }
+        .chartOverlay { proxy in   // Tippen wählt einen Tag (Ziehen würde mit dem Scrollen kämpfen → Ruckeln)
+            GeometryReader { geo in
+                Rectangle().fill(.clear).contentShape(Rectangle())
+                    .onTapGesture { ort in
+                        guard let ebene = proxy.plotFrame, let d: Date = proxy.value(atX: ort.x - geo[ebene].origin.x) else { return }
+                        let n = punkte.min { abs($0.d.timeIntervalSince(d)) < abs($1.d.timeIntervalSince(d)) }
+                        gewaehlt = n?.id == gewaehlt?.id ? nil : n
+                    }
+            }
+        }
+        .chartXAxis { AxisMarks(values: .stride(by: .day, count: 5)) { _ in AxisValueLabel(format: .dateTime.day()).foregroundStyle(Color.secondary) } }
+        .chartYScale(domain: 0...max(1, hoch * 1.08))
+        .chartYAxis { AxisMarks(position: .trailing, values: [hoch]) { v in
+            AxisValueLabel { if let d = v.as(Double.self) { Text(euro(d, kurz: true)).font(.caption2).foregroundStyle(.secondary) } } } }
+        .frame(height: 170).padding(.top, 26)
+        .onChange(of: k.name) { gewaehlt = nil }
     }
 }
 
@@ -586,7 +616,7 @@ struct VideoStatistik: View {
         let alle = sortiert(zeilen(l))
         let seiten = max(1, (alle.count + proSeite - 1) / proSeite)
         let s = min(seite, seiten - 1)
-        Karte(titel: "Video-Performance", rechts: "\(l.count) Videos mit Verkäufen") {
+        Karte(titel: "Video-Performance", rechts: "\(l.count) Videos mit Verkäufen", symbol: "play.fill", farbe: .pink) {
             ZeitTabs(periode: $periode) { seite = 0 }
             if periode == .eigen {
                 BereichWahl(spanne: $eigen)
@@ -699,11 +729,11 @@ struct Kacheln: View {
     var body: some View {
         let z = k.kennzahlen
         LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
-            Kachel(symbol: "building.columns.fill", farbe: .gut, titel: "Bereits ausgezahlt", wert: z.bank.map { euro($0) } ?? "–", unter: "aufs Bankkonto (ca.)")
+            Kachel(symbol: "building.columns.fill", farbe: .blau, titel: "Bereits ausgezahlt", wert: z.bank.map { euro($0) } ?? "–", unter: "aufs Bankkonto (ca.)")
             Kachel(symbol: "banknote.fill", farbe: .gut, titel: "Zur Auszahlung bereit", wert: z.bereit.map { euro($0) } ?? "–", unter: "Verfügbare Auszahlung")
-            Kachel(symbol: "hourglass", farbe: .warn, titel: "Noch offen", wert: euro(z.offen), unter: "\(zahl(z.offen_anzahl)) Bestellungen")
-            Kachel(symbol: "checkmark.seal.fill", farbe: .akzent, titel: "Abgerechnet gesamt", wert: euro(z.ausgezahlt), unter: "von TikTok gutgeschrieben")
-            Kachel(symbol: "gift.fill", farbe: .akzent, titel: "Prämien", wert: euro(z.praemien), unter: "soweit abgelesen")
+            Kachel(symbol: "hourglass", farbe: .orange, titel: "Noch offen", wert: euro(z.offen), unter: "\(zahl(z.offen_anzahl)) Bestellungen")
+            Kachel(symbol: "checkmark.seal.fill", farbe: .lila, titel: "Abgerechnet gesamt", wert: euro(z.ausgezahlt), unter: "von TikTok gutgeschrieben")
+            Kachel(symbol: "gift.fill", farbe: .pink, titel: "Prämien", wert: euro(z.praemien), unter: "soweit abgelesen")
             Kachel(symbol: "xmark.octagon.fill", farbe: .schlecht, titel: "Nicht berechtigt", wert: z.quote_prozent.formatted(.number.locale(deDE)) + " %", unter: euro(z.verloren) + " entgangen")
         }
     }
@@ -713,7 +743,11 @@ struct Kachel: View {
     let symbol: String; let farbe: Color; let titel: String; let wert: String; var unter: String? = nil
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(titel).font(.subheadline.weight(.semibold)).foregroundStyle(.secondary).lineLimit(1).minimumScaleFactor(0.8)
+            HStack(alignment: .top) {
+                Text(titel).font(.subheadline.weight(.semibold)).foregroundStyle(.secondary).lineLimit(1).minimumScaleFactor(0.8)
+                Spacer(minLength: 4)
+                Symbol(name: symbol, farbe: farbe, groesse: 24)
+            }
             Text(wert).font(.title3.weight(.bold)).minimumScaleFactor(0.6).lineLimit(1)
             Text(unter ?? " ").font(.caption).foregroundStyle(.secondary).lineLimit(1)
         }
@@ -726,7 +760,7 @@ struct Rangliste: View {
     let alle: Konto; let konten: [Konto]; @Binding var auswahl: String
     var body: some View {
         let max = konten.map { $0.zeitraeume.tage30.provision }.max() ?? 1
-        Karte(titel: "Accounts", rechts: "voraussichtlich, letzte 30 Tage") {
+        Karte(titel: "Accounts", rechts: "voraussichtlich, letzte 30 Tage", symbol: "person.2.fill", farbe: .blau) {
             Button { auswahl = alle.name } label: {
                 HStack(spacing: 12) {
                     Avatar(konto: alle, name: alle.name, groesse: 32)
@@ -782,7 +816,7 @@ struct Ring: View {
 struct Monate: View {
     let k: Konto
     var body: some View {
-        Karte(titel: "Nach Bestellmonat", rechts: "nach Bestelldatum · % abgerechnet") {
+        Karte(titel: "Nach Bestellmonat", rechts: "nach Bestelldatum · % abgerechnet", symbol: "calendar", farbe: .orange) {
             ForEach(k.bestellmonate.reversed()) { m in
                 let laeuft = m.monat == laufenderMonat()
                 HStack(spacing: 14) {
@@ -809,7 +843,7 @@ struct Auszahlungen: View {
     let k: Konto
     @State private var gewaehlt: String?
     var body: some View {
-        Karte(titel: "Abgerechnet pro Monat", rechts: "nach Abrechnungsdatum") {
+        Karte(titel: "Abgerechnet pro Monat", rechts: "nach Abrechnungsdatum", symbol: "chart.bar.fill", farbe: .gut) {
             Chart(k.auszahlmonate) { m in
                 BarMark(x: .value("Monat", monatName(m.monat)), y: .value("€", m.betrag), width: .ratio(0.55))
                     .foregroundStyle(m.monat == laufenderMonat() ? AnyShapeStyle(Color.gut.opacity(0.4)) : AnyShapeStyle(verlaufFarbe))
@@ -861,7 +895,7 @@ struct TopListe: View {
     @State private var seite = 0
     var body: some View {
         let s = min(seite, seitenZahl(eintraege.count) - 1)
-        Karte(titel: titel, rechts: "\(eintraege.count) Einträge") {
+        Karte(titel: titel, rechts: "\(eintraege.count) Einträge", symbol: video ? "flame.fill" : "bag.fill", farbe: video ? .schlecht : .lila) {
             ForEach(Array(eintraege.dropFirst(s * 10).prefix(10).enumerated()), id: \.offset) { i, e in
                 let zeile = HStack(spacing: 12) {
                     Text("\(s * 10 + i + 1)").font(.system(.footnote).weight(.bold)).foregroundStyle(.secondary).frame(width: 24)
@@ -889,7 +923,7 @@ struct OffeneListe: View {
     @State private var seite = 0
     var body: some View {
         let s = min(seite, seitenZahl(k.offen.count) - 1)
-        Karte(titel: "Offene Bestellungen", rechts: "\(zahl(k.kennzahlen.offen_anzahl)) gesamt") {
+        Karte(titel: "Offene Bestellungen", rechts: "\(zahl(k.kennzahlen.offen_anzahl)) gesamt", symbol: "hourglass", farbe: .gelb) {
             ForEach(Array(k.offen.dropFirst(s * 10).prefix(10).enumerated()), id: \.offset) { _, o in
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
