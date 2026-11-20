@@ -420,3 +420,10 @@
   ≥ 45 Min. Abstand, --stil klickguru, Gesamtlimit aufgehoben; andere Konten wie bisher (Vergleich). Sicherungen *.bak-vor-klickguru.
   `REZEPT-SLIDESHOW-AUTO.md`: Abschnitt „Test klickguru-Regeln“ (Bild 1 = Story/Meme, immer neue Bilder, Quelle „vorbilder“).
 - Offen: KI-Kennzeichnung am iPhone (Schritt nicht gebaut), Sound-Wiederverwendung (TikTok wählt Musik selbst, Artur 17.11.).
+
+**20.11.2026** – Neu iPhone-App „Provision“ (`app/Provision`, SwiftUI, kostenloses Personal Team → 7 Tage gültig) zeigt die eigenen Provisionszahlen; Daten aus iCloud Drive `Provision/provision.json`, erzeugt von `werkzeuge/analyse/app_daten.py` (aus `bestellungen.json`/`praemien.json`). Installiert auf iPhone 15 Pro Max (Artur).
+
+**20.11.2026** – App heißt jetzt **kmhview** (`app/kmhview`, iPhone + Mac, neues Icon, modernes Design mit Profilbildern,
+voraussichtliche Provision heute/gestern/7/30 Tage, „Alle Accounts“ zusammengerechnet) + Browser-Version (`app/web`, Artifact).
+Neu `werkzeuge/analyse/export_holen.py` (Export aller Accounts am iPhone 11 per AirDrop), `baue.py` (alle Konten),
+`web.py`. Alte App `app/Provision` ersetzt (Artur).
