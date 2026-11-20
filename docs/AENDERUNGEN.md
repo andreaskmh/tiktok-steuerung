@@ -568,3 +568,4 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 ## 20.11.2026 – statsKMH: alle Accounts auf jedem Handy
 - `werkzeuge/analyse/aktualisieren.py`: iPhone 11 und iPhone 15 Pro Max haben jetzt beide alle 6 Accounts (vorher iPhone 15 nur andrucha.official).
   Ohne Handy-Wahl wird jeder Account nur einmal gelesen. Grund: Artur – Stand jetzt sind auf jedem Handy alle Accounts; soll später wieder getrennt werden.
+- statsKMH (`Uebersicht.swift`): Account unten in der Liste antippen → Bild springt nicht mehr mit (Liste bleibt an derselben Stelle stehen, ohne Animation). Grund: Artur – „Wisch-Hocheffekt“ beim Wechseln.

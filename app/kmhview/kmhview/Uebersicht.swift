@@ -33,6 +33,8 @@ extension Color {
 }
 let verlaufFarbe = LinearGradient(colors: [.gut, .gut], startPoint: .top, endPoint: .bottom)   // Balken (Artur: nicht grau)
 
+final class Merker { var y: CGFloat = 0; var hoehe: CGFloat = 0 }
+
 struct Uebersicht: View {
     @EnvironmentObject var s: Speicher
     @State private var auswahl = "Alle Accounts"
@@ -40,11 +42,13 @@ struct Uebersicht: View {
     @State private var videoPeriode: Periode = .tage3
     @State private var eigen = Spanne(von: Calendar.current.date(byAdding: .day, value: -13, to: Calendar.current.startOfDay(for: Date()))!, bis: Calendar.current.startOfDay(for: Date()))
     @State private var waehlen = false
+    @State private var merker = Merker()   // Lage der Accountliste, ohne bei jedem Scrollen neu zu zeichnen
 
     var konto: Konto? { s.daten?.konten.first { $0.name == auswahl } ?? s.daten?.konten.first }
 
     var body: some View {
         NavigationStack {
+          ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     kopf
@@ -54,7 +58,13 @@ struct Uebersicht: View {
                         Hero(k: k, periode: $periode, eigen: $eigen)
                         Kacheln(k: k)
                         VideoStatistik(k: k, periode: $videoPeriode, eigen: $eigen)
-                        if let d = s.daten { Rangliste(alle: d.konten[0], konten: Array(d.konten.dropFirst()), auswahl: $auswahl) }
+                        if let d = s.daten {
+                            Rangliste(alle: d.konten[0], konten: Array(d.konten.dropFirst()), auswahl: $auswahl)
+                                .overlay(alignment: .top) {
+                                    Color.clear.frame(height: 0).id("rangliste")
+                                        .onGeometryChange(for: CGFloat.self) { $0.frame(in: .named("blatt")).minY } action: { merker.y = $0 }
+                                }
+                        }
                         Monate(k: k)
                         Auszahlungen(k: k)
                         TopListe(titel: "Top-Videos", eintraege: k.videos, video: true, zeigeKonto: k.istAlle)
@@ -67,6 +77,13 @@ struct Uebersicht: View {
                 }
                 .padding(.horizontal, randAussen).padding(.bottom, 30)
                 .frame(maxWidth: 720).frame(maxWidth: .infinity)
+            }
+            .coordinateSpace(name: "blatt")
+            .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { merker.hoehe = $0 }
+            .onChange(of: auswahl) {   // Account unten gewählt: Liste bleibt stehen, statt dass das Bild mitspringt (Artur 20.11.)
+                guard merker.hoehe > 0, merker.y < merker.hoehe, merker.y > -3000 else { return }
+                var t = Transaction(); t.disablesAnimations = true
+                withTransaction(t) { proxy.scrollTo("rangliste", anchor: UnitPoint(x: 0, y: merker.y / merker.hoehe)) }
             }
             .background(Hintergrund())
             .dynamicTypeSize(...DynamicTypeSize.large)   // große iPhone-Schrift nicht weiter aufblähen (sonst „reingezoomt“, Artur 20.11.)
@@ -84,6 +101,7 @@ struct Uebersicht: View {
                 if case .success(let url) = r { s.ordnerGewaehlt(url) }
             }
             #endif
+          }
         }
     }
 
