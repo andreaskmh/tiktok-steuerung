@@ -518,7 +518,7 @@ vom linken Rand (kein Tipp); Profil-Reiter mit Beschriftung „Profil“; länge
 ~2 Min./Account) und „Voll“ (30 Tage, Videos, Export, Prämien, ~7 Min./Account) mit geschätzter Dauer, Fortschritt, „läuft seit“
 und Restzeit. Ablauf: Knopf → iCloud statsKMH/auftrag.json → Mac-App viewKMH startet `werkzeuge/analyse/aktualisieren.py <art>`
 (launchd-Dienst ging nicht: kein Zugriff auf ~/Documents) → status.json → App zeigt Fortschritt, lädt danach neu. Zeiten lernen
-mit (dauer.json). Web-Version aktualisiert nur Claude. Neues App-Icon (Graphit, Balken, grün). App heißt viewKMH.
+mit (dauer.json). Web-Version aktualisiert nur Claude. App-Icon zuerst Graphit-Balken, dann (Artur-Wahl) B „Graphit + Mint-Linie“. App heißt viewKMH.
 
 **20.11.2026 (19:30)** – viewKMH: Handy-Auswahl beim Aktualisieren (alle Handys mit Entwicklermodus im WLAN/am Kabel; Mac schreibt
 alle 30 s `statsKMH/geraete.json` über `aktualisieren.py --geraete` ← Steuer-Server /api/candidates; neue Handys werden beim Start

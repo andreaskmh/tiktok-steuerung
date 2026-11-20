@@ -127,7 +127,7 @@ enum Periode: String, CaseIterable, Identifiable {
     func erklaerung(_ s: Spanne) -> String {
         let von = kurzDatum(s.von), bis = kurzDatum(s.bis)
         switch self {
-        case .heute: return "Heute, \(bis) (bis zum letzten Abruf)"
+        case .heute: return "Heute, \(bis)"
         case .gestern: return "Gestern, \(bis), ganzer Tag"
         case .tage3, .tage7, .tage30:
             let n = self == .tage3 ? 3 : self == .tage7 ? 7 : 30
@@ -315,7 +315,14 @@ final class Speicher: ObservableObject {
         Task.detached(priority: .utility) {
             let gl = Speicher.lies(bm, "geraete.json").flatMap { try? JSONDecoder().decode(HandyListe.self, from: $0) }?.geraete
             let neu = Speicher.lies(bm, "status.json").flatMap { try? JSONDecoder().decode(AufStatus.self, from: $0) }
-            await MainActor.run { self.statusUebernehmen(gl, neu) }
+            let stand = Speicher.lies(bm, "provision.json").flatMap { d -> String? in   // nur den Stand lesen (klein halten)
+                guard let r = d.range(of: Data("\"stand\": \"".utf8)) ?? d.range(of: Data("\"stand\":\"".utf8)) else { return nil }
+                return String(data: d[r.upperBound..<min(d.endIndex, r.upperBound + 16)], encoding: .utf8)
+            }
+            await MainActor.run {
+                self.statusUebernehmen(gl, neu)
+                if let stand, let alt = self.daten?.stand, stand > alt { self.laden() }   // iCloud hat neuere Zahlen → neu laden
+            }
         }
     }
 

@@ -635,7 +635,9 @@ func aufrufeText(_ n: Int) -> String {
 extension Hero {
     func mitZeit(_ text: String, _ sp: Spanne) -> String {
         let von = tagText(sp.von), bis = tagText(sp.bis)
-        guard let z = k.gelesen?.filter({ $0.key >= von && $0.key <= bis }).values.max(), z.count >= 16 else { return text }
+        guard let z = k.gelesen?.filter({ $0.key >= von && $0.key <= bis }).values.max(), z.count >= 16 else {
+            return text.replacingOccurrences(of: " (bis zum letzten Abruf)", with: "")
+        }
         let uhr = String(z.suffix(5))
         if periode == .heute { return text.replacingOccurrences(of: " (bis zum letzten Abruf)", with: "") + " · Stand \(uhr) Uhr" }
         let tag = z.prefix(10).split(separator: "-")
