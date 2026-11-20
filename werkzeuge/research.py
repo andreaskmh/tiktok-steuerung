@@ -1223,12 +1223,12 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
 
     def standard(k):
         name, preis = "(Produkt)", "(Preis)"                    # Artur 20.11.: Platzhalter – Produkt und Preis schaut er selbst nach
-        s = [f"TikTok Shop verschenkt einfach fast ihren {name}. Leute, den gibt's grade für {preis}, das ist kein Fake. "
-             f"Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?"]
+        s = [("Normales Standard-Skript", f"TikTok Shop verschenkt einfach fast ihren {name}. Leute, den gibt's grade für {preis}, das ist kein Fake. "
+             f"Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?")]
         if HEUTE <= date(2026, 12, 1):                         # nur während Black Friday / Cyber Monday
-            s.insert(0, f"Für die nächsten 24h gibt's diesen {name} zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, "
+            s.insert(0, ("Black-Friday-Skript", f"Für die nächsten 24h gibt's diesen {name} zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, "
                         f"weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den "
-                        f"orangenen Einkaufswagen, bevor die wieder weg sind.")
+                        f"orangenen Einkaufswagen, bevor die wieder weg sind."))
         return s
 
     def ist_musik_bof(z):
@@ -1241,14 +1241,14 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
     def eintrag(i, z):
         if ist_musik_bof(z):
             return eintrag_ohne(i, z)[:-1] + ["🎵 **Nur Musik – Standard-Skripte:**", ""] + [
-                x for n, t in enumerate(standard(kand[z[1]]), 1) for x in (f"> **{n}.** {t}", ">")][:-1] + [""]
+                x for n, t in standard(kand[z[1]]) for x in (f"> **{n}:** {t}", ">")][:-1] + [""]
         e = eintrag_ohne(i, z)
         v = kand[z[1]]["video_id"]
         if v not in skr:
             return e
         e = e[:-1] + [f"🌐 **{skr[v][0]} – Skript auf Deutsch:**", ""] + [f"> {l}  " if l else ">" for l in skr[v][1].splitlines()] + [""]
         if "nur musik" in skr[v][1].lower():                   # Artur 20.11.: bei „nur Musik“ die 2 Standard-Skripte dazu
-            e += ["🎵 **Standard-Skripte:**", ""] + [x for n, t in enumerate(standard(kand[z[1]]), 1) for x in (f"> **{n}.** {t}", ">")][:-1] + [""]
+            e += ["🎵 **Standard-Skripte:**", ""] + [x for n, t in standard(kand[z[1]]) for x in (f"> **{n}:** {t}", ">")][:-1] + [""]
         return e
 
     def eintrag_ohne(i, z):
@@ -1293,7 +1293,7 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
 
     def skript(k, art=""):
         if k["video_id"] in musik and k["video_id"] not in skr and "BOF" in art.split("+"):
-            t = "".join(f"<p><b>{n}.</b> {esc(x)}</p>" for n, x in enumerate(standard(k), 1))
+            t = "".join(f"<p><b>{n}:</b> {esc(x)}</p>" for n, x in standard(k))
             return (f'<tr class="skr"><td></td><td colspan="3"><details id="s{k["video_id"]}"><summary>Nur Musik – Standard-Skripte</summary>'
                     f'<div>{t}</div></details></td></tr>')
         if k["video_id"] not in skr:
@@ -1301,7 +1301,7 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
         t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", esc(skr[k["video_id"]][1])).replace("\n", "<br>")
         if "nur musik" in skr[k["video_id"]][1].lower():      # Artur 20.11.: bei „nur Musik“ die 2 Standard-Skripte dazu
             t += '<p style="margin-top:10px;color:#ffcc66">Standard-Skripte</p>' + "".join(
-                f"<p><b>{n}.</b> {esc(x)}</p>" for n, x in enumerate(standard(k), 1))
+                f"<p><b>{n}:</b> {esc(x)}</p>" for n, x in standard(k))
         return (f'<tr class="skr"><td></td><td colspan="3"><details id="s{k["video_id"]}"><summary>Skript auf Deutsch</summary>'
                 f'<div>{t}</div></details></td></tr>')
 

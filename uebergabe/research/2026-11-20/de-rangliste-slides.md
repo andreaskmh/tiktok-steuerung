@@ -9,9 +9,9 @@ https://www.tiktok.com/@sparradar1/video/7710183926500740385
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **2. Pukka Bio Tee Adventskalender 2026, Geschenkset, 24 Teebeute**  
 SLIDES · Yesterday · +1.4M · @socialmediacreations  
@@ -22,9 +22,9 @@ https://www.tiktok.com/@socialmediacreations/video/7709905379257355552
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **3. Sommertal KS 15 LED Mini Kühlschrank 15L | kühlen & wärmen, **  
 SLIDES · Yesterday · +450.5K · @mr.newwave_  
@@ -35,9 +35,9 @@ https://www.tiktok.com/@mr.newwave_/video/7709978230349925664
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **4. Probiotikum Gummibonbons für Frauen | Intimflora & pH‑Wert a**  
 SLIDES · Yesterday · +540.3K · @sparradar1  
@@ -50,9 +50,9 @@ https://www.tiktok.com/@sparradar1/video/7709945108493241632
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **5. Tatort Escape Adventskalender: Krimi-Rätsel in 24 Teilen**  
 SLIDES · Yesterday · +368.5K · @socialmediacreations  
@@ -63,9 +63,9 @@ https://www.tiktok.com/@socialmediacreations/video/7709900738503232800
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **6. Herrenschuhe aus Leder mit dicker Sohle, leicht, bequem, atm**  
 SLIDES · Yesterday · +273.9K · @glamwithlexi  
@@ -80,9 +80,9 @@ https://www.tiktok.com/@shadowluna_twins/video/7709970992231189793
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **8. WindBoss Gold Shilajit Gummies - 30 Stück Bio-Gummibärchen m**  
 SLIDES · Yesterday · +202.6K · @shadowluna_twins  
@@ -95,9 +95,9 @@ https://www.tiktok.com/@shadowluna_twins/video/7709854749075459361
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **9. [medicube Offizieller Shop] Black Friday Exklusiv: Rundum-Pf**  
 SLIDES · Yesterday · +149.9K · @morabackup5  
@@ -108,9 +108,9 @@ https://www.tiktok.com/@morabackup5/video/7709808643289484576
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **10. Probiotikum Gummibonbons für Frauen | Intimflora & pH‑Wert a**  
 SLIDES · Yesterday · +204.2K · @shadowluna_twins  
@@ -123,9 +123,9 @@ https://www.tiktok.com/@shadowluna_twins/video/7709797979225378081
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **11. Ninja DualZone XL-Heißluftfritteuse mit 9,5 l Fassungsvermög**  
 SLIDES · Yesterday · +198.9K · @morabackup5  
@@ -138,9 +138,9 @@ https://www.tiktok.com/@morabackup5/video/7709799684637822241
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **12. 【VEVOR Sommersale】VEVOR Staänderstütze, kompatibel mit Dyson**  
 SLIDES · Yesterday · +341.5K · @manuel_lovers  
@@ -161,9 +161,9 @@ https://www.tiktok.com/@dago37302/video/7709884181265829153
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **15. ARMONIAS Paris Damenmantel in Felloptik mit Reverskragen, la**  
 SLIDES · Yesterday · +144.4K · @mini.musthaves  
@@ -178,9 +178,9 @@ https://www.tiktok.com/@elisesahin/video/7709844847259159840
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **17. Deutschland T-Shirt mit Adler-Motiv – Unisex Shirt für Herre**  
 SLIDES · Yesterday · +88.6K · @healthsuptipps  
@@ -195,9 +195,9 @@ https://www.tiktok.com/@zuwideals/video/7710008550122147105
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **19. Deutschland T-Shirt mit Adler-Motiv – Unisex Shirt für Herre**  
 SLIDES · Yesterday · +97.2K · @schnaepchenking  
@@ -220,9 +220,9 @@ https://www.tiktok.com/@socialmediacreations/video/7709800899677261089
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **22. Elusa 383 - Extrait de Parfum - Unisex - süß/frisch/fruchtig**  
 SLIDES · Yesterday · +86.8K · @nolantestet  
@@ -233,9 +233,9 @@ https://www.tiktok.com/@nolantestet/video/7709780232458243361
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **23. Oyajia Infrarot-LED-Deckenleuchte mit Bewegungsmelder, ultra**  
 SLIDES · Yesterday · +76.5K · @sweetserenit4  
@@ -250,9 +250,9 @@ https://www.tiktok.com/@elisesahin/video/7709871594054651168
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **25. Elusa 501 - Extrait de Parfum - Unisex - süß/würzig/cremig**  
 SLIDES · Yesterday · +167.3K · @schnaepchenking  
@@ -263,9 +263,9 @@ https://www.tiktok.com/@schnaepchenking/video/7709897328567553313
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **26. Deutschland T-Shirt mit Adler-Motiv – Unisex Shirt für Herre**  
 SLIDES · 2 days ago · +998K · @elisesahin  
@@ -280,9 +280,9 @@ https://www.tiktok.com/@shadowluna_twins/video/7709469954403257632
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **28. ONE MEMORY NOIR/AURA Damenparfum 30 ml x 2 | Elegantes Gesch**  
 SLIDES · 2 days ago · +472.7K · @produktwolf  
@@ -305,9 +305,9 @@ https://www.tiktok.com/@deal_vault/video/7709478387538038049
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **31. CHICME Damen Midikleid mit einem Schulterträger, glitzernd u**  
 SLIDES · 2 days ago · +202.3K · @aureliaa_fashion  
@@ -320,9 +320,9 @@ https://www.tiktok.com/@aureliaa_fashion/video/7707812652860362017
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **32. ONE MEMORY NOIR/AURA Damenparfum 30 ml x 2 | Elegantes Gesch**  
 SLIDES · 2 days ago · +189.6K · @produktwolf  
@@ -349,9 +349,9 @@ https://www.tiktok.com/@schnaepchenking/video/7709539744673172769
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **36. ONE MEMORY NOIR/AURA Damenparfum 30 ml x 2 | Elegantes Gesch**  
 SLIDES · 2 days ago · +185.4K · @produktwolf  
@@ -374,9 +374,9 @@ https://www.tiktok.com/@produktwolf/video/7709530188253613344
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **39. Shark PowerLite Akku-Staubsauger**  
 SLIDES · 2 days ago · +224.2K · @morabackup5  
@@ -403,9 +403,9 @@ https://www.tiktok.com/@schnaepchenking/video/7709551134414736673
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **44. Gutes Dutzend 12er-Geschenkset je 60g**  
 SLIDES · 2 days ago · +145.5K · @veselyedeti  
@@ -428,9 +428,9 @@ https://www.tiktok.com/@alsytestet/video/7709629103720107296
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **47. Algaplay Michelangelo Set L für Handschulpmassen eines Paare**  
 SLIDES · 2 days ago · +136.5K · @luan_deals  
@@ -531,9 +531,9 @@ https://www.tiktok.com/@shophie.looks/video/7709497794314259745
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **69. Dumpling Adventskalender 2026 – 24 Tage voller Überraschunge**  
 SLIDES · 3 days ago · +523.5K · @hot.sexysinglemom  
@@ -582,9 +582,9 @@ https://www.tiktok.com/@quiz.life.ring/video/7709181758868147489
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **79. UGREEN FineTrack Duo 4 Pack für iOS & Android, USB-C GPS Tra**  
 SLIDES · 3 days ago · +100.6K · @mehtenvieh.testet  
@@ -653,9 +653,9 @@ https://www.tiktok.com/@celine.maler/video/7708824045520702753
 
 🎵 **Standard-Skripte:**
 
-> **1.** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
+> **Black-Friday-Skript:** Für die nächsten 24h gibt's diesen (Produkt) zu diesem Preis hier. Aktuell gibt es geisteskranke Angebote, weil die Black Friday Kampagne läuft. Deswegen seid so schnell wie möglich und klickt hier unten links auf den orangenen Einkaufswagen, bevor die wieder weg sind.
 >
-> **2.** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
+> **Normales Standard-Skript:** TikTok Shop verschenkt einfach fast ihren (Produkt). Leute, den gibt's grade für (Preis), das ist kein Fake. Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?
 
 **94. Weihnachtskalender 2026, 24-Tage-Countdown-Kalender-Geschenk**  
 SLIDES · 4 days ago · +86.9K · @cano.deals  
