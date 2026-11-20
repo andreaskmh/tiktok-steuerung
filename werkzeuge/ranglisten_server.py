@@ -38,8 +38,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
         name = DATEIEN.get(pfad)
         if not name or not (SEITE / name).exists():
             return self.senden(404, b"nicht gefunden", "text/plain; charset=utf-8")
-        typ = "text/html; charset=utf-8" if name.endswith(".html") else "application/json"
-        self.senden(200, (SEITE / name).read_bytes(), typ)
+        body = (SEITE / name).read_bytes()
+        if name.endswith(".html"):                              # wie claude.ai: Grundgerüst + Handy-Breite (sonst 980px breit)
+            body = (b'<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" '
+                    b'content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" '
+                    b'content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"></head><body>' + body + b"</body></html>")
+        self.senden(200, body, "text/html; charset=utf-8" if name.endswith(".html") else "application/json")
 
     def do_POST(self):
         if self.path != "/haken":
