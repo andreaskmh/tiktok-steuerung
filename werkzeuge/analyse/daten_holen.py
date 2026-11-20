@@ -317,7 +317,7 @@ def konto(k, tage_n, neu_n, vtage=7, nur_videos=False):
         alt[d.isoformat()] = lies_tag()
         json.dump(alt, open(pfad, "w"), ensure_ascii=False, indent=0, sort_keys=True)
     json.dump(alt, open(pfad, "w"), ensure_ascii=False, indent=0, sort_keys=True)
-    vt = videos_pro_tag(k, vtage, 2)
+    vt = videos_pro_tag(k, vtage, 2) if vtage else {}   # --vtage 0 = ohne Video-Listen (Schnell-Aktualisierung)
     g = alt[(heute - D.timedelta(1)).isoformat()]
     print(f"{k}: ok – gestern {g['provision']:.2f} € Provision, {g.get('ansichten', 0):.0f} Aufrufe; "
           f"heute {alt[heute.isoformat()]['provision']:.2f} €; Videos für {len(vt)} Tage", flush=True)
