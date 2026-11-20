@@ -560,3 +560,4 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - 20.11.2026 (spät): Ablage Dokumente/Ranglisten: vor dem Schreiben werden die Dateien des Landes im Tagesordner gelöscht – nur die aktuelle Version liegt drin.
 - 20.11.2026 (spät): .md-Ranglisten nicht mehr in Dokumente/Ranglisten (nur HTML + PDF). Warum: Artur – nur die endgültige Version im Ordner.
 - 20.11.2026 (spät): Dokumente/Ranglisten nur noch HTML (6 Dateien), keine PDF mehr (pdf_machen bleibt als Reserve im Code). Warum: Artur – nur eine Datei pro Rangliste.
+- 20.11.2026 (spät): Ablage überschreibt Dateien statt sie vorher zu löschen (iCloud hatte „… 2.html“-Kopien angelegt) und räumt danach alles Übrige des Landes weg.

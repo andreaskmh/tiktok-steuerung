@@ -1290,8 +1290,6 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
                                               + "\n".join(x for i, z in enumerate(slides, 1) for x in eintrag(i, z)))
     desk = pathlib.Path.home() / "Documents" / "Ranglisten" / HEUTE.isoformat()      # Artur 20.11.: Dokumente, ein Ordner pro Tag
     desk.mkdir(parents=True, exist_ok=True)
-    for alt in desk.glob(f"{HEUTE.isoformat()} {'DE' if land == 'de' else 'USA'} *"):   # Artur 20.11.: nur die aktuelle Version im Ordner
-        alt.unlink()
     for name, text in dateien.items():
         (ORDNER / name).write_text(text)
         # Artur 20.11.: .md nur im Projekt – in Dokumente nur die endgültige Version (HTML + PDF)
@@ -1362,6 +1360,12 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
         (ORDNER / name).write_text(html)
         (desk / schoen(name)).write_text(html)
         # Artur 20.11.: nur HTML im Ordner (pdf_machen() bleibt als Reserve)
+    # Artur 20.11.: nur die aktuelle Version – überschreiben statt vorher löschen (sonst legt iCloud „… 2.html“-Kopien an),
+    # danach alles vom Land weg, was diesmal nicht geschrieben wurde (alte Formate, iCloud-Kopien)
+    neu = {schoen(f"{land}-rangliste-{w.lower()}.html") for w in seiten}
+    for alt in desk.glob(f"{HEUTE.isoformat()} {'DE' if land == 'de' else 'USA'} *"):
+        if alt.name not in neu:
+            alt.unlink()
     print(f"FERTIG Aufteilung {', '.join(PERSONEN)} + Ablage: {desk}")
 
 
