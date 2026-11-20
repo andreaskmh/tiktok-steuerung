@@ -947,7 +947,7 @@ def bildvergleich(land, datei, pro_blatt=4):
         f = bilder / f"{name}.jpg"
         if url and not f.exists():
             try:
-                urllib.request.urlretrieve(url, f)
+                f.write_bytes(urllib.request.urlopen(url, timeout=20).read())   # ohne Zeitlimit hing es 20.11. 8 h
             except Exception:
                 pass
         return str(f)

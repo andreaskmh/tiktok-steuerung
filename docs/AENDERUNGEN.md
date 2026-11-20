@@ -470,3 +470,13 @@ Profilbild-Cache (kein Ruckeln), iPhone-Dunkelmodus schwarz, Balken grün, Seite
 **20.11.2026 (07:00)** – andrucha.official am iPhone 15 Pro Max abgelesen. `creator_oeffnen()` (Profilknopf, sonst TikTok Studio →
 Monetarisierung → TikTok Shop für Creator*innen); Rückweg: auf bekannten Shop-/Studio-Seiten X oben links, sonst Zurück-Wischgeste
 vom linken Rand (kein Tipp); Profil-Reiter mit Beschriftung „Profil“; längere Ladezeiten (30 s); Dunkelmodus-OCR („Taд“).
+
+## 20.11.2026 nachmittags – Vorbilder-Research im echten Safari getestet
+- `research.py vorbilder` läuft im Safari: 126 klickguru-Posts, 5 Hits → `uebergabe/ausgang/social1-vorbilder.json`.
+- Gewinner-Sounds: alles „original sound“ (z. B. „mike🕸️“, auch mit Produktlink). Wiederverwenden noch nicht eingebaut:
+  Suche nach Namen am iPhone unsicher; erst am iPhone testen, ob TikTok den Produktlink damit erlaubt.
+
+## 20.11.2026 16:40 – Research: Bildvergleich-Download mit Zeitlimit
+- `research.py bildvergleich`: Bilder laden jetzt mit 20 s Zeitlimit (`urlopen(timeout=20)` statt `urlretrieve`).
+  Warum: der Lauf hing seit 07:47 über 8 h an einem einzigen Bild-Download. Alter Prozess (PID 50047) konnte ich nicht beenden – bitte bei Gelegenheit selbst beenden.
+- US-Lauf: `us-sortiert.json` muss vor `rangliste us` angelegt sein (SLIDES/QUALITY) – fehlte, nachgeholt.
