@@ -519,3 +519,8 @@ vom linken Rand (kein Tipp); Profil-Reiter mit Beschriftung „Profil“; länge
 und Restzeit. Ablauf: Knopf → iCloud statsKMH/auftrag.json → Mac-App viewKMH startet `werkzeuge/analyse/aktualisieren.py <art>`
 (launchd-Dienst ging nicht: kein Zugriff auf ~/Documents) → status.json → App zeigt Fortschritt, lädt danach neu. Zeiten lernen
 mit (dauer.json). Web-Version aktualisiert nur Claude. Neues App-Icon (Graphit, Balken, grün). App heißt viewKMH.
+
+**20.11.2026 (19:30)** – viewKMH: Handy-Auswahl beim Aktualisieren (alle Handys mit Entwicklermodus im WLAN/am Kabel; Mac schreibt
+alle 30 s `statsKMH/geraete.json` über `aktualisieren.py --geraete` ← Steuer-Server /api/candidates; neue Handys werden beim Start
+automatisch angemeldet; Accounts, die auf dem Handy fehlen, werden übersprungen). iPhone-Spiegel (app/spiegel) hat jetzt den Link
+`iphonespiegel://geraet/<UDID>` → Fenster für genau dieses iPhone; aktualisieren.py öffnet ihn beim Start, Mac-App hat Knopf „Spiegel“.

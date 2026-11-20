@@ -12,7 +12,8 @@
 - Morgen/Abend-Ablauf: `daten_holen.py` (alle Konten) → `export_holen.py` (Export) → `baue.py` → `app_daten.py` → `web.py` → Artifact.
 
 ## Aktualisieren (seit 20.11. abends)
-- In viewKMH Knopf „Schnell“ oder „Voll“ (iPhone oder Mac). **Mac-App viewKMH muss auf dem Mac offen sein** (führt den Auftrag aus,
+- In viewKMH Handy wählen (Liste = Handys mit Entwicklermodus, vom Mac gefunden), dann Knopf „Schnell“ oder „Voll“ (iPhone oder Mac).
+  iPhone-Spiegel öffnet sich auf dem Mac für das bediente Handy. Claude-Chat muss nicht laufen, nur der Mac + Mac-App viewKMH. **Mac-App viewKMH muss auf dem Mac offen sein** (führt den Auftrag aus,
   einmalig „Zugriff auf Dokumente“ erlauben). Daten-Handy: iPhone 11 (5 Accounts), andrucha über iPhone 15 Pro Max nur wenn erreichbar.
   Direkt im Terminal: `python3 werkzeuge/analyse/aktualisieren.py schnell|voll`. Log: werkzeuge/analyse/aktualisieren.log.
 - Web (Artifact) danach von Claude neu veröffentlichen lassen (`web.py` läuft mit, Veröffentlichen kann nur Claude).

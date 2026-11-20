@@ -25,6 +25,8 @@ cat > $APP/Contents/Info.plist <<'EOF'
   <key>CFBundleShortVersionString</key><string>1.0</string>
   <key>LSMinimumSystemVersion</key><string>14.0</string>
   <key>NSAppTransportSecurity</key><dict><key>NSAllowsLocalNetworking</key><true/></dict>
+  <key>CFBundleURLTypes</key><array><dict><key>CFBundleURLName</key><string>de.tiktok-steuerung.spiegel</string>
+    <key>CFBundleURLSchemes</key><array><string>iphonespiegel</string></array></dict></array>
   <key>NSCameraUsageDescription</key><string>Zeigt den Bildschirm des per Kabel angeschlossenen iPhones.</string>
 </dict></plist>
 EOF

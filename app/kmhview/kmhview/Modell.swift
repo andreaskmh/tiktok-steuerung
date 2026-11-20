@@ -219,6 +219,7 @@ final class Speicher: ObservableObject {
     // MARK: Aktualisieren auf Knopfdruck (Mac-Dienst werkzeuge/analyse/aktualisieren.py liest auftrag.json, schreibt status.json)
     @Published var status: AufStatus?
     @Published var auftragGesendet: Date?
+    @Published var geraete: [Handy] = []
 
     /// Arbeit im iCloud-Ordner statsKMH (Mac: fester Pfad, iPhone: gewählter Ordner)
     private func imOrdner<T>(_ f: (URL) -> T?) -> T? {
@@ -234,9 +235,9 @@ final class Speicher: ObservableObject {
         #endif
     }
 
-    func auftrag(_ art: String) {
+    func auftrag(_ art: String, udid: String) {
         let ok: Bool? = imOrdner { o in
-            let d = try? JSONSerialization.data(withJSONObject: ["art": art, "zeit": ISO8601DateFormatter().string(from: Date())])
+            let d = try? JSONSerialization.data(withJSONObject: ["art": art, "udid": udid, "zeit": ISO8601DateFormatter().string(from: Date())])
             var err: NSError?; var geschrieben = false
             NSFileCoordinator().coordinate(writingItemAt: o.appendingPathComponent("auftrag.json"), options: .forReplacing, error: &err) {
                 geschrieben = (try? d?.write(to: $0)) != nil
@@ -258,20 +259,45 @@ final class Speicher: ObservableObject {
         guard let d = try? Data(contentsOf: datei),
               let j = try? JSONSerialization.jsonObject(with: d) as? [String: Any], let art = j["art"] as? String,
               ["schnell", "voll"].contains(art) else { return }
+        let udid = j["udid"] as? String
         try? FileManager.default.removeItem(at: datei)
         let ordner = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Documents/Coding/TikTok-Steuerung/werkzeuge/analyse")
         let p = Process()
         p.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
-        p.arguments = [ordner.appendingPathComponent("aktualisieren.py").path, art]
+        p.arguments = [ordner.appendingPathComponent("aktualisieren.py").path, art] + (udid.map { ["--udid", $0] } ?? [])
         p.currentDirectoryURL = ordner
         do { try p.run(); prozess = p } catch { fehler = "Aktualisierung nicht startbar: \(error.localizedDescription)" }
+    }
+
+    /// Alle 30 s: Handys mit Entwicklermodus (USB/WLAN) → geraete.json (Python fragt den Steuer-Server)
+    private var geraeteZeit = Date.distantPast
+    func geraeteSuchen() {
+        guard Date().timeIntervalSince(geraeteZeit) > 30, prozess?.isRunning != true else { return }
+        geraeteZeit = Date()
+        let ordner = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Documents/Coding/TikTok-Steuerung/werkzeuge/analyse")
+        let p = Process()
+        p.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
+        p.arguments = [ordner.appendingPathComponent("aktualisieren.py").path, "--geraete"]
+        p.currentDirectoryURL = ordner
+        try? p.run()
+    }
+
+    func spiegelOeffnen(_ udid: String) {
+        if let u = URL(string: "iphonespiegel://geraet/\(udid)") { NSWorkspace.shared.open(u) }
     }
     #endif
 
     func statusLaden() {
         #if os(macOS)
         auftragAusfuehren()
+        geraeteSuchen()
         #endif
+        let gl: [Handy]? = imOrdner { o in
+            let datei = o.appendingPathComponent("geraete.json")
+            try? FileManager.default.startDownloadingUbiquitousItem(at: datei)
+            return (try? Data(contentsOf: datei)).flatMap { try? JSONDecoder().decode(HandyListe.self, from: $0) }?.geraete
+        }
+        if let gl, gl != geraete { geraete = gl }
         let neu: AufStatus? = imOrdner { o in
             let datei = o.appendingPathComponent("status.json")
             try? FileManager.default.startDownloadingUbiquitousItem(at: datei)
@@ -290,6 +316,13 @@ final class Speicher: ObservableObject {
             status = n
         }
     }
+}
+
+struct HandyListe: Codable { let geraete: [Handy] }
+struct Handy: Codable, Equatable, Identifiable {
+    var id: String { udid }
+    let udid: String; let name: String; let modell: String; let verbindung: String; let konten: [String]
+    var titel: String { (modell.isEmpty ? name : modell) + " · " + verbindung }
 }
 
 struct AufStatus: Codable, Equatable {

@@ -115,6 +115,7 @@ struct Uebersicht: View {
 /// Knöpfe „Schnell“ / „Voll“ + Fortschritt (der Mac-Dienst bedient dafür das Daten-Handy). Nur auf Knopfdruck.
 struct Aktualisieren: View {
     @EnvironmentObject var s: Speicher
+    @AppStorage("datenHandy") private var handy = "00008030-00096C8621C3402E"   // Standard: iPhone 11
     static let fmt: DateFormatter = { let f = DateFormatter(); f.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"; return f }()
     func datum(_ t: String?) -> Date { t.flatMap { Self.fmt.date(from: $0) } ?? Date() }
     func dauer(_ sek: Double) -> String {
@@ -143,7 +144,7 @@ struct Aktualisieren: View {
                             Spacer()
                             Text("läuft seit \(uhr(vergangen))").monospacedDigit()
                         }.font(.caption).foregroundStyle(.secondary)
-                        Text("Das Daten-Handy wird gerade bedient – bitte solange nicht benutzen.").font(.caption2).foregroundStyle(.tertiary)
+                        Text("Das Daten-Handy wird gerade bedient – bitte solange nicht benutzen. Live-Bild: iPhone-Spiegel auf dem Mac.").font(.caption2).foregroundStyle(.tertiary)
                     }
                 }
             } else {
@@ -153,6 +154,23 @@ struct Aktualisieren: View {
                     if let e = st?.ende { Text("zuletzt " + datum(e).formatted(.dateTime.day().month().hour().minute().locale(deDE))).font(.caption).foregroundStyle(.secondary) }
                 }
                 let wartet = s.auftragGesendet.map { Date().timeIntervalSince($0) < 300 } ?? false
+                let gewaehlt = s.geraete.first { $0.udid == handy }
+                HStack(spacing: 8) {
+                    Image(systemName: "iphone").foregroundStyle(.secondary)
+                    Picker("Handy", selection: $handy) {
+                        ForEach(s.geraete) { g in Text(g.titel).tag(g.udid) }
+                        if gewaehlt == nil { Text(s.geraete.isEmpty ? "Handys werden gesucht …" : "nicht gefunden").tag(handy) }
+                    }
+                    .labelsHidden().pickerStyle(.menu).fixedSize()
+                    Spacer()
+                    #if os(macOS)
+                    Button { s.spiegelOeffnen(handy) } label: { Label("Spiegel", systemImage: "rectangle.on.rectangle") }
+                        .buttonStyle(.borderless).font(.caption)
+                    #endif
+                }
+                Text(gewaehlt.map { $0.konten.isEmpty ? "Auf diesem Handy werden alle Accounts versucht (fehlende übersprungen)." : "Accounts: " + $0.konten.joined(separator: ", ") }
+                     ?? "Nur Handys mit Entwicklermodus im WLAN/am Kabel erscheinen hier (Mac muss an sein).")
+                    .font(.caption2).foregroundStyle(.secondary).lineLimit(2)
                 HStack(spacing: 10) {
                     knopf("schnell", "Schnell", "bolt.fill", "Heute, Gestern, Guthaben", st?.schaetzung?["schnell"] ?? 12 * 60, wartet)
                     knopf("voll", "Voll", "arrow.triangle.2.circlepath", "+ 30 Tage, Videos, Export, Prämien", st?.schaetzung?["voll"] ?? 42 * 60, wartet)
@@ -174,7 +192,7 @@ struct Aktualisieren: View {
     }
 
     func knopf(_ art: String, _ titel: String, _ symbol: String, _ unter: String, _ sek: Int, _ gesperrt: Bool) -> some View {
-        Button { s.auftrag(art) } label: {
+        Button { s.auftrag(art, udid: handy) } label: {
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
                     Image(systemName: symbol).foregroundStyle(Color.gut)

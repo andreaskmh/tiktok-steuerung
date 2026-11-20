@@ -95,6 +95,7 @@ final class Geraet: NSView {
 
 struct Quelle: Equatable {
     let id: String, name: String
+    var udid: String? = nil             // WLAN: UDID des iPhones (für iphonespiegel://geraet/<udid>)
     var kabel: AVCaptureDevice? = nil   // sonst: WLAN-Gerät des Servers (id = device_id)
 }
 
@@ -104,6 +105,34 @@ final class Spiegel: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var fenster: [SpiegelFenster] = []
     var wlan: [Quelle] = []
     var ebene: String { speicher.string(forKey: "ebene") ?? "normal" }
+
+    // viewKMH öffnet beim Datencheck das gerade bediente iPhone: iphonespiegel://geraet/<UDID>
+    func applicationWillFinishLaunching(_ n: Notification) {
+        NSAppleEventManager.shared().setEventHandler(self, andSelector: #selector(urlOeffnen(_:_:)),
+                                                     forEventClass: AEEventClass(kInternetEventClass), andEventID: AEEventID(kAEGetURL))
+    }
+
+    @objc func urlOeffnen(_ e: NSAppleEventDescriptor, _ antwort: NSAppleEventDescriptor) {
+        guard let s = e.paramDescriptor(forKeyword: keyDirectObject)?.stringValue, let u = URL(string: s),
+              u.host == "geraet", let udid = u.pathComponents.last, udid.count > 8 else { return }
+        zeige(udid: udid, versuche: 10)
+    }
+
+    /// Fenster mit diesem iPhone nach vorn holen, sonst neues Fenster dafür öffnen (WLAN-Liste lädt evtl. erst noch).
+    func zeige(udid: String, versuche: Int) {
+        let rein = { (x: String) in x.lowercased().replacingOccurrences(of: "-", with: "") }
+        let ziel = quellen().first { $0.udid == udid || ($0.kabel != nil && rein($0.id).contains(rein(udid))) }
+        guard let ziel else {
+            if versuche > 0 { wlanHolen(); DispatchQueue.main.asyncAfter(deadline: .now() + 1) { self.zeige(udid: udid, versuche: versuche - 1) } }
+            return
+        }
+        if let f = fenster.first(where: { $0.aktiv?.id == ziel.id || $0.wahl == ziel.id }) {
+            f.fenster.deminiaturize(nil); f.fenster.orderFront(nil)
+        } else {
+            oeffne(ziel.id)
+        }
+        NSApp.activate()
+    }
 
     func applicationDidFinishLaunching(_ n: Notification) {
         var adr = CMIOObjectPropertyAddress(mSelector: CMIOObjectPropertySelector(kCMIOHardwarePropertyAllowScreenCaptureDevices),
@@ -268,7 +297,7 @@ final class Spiegel: NSObject, NSApplicationDelegate, NSMenuDelegate {
             let liste = (daten.flatMap { try? JSONSerialization.jsonObject(with: $0) } as? [[String: Any]]) ?? []
             let neu = liste.compactMap { d -> Quelle? in
                 guard d["frame_id"] is String, let id = d["device_id"] as? String else { return nil }
-                return Quelle(id: id, name: "\(d["name"] as? String ?? "iPhone") (WLAN)")
+                return Quelle(id: id, name: "\(d["name"] as? String ?? "iPhone") (WLAN)", udid: d["udid"] as? String)
             }
             DispatchQueue.main.async { if neu != self.wlan { self.wlan = neu }; self.alleVerbinden() }
         }.resume()

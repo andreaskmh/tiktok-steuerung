@@ -271,8 +271,9 @@ def lesen(land, seiten, frisch=False):
     """Alle Seiten direkt über Social1 lesen (getTopVideos, kein Blättern/Klicken mehr; ~1 s pro Seite)."""
     ORDNER.mkdir(parents=True, exist_ok=True)
     ziel = ORDNER / f"{land}.json"
+    alt = ORDNER / f"{land}-{time.strftime('%H%M')}.json"
     if frisch and ziel.exists():                              # weiterer Lauf am selben Tag: alten Stand aufheben, neu lesen
-        ziel.rename(ORDNER / f"{land}-{time.strftime('%H%M')}.json")
+        ziel.rename(alt)
     daten = json.loads(ziel.read_text()) if ziel.exists() else {"land": land, "datum": HEUTE.isoformat(), "seiten": {}}
     aktionen_laden()
     offen = [s for s in range(1, seiten + 1) if str(s) not in daten["seiten"]]
@@ -283,6 +284,10 @@ def lesen(land, seiten, frisch=False):
         for s, a in zip(teil, antworten):
             d = a.get("data") or {}
             karten = [karte_aus_api(v) for v in d.get("results") or []]
+            if not karten and s == 1:                          # 20.11.: Social1-Aussetzer lieferte 0 Videos und leerte die Kandidaten
+                if frisch and alt.exists() and not ziel.exists():
+                    alt.rename(ziel)
+                sys.exit(f"STOPP: Social1 liefert Seite 1 leer ({str(a)[:150]}) – alter Stand bleibt, später nochmal")
             if not karten:
                 print(f"Seite {s}: keine Videos mehr → Ende")
                 ende = True
