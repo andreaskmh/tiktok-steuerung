@@ -513,3 +513,9 @@ vom linken Rand (kein Tipp); Profil-Reiter mit Beschriftung „Profil“; länge
   (Menüleiste blieb bei der vorigen App). Weggelassen: Aufnahme, Bildschirmfoto, Musik/Video-Modus, Ton, Gerätemodell.
 - **20.11.2026** – iPhone-Spiegel: Klick aufs iPhone holt die App selbst nach vorn und verschiebt das Fenster von überall
   (vorher verschob macOS das Fenster ohne die App zu aktivieren → Menüleiste blieb bei der vorigen App).
+
+**20.11.2026 (abends)** – Aktualisieren auf Knopfdruck (Artur: nur manuell): viewKMH hat Knöpfe „Schnell“ (Heute/Gestern/Guthaben,
+~2 Min./Account) und „Voll“ (30 Tage, Videos, Export, Prämien, ~7 Min./Account) mit geschätzter Dauer, Fortschritt, „läuft seit“
+und Restzeit. Ablauf: Knopf → iCloud statsKMH/auftrag.json → Mac-App viewKMH startet `werkzeuge/analyse/aktualisieren.py <art>`
+(launchd-Dienst ging nicht: kein Zugriff auf ~/Documents) → status.json → App zeigt Fortschritt, lädt danach neu. Zeiten lernen
+mit (dauer.json). Web-Version aktualisiert nur Claude. Neues App-Icon (Graphit, Balken, grün). App heißt viewKMH.

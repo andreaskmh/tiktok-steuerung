@@ -215,4 +215,96 @@ final class Speicher: ObservableObject {
             daten = d; quelle = "eingebaut"
         }
     }
+
+    // MARK: Aktualisieren auf Knopfdruck (Mac-Dienst werkzeuge/analyse/aktualisieren.py liest auftrag.json, schreibt status.json)
+    @Published var status: AufStatus?
+    @Published var auftragGesendet: Date?
+
+    /// Arbeit im iCloud-Ordner statsKMH (Mac: fester Pfad, iPhone: gewählter Ordner)
+    private func imOrdner<T>(_ f: (URL) -> T?) -> T? {
+        #if os(macOS)
+        return f(FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Mobile Documents/com~apple~CloudDocs/statsKMH"))
+        #else
+        guard let b = UserDefaults.standard.data(forKey: schluessel) else { return nil }
+        var alt = false
+        guard let ordner = try? URL(resolvingBookmarkData: b, options: [], relativeTo: nil, bookmarkDataIsStale: &alt) else { return nil }
+        let zugriff = ordner.startAccessingSecurityScopedResource()
+        defer { if zugriff { ordner.stopAccessingSecurityScopedResource() } }
+        return f(ordner)
+        #endif
+    }
+
+    func auftrag(_ art: String) {
+        let ok: Bool? = imOrdner { o in
+            let d = try? JSONSerialization.data(withJSONObject: ["art": art, "zeit": ISO8601DateFormatter().string(from: Date())])
+            var err: NSError?; var geschrieben = false
+            NSFileCoordinator().coordinate(writingItemAt: o.appendingPathComponent("auftrag.json"), options: .forReplacing, error: &err) {
+                geschrieben = (try? d?.write(to: $0)) != nil
+            }
+            return geschrieben
+        }
+        if ok == true { auftragGesendet = Date() } else { fehler = "Auftrag nicht gespeichert – iCloud-Ordner wählen" }
+    }
+
+    #if os(macOS)
+    /// Mac = Dienst: liegt ein Auftrag (vom iPhone oder vom Mac-Knopf) in iCloud, startet die Mac-App das Python-Skript.
+    /// (Ein launchd-Dienst darf nicht in ~/Documents; die App fragt dafür einmal um Erlaubnis.)
+    private var prozess: Process?
+    func auftragAusfuehren() {
+        if let p = prozess, p.isRunning { return }
+        let o = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Mobile Documents/com~apple~CloudDocs/statsKMH")
+        let datei = o.appendingPathComponent("auftrag.json")
+        try? FileManager.default.startDownloadingUbiquitousItem(at: datei)
+        guard let d = try? Data(contentsOf: datei),
+              let j = try? JSONSerialization.jsonObject(with: d) as? [String: Any], let art = j["art"] as? String,
+              ["schnell", "voll"].contains(art) else { return }
+        try? FileManager.default.removeItem(at: datei)
+        let ordner = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Documents/Coding/TikTok-Steuerung/werkzeuge/analyse")
+        let p = Process()
+        p.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
+        p.arguments = [ordner.appendingPathComponent("aktualisieren.py").path, art]
+        p.currentDirectoryURL = ordner
+        do { try p.run(); prozess = p } catch { fehler = "Aktualisierung nicht startbar: \(error.localizedDescription)" }
+    }
+    #endif
+
+    func statusLaden() {
+        #if os(macOS)
+        auftragAusfuehren()
+        #endif
+        let neu: AufStatus? = imOrdner { o in
+            let datei = o.appendingPathComponent("status.json")
+            try? FileManager.default.startDownloadingUbiquitousItem(at: datei)
+            var err: NSError?; var g: Data?
+            NSFileCoordinator().coordinate(readingItemAt: datei, options: [], error: &err) { g = try? Data(contentsOf: $0) }
+            return g.flatMap { try? JSONDecoder().decode(AufStatus.self, from: $0) }
+        }
+        let warLaufend = status?.laeuft == true
+        if var n = neu {
+            let f = DateFormatter(); f.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+            if n.laeuft, let j = n.jetzt.flatMap({ f.date(from: $0) }), Date().timeIntervalSince(j) > 900 {
+                n.laeuft = false; n.schritt = "abgebrochen (keine Meldung mehr vom Mac)"   // z. B. Mac-App beendet
+            }
+            if n.laeuft { auftragGesendet = nil }
+            if warLaufend && !n.laeuft { laden() }                // fertig → neue Zahlen laden
+            status = n
+        }
+    }
+}
+
+struct AufStatus: Codable, Equatable {
+    var laeuft: Bool
+    var art: String?
+    var start: String?
+    var schritt: String?
+    var konto: String?
+    var fertig: Int?
+    var gesamt: Int?
+    var rest_sek: Int?
+    var jetzt: String?
+    var geschaetzt_sek: Int?
+    var ende: String?
+    var dauer_sek: Int?
+    var fehler: [String]?
+    var schaetzung: [String: Int]?
 }

@@ -11,6 +11,12 @@
 - **VORFALL:** versehentlich Story auf andreasfastlane gepostet (Artur gelöscht). Seitdem `gesperrt()` nach jedem Tipp (docs/AENDERUNGEN.md).
 - Morgen/Abend-Ablauf: `daten_holen.py` (alle Konten) → `export_holen.py` (Export) → `baue.py` → `app_daten.py` → `web.py` → Artifact.
 
+## Aktualisieren (seit 20.11. abends)
+- In viewKMH Knopf „Schnell“ oder „Voll“ (iPhone oder Mac). **Mac-App viewKMH muss auf dem Mac offen sein** (führt den Auftrag aus,
+  einmalig „Zugriff auf Dokumente“ erlauben). Daten-Handy: iPhone 11 (5 Accounts), andrucha über iPhone 15 Pro Max nur wenn erreichbar.
+  Direkt im Terminal: `python3 werkzeuge/analyse/aktualisieren.py schnell|voll`. Log: werkzeuge/analyse/aktualisieren.log.
+- Web (Artifact) danach von Claude neu veröffentlichen lassen (`web.py` läuft mit, Veröffentlichen kann nur Claude).
+
 ## Offen
 1. ~~andrucha~~ erledigt 20.11. am iPhone 15 Pro Max (UDID 00008130-00163088368A001C, `TS_IPHONE_UDID` setzen): Konto „Ausgesetzt“,
    alles 0 €, bereit 49,42 €, Prämie 5 €. Creator-Bereich dort ohne Profilknopf → `creator_oeffnen()` geht über TikTok Studio

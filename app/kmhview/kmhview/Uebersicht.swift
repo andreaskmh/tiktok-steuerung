@@ -48,6 +48,7 @@ struct Uebersicht: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     kopf
+                    Aktualisieren()
                     if let d = s.daten { KontoWahl(konten: d.konten, auswahl: $auswahl) }
                     if let k = konto {
                         Hero(k: k, periode: $periode, eigen: $eigen)
@@ -70,6 +71,7 @@ struct Uebersicht: View {
             .background(Hintergrund())
             .tint(Color.akzent)   // keine blaue Systemfarbe (Mac-Look)
             .refreshable { s.laden() }
+            .task { while !Task.isCancelled { s.statusLaden(); try? await Task.sleep(for: .seconds(4)) } }   // Fortschritt vom Mac
             #if os(iOS)
             .toolbar(.hidden, for: .navigationBar)
             .fileImporter(isPresented: $waehlen, allowedContentTypes: [.folder]) { r in
@@ -107,6 +109,86 @@ struct Uebersicht: View {
     var fuss: some View {
         Text("Vorauss. Provisionen = offizielle Zahl von TikTok (Creator-Bereich → „Daten“), je Tag abgelesen; fehlt ein Tag, wird er aus dem Export gerechnet (ausgezahlte + offene Provision nach Bestelldatum, ohne „nicht berechtigt“). Sales/GMV/Aufrufe ebenso. „Abgerechnet gesamt“ = von TikTok gutgeschrieben (Status „Bezahlt“). „Zur Auszahlung bereit“ = „Verfügbare Auszahlung“ in der App (abgelesen). „Bereits ausgezahlt“ = abgerechnet + Prämien − bereit (Näherung, ohne Gebühren/Abzüge). „Letzte N Tage“ = rollierend inkl. heute, kein Kalendermonat. Quelle: Partnerbestellungen-Export (\(s.quelle)).")
             .font(.caption2).foregroundStyle(.tertiary).padding(.top, 6)
+    }
+}
+
+/// Knöpfe „Schnell“ / „Voll“ + Fortschritt (der Mac-Dienst bedient dafür das Daten-Handy). Nur auf Knopfdruck.
+struct Aktualisieren: View {
+    @EnvironmentObject var s: Speicher
+    static let fmt: DateFormatter = { let f = DateFormatter(); f.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"; return f }()
+    func datum(_ t: String?) -> Date { t.flatMap { Self.fmt.date(from: $0) } ?? Date() }
+    func dauer(_ sek: Double) -> String {
+        let m = Int((sek / 60).rounded())
+        return m < 1 ? "< 1 Min." : m < 60 ? "\(m) Min." : "\(m / 60) Std. \(m % 60) Min."
+    }
+    func uhr(_ sek: Double) -> String { let x = max(0, Int(sek)); return String(format: "%d:%02d", x / 60, x % 60) }
+
+    var body: some View {
+        let st = s.status
+        Karte {
+            if let st, st.laeuft {
+                TimelineView(.periodic(from: .now, by: 1)) { ctx in
+                    let vergangen = ctx.date.timeIntervalSince(datum(st.start))
+                    let rest = max(0, Double(st.rest_sek ?? 0) - ctx.date.timeIntervalSince(datum(st.jetzt)))
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            ProgressView().controlSize(.small)
+                            Text("\(st.art == "voll" ? "Voll" : "Schnell")-Aktualisierung läuft").font(.subheadline.weight(.semibold))
+                            Spacer()
+                            Text("noch ca. \(dauer(rest))").font(.subheadline.weight(.semibold)).monospacedDigit()
+                        }
+                        ProgressView(value: Double(st.fertig ?? 0), total: Double(max(1, st.gesamt ?? 1))).tint(Color.gut)
+                        HStack {
+                            Text([st.konto, st.schritt].compactMap { $0 }.filter { !$0.isEmpty }.joined(separator: " · ")).lineLimit(1)
+                            Spacer()
+                            Text("läuft seit \(uhr(vergangen))").monospacedDigit()
+                        }.font(.caption).foregroundStyle(.secondary)
+                        Text("Das Daten-Handy wird gerade bedient – bitte solange nicht benutzen.").font(.caption2).foregroundStyle(.tertiary)
+                    }
+                }
+            } else {
+                HStack {
+                    Text("Daten aktualisieren").font(.system(.headline, design: .rounded))
+                    Spacer()
+                    if let e = st?.ende { Text("zuletzt " + datum(e).formatted(.dateTime.day().month().hour().minute().locale(deDE))).font(.caption).foregroundStyle(.secondary) }
+                }
+                let wartet = s.auftragGesendet.map { Date().timeIntervalSince($0) < 300 } ?? false
+                HStack(spacing: 10) {
+                    knopf("schnell", "Schnell", "bolt.fill", "Heute, Gestern, Guthaben", st?.schaetzung?["schnell"] ?? 12 * 60, wartet)
+                    knopf("voll", "Voll", "arrow.triangle.2.circlepath", "+ 30 Tage, Videos, Export, Prämien", st?.schaetzung?["voll"] ?? 42 * 60, wartet)
+                }
+                if let g = s.auftragGesendet, wartet {
+                    TimelineView(.periodic(from: .now, by: 5)) { ctx in
+                        Text(ctx.date.timeIntervalSince(g) > 90 ? "Mac antwortet nicht – ist er an und der Dienst gestartet?" : "Auftrag gesendet – wartet auf den Mac …")
+                            .font(.caption).foregroundStyle(ctx.date.timeIntervalSince(g) > 90 ? Color.warn : .secondary)
+                    }
+                }
+                if let f = st?.fehler, !f.isEmpty {
+                    ForEach(f.prefix(3), id: \.self) { Text($0).font(.caption2).foregroundStyle(Color.warn).lineLimit(2) }
+                }
+                #if os(iOS)
+                if !s.hatOrdner { Text("Erst oben rechts (Wolke) den iCloud-Ordner „statsKMH“ wählen.").font(.caption).foregroundStyle(Color.warn) }
+                #endif
+            }
+        }
+    }
+
+    func knopf(_ art: String, _ titel: String, _ symbol: String, _ unter: String, _ sek: Int, _ gesperrt: Bool) -> some View {
+        Button { s.auftrag(art) } label: {
+            VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                    Image(systemName: symbol).foregroundStyle(Color.gut)
+                    Text(titel).font(.subheadline.weight(.semibold))
+                    Spacer()
+                    Text("~\(dauer(Double(sek)))").font(.caption.weight(.semibold)).monospacedDigit().foregroundStyle(.secondary)
+                }
+                Text(unter).font(.caption2).foregroundStyle(.secondary).lineLimit(2).multilineTextAlignment(.leading)
+            }
+            .padding(12).frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color.symbolGrund, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain).disabled(gesperrt).opacity(gesperrt ? 0.5 : 1)
     }
 }
 
