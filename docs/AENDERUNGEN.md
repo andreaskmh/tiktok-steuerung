@@ -480,3 +480,8 @@ vom linken Rand (kein Tipp); Profil-Reiter mit Beschriftung „Profil“; länge
 - `research.py bildvergleich`: Bilder laden jetzt mit 20 s Zeitlimit (`urlopen(timeout=20)` statt `urlretrieve`).
   Warum: der Lauf hing seit 07:47 über 8 h an einem einzigen Bild-Download. Alter Prozess (PID 50047) konnte ich nicht beenden – bitte bei Gelegenheit selbst beenden.
 - US-Lauf: `us-sortiert.json` muss vor `rangliste us` angelegt sein (SLIDES/QUALITY) – fehlte, nachgeholt.
+- **KI-Kennzeichnung bei Slideshows (Artur 20.11.):** `post_slideshow.py` → `ki_label()` vor der Schluss-Prüfung:
+  Beitragsseite runter → „Weitere Optionen“ → „KI-generierter Inhalt“ an (Farbe türkis = an, nur tippen wenn aus,
+  Hinweis „Einschalten“ bestätigen) → Blatt zu → hoch. Am iPhone getestet (an→bleibt, aus→an), Test-Beitrag verworfen.
+  Warum: KI-Bilder ohne Label; das C2PA-Kennzeichen von ChatGPT geht beim Text-Rendern (Playwright-JPG) verloren –
+  nicht absichtlich entfernt (alte Regel REZEPT-SLIDESHOW.md: „C2PA nicht gezielt entfernen“).

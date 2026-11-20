@@ -395,6 +395,45 @@ def sound_kommerziell_sichern():
     M.tipp(w[0], w[1], tx, "Weiter (Editor)"); M.warte_bildschirm((B.BEITRAG,), 2.5)
 
 
+def ki_an(tx):
+    """Schalter „KI-generierter Inhalt“ im Blatt „Weitere Optionen“: True = an (türkis), False = aus, None = nicht da."""
+    t = [t for t in tx if "generierter Inhalt" in t[0]]
+    if not t:
+        return None
+    return any(r < 150 and g > 170 and b > 190 for r, g, b in M.farben(*[(x, t[0][2] - 2) for x in (280, 284, 288)]))
+
+
+def ki_label():
+    """Artur 20.11.2026: Slideshows (KI-Bilder) immer mit „KI-generierter Inhalt“ posten (wie klickguru).
+    Beitragsseite → runter → „Weitere Optionen“ → Schalter an (nur wenn aus) → prüfen → Blatt zu → wieder hoch."""
+    k = seh.kabel()
+    k.ziehe(167, 600, 167, 350, 0.4); M.ruhe(1.2)
+    tx = M.lesen()
+    w = seh.finde("Weitere Optionen", tx)
+    if not w:
+        raise M.Stopp("„Weitere Optionen“ auf der Beitragsseite nicht gefunden (KI-Kennzeichnung)")
+    M.tipp(w[0], w[1], tx, "Weitere Optionen"); M.ruhe(1.5)
+    for _ in range(3):
+        tx = M.lesen()
+        e = seh.finde("Einschalten", tx, genau=True)             # Hinweis „Kennzeichnen von KI-generierten Inhalten“
+        if e:
+            M.tipp(e[0], e[1], tx, "KI-Hinweis: Einschalten"); M.ruhe(1.5); tx = M.lesen()
+        an = ki_an(tx)
+        if an is None:
+            raise M.Stopp("Schalter „KI-generierter Inhalt“ nicht gefunden")
+        if an:
+            break
+        t = [t for t in tx if "generierter Inhalt" in t[0]][0]
+        M.tipp(294, t[2] - 2, tx, "KI-generierter Inhalt an", abstand=10, zitter=1); M.ruhe(1.2)
+    else:
+        raise M.Stopp("KI-Kennzeichnung ließ sich nicht einschalten")
+    M.log("KI-generierter Inhalt: an")
+    titel = [t for t in tx if t[0].strip() == "Weitere Optionen"]
+    k.tipp(311, titel[0][2]) if titel else M.blatt_runter(300)   # X direkt (wie Link-Blatt), nicht über M.tipp-Sperre
+    M.ruhe(1.2)
+    k.ziehe(167, 300, 167, 650, 0.4); M.ruhe(1.0)
+
+
 _feld_text_alt = M.feld_text
 _feld_tippen_alt = M.beschreibung_feld_tippen
 TITEL_PLATZHALTER = re.compile(r"füge einen titel hinzu[^\n]*?erweckt|mit einer detail+ierten beschreibung[^\n]*?erzielen\.?"
@@ -537,6 +576,12 @@ def main():
         # Die Schluss-Prüfung liest weiter am Bildschirm: steht doch Text im Feld → Sperre (nicht posten).
         M.beschreibung_text = lambda dd: ""
         M.beschreiben = lambda text: M.log("Beschreibung leer (Stil klickguru)")
+    _schluss_alt = M.schluss_pruefung
+    def _schluss(dd, F, text):
+        if not F.get("ki"):
+            ki_label(); F["ki"] = True
+        return _schluss_alt(dd, F, text)
+    M.schluss_pruefung = _schluss
     M.zum_beitrag = lambda kachel, galerie=None, warten_s=120: fotos_zum_beitrag(len(slides), galerie)
     M.video_waehlen = M.zum_beitrag
     try:
