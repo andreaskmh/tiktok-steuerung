@@ -1361,7 +1361,7 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
         name = f"{land}-rangliste-{wer.lower()}.html"
         (ORDNER / name).write_text(html)
         (desk / schoen(name)).write_text(html)
-        pdf_machen(html.replace("<details ", "<details open "), desk / schoen(name).replace(".html", ".pdf"))
+        # Artur 20.11.: nur HTML im Ordner (pdf_machen() bleibt als Reserve)
     print(f"FERTIG Aufteilung {', '.join(PERSONEN)} + Ablage: {desk}")
 
 
