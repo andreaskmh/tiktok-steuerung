@@ -81,6 +81,8 @@ def _norm(s):
     import re, unicodedata
     s = unicodedata.normalize("NFKD", (s or "").lower())
     s = "".join(c for c in s if not unicodedata.combining(c)).replace("ß", "ss")
+    # Kyrillische/griechische Doppelgänger → lateinisch (Video 150, 19.11.2026: Titel „HIЕHA“ mit kyrill. Е/Н/А)
+    s = s.translate(str.maketrans("аеорсухкмтнвіјѕ" "αεοτνκμρχ", "aeopcyxkmthbijs" "aeotvkmpx"))
     return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9 ]", " ", s)).strip()
 
 
@@ -160,7 +162,7 @@ def zur_galerie(pid, produkt=None):
         kopf = s1[s1.index("Promote S1") + 1: s1.index("View on TikTok Shop")]
     except ValueError:
         kopf = []
-    shop = {w for t in kopf if "..." not in t and "…" not in t for w in re.findall(r"[a-z0-9äöü]{4,}", t.lower())}
+    shop = {w for t in kopf if "..." not in t and "…" not in t for w in re.findall(r"[a-z0-9]{4,}", _norm(t))}
     log(f"Shop laut Social1: {sorted(shop) or '?'}")
     taps(f[0], f[1], "w3.0")
     for _ in range(40):                                          # evtl. „In TikTok öffnen?“, TikTok lädt manchmal > 10 s
@@ -172,7 +174,8 @@ def zur_galerie(pid, produkt=None):
         if any(w in txt for w in NV_TEXTE):                      # Seite „Produkt nicht verfügbar“ → keine Galerie
             st = status_neu(); status_lesen(st, tx); STATUS.update(st)
             raise NichtVerfuegbar(st["hinweis"] or "Produkt nicht verfügbar")
-        if any(g in txt for g in ("kasse", "jetzt kaufen", "verdiene")) and (not shop or any(w in txt for w in shop)):
+        txtn = _norm(txt)                                        # Shopname normiert (kyrill. Doppelgänger, Umlaute)
+        if any(g in txt for g in ("kasse", "jetzt kaufen", "verdiene")) and (not shop or any(w in txtn for w in shop)):
             break
         time.sleep(0.5)
     else:

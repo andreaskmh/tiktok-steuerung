@@ -1430,6 +1430,8 @@ def name_ok(tx, lab_y, alt=None):
     # Zähler „N/30“ nur noch als Hilfe, wenn sich der Feldtext gegenüber VORHER geändert hat. Artur 16.11.2026 17:31:
     # Fanttik – alter Name „E1 Max Schrauber“ blieb stehen, hat aber wie „Wenige verfügbar“ 16 Zeichen → Zähler 16/30
     # meldete fälschlich „umbenannt“.
+    if os.environ.get("TS_WLAN"):                               # 20.11.2026: Zähler allein reicht nicht – bei WLAN hatte
+        return False                                            # „fetds vuerstze“ dieselbe Länge wie der richtige Name
     if alt is None or _gleich(feldzeile(tx, lab_y), alt) or _kn(feldzeile(tx, lab_y)) == _kn(alt):
         return False
     zaehler = [t for t in tx if re.fullmatch(r"\d{1,2}/30", t[0].strip()) and abs(t[2] - lab_y) < 15]
@@ -2166,7 +2168,9 @@ def nach_hinzufuegen(weg):
                         break
                     log("Produktname unvollständig – nochmal komplett neu")
                 _umbenannt = True
-                log(f"umbenannt: {_BUTTON}" if ok else "Produktname nicht sauber übernommen – weiter")
+                if not ok:                                       # 20.11.2026 (Artur, Video 150): falscher Name ging raus
+                    raise Sperre(f"Produktname nicht sauber übernommen („{_BUTTON}“) – NICHT gepostet")
+                log(f"umbenannt: {_BUTTON}")
                 time.sleep(0.4); continue                        # 17.11.: neu lesen → Hinzufügen erst, wenn es rot ist
             if kuerzlich("hinzufuegen-rot", 3.0):               # 16.11.: nie zweimal „Hinzufügen“ in Folge
                 time.sleep(0.4); continue

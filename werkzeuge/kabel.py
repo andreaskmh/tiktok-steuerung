@@ -168,6 +168,8 @@ def auf_usb():
     """15.11.2026: Nach einem Server-Neustart lief die Steuerung über WLAN – Tipps/Tippen kamen verspätet oder gar nicht an
     (Beschreibungsfeld blieb leer). Hängt das Kabel dran, Server über den Wächter auf USB umstellen."""
     global _dev, _frame
+    if os.environ.get("TS_WLAN"):                                # Artur 20.11.2026: „Steuer per wlan“ (kein Kabel) → nie umstellen
+        return
     if "Wi-Fi" not in steuerung_art():
         return
     global WECHSEL
@@ -275,6 +277,11 @@ def text(t, menschlich=False):
     # 4–10 Zeichen in EINEM Befehl, Taste nur ~25–35 ms gedrückt (Server-Patch 6 „halt“), zufälliger Tastenabstand
     # 15–50 ms, kurze zufällige Pausen zwischen Stücken, selten eine kleine Denkpause. Verschluckte Zeichen fängt die
     # Prüfung danach ab (beschreibung_stimmt / name_ok → neu tippen).
+    if os.environ.get("TS_WLAN"):                               # 20.11.2026 (Artur, Video 150): über WLAN kamen Wortstücke
+        for c in codes:                                         # vertauscht/verschluckt an („fetds vuerstze“ statt „Fast
+            aktion("hid", keys=[c], halt=0.04, pause=0.0)        # ausverkauft“) → Taste für Taste, jede einzeln bestätigt
+            time.sleep(random.uniform(0.09, 0.16))
+        return
     i = 0
     while i < len(t):
         n = min(len(t) - i, random.randint(4, 10))
