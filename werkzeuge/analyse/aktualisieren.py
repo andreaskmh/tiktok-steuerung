@@ -54,7 +54,7 @@ def log(t):
 
 def erreichbar(udid):
     """Steuer-Server läuft (sonst starten) und das Handy liefert ein frisches Bild."""
-    subprocess.run([sys.executable, str(HIER.parent / "kabel.py"), "status"], env=dict(os.environ, TS_IPHONE_UDID=udid),
+    subprocess.run([sys.executable, str(HIER.parent / "kabel.py"), "status"], env=dict(os.environ, TS_IPHONE_UDID=udid, TS_WLAN="1"),
                    capture_output=True, timeout=90)
     try:
         geraete = json.load(urllib.request.urlopen("http://127.0.0.1:27893/api/devices", timeout=10))
@@ -145,7 +145,7 @@ def lauf(art, udid=None):
                 erledigt += 1; geschaetzt_fertig += pro_schritt; melde("übersprungen", k); continue
             melde(name, k)
             r = subprocess.run([sys.executable, str(HIER / befehl[0])] + [b.replace("{k}", k) for b in befehl[1:]],
-                               cwd=HIER, env=dict(os.environ, TS_IPHONE_UDID=udid), capture_output=True, text=True)
+                               cwd=HIER, env=dict(os.environ, TS_IPHONE_UDID=udid, TS_WLAN="1"), capture_output=True, text=True)
             zeilen = [z for z in (r.stdout + r.stderr).splitlines() if z.strip()]
             stopp = [verstaendlich(z, k) for z in zeilen if z.startswith("STOPP")]
             if any("Traceback" in z for z in zeilen):                 # letzte Zeile = eigentlicher Fehler
@@ -157,7 +157,7 @@ def lauf(art, udid=None):
                 erledigt += 1; geschaetzt_fertig += pro_schritt; melde("übersprungen", k)
                 break
             if stopp:
-                fehler.append(stopp[0][:160]); log(stopp[0])
+                fehler.append(stopp[0][:160]); log(stopp[0]); log("  roh: " + " | ".join(zeilen[-3:])[:400])   # echte Meldung für die Fehlersuche
             erledigt += 1; geschaetzt_fertig += pro_schritt
             melde(name + " fertig", k)
     melde("App-Daten werden gebaut")

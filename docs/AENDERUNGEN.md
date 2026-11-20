@@ -582,3 +582,7 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - statsKMH Logo/App-Symbol „A Puls“ (Türkis→Blau, weiße Kurslinie, leuchtender Endpunkt; Quelle app/icon-vorschlaege/icon_puls.swift).
   Startbild neu: Systemstart in derselben Farbe (Asset StartFarbe, app/kmhview/Info-iOS.plist) → kein Flackern; Logo federt rein,
   Schriftzug „stats“ dünn + „KMH“ fett gleitet nach, dann Zoom/Überblendung in die App. Grund: Artur – Start unflüssig, Logo nicht modern.
+- 21.11.2026 statsKMH: Aktualisieren übers Handy lief sofort auf „nicht erreichbar“ → `aktualisieren.py` setzt jetzt TS_WLAN=1
+  (sonst will kabel.py bei WLAN-Steuerung auf Kabel umschalten = Server-Neustart); Rohmeldung wird mitgeloggt.
+  Kalender: Tage 1–5 fehlten am Monatsanfang (leere Felder hatten dieselben IDs) → behoben. Aktualisieren-Karte wieder oben,
+  Accountliste direkt unter den Kacheln, Wechsel ohne Animation, alter Scroll-Ausgleich entfernt (machte den Schieb-Effekt).

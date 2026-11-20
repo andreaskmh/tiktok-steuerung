@@ -35,8 +35,6 @@ struct Symbol: View {
 }
 let verlaufFarbe = LinearGradient(colors: [.gut, .gut], startPoint: .top, endPoint: .bottom)   // Balken (Artur: nicht grau)
 
-final class Merker { var y: CGFloat = 0; var hoehe: CGFloat = 0 }
-
 struct Uebersicht: View {
     @EnvironmentObject var s: Speicher
     @State private var auswahl = "Alle Accounts"
@@ -44,48 +42,32 @@ struct Uebersicht: View {
     @State private var videoPeriode: Periode = .tage3
     @State private var eigen = Spanne(von: Calendar.current.date(byAdding: .day, value: -13, to: Calendar.current.startOfDay(for: Date()))!, bis: Calendar.current.startOfDay(for: Date()))
     @State private var waehlen = false
-    @State private var merker = Merker()   // Lage der Accountliste, ohne bei jedem Scrollen neu zu zeichnen
 
     var konto: Konto? { s.daten?.konten.first { $0.name == auswahl } ?? s.daten?.konten.first }
 
     var body: some View {
         NavigationStack {
-          ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
                     kopf
+                    Aktualisieren()
                     if let k = konto {
                         Hero(k: k, periode: $periode, eigen: $eigen)
                         Kacheln(k: k)
+                        if let d = s.daten { Rangliste(alle: d.konten[0], konten: Array(d.konten.dropFirst()), auswahl: $auswahl) }
                         VideoStatistik(k: k, periode: $videoPeriode, eigen: $eigen)
-                        if let d = s.daten {
-                            Rangliste(alle: d.konten[0], konten: Array(d.konten.dropFirst()), auswahl: $auswahl)
-                                .overlay(alignment: .top) {
-                                    Color.clear.frame(height: 0).id("rangliste")
-                                        .onGeometryChange(for: CGFloat.self) { $0.frame(in: .named("blatt")).minY } action: { merker.y = $0 }
-                                }
-                        }
                         Monate(k: k)
                         Auszahlungen(k: k)
                         TopListe(titel: "Top-Videos", eintraege: k.videos, video: true, zeigeKonto: k.istAlle)
                         TopListe(titel: "Top-Produkte", eintraege: k.produkte, video: false, zeigeKonto: k.istAlle)
                         if !k.offen.isEmpty { OffeneListe(k: k) }
-                        Aktualisieren()
                     } else {
-                        Aktualisieren()
                         ContentUnavailableView("Keine Daten", systemImage: "tray")
                     }
                     fuss
                 }
                 .padding(.horizontal, randAussen).padding(.bottom, 30)
                 .frame(maxWidth: 720).frame(maxWidth: .infinity)
-            }
-            .coordinateSpace(name: "blatt")
-            .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { merker.hoehe = $0 }
-            .onChange(of: auswahl) {   // Account unten gewählt: Liste bleibt stehen, statt dass das Bild mitspringt (Artur 20.11.)
-                guard merker.hoehe > 0, merker.y < merker.hoehe, merker.y > -3000 else { return }
-                var t = Transaction(); t.disablesAnimations = true
-                withTransaction(t) { proxy.scrollTo("rangliste", anchor: UnitPoint(x: 0, y: merker.y / merker.hoehe)) }
             }
             .background(Hintergrund())
             .dynamicTypeSize(...DynamicTypeSize.large)   // große iPhone-Schrift nicht weiter aufblähen (sonst „reingezoomt“, Artur 20.11.)
@@ -103,7 +85,6 @@ struct Uebersicht: View {
                 if case .success(let url) = r { s.ordnerGewaehlt(url) }
             }
             #endif
-          }
         }
     }
 
@@ -421,7 +402,7 @@ struct BereichWahl: View {
             }.buttonStyle(.plain)
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2), count: 7), spacing: 4) {
                 ForEach(["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"], id: \.self) { Text($0).font(.caption2).foregroundStyle(.secondary) }
-                ForEach(0..<vorne, id: \.self) { _ in Color.clear.frame(height: 32) }
+                ForEach(0..<vorne, id: \.self) { i in Color.clear.frame(height: 32).id("leer\(i)") }
                 ForEach(1...tage, id: \.self) { n in
                     let d = kal.date(byAdding: .day, value: n - 1, to: monat)!
                     let ende = start == nil && (d == spanne.von || d == spanne.bis) || d == start
@@ -756,12 +737,15 @@ struct Kachel: View {
     }
 }
 
+/// Account-Wechsel sofort, ohne Gleit-/Schiebe-Animation (Artur 21.11.)
+func ohneAnimation(_ f: () -> Void) { var t = Transaction(); t.disablesAnimations = true; withTransaction(t, f) }
+
 struct Rangliste: View {
     let alle: Konto; let konten: [Konto]; @Binding var auswahl: String
     var body: some View {
         let max = konten.map { $0.zeitraeume.tage30.provision }.max() ?? 1
         Karte(titel: "Accounts", rechts: "voraussichtlich, letzte 30 Tage", symbol: "person.2.fill", farbe: .blau) {
-            Button { auswahl = alle.name } label: {
+            Button { ohneAnimation { auswahl = alle.name } } label: {
                 HStack(spacing: 12) {
                     Avatar(konto: alle, name: alle.name, groesse: 32)
                     Text("Alle Accounts").font(.subheadline.weight(.semibold))
@@ -774,7 +758,7 @@ struct Rangliste: View {
             }.buttonStyle(.plain)
             ForEach(konten) { k in
                 let an = k.name == auswahl
-                Button { auswahl = k.name } label: {
+                Button { ohneAnimation { auswahl = k.name } } label: {
                     HStack(spacing: 12) {
                         Avatar(konto: k, name: k.name, groesse: 40)
                         VStack(alignment: .leading, spacing: 6) {
