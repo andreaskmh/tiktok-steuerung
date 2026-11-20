@@ -54,7 +54,7 @@ struct Uebersicht: View {
                         Hero(k: k, periode: $periode, eigen: $eigen)
                         Kacheln(k: k)
                         VideoStatistik(k: k, periode: $videoPeriode, eigen: $eigen)
-                        if k.istAlle, let d = s.daten { Rangliste(konten: Array(d.konten.dropFirst()), auswahl: $auswahl) }
+                        if let d = s.daten { Rangliste(alle: d.konten[0], konten: Array(d.konten.dropFirst()), auswahl: $auswahl) }
                         Monate(k: k)
                         Auszahlungen(k: k)
                         TopListe(titel: "Top-Videos", eintraege: k.videos, video: true, zeigeKonto: k.istAlle)
@@ -71,7 +71,12 @@ struct Uebersicht: View {
             .background(Hintergrund())
             .tint(Color.akzent)   // keine blaue Systemfarbe (Mac-Look)
             .refreshable { s.laden() }
-            .task { while !Task.isCancelled { s.statusLaden(); try? await Task.sleep(for: .seconds(4)) } }   // Fortschritt vom Mac
+            .task {   // Fortschritt vom Mac: alle 4 s, wenn etwas läuft/wartet, sonst alle 20 s
+                while !Task.isCancelled {
+                    s.statusLaden()
+                    try? await Task.sleep(for: .seconds(s.status?.laeuft == true || s.auftragGesendet != nil ? 4 : 20))
+                }
+            }
             #if os(iOS)
             .toolbar(.hidden, for: .navigationBar)
             .fileImporter(isPresented: $waehlen, allowedContentTypes: [.folder]) { r in
@@ -116,6 +121,7 @@ struct Uebersicht: View {
 struct Aktualisieren: View {
     @EnvironmentObject var s: Speicher
     @AppStorage("datenHandy") private var handy = "00008030-00096C8621C3402E"   // Standard: iPhone 11
+    @State private var frage: (art: String, titel: String, sek: Int)?   // Rückfrage vor jedem Start (Artur 20.11.)
     static let fmt: DateFormatter = { let f = DateFormatter(); f.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"; return f }()
     func datum(_ t: String?) -> Date { t.flatMap { Self.fmt.date(from: $0) } ?? Date() }
     func dauer(_ sek: Double) -> String {
@@ -189,10 +195,17 @@ struct Aktualisieren: View {
                 #endif
             }
         }
+        .alert(frage.map { "\($0.titel)-Aktualisierung starten?" } ?? "", isPresented: Binding(get: { frage != nil }, set: { if !$0 { frage = nil } })) {
+            Button("Ja, starten") { if let f = frage { s.auftrag(f.art, udid: handy) }; frage = nil }
+            Button("Abbrechen", role: .cancel) { frage = nil }
+        } message: {
+            let g = s.geraete.first { $0.udid == handy }
+            Text("\(g?.titel ?? "Das Handy") wird ca. \(dauer(Double(frage?.sek ?? 0))) lang bedient – solange nicht benutzen.")
+        }
     }
 
     func knopf(_ art: String, _ titel: String, _ symbol: String, _ unter: String, _ sek: Int, _ gesperrt: Bool) -> some View {
-        Button { s.auftrag(art, udid: handy) } label: {
+        Button { frage = (art, titel, sek) } label: {
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
                     Image(systemName: symbol).foregroundStyle(Color.gut)
@@ -266,6 +279,7 @@ struct Avatar: View {
 struct KontoWahl: View {
     let konten: [Konto]; @Binding var auswahl: String
     @State private var offen = false
+    @State private var neu = false
     @State private var suche = ""
     func titel(_ k: Konto) -> String { k.istAlle ? "Alle Accounts" : k.name }
     var body: some View {
@@ -275,7 +289,7 @@ struct KontoWahl: View {
                 Avatar(konto: k, name: k.name, groesse: 36)
                 VStack(alignment: .leading, spacing: 1) {
                     Text(titel(k)).font(.headline).lineLimit(1)
-                    Text("\(konten.count - 1) Accounts · antippen zum Wechseln").font(.caption).foregroundStyle(.secondary)
+                    Text("\(konten.count - 1) Accounts · Antippen zum Wechseln").font(.caption).foregroundStyle(.secondary)
                 }
                 Spacer()
                 Image(systemName: "chevron.up.chevron.down").font(.footnote.weight(.semibold)).foregroundStyle(.secondary)
@@ -303,12 +317,51 @@ struct KontoWahl: View {
                 }
                 .searchable(text: $suche, prompt: "Account suchen")
                 .navigationTitle("Account wählen")
-                .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Fertig") { offen = false } } }
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) { Button("Fertig") { offen = false } }
+                    ToolbarItem(placement: .cancellationAction) { Button { neu = true } label: { Label("Account hinzufügen", systemImage: "plus") } }
+                }
+                .sheet(isPresented: $neu) { KontoNeu() }
             }
             #if os(macOS)
             .frame(minWidth: 380, minHeight: 460)
             #endif
         }
+    }
+}
+
+/// Account hinzufügen: Name + Handy. Einloggen in TikTok macht Artur selbst auf dem Handy.
+struct KontoNeu: View {
+    @EnvironmentObject var s: Speicher
+    @Environment(\.dismiss) var weg
+    @AppStorage("datenHandy") private var handy = "00008030-00096C8621C3402E"
+    @State private var name = ""
+    @State private var fehler = false
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    TextField("TikTok-Name, z. B. anduri.official", text: $name)
+                        #if os(iOS)
+                        .textInputAutocapitalization(.never).autocorrectionDisabled()
+                        #endif
+                    Picker("Handy", selection: $handy) { ForEach(s.geraete) { Text($0.titel).tag($0.udid) } }
+                } footer: {
+                    Text("1. Auf dem gewählten Handy in TikTok mit diesem Account einloggen (Konto hinzufügen) – das machst du selbst.\n2. Hier speichern. Bei der nächsten Aktualisierung „Voll“ wird er abgelesen und erscheint in der Liste.")
+                }
+                if fehler { Text("Konnte nicht gespeichert werden – iCloud-Ordner gewählt?").foregroundStyle(Color.warn) }
+            }
+            .navigationTitle("Account hinzufügen")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) { Button("Abbrechen") { weg() } }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Speichern") { if s.kontoHinzufuegen(name, udid: handy) { weg() } else { fehler = true } }.disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
+                }
+            }
+        }
+        #if os(macOS)
+        .frame(minWidth: 420, minHeight: 300)
+        #endif
     }
 }
 
@@ -384,6 +437,10 @@ struct Hero: View {
             if periode == .eigen {
                 BereichWahl(spanne: $eigen)
             }
+            HStack(spacing: 8) {   // welcher Account gerade gezeigt wird – auch ohne nach oben zu scrollen
+                Avatar(konto: k, name: k.name, groesse: 22)
+                Text(k.istAlle ? "Alle Accounts" : k.name).font(.footnote.weight(.semibold))
+            }
             VStack(alignment: .leading, spacing: 4) {
                 Text("Vorauss. Provisionen").font(.subheadline).foregroundStyle(.secondary)
                 Text(euro(z.provision)).font(.system(size: 44, weight: .bold, design: .rounded))
@@ -393,7 +450,7 @@ struct Hero: View {
                 Text(quelleText(z.offiziell ?? 0)).font(.caption2.weight(.semibold))
                     .padding(.horizontal, 8).padding(.vertical, 3)
                     .background(Color.symbolGrund, in: Capsule()).foregroundStyle((z.offiziell ?? 0) >= 0.999 ? Color.gut : Color.secondary)
-                Text(periode.erklaerung(sp)).font(.caption2).foregroundStyle(.secondary).padding(.top, 2)
+                Text(mitZeit(periode.erklaerung(sp), sp)).font(.caption2).foregroundStyle(.secondary).padding(.top, 2)
             }
             Chart(k.verlauf) { t in
                 AreaMark(x: .value("Tag", tagDatum(t.tag)), y: .value("€", t.provision))
@@ -414,13 +471,23 @@ struct Hero: View {
                     PointMark(x: .value("Tag", tagDatum(p.tag)), y: .value("€", p.provision)).foregroundStyle(Color.akzent).symbolSize(70)
                 }
             }
-            .chartXSelection(value: $gewaehlt)
+            .chartOverlay { proxy in   // Tippen wählt einen Tag (Ziehen würde mit dem Scrollen kämpfen → Ruckeln)
+                GeometryReader { geo in
+                    Rectangle().fill(.clear).contentShape(Rectangle())
+                        .onTapGesture { ort in
+                            guard let ebene = proxy.plotFrame else { return }
+                            let x = ort.x - geo[ebene].origin.x
+                            let d: Date? = proxy.value(atX: x)
+                            gewaehlt = (gewaehlt != nil && d.map { abs($0.timeIntervalSince(gewaehlt!)) < 43200 } == true) ? nil : d
+                        }
+                }
+            }
             .chartXAxis { AxisMarks(values: .stride(by: .day, count: 7)) { _ in AxisValueLabel(format: .dateTime.day().month(.abbreviated)).foregroundStyle(Color.gray) } }
             .chartYAxis { AxisMarks(position: .trailing, values: .automatic(desiredCount: 3)) { v in
                 AxisGridLine().foregroundStyle(Color.linie)
                 AxisValueLabel { if let d = v.as(Double.self) { Text(euro(d, kurz: true)).font(.caption2).foregroundStyle(.secondary) } } } }
             .frame(height: 150).padding(.top, 26)
-            Text("Verlauf: letzte 30 Tage, Provision je Bestelltag – antippen oder darüberfahren für Werte").font(.caption2).foregroundStyle(.secondary)
+            Text("Verlauf: letzte 30 Tage, Provision je Bestelltag – Tag antippen für den Wert").font(.caption2).foregroundStyle(.secondary)
         }
         .padding(20)
         .background(Color.flaeche, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
@@ -564,8 +631,20 @@ func aufrufeText(_ n: Int) -> String {
     if n >= 10_000 { return (Double(n) / 1e3).formatted(.number.precision(.fractionLength(1)).locale(deDE)) + "K" }
     return zahl(n)
 }
+/// Erklärung + wann die TikTok-Zahl abgelesen wurde („Heute, 20.11.2026 · Stand 07:05 Uhr“)
+extension Hero {
+    func mitZeit(_ text: String, _ sp: Spanne) -> String {
+        let von = tagText(sp.von), bis = tagText(sp.bis)
+        guard let z = k.gelesen?.filter({ $0.key >= von && $0.key <= bis }).values.max(), z.count >= 16 else { return text }
+        let uhr = String(z.suffix(5))
+        if periode == .heute { return text.replacingOccurrences(of: " (bis zum letzten Abruf)", with: "") + " · Stand \(uhr) Uhr" }
+        let tag = z.prefix(10).split(separator: "-")
+        return text + " · abgelesen \(tag[2]).\(tag[1]). \(uhr) Uhr"
+    }
+}
+
 func quelleText(_ anteil: Double) -> String {
-    if anteil >= 0.999 { return "✓ offizielle TikTok-Zahl" }
+    if anteil >= 0.999 { return "✓ Offizielle Zahl aus TikTok › Daten (Vorauss. Provisionen)" }
     if anteil <= 0.001 { return "aus Export gerechnet (TikTok-Zahl fehlt noch)" }
     return "\(Int((anteil * 100).rounded())) % offizielle TikTok-Zahl, Rest aus Export"
 }
@@ -616,11 +695,23 @@ struct Kachel: View {
 }
 
 struct Rangliste: View {
-    let konten: [Konto]; @Binding var auswahl: String
+    let alle: Konto; let konten: [Konto]; @Binding var auswahl: String
     var body: some View {
         let max = konten.map { $0.zeitraeume.tage30.provision }.max() ?? 1
         Karte(titel: "Accounts", rechts: "voraussichtlich, letzte 30 Tage") {
+            Button { auswahl = alle.name } label: {
+                HStack(spacing: 12) {
+                    Avatar(konto: alle, name: alle.name, groesse: 32)
+                    Text("Alle Accounts").font(.subheadline.weight(.semibold))
+                    Spacer()
+                    Text(euro(alle.zeitraeume.tage30.provision)).font(.subheadline.weight(.semibold)).monospacedDigit()
+                    Image(systemName: auswahl == alle.name ? "checkmark.circle.fill" : "circle").foregroundStyle(auswahl == alle.name ? Color.gut : Color.secondary.opacity(0.4))
+                }
+                .padding(8).contentShape(Rectangle())
+                .background(auswahl == alle.name ? Color.symbolGrund : .clear, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            }.buttonStyle(.plain)
             ForEach(konten) { k in
+                let an = k.name == auswahl
                 Button { auswahl = k.name } label: {
                     HStack(spacing: 12) {
                         Avatar(konto: k, name: k.name, groesse: 40)
@@ -639,7 +730,11 @@ struct Rangliste: View {
                             Text("Heute \(euro(k.zeitraeume.heute.provision)) · Gestern \(euro(k.zeitraeume.gestern.provision)) · 7 T \(euro(k.zeitraeume.tage7.provision, kurz: true))")
                                 .font(.caption2).foregroundStyle(.secondary).lineLimit(1).minimumScaleFactor(0.8)
                         }
-                    }.contentShape(Rectangle())
+                        Image(systemName: an ? "checkmark.circle.fill" : "circle").foregroundStyle(an ? Color.gut : Color.secondary.opacity(0.4))
+                    }
+                    .padding(8).contentShape(Rectangle())
+                    .background(an ? Color.symbolGrund : .clear, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).strokeBorder(an ? Color.gut.opacity(0.6) : .clear, lineWidth: 1))
                 }.buttonStyle(.plain)
             }
         }
@@ -698,7 +793,16 @@ struct Auszahlungen: View {
                             .font(.caption2.weight(gewaehlt == monatName(m.monat) ? .bold : .medium)).foregroundStyle(gewaehlt == monatName(m.monat) ? .primary : .secondary)
                     }
             }
-            .chartXSelection(value: $gewaehlt)
+            .chartOverlay { proxy in
+                GeometryReader { geo in
+                    Rectangle().fill(.clear).contentShape(Rectangle())
+                        .onTapGesture { ort in
+                            guard let ebene = proxy.plotFrame else { return }
+                            let m: String? = proxy.value(atX: ort.x - geo[ebene].origin.x)
+                            gewaehlt = m == gewaehlt ? nil : m
+                        }
+                }
+            }
             .chartYAxis(.hidden)
             .frame(height: 170)
         }

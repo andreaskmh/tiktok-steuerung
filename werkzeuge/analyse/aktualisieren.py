@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""viewKMH auf Knopfdruck aktualisieren (Artur 20.11.2026: nur manuell, nichts automatisch).
+"""statsKMH auf Knopfdruck aktualisieren (Artur 20.11.2026: nur manuell, nichts automatisch).
 
   python3 werkzeuge/analyse/aktualisieren.py --wache     # Dienst: wartet auf den Knopf in der App (läuft per launchd)
   python3 werkzeuge/analyse/aktualisieren.py schnell     # direkt: Heute + Gestern + Guthaben (~2 Min./Account)
   python3 werkzeuge/analyse/aktualisieren.py voll        # direkt: 30 Tage + Video-Listen + Export + Prämien (~7 Min./Account)
 
-Knopf in viewKMH → iCloud Drive/statsKMH/auftrag.json {"art": "schnell"|"voll"} → dieser Dienst arbeitet die Accounts ab und
+Knopf in statsKMH → iCloud Drive/statsKMH/auftrag.json {"art": "schnell"|"voll"} → dieser Dienst arbeitet die Accounts ab und
 schreibt laufend statsKMH/status.json (Schritt, Fortschritt, Restzeit). Danach app_daten.py → provision.json (App lädt neu).
 Die Web-Version (Artifact) veröffentlicht nur Claude – sie wird beim nächsten Gespräch aktualisiert.
 Geschätzte Zeiten lernen mit (dauer.json). Accounts eines Handys, das nicht erreichbar ist, werden übersprungen."""
@@ -16,6 +16,23 @@ ICLOUD = pathlib.Path.home() / "Library/Mobile Documents/com~apple~CloudDocs/sta
 AUFTRAG, STATUS, DAUER, LOG = ICLOUD / "auftrag.json", ICLOUD / "status.json", HIER / "dauer.json", HIER / "aktualisieren.log"
 GERAETE = [("00008030-00096C8621C3402E", ["anduri.official", "ella_robinson2", "artur.official", "andreasfastlane", "andreas.testet"]),
            ("00008130-00163088368A001C", ["andrucha.official"])]   # iPhone 11 / iPhone 15 Pro Max
+def zusatz_konten():
+    """In der App hinzugefügte Accounts (statsKMH/konten.json: [{"name", "udid"}]) an die feste Liste anhängen."""
+    try:
+        for z in json.load(open(ICLOUD / "konten.json")).get("konten", []):
+            n, u = z["name"].strip().lstrip("@"), z["udid"]
+            if not n or any(n in ks for _, ks in GERAETE):
+                continue
+            ziel = next((ks for g, ks in GERAETE if g == u), None)
+            if ziel is None:
+                GERAETE.append((u, [n]))
+            else:
+                ziel.append(n)
+    except Exception:
+        pass
+
+
+zusatz_konten()
 SCHRITTE = {   # (Name, Befehl mit {k} = Konto)
     "schnell": [("Zahlen", ["daten_holen.py", "{k}", "--tage", "2", "--vtage", "0"]), ("Guthaben", ["export_holen.py", "--guthaben", "{k}"])],
     "voll": [("Zahlen + Videos", ["daten_holen.py", "{k}"]), ("Export", ["export_holen.py", "{k}"]),
@@ -73,6 +90,16 @@ def geraet_hinzufuegen(udid):
         log(f"Handy {udid} nicht anmeldbar: {e}")
 
 
+def verstaendlich(z, k):
+    """Technische Meldung → kurzer deutscher Satz für die App."""
+    z = z.split(" (Foto ")[0]
+    if "No route to host" in z or "Connection refused" in z or "timed out" in z.lower():
+        return f"{k}: Handy nicht erreichbar – Kabel anstecken oder WLAN prüfen (Handy entsperrt?)"
+    if "nicht in der Liste" in z:
+        return z
+    return z if z.startswith("STOPP") or z.startswith(k) else f"{k}: {z}"
+
+
 def spiegel(udid):
     """iPhone-Spiegel für das gerade bediente Handy öffnen (app/spiegel, URL iphonespiegel://geraet/<udid>)."""
     subprocess.run(["open", "-g", f"iphonespiegel://geraet/{udid}"], capture_output=True)
@@ -114,7 +141,10 @@ def lauf(art, udid=None):
             melde(name, k)
             r = subprocess.run([sys.executable, str(HIER / befehl[0])] + [b.replace("{k}", k) for b in befehl[1:]],
                                cwd=HIER, env=dict(os.environ, TS_IPHONE_UDID=udid), capture_output=True, text=True)
-            stopp = [z for z in (r.stdout + r.stderr).splitlines() if z.startswith("STOPP") or "Traceback" in z]
+            zeilen = [z for z in (r.stdout + r.stderr).splitlines() if z.strip()]
+            stopp = [verstaendlich(z, k) for z in zeilen if z.startswith("STOPP")]
+            if any("Traceback" in z for z in zeilen):                 # letzte Zeile = eigentlicher Fehler
+                stopp.append(verstaendlich(zeilen[-1], k))
             if any("nicht in der Liste" in z for z in stopp):          # Account ist auf diesem Handy nicht angemeldet
                 erledigt += len(schritte) - [n for n, _ in schritte].index(name) - 1
                 geschaetzt_fertig += pro_schritt * (len(schritte) - [n for n, _ in schritte].index(name) - 1)
@@ -175,21 +205,38 @@ def wache():
 
 
 MODELLE = {"iPhone12,1": "iPhone 11", "iPhone12,3": "iPhone 11 Pro", "iPhone12,5": "iPhone 11 Pro Max", "iPhone13,2": "iPhone 12",
-           "iPhone14,5": "iPhone 13", "iPhone14,7": "iPhone 14", "iPhone15,4": "iPhone 15", "iPhone16,1": "iPhone 15 Pro",
+           "iPhone14,5": "iPhone 13", "iPhone14,7": "iPhone 14", "iPhone14,8": "iPhone 14 Plus", "iPhone15,2": "iPhone 14 Pro",
+           "iPhone15,3": "iPhone 14 Pro Max", "iPhone15,4": "iPhone 15", "iPhone16,1": "iPhone 15 Pro",
            "iPhone16,2": "iPhone 15 Pro Max", "iPhone17,1": "iPhone 16 Pro", "iPhone17,2": "iPhone 16 Pro Max", "iPhone17,3": "iPhone 16"}
 
 
 def geraete():
-    """Alle Handys mit Entwicklermodus (USB/WLAN), die die Steuerung sieht → statsKMH/geraete.json (für die Handy-Auswahl)."""
+    """Handys für die Auswahl in der App → statsKMH/geraete.json: erreichbare (Entwicklermodus, USB/WLAN, Steuer-Server
+    /api/candidates) und dem Mac bekannte, gerade nicht erreichbare (devicectl, gekoppelt) – jeweils mit iPhone-Namen."""
     try:
         liste = json.load(urllib.request.urlopen("http://127.0.0.1:27893/api/candidates", timeout=15))
     except Exception:
-        return
+        liste = []
     konten = {u: ks for u, ks in GERAETE}
-    schreibe(ICLOUD / "geraete.json", {"stand": D.datetime.now().isoformat(timespec="seconds"), "geraete": [
-        {"udid": g["udid"], "name": g.get("name") or "iPhone", "modell": MODELLE.get(g.get("model"), g.get("model") or ""),
-         "verbindung": "WLAN" if "Wi" in (g.get("connection") or "") else "Kabel", "konten": konten.get(g["udid"], [])}
-        for g in liste]})
+    out = [{"udid": g["udid"], "name": g.get("name") or "iPhone", "modell": MODELLE.get(g.get("model"), g.get("model") or ""),
+            "verbindung": "WLAN" if "Wi" in (g.get("connection") or "") else "Kabel", "erreichbar": True,
+            "konten": konten.get(g["udid"], [])} for g in liste]
+    tmp = HIER / ".geraete.json"
+    try:   # bekannte, gekoppelte iPhones (auch wenn gerade aus/nicht im WLAN)
+        subprocess.run(["xcrun", "devicectl", "list", "devices", "--json-output", str(tmp)], capture_output=True, timeout=30)
+        for x in json.load(open(tmp))["result"]["devices"]:
+            hw, cp = x.get("hardwareProperties", {}), x.get("connectionProperties", {})
+            u = hw.get("udid")
+            if not u or hw.get("reality") == "simulated" or cp.get("pairingState") != "paired" or any(o["udid"] == u for o in out):
+                continue
+            out.append({"udid": u, "name": x.get("deviceProperties", {}).get("name") or "iPhone",
+                        "modell": MODELLE.get(hw.get("productType"), hw.get("productType") or ""), "verbindung": "nicht erreichbar",
+                        "erreichbar": False, "konten": konten.get(u, [])})
+    except Exception:
+        pass
+    finally:
+        tmp.unlink(missing_ok=True)
+    schreibe(ICLOUD / "geraete.json", {"stand": D.datetime.now().isoformat(timespec="seconds"), "geraete": out})
 
 
 if __name__ == "__main__":

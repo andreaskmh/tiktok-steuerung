@@ -524,3 +524,9 @@ mit (dauer.json). Web-Version aktualisiert nur Claude. Neues App-Icon (Graphit, 
 alle 30 s `statsKMH/geraete.json` über `aktualisieren.py --geraete` ← Steuer-Server /api/candidates; neue Handys werden beim Start
 automatisch angemeldet; Accounts, die auf dem Handy fehlen, werden übersprungen). iPhone-Spiegel (app/spiegel) hat jetzt den Link
 `iphonespiegel://geraet/<UDID>` → Fenster für genau dieses iPhone; aktualisieren.py öffnet ihn beim Start, Mac-App hat Knopf „Spiegel“.
+
+**20.11.2026 (20:00)** – App wieder **statsKMH** (Artur). Rückfrage vor jedem Aktualisieren; verständliche Fehler (z. B. Handy per
+WLAN nicht erreichbar); „✓ Offizielle Zahl aus TikTok › Daten“ + Ablesezeit („Heute … · Stand 07:05 Uhr“, app_daten: `gelesen`);
+Handy-Liste mit iPhone-Namen inkl. bekannter, nicht erreichbarer Handys (devicectl); Ruckeln behoben (iCloud-Lesen im Hintergrund,
+nur bei Änderung neu zeichnen, Diagramm per Tippen statt Ziehen); Accounts-Liste immer sichtbar mit Hervorhebung;
+„Account hinzufügen“ (konten.json in iCloud → aktualisieren.py), Einloggen auf dem Handy macht Artur.

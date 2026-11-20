@@ -613,10 +613,16 @@ def sortieren(land, liste):
         k += 1
     for n, p in enumerate(reihe[k:], 1):
         s1("removeVideosFromList", lid, [p["videoId"]])
-        r = s1("addVideoToList", lid, p)
+        try:                                                   # 20.11.: „Load failed“ brach hier ab, Video war raus
+            r = s1("addVideoToList", lid, p)
+        except RuntimeError as e:
+            r = {"error": str(e)}
         if r.get("error"):
             time.sleep(10)
-            r = s1("addVideoToList", lid, p)
+            try:
+                s1("addVideoToList", lid, p)
+            except RuntimeError:
+                pass                                           # Rest holt die Nachkontrolle „fehlt“ unten
         if n % 50 == 0:
             print(f"… {n}/{len(reihe) - k}", flush=True)
     echt = set(listen_videos(lid))

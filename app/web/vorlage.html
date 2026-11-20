@@ -1,4 +1,4 @@
-<title>viewKMH</title>
+<title>statsKMH</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
 /* Layout: eine ruhige Spalte (max 760px), oben Account-Leiste, darunter Verlaufs-Karte als einziger Akzent, dann Kacheln und Listen */
@@ -103,6 +103,7 @@ button.zeile { background: none; border: 0; padding: 0; font: inherit; text-alig
 .seg button[aria-pressed="true"] { background: var(--flaeche); box-shadow: 0 1px 3px rgba(0,0,0,.15) }
 .sortzeile { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12px; color: var(--leise); margin: 8px 0 2px }
 .sortzeile select { font: 600 12px var(--text); border-radius: 8px; padding: 3px 6px; background: transparent; color: inherit; border: 1px solid var(--spur) }
+.zeile.gewaehlt { background: var(--symgrund); border-radius: 12px; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gut) 60%, transparent) }
 .seiten { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 12px; font-weight: 600 }
 .seiten button { border: 0; border-radius: 999px; width: 38px; height: 30px; font-size: 18px; background: color-mix(in srgb, var(--akzent) 14%, transparent); color: inherit; cursor: pointer }
 .seiten button:disabled { opacity: .35; cursor: default }
@@ -114,7 +115,7 @@ button.zeile { background: none; border: 0; padding: 0; font: inherit; text-alig
 </style>
 
 <div class="seite">
-  <header class="kopf"><h1>viewKMH</h1><div class="stand" id="stand"></div></header>
+  <header class="kopf"><h1>statsKMH</h1><div class="stand" id="stand"></div></header>
   <div class="kwahl" id="leiste"></div>
   <section class="hero" aria-label="Voraussichtliche Provision">
     <div class="chips" id="chips"></div>
@@ -210,7 +211,7 @@ const sym = n => `<div class="sym" style="background:var(--symgrund);color:var($
 function zeichne() {
   const k = D.konten.find(x => x.name === st.konto) || D.konten[0], z = k.kennzahlen;
   document.getElementById('stand').textContent = 'Stand ' + D.stand.replace('T', ' · ');
-  document.getElementById('leiste').innerHTML = `${ava(k)}<div><b>${k.name === 'Alle Accounts' ? 'Alle Accounts' : esc(k.name)}</b><small>${D.konten.length - 1} Accounts · antippen zum Wechseln</small></div><span class="pfeil" aria-hidden="true">⌄</span>
+  document.getElementById('leiste').innerHTML = `${ava(k)}<div><b>${k.name === 'Alle Accounts' ? 'Alle Accounts' : esc(k.name)}</b><small>${D.konten.length - 1} Accounts · Antippen zum Wechseln</small></div><span class="pfeil" aria-hidden="true">⌄</span>
     <select id="kwahl" aria-label="Account wählen">${D.konten.map(x => `<option value="${esc(x.name)}"${x.name === k.name ? ' selected' : ''}>${x.name === 'Alle Accounts' ? 'Alle Accounts' : esc(x.name)}</option>`).join('')}</select>`;
   document.getElementById('chips').innerHTML = PER.map(([id, t]) => `<button class="chip" aria-pressed="${st.per === id}" data-p="${id}">${t}</button>`).join('');
   const sp = spanne(st.per), p = summe(k, sp);
@@ -242,11 +243,14 @@ function zeichne() {
   ].map(([s, t, w, u]) => `<div class="kachel">${sym(s)}<div><div class="t">${t}</div><div class="w">${w}</div><div class="u">${u}</div></div></div>`).join('');
   // Rangliste
   const rang = document.getElementById('rang'), andere = D.konten.slice(1);
-  rang.hidden = k.name !== 'Alle Accounts';
+  rang.hidden = false;   // immer sichtbar, gewählter Account hervorgehoben (Artur 20.11.)
   const m30 = Math.max(...andere.map(x => x.zeitraeume.tage30.provision), 1);
-  rang.innerHTML = `<h2>Accounts <small>voraussichtlich, letzte 30 Tage</small></h2>` + andere.map(x => { const r = x.zeitraeume;
-    return `<button class="zeile" data-k="${esc(x.name)}">${ava(x)}<div class="mitte"><div style="display:flex;justify-content:space-between;gap:10px"><span class="n" style="font-weight:600">${esc(x.name)}</span><span class="b">${eur(r.tage30.provision)}</span></div>
-    <div class="balken"><i style="width:${(r.tage30.provision / m30 * 100).toFixed(1)}%"></i></div><div class="s">Heute ${eur(r.heute.provision)} · Gestern ${eur(r.gestern.provision)} · 7 T ${eur(r.tage7.provision, true)}</div></div></button>` }).join('');
+  const haken = an => `<span style="margin-left:8px;color:${an ? 'var(--gut)' : 'var(--ganzleise)'}">${an ? '✓' : '○'}</span>`;
+  rang.innerHTML = `<h2>Accounts <small>voraussichtlich, letzte 30 Tage</small></h2>` +
+    `<button class="zeile${k.name === 'Alle Accounts' ? ' gewaehlt' : ''}" data-k="Alle Accounts">${ava(D.konten[0])}<div class="mitte"><span class="n" style="font-weight:600">Alle Accounts</span></div><span class="b">${eur(D.konten[0].zeitraeume.tage30.provision)}</span>${haken(k.name === 'Alle Accounts')}</button>` +
+    andere.map(x => { const r = x.zeitraeume;
+    return `<button class="zeile${x.name === k.name ? ' gewaehlt' : ''}" data-k="${esc(x.name)}">${ava(x)}<div class="mitte"><div style="display:flex;justify-content:space-between;gap:10px"><span class="n" style="font-weight:600">${esc(x.name)}</span><span class="b">${eur(r.tage30.provision)}</span></div>
+    <div class="balken"><i style="width:${(r.tage30.provision / m30 * 100).toFixed(1)}%"></i></div><div class="s">Heute ${eur(r.heute.provision)} · Gestern ${eur(r.gestern.provision)} · 7 T ${eur(r.tage7.provision, true)}</div></div>${haken(x.name === k.name)}</button>` }).join('');
   // Monate
   document.getElementById('monate').innerHTML = `<h2>Nach Bestellmonat <small>nach Bestelldatum · % abgerechnet</small></h2>` + k.bestellmonate.slice().reverse().map(m => {
     const a = m.fertig_prozent / 100, c = 2 * Math.PI * 15, f = a >= .95 ? 'var(--gut)' : 'var(--warn)';

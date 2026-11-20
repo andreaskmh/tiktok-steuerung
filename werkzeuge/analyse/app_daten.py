@@ -150,7 +150,7 @@ def guthaben(k):
     return json.load(open(p))["bereit"] if os.path.exists(p) else None
 
 
-liste = [dict(name=k, avatar=avatar(k), stand=stand.get(k), videos_aufrufe=videos_aufrufe(k), **konto_daten([r for r in rows if r["konto"] == k],
+liste = [dict(name=k, avatar=avatar(k), stand=stand.get(k), videos_aufrufe=videos_aufrufe(k), gelesen={t: v.get("gelesen", "") for t, v in offiziell(k).items()}, **konto_daten([r for r in rows if r["konto"] == k],
               [p for p in pr if p["konto"] == k], guthaben(k), offiziell(k))) for k in konten]
 liste.sort(key=lambda x: -x["zeitraeume"]["tage30"]["provision"])
 alle = dict(name="Alle Accounts", avatar=None, stand=None, **konto_daten(rows, pr))
@@ -162,6 +162,12 @@ for x in liste:
 alle["tage"] = [[t, r2(e[0]), e[1], r2(e[2]), e[3], round(e[4] / e[0], 3) if e[0] else 1.0] for t, e in sorted(sm.items())]
 alle["zeitraeume"], alle["verlauf"] = zr_aus_tage(alle["tage"])
 alle["videos_aufrufe"] = [v for x in liste for v in x["videos_aufrufe"]]
+gl = defaultdict(list)                       # Alle: Ablesezeit je Tag = früheste über die Accounts (konservativ)
+for x in liste:
+    for t, z in x["gelesen"].items():
+        if z:
+            gl[t].append(z)
+alle["gelesen"] = {t: min(z) for t, z in gl.items()}
 bek = [x["kennzahlen"] for x in liste if x["kennzahlen"]["bereit"] is not None]   # nur Konten mit abgelesenem Guthaben
 alle["kennzahlen"]["bereit"] = r2(sum(x["bereit"] for x in bek)) if bek else None
 alle["kennzahlen"]["bank"] = r2(sum(x["bank"] for x in bek)) if bek else None

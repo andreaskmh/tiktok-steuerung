@@ -7,7 +7,7 @@ import AppKit
 #endif
 
 struct Daten: Codable { let stand: String; let konten: [Konto] }
-let appName = "viewKMH"
+let appName = "statsKMH"
 struct Konto: Codable, Identifiable, Equatable {
     static func == (a: Konto, b: Konto) -> Bool { a.name == b.name }
     var id: String { name }
@@ -25,6 +25,7 @@ struct Konto: Codable, Identifiable, Equatable {
     let produkte: [Top]
     let offen: [Offen]
     let videos_aufrufe: [VideoAufrufe]?
+    let gelesen: [String: String]?        // Tag → Ablesezeit der TikTok-Zahl ("2026-11-20 07:05")
     var istAlle: Bool { name == "Alle Accounts" }
 }
 struct Kennzahlen: Codable {
@@ -287,33 +288,65 @@ final class Speicher: ObservableObject {
     }
     #endif
 
+    /// Neuer TikTok-Account (Artur loggt ihn selbst auf dem Handy ein) → konten.json; wird bei der nächsten Aktualisierung abgelesen.
+    func kontoHinzufuegen(_ name: String, udid: String) -> Bool {
+        let n = name.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: "@", with: "")
+        guard !n.isEmpty else { return false }
+        let ok: Bool? = imOrdner { o in
+            let datei = o.appendingPathComponent("konten.json")
+            var liste = ((try? Data(contentsOf: datei)).flatMap { try? JSONSerialization.jsonObject(with: $0) as? [String: Any] }?["konten"] as? [[String: String]]) ?? []
+            liste.removeAll { $0["name"] == n }
+            liste.append(["name": n, "udid": udid])
+            guard let d = try? JSONSerialization.data(withJSONObject: ["konten": liste]) else { return false }
+            var err: NSError?; var geschrieben = false
+            NSFileCoordinator().coordinate(writingItemAt: datei, options: .forReplacing, error: &err) { geschrieben = (try? d.write(to: $0)) != nil }
+            return geschrieben
+        }
+        return ok == true
+    }
+
     func statusLaden() {
         #if os(macOS)
         auftragAusfuehren()
         geraeteSuchen()
         #endif
-        let gl: [Handy]? = imOrdner { o in
-            let datei = o.appendingPathComponent("geraete.json")
-            try? FileManager.default.startDownloadingUbiquitousItem(at: datei)
-            return (try? Data(contentsOf: datei)).flatMap { try? JSONDecoder().decode(HandyListe.self, from: $0) }?.geraete
+        // Dateien im Hintergrund lesen (iCloud kann blockieren → sonst ruckelt die Oberfläche)
+        let bm = UserDefaults.standard.data(forKey: schluessel)
+        Task.detached(priority: .utility) {
+            let gl = Speicher.lies(bm, "geraete.json").flatMap { try? JSONDecoder().decode(HandyListe.self, from: $0) }?.geraete
+            let neu = Speicher.lies(bm, "status.json").flatMap { try? JSONDecoder().decode(AufStatus.self, from: $0) }
+            await MainActor.run { self.statusUebernehmen(gl, neu) }
         }
+    }
+
+    nonisolated static func lies(_ bm: Data?, _ name: String) -> Data? {
+        #if os(macOS)
+        let o = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Mobile Documents/com~apple~CloudDocs/statsKMH")
+        #else
+        guard let bm else { return nil }
+        var alt = false
+        guard let o = try? URL(resolvingBookmarkData: bm, options: [], relativeTo: nil, bookmarkDataIsStale: &alt) else { return nil }
+        let zugriff = o.startAccessingSecurityScopedResource()
+        defer { if zugriff { o.stopAccessingSecurityScopedResource() } }
+        #endif
+        let datei = o.appendingPathComponent(name)
+        try? FileManager.default.startDownloadingUbiquitousItem(at: datei)
+        var err: NSError?; var g: Data?
+        NSFileCoordinator().coordinate(readingItemAt: datei, options: [], error: &err) { g = try? Data(contentsOf: $0) }
+        return g
+    }
+
+    func statusUebernehmen(_ gl: [Handy]?, _ neu: AufStatus?) {
         if let gl, gl != geraete { geraete = gl }
-        let neu: AufStatus? = imOrdner { o in
-            let datei = o.appendingPathComponent("status.json")
-            try? FileManager.default.startDownloadingUbiquitousItem(at: datei)
-            var err: NSError?; var g: Data?
-            NSFileCoordinator().coordinate(readingItemAt: datei, options: [], error: &err) { g = try? Data(contentsOf: $0) }
-            return g.flatMap { try? JSONDecoder().decode(AufStatus.self, from: $0) }
-        }
         let warLaufend = status?.laeuft == true
         if var n = neu {
             let f = DateFormatter(); f.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
             if n.laeuft, let j = n.jetzt.flatMap({ f.date(from: $0) }), Date().timeIntervalSince(j) > 900 {
                 n.laeuft = false; n.schritt = "abgebrochen (keine Meldung mehr vom Mac)"   // z. B. Mac-App beendet
             }
-            if n.laeuft { auftragGesendet = nil }
+            if n.laeuft, auftragGesendet != nil { auftragGesendet = nil }
             if warLaufend && !n.laeuft { laden() }                // fertig → neue Zahlen laden
-            status = n
+            if n != status { status = n }   // nur bei Änderung neu zeichnen (sonst ruckelt alles alle 4 s)
         }
     }
 }
@@ -322,7 +355,8 @@ struct HandyListe: Codable { let geraete: [Handy] }
 struct Handy: Codable, Equatable, Identifiable {
     var id: String { udid }
     let udid: String; let name: String; let modell: String; let verbindung: String; let konten: [String]
-    var titel: String { (modell.isEmpty ? name : modell) + " · " + verbindung }
+    var erreichbar: Bool? = true
+    var titel: String { [name, modell, verbindung].filter { !$0.isEmpty }.joined(separator: " · ") }
 }
 
 struct AufStatus: Codable, Equatable {

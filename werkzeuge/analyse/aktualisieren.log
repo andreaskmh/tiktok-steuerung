@@ -1,0 +1,5 @@
+2026-11-20 19:40:28 Start voll: 1 Accounts
+2026-11-20 19:40:29 STOPP andrucha.official: send_key: [Errno 65] No route to host (Foto /tmp/daten-stopp-andrucha.official.png)
+2026-11-20 19:40:29 Traceback (most recent call last):
+2026-11-20 19:40:29 Traceback (most recent call last):
+2026-11-20 19:41:00 Ende voll: 31 s, Fehler: ['STOPP andrucha.official: send_key: [Errno 65] No route to host (Foto /tmp/daten-stopp-andrucha.official.png)', 'Traceback (most recent call last):', 'Traceback (most recent call last):']
