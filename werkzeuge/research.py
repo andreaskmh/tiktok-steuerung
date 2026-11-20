@@ -555,6 +555,7 @@ def speichern(land, liste, nummern):
     drin = set(listen_videos(lid))
     neu = 0
     grenze = seiten_max(liste)
+    nummern = [nr for nr in nummern if int(nr) in kand]       # Nr aus früherem Lesen (nicht mehr auf Social1) → war schon gespeichert
     zu_weit = [nr for nr in nummern if kand[int(nr)].get("seite", 0) > grenze]
     if zu_weit:
         print(f"{len(zu_weit)} Videos von Seite > {grenze} → nicht in {liste}: {zu_weit[:10]}")
@@ -1131,17 +1132,42 @@ def rangliste(land):
     sort = json.loads((ORDNER / f"{land}-sortiert.json").read_text())   # {"nr": "BOF"|"SLIDES"|"QUALITY", ...}
     kand = {str(k["nr"]): k for k in json.loads((ORDNER / f"{land}-kandidaten.json").read_text())}
     gemacht = gepostete_produkte()
-    zeilen = sorted(((punkte(kand[n]), n, art) for n, art in sort.items() if n in kand and not art.endswith("?")), reverse=True)
+    zeilen = sorted(((punkte(kand[n]), n, art) for n, art in sort.items() if n in kand and not art.endswith("?")
+                     and int(kand[n].get("seite") or 0) <= seiten_max(f"{art.split('+')[0]} {land.upper()}")),   # wie speichern
+                    reverse=True)
     aus = [f"# Rangliste {land.upper()} {HEUTE.strftime('%d.%m.%Y')}", "",
            "| Platz | Punkte | Liste | Alter | +Views | Produkt | Creator | Link |", "|---|---|---|---|---|---|---|---|"]
     for i, (p, n, art) in enumerate(zeilen, 1):
         k = kand[n]
         if k["produkt_id"] in gemacht:
             art += " (Produkt schon gepostet)"
-        aus.append(f"| {i} | {p} | {art} | {k['alter']} | {k['plus_views']} | {k['produkt'][:50]} | @{k['creator']} | "
+        aus.append(f"| {i} | {p} | {art} | {k['alter']} | {k['plus_views']} | {k['produkt'][:50].replace('|', '/')} | @{k['creator']} | "
                    f"https://www.tiktok.com/@{k['creator']}/video/{k['video_id']} |")
     f = ORDNER / f"{land}-rangliste.md"
     f.write_text("\n".join(aus) + "\n")
+    # Artur 20.11.2026: Rangliste als Seite mit Vorschaubildern (Social1-Vorschau, sonst <land>-bilder/)
+    esc = lambda t: str(t).replace("&", "&amp;").replace("<", "&lt;").replace('"', "&quot;")
+    karten = []
+    for i, (p, n, art) in enumerate(zeilen, 1):
+        k = kand[n]
+        bild, lokal = k["vorschau"], f"{land}-bilder/{k['video_id']}.jpg"
+        schon = " schon" if k["produkt_id"] in gemacht else ""
+        karten.append(f'<a class="k{schon}" href="https://www.tiktok.com/@{esc(k["creator"])}/video/{k["video_id"]}" target="_blank">'
+                      f'<img loading="lazy" src="{esc(bild)}" onerror="this.onerror=null;this.src=\'{lokal}\'" alt=""><b>{i}</b><i>{esc(art)}</i>'
+                      f'<span>{esc(k["alter"])} · +{esc(k["plus_views"])}{" · Produkt schon gepostet" if schon else ""}</span>'
+                      f'<span class="p">{esc(k["produkt"][:70])}</span><span>@{esc(k["creator"])} · Seite {esc(k.get("seite", "?"))}</span></a>')
+    titel = f"Rangliste {land.upper()} {HEUTE.strftime('%d.%m.%Y')}"
+    (ORDNER / f"{land}-rangliste.html").write_text(
+        f'<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>{titel}</title><style>'
+        'body{font:13px -apple-system,sans-serif;margin:16px;background:#fff;color:#111}'
+        '@media(prefers-color-scheme:dark){body{background:#111;color:#eee}.k{background:#222!important}}'
+        '.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}'
+        '.k{position:relative;display:flex;flex-direction:column;gap:2px;background:#f3f3f3;border-radius:8px;overflow:hidden;'
+        'color:inherit;text-decoration:none;padding-bottom:6px}.k span,.k i{padding:0 6px}.k.schon{opacity:.55}'
+        '.k img{width:100%;aspect-ratio:9/16;object-fit:cover;background:#999}.p{font-weight:600}'
+        '.k b{position:absolute;top:6px;left:6px;background:#000c;color:#fe2c55;padding:2px 7px;border-radius:6px;font-size:15px}'
+        f'</style><h1>{titel}</h1><p>{len(zeilen)} Videos · Platz 1 = beste Punkte · blass = Produkt schon gepostet · '
+        f'Klick öffnet TikTok</p><div class="g">{"".join(karten)}</div>')
     print("\n".join(aus[4:14]))
     print(f"FERTIG rangliste: {f}")
 

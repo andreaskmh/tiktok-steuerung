@@ -498,3 +498,10 @@ vom linken Rand (kein Tipp); Profil-Reiter mit Beschriftung „Profil“; länge
   Flüssiger ohne Kabel: patch_oiu.py Schritt 7 – Live-Bild 60 statt 30 Bilder/s, WLAN 6 statt 2 Mbit/s (iPhone wird etwas wärmer).
 - **20.11.2026** – iPhone-Spiegel: Ziehen irgendwo auf dem iPhone verschiebt immer das Fenster (performDrag, auch im Hintergrund);
   das WLAN-Livebild nimmt keine Klicks mehr an (vorher startete macOS manchmal „Bild herausziehen“).
+- **20.11.2026** – iPhone-Spiegel bedient sich jetzt wie Mirror My Phone über die Menüleiste: „Gerät“ (iPhone fürs vorderste Fenster,
+  ⌘1/⌘2 …, „iPhone-Rahmen zeigen“ an/aus) und „Optionen“ (Immer im Vordergrund ⌘T, Auf dem Schreibtisch). Rechtsklick und Knopf-Pille bleiben.
+- **Rangliste als Seite (Artur 20.11.: „nicht visualisiert“):** `rangliste` schreibt zusätzlich `<land>-rangliste.html`
+  (Kacheln mit Social1-Vorschaubild, Platz, Liste, Alter, +Views, Produkt; Klick → TikTok). Rangliste zeigt nur noch Videos
+  bis zur Seitengrenze der Liste (wie `speichern`), vorher auch Seite > 50.
+- `speichern`: Nummern, die beim neuen Lesen nicht mehr unter den Kandidaten sind, werden übersprungen (vorher KeyError
+  beim USA-Abendlauf 20.11.).

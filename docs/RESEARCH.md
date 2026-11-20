@@ -73,7 +73,7 @@ bis Seite 50 (BOF/SLIDES) ist. USA: weiterhin nie zweimal.
 - Nur **fremdsprachige** Videos (auch Englisch) bekommen ein Skript, deutsch gesprochene nicht. Sie stehen in
   `uebergabe/research/<datum>/SKRIPTE <TT.MM.JJJJ>.md`. Jeden Platzhalter „**DEUTSCH:** _(Claude schreibt…)_“ ersetzen durch
   **Hook:** (1 Satz) + **Skript:** (kurze Sätze, so wie man es in DE sagt, nicht wörtlich übersetzt, Preis/Deal-Logik an DE anpassen).
-- Am Ende **immer im Chat anhängen** (SendUserFile, Artur 19.11.): `de-rangliste.md`, `us-rangliste.md` und die SKRIPTE-Datei.
+- Am Ende **immer im Chat anhängen** (SendUserFile, Artur 19.11.): `de-rangliste.html`, `us-rangliste.html` (mit Vorschaubildern, nur Videos, die in den Listen sind) und die SKRIPTE-Datei.
 
 ## Rangliste (Punkte)
 Frische (Today 100, Yesterday 85, 2 Tage 55 … 7 Tage 12, danach weniger) + Tempo (+Views, log) + Creator-Umsatz (log)

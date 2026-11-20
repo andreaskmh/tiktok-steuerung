@@ -9,7 +9,7 @@ import WebKit
 
 let SERVER = URL(string: "http://127.0.0.1:27893/")!
 let speicher = UserDefaults.standard
-let RAND: CGFloat = 0.04        // iPhone-Rahmen, Anteil der Bildschirmbreite
+var RAND: CGFloat { speicher.bool(forKey: "ohneRahmen") ? 0 : 0.04 }   // iPhone-Rahmen, Anteil der Bildschirmbreite
 let ECKE: CGFloat = 0.12        // Bildschirm-Ecke, Anteil der Bildschirmbreite (iPhone 11 ≈ 0,10, iPhone 15 ≈ 0,14)
 
 /// Randloses Fenster, das trotzdem Tastatur-Fokus bekommt (⌘W, ⌘M, Esc).
@@ -23,7 +23,11 @@ final class RandlosFenster: NSWindow {
 final class Deckel: NSView {
     override var mouseDownCanMoveWindow: Bool { true }
     override func acceptsFirstMouse(for e: NSEvent?) -> Bool { true }       // auch im Hintergrund sofort ziehen
-    override func mouseDown(with e: NSEvent) { window?.performDrag(with: e) }  // ausdrücklich verschieben, nie Bild herausziehen
+    override func mouseDown(with e: NSEvent) {
+        NSApp.activate(ignoringOtherApps: true)     // App nach vorn → Menüleiste zeigt Gerät/Optionen
+        window?.makeKeyAndOrderFront(nil)
+        window?.performDrag(with: e)                // ausdrücklich verschieben, nie Bild herausziehen
+    }
 }
 
 /// Livebild (WLAN) ohne Maus: Klicks gehen durch auf den Deckel.
@@ -60,7 +64,7 @@ final class Geraet: NSView {
         let ecke = bildschirm.frame.width * ECKE
         bildschirm.layer!.cornerRadius = ecke
         layer!.cornerRadius = ecke + rand
-        layer!.borderWidth = max(1, rand * 0.18)
+        layer!.borderWidth = rand > 0 ? max(1, rand * 0.18) : 0
         CATransaction.begin(); CATransaction.setDisableActions(true)
         vorschau.frame = bildschirm.bounds
         CATransaction.commit()
@@ -111,9 +115,22 @@ final class Spiegel: NSObject, NSApplicationDelegate {
         fenst.addItem(withTitle: "Vollbild", action: #selector(SpiegelFenster.vollbild), keyEquivalent: "f")
             .keyEquivalentModifierMask = [.command, .control]
         fenst.addItem(withTitle: "Schließen", action: #selector(SpiegelFenster.schliessen), keyEquivalent: "w")
-        for m in [app, ablage, fenst] { leiste.addItem(withTitle: m.title, action: nil, keyEquivalent: "").submenu = m }
+        // Wie Mirror My Phone: Einstellungen in der Menüleiste; Inhalt wird beim Öffnen gebaut (aktuelle iPhones, Häkchen).
+        let geraetMenue = NSMenu(title: "Gerät"), optionen = NSMenu(title: "Optionen")
+        geraetMenue.delegate = self; optionen.delegate = self
+        for m in [app, ablage, optionen, geraetMenue, fenst] { leiste.addItem(withTitle: m.title, action: nil, keyEquivalent: "").submenu = m }
         NSApp.mainMenu = leiste
         NSApp.windowsMenu = fenst
+    }
+
+    /// Das Fenster, auf das sich Menü-Befehle beziehen: das vorderste, sonst das zuletzt geöffnete.
+    var vorderstes: SpiegelFenster? { (NSApp.keyWindow?.delegate as? SpiegelFenster) ?? fenster.last }
+
+    @objc func vordergrundUmschalten() { setzeEbene(ebene == "vorne" ? "normal" : "vorne") }
+    @objc func schreibtischUmschalten() { setzeEbene(ebene == "schreibtisch" ? "normal" : "schreibtisch") }
+    @objc func rahmenUmschalten() {
+        speicher.set(!speicher.bool(forKey: "ohneRahmen"), forKey: "ohneRahmen")
+        for f in fenster { f.seitenverhaeltnis(f.format); f.geraet.needsLayout = true }
     }
 
     // Letztes Fenster zu = App zu; Klick aufs Dock-Symbol holt minimierte Fenster zurück.
@@ -388,6 +405,30 @@ final class SpiegelFenster: NSObject, NSWindowDelegate, NSMenuDelegate {
         for (titel, aktion) in [("Vollbild", #selector(vollbild)), ("Minimieren", #selector(minimieren)), ("Schließen", #selector(schliessen))] {
             m.addItem(withTitle: titel, action: aktion, keyEquivalent: "").target = self
         }
+    }
+}
+
+extension Spiegel: NSMenuDelegate {
+    func menuNeedsUpdate(_ m: NSMenu) {
+        m.removeAllItems()
+        func eintrag(_ titel: String, _ aktion: Selector, an: Bool, taste: String = "") {
+            let i = m.addItem(withTitle: titel, action: aktion, keyEquivalent: taste)
+            i.target = self; i.state = an ? .on : .off
+        }
+        if m.title == "Optionen" {
+            eintrag("Immer im Vordergrund", #selector(vordergrundUmschalten), an: ebene == "vorne", taste: "t")
+            eintrag("Auf dem Schreibtisch (hinter allem)", #selector(schreibtischUmschalten), an: ebene == "schreibtisch")
+            return
+        }
+        // Gerät: welches iPhone das vorderste Fenster zeigt (⌘1, ⌘2 …), darunter der Rahmen
+        let f = vorderstes, alle = quellen()
+        if alle.isEmpty { m.addItem(withTitle: "Kein iPhone gefunden", action: nil, keyEquivalent: "") }
+        for (n, q) in alle.enumerated() {
+            let i = m.addItem(withTitle: q.name, action: #selector(SpiegelFenster.quelleWaehlen), keyEquivalent: n < 9 ? "\(n + 1)" : "")
+            i.target = f; i.representedObject = q.id; i.state = q.id == f?.aktiv?.id ? .on : .off
+        }
+        m.addItem(.separator())
+        eintrag("iPhone-Rahmen zeigen", #selector(rahmenUmschalten), an: !speicher.bool(forKey: "ohneRahmen"))
     }
 }
 

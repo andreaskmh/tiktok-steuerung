@@ -1,0 +1,47 @@
+Traceback (most recent call last):
+  File "/Users/andreask/Documents/Coding/TikTok-Steuerung/werkzeuge/research.py", line 1221, in <module>
+    mit_neustart(speichern, land, a[2], " ".join(a[3:]).split())
+  File "/Users/andreask/Documents/Coding/TikTok-Steuerung/werkzeuge/research.py", line 98, in mit_neustart
+    return f(*args)
+  File "/Users/andreask/Documents/Coding/TikTok-Steuerung/werkzeuge/research.py", line 558, in speichern
+    zu_weit = [nr for nr in nummern if kand[int(nr)].get("seite", 0) > grenze]
+  File "/Users/andreask/Documents/Coding/TikTok-Steuerung/werkzeuge/research.py", line 558, in <listcomp>
+    zu_weit = [nr for nr in nummern if kand[int(nr)].get("seite", 0) > grenze]
+KeyError: 534
+== QUAL
+Traceback (most recent call last):
+  File "/Users/andreask/Documents/Coding/TikTok-Steuerung/werkzeuge/research.py", line 1221, in <module>
+    mit_neustart(speichern, land, a[2], " ".join(a[3:]).split())
+  File "/Users/andreask/Documents/Coding/TikTok-Steuerung/werkzeuge/research.py", line 98, in mit_neustart
+    return f(*args)
+  File "/Users/andreask/Documents/Coding/TikTok-Steuerung/werkzeuge/research.py", line 558, in speichern
+    zu_weit = [nr for nr in nummern if kand[int(nr)].get("seite", 0) > grenze]
+  File "/Users/andreask/Documents/Coding/TikTok-Steuerung/werkzeuge/research.py", line 558, in <listcomp>
+    zu_weit = [nr for nr in nummern if kand[int(nr)].get("seite", 0) > grenze]
+KeyError: 34
+== RANG
+| 1 | 121.7 | QUALITY | Yesterday | 1.7M | Shark CarpetForce Upright Carpet Cleaner - EX502 | @mooremoneymoves | https://www.tiktok.com/@mooremoneymoves/video/7709692960861867278 |
+| 2 | 119.8 | QUALITY | Yesterday | 1.3M | Men's RFID Minimalist Bifold Wallet - 1 ID Window, | @thegentlemenspocket | https://www.tiktok.com/@thegentlemenspocket/video/7709689152618499341 |
+| 3 | 119.4 | SLIDES | Yesterday | 614.8K | Knit Beanie Hat for Women, Classic Stripe Cuffed W | @viralstashh | https://www.tiktok.com/@viralstashh/video/7709708813162597645 |
+| 4 | 119.4 | QUALITY | Yesterday | 1.1M | 【Valentine Gift】Frameo WiFi Digital Photo Frame, R | @johnbshop0 | https://www.tiktok.com/@johnbshop0/video/7709719739685162253 |
+| 5 | 118.4 | SLIDES | Yesterday | 1.2M | [NEW] [medicube] NAD+ EGF Firming Serum Mask / Vol | @shelbyroselane | https://www.tiktok.com/@shelbyroselane/video/7709885537154370830 |
+| 6 | 116.5 | SLIDES | Yesterday | 452.7K | Black Friday Deal: Dr Pepper Can Plush Toy, 8.7 in | @brbpicks | https://www.tiktok.com/@brbpicks/video/7709901716984007950 |
+| 7 | 113.2 | SLIDES | Yesterday | 157.7K | Nex Playground – The Active Play System for Kids & | @espressofindsss | https://www.tiktok.com/@espressofindsss/video/7709808936618102047 |
+| 8 | 112.9 | SLIDES | Yesterday | 185.2K | 2026 Christmas Countdown Cat Advent Calendar - Ind | @natesdealss | https://www.tiktok.com/@natesdealss/video/7709685275080920334 |
+| 9 | 111.9 | SLIDES | Yesterday | 372K | Cute Energy Drink Stuffed Animal - 22cm High, 10cm | @wildbergersculley | https://www.tiktok.com/@wildbergersculley/video/7709723151353040159 |
+| 10 | 91.9 | SLIDES | 2 days ago | 630K | "Awakening to Human Nature" Book - Read Hidden Mot | @its.timothy.0209 | https://www.tiktok.com/@its.timothy.0209/video/7709466799133265182 |
+FERTIG rangliste: /Users/andreask/Documents/Coding/TikTok-Steuerung/uebergabe/research/2026-11-20/us-rangliste.md
+== SORT1
+FERTIG sortieren SLIDES USA 20.11.2026: 36/36 Videos, Platz 1 oben (Sicherung sicherung-SLIDES USA 20.11.2026-175821.json)
+== SORT2
+… 50/51
+FERTIG sortieren Quality USA 20.11.2026: 51/51 Videos, Platz 1 oben (Sicherung sicherung-Quality USA 20.11.2026-175925.json)
+== SKRIPTE
+Fetching 4 files:   0%|          | 0/4 [00:00<?, ?it/s]Fetching 4 files: 100%|██████████| 4/4 [00:00<00:00, 2549.73it/s]
+Nr 259: en 567 Zeichen
+Nr 261: en 890 Zeichen
+Nr 500: en 4 Zeichen
+Nr 131: en 161 Zeichen
+Nr 91: en 788 Zeichen
+FERTIG skripte US: 60 geprüft, 0 deutsch, 4 neue fremdsprachige → SKRIPTE 20.11.2026.md
+ENDE-ALLES

@@ -946,3 +946,163 @@ https://www.tiktok.com/@produktwolf/video/7709539334197693718
 
 **DEUTSCH:** **Hook:** Du riechst viel zu gut, um jetzt einfach zu gehen.
 **Skript:** „Welches Parfüm ist das? Mein Auto riecht noch nach dir.“ – Freundin: „Er hat geschrieben, bevor ich überhaupt drin war.“ – „Komm her, lass riechen.“ – „Aura von One Memory, Noir ist mit im Set.“ – „Okay, ich bin raus – schick mir den Link.“ – „Beide im orangenen Warenkorb.“
+
+<!-- us-259 -->
+## US QUALITY Nr 259 · 4 days ago · +206.7K Views · Sprache en · Rhino USA ICM Stake Pocket Kit, Retractable Ratchet Strap System, 1,00
+https://www.tiktok.com/@be.lush/video/7708917639275416845
+
+**Original:**
+> Any man with a trailer needs a set of these. These are Rhino's brand new stake pocket ICMs. And once you've had a set of these, you'll never go back to this tangled mess. They come with two stake pockets, two pins, two retractable ratchet straps, as well as Rhino's lifetime warranty, and a camo bag to store them in. And what I love is that they're interchangeable with the truck bed ICMs too. This is a brand new release from Rhino and they don't have that many left in stock, but if you still see that link at the bottom, you can get some before they're all gone.
+
+**DEUTSCH:** **Hook:** Jeder mit Anhänger braucht diese Spanngurte.
+**Skript:** Schluss mit dem Gurt-Chaos. Die Gurte rollen sich selbst ein – nichts verheddert sich mehr. Im Set: zwei Halterungen, zwei Bolzen, zwei Ratschengurte und eine Tasche zum Verstauen. Passt auf den Anhänger und auf die Ladefläche. Ich hab den Link unten verlinkt – solange er noch da ist, gibt’s noch welche.
+
+<!-- us-261 -->
+## US SLIDES Nr 261 · 4 days ago · +203.2K Views · Sprache en · Oxy Pro Whitening Gel (6%)
+https://www.tiktok.com/@hismileus/video/7708558495695654174
+
+**Original:**
+> This is hydrogen peroxide, the most powerful whitening ingredient on the planet. It's what dentists use in the chair, not charcoal, not some sh** toothpaste. This. You want teeth like that? Then listen to me. The yellow isn't on your teeth, it's inside them. Polish can't reach it, toothpaste can't reach it. That's polishing a turd, it's still brown underneath. Peroxide is so small it walks straight through your enamel. Gets into the yellow and goes off. Free radicals. They hunt down every stain molecule and smash it so small it can't hold color. That's not a filter, that's your actual shade. Change. So what did we do? We took the maximum concentration of peroxide you can legally buy over the counter in Australia and crammed it into OxiBooster. Not some .1% toothpaste you spit down the sink. Loaded to the f*****g gills. 100 years of dentistry and now it's yours. You're welcome.
+
+**DEUTSCH:** **Hook:** Gelbe Zähne? Das liegt nicht an der Oberfläche – das sitzt im Zahn.
+**Skript:** Zahnpasta und Polieren kommen da nicht hin. Was wirklich bleicht, ist Wasserstoffperoxid – das, was auch Zahnärzte nehmen. Das Molekül ist so klein, dass es durch den Zahnschmelz geht und die Verfärbung von innen aufhellt. Kein Filter, sondern deine echte Zahnfarbe wird heller. Genau das steckt in diesem Gel – so viel, wie frei verkäuflich erlaubt ist. Link ist unten.
+
+<!-- us-131 -->
+## US SLIDES Nr 131 · 6 days ago · +334.7K Views · Sprache en · Beauty Finds by ULTA Beauty Holiday Fragrance Lineup For Him ($77 Valu
+https://www.tiktok.com/@mjscartt/video/7708096311186197790
+
+**Original:**
+> It's beginning to look a lot like Christmas Everywhere you go Take a look at the 5 and 10 It's glistening once again With candy canes and silver lanes that glow
+
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
+
+<!-- us-91 -->
+## US SLIDES Nr 91 · 6 days ago · +426.8K Views · Sprache en · GNC W22 Solar Mobile Power Bank - 15W Fast Charging, 4 Built-in Cables
+https://www.tiktok.com/@dealswithdc/video/7708135351881141518
+
+**Original:**
+> I hear the train a-comin'. It's rollin' around the bed. And I ain't seen the blood shine. I don't know when. I'm stuck in holes and frills. And time keeps draggin' on. But that train keeps a-rollin'. I'm not a bad asshole. I'm not a bad asshole. When I was just a baby. My mama told me, son. Always be a good boy. Don't ever play with guns. I'm unorororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororororor
+
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
+
+<!-- us-654 -->
+## US SLIDES Nr 654 · Yesterday · +1.2M Views · Sprache en · [NEW] [medicube] NAD+ EGF Firming Serum Mask | Volume Sheet Mask for A
+https://www.tiktok.com/@shelbyroselane/video/7709885537154370830
+
+**Original:**
+> It's time, baby If it won't be, if it won't be If it won't be, if it won't be
+
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
+
+<!-- us-663 -->
+## US SLIDES Nr 663 · Yesterday · +452.7K Views · Sprache en · Black Friday Deal: Dr Pepper Can Plush Toy, 8.7 in Soft Stuffed Charac
+https://www.tiktok.com/@brbpicks/video/7709901716984007950
+
+**Original:**
+> So this is Christmas, and what have we done? Another year of life, and a new one just begun
+
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
+
+<!-- us-698 -->
+## US SLIDES Nr 698 · Yesterday · +185.2K Views · Sprache en · 2026 Christmas Countdown Cat Advent Calendar - Indoor Holiday Decor To
+https://www.tiktok.com/@natesdealss/video/7709685275080920334
+
+**Original:**
+> My God, I thought you were someone to rely on Me, I guess I was a shoulder to cry on A face on a lover with a fire in his heart A man in the cover, but you told me about Ooh, ooh, now I've found the real love You'll never fool me again Last girl
+
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
+
+<!-- us-670 -->
+## US SLIDES Nr 670 · 2 days ago · +302.6K Views · Sprache en · Just a Few Things I Love About You Mom Fill-In The Blank Book Gift for
+https://www.tiktok.com/@iluvdealz/video/7709570514943102238
+
+**Original:**
+> But my ultimate inspiration comes from my best friend, the dazzling woman from whom I received my name and my life's blood, Lorelei Gilmore. Girl, hang in there. My mother never gave me any idea that I could do whatever I wanted to do or be whomever I wanted to be. She filled our house with love and fun and books and music, unflagging in her efforts to give me role models from Jane Austen to Eudora Welty to Patti Smith. As she guided me through these incredible 18 years, I don't know if she ever realized that the person I most wanted to be was her.
+
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
+
+<!-- us-657 -->
+## US SLIDES Nr 657 · 2 days ago · +640.7K Views · Sprache en · Comfort Colors  Vintage Green Guy and Santa T-Shirt, Funny Christmas T
+https://www.tiktok.com/@heatherk2of6/video/7709356674942864653
+
+**Original:**
+> As I walk through the valley of the shadow of death I take a look at my life and realize there's nothing left Cause I've been blasting and laughing so long that Even my mama thinks that my mind is gone But I ain't never crossed a man that didn't deserve it Me be treated like a punk, you know that's unheard of You better watch how you're talking and where you're walking Or you and your homies might be lined in chalk I really hate the trip, but I gotta low As they croak, I see myself in the pistol smoke Fool, I'm the kind of jeeter, little homies wanna be like On my knees in the night, saying prayers in the streetlight We've been spending most our lives living in the gangster's paradise We've been spending most our lives living in the gangster's paradise We keep spending most our lives living in the gangster's paradise We keep spending most our lives living in the gangster's paradise
+
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
+
+<!-- us-684 -->
+## US QUALITY Nr 684 · 2 days ago · +244K Views · Sprache en · SYMINO sofa gaming chair, gaming chair, ergonomic sofa chair with PU l
+https://www.tiktok.com/@greysons_goods/video/7709650009796381966
+
+**Original:**
+> I have a gaming chair and I have a gaming couch. So which one's better? Mine looks kind of cushiony, but if you actually squeeze it a little bit, you can just feel that hard plastic and it does not feel pleasant. Mine is super cushiony, so you can sit in here for hours and not get that numb butt or back pain. Well, mine can go up and down. It's 2027. What chairs don't go up and down? My chair can go a little bit back and mine goes all the way back with a footrest. So I could literally sleep on this. Okay, fine, you win, but I bet yours is really expensive. Yeah, I mean, usually it costs more, but you must've forgot that it's Black Friday. So I hope you guys don't leave a link for it somewhere down there, but I'd hurry because last Black Friday, these did not last long.
+
+**DEUTSCH:** **Hook:** Ich hab einen Gaming-Stuhl, er hat eine Gaming-Couch – was ist besser?
+**Skript:** Seiner sieht weich aus, aber drück mal drauf: hartes Plastik. Meiner ist richtig weich – stundenlang sitzen ohne eingeschlafenen Hintern oder Rückenschmerzen. „Meiner geht hoch und runter.“ – Macht meiner auch. Aber meiner geht ganz nach hinten, mit Fußstütze – da kann ich drauf schlafen. „Okay, du gewinnst. Aber der war bestimmt teuer.“ – Normalerweise ja, aber es ist Black Friday. Link ist unten – letztes Jahr war er schnell weg.
+
+<!-- us-688 -->
+## US SLIDES Nr 688 · 2 days ago · +211.3K Views · Sprache en · Aosom 24V Electric Go Kart, 7.5/8.1mph, Drifting Car Battery Powered R
+https://www.tiktok.com/@itskailaandemmerick/video/7709603265519963422
+
+**Original:**
+> Don't want nobody else around me Just need you right here You're like the only thing that I see It's crystal clear and I I want you to come claim it, I do What are you waiting for? Yeah, I want you to name it, cause I do Want you to make it yours It's like the black now There's no sweat says on me that I don't want it on It's like the black now It's taking over me Don't wanna fight before It's like the black now It's like the black now You're like me, we're in this party We could take our time You said you wanted it and on me But you ran my mind I want you to complain it, I do What are you waiting for? Show me what I can take it, I do Want you to make it yours It's like the black now There's no sweat says on me But I don't want it on But you've been taking over me Don't wanna fight before I want you to make it yours I want you to make it yours I want you to make it yours I want you to make it yours I want you to make it yours I want you to make it yours I want you to make it yours I want you to make it yours I want you to make it yours I want you to make it yours I want you to make it yours I want you to make it yours I want you to make it yours I want you to make it yours I want you to make it yours It's taking all of me to what I've ever fallen Baby, I'm so sick of the magic Baby, I'm so sick of the magic Baby, I'm so sick of the magic Baby, I'm so sick of the magic
+
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
+
+<!-- us-680 -->
+## US QUALITY Nr 680 · 2 days ago · +266.5K Views · Sprache en · Fanttik F2 Master Mini Cordless Rotating Rotary Tool Kit - Revostor Hu
+https://www.tiktok.com/@lindsayandthings/video/7709499161237916958
+
+**Original:**
+> If you 3D print, this Fantic Rotary Tool is one that you are going to want to add to your Christmas list. This was on my Christmas list last year and I picked it up at Black Friday Pricing and it has been an excellent tool for me. There are times that I will 3D print something, it will come out with a rough edge or it will have pieces that need to go together but they just don't quite fit. This is exactly what you need. It all comes in this compact little case including all these little tool heads which are magnetic and clip right back into place. These have a variety of different grits and textures so you can really fine tune your work. In this case, I 3D printed this little alien and it has a tiny little square that you insert between the two pieces to fit it together and it just didn't quite fit. I was able to use this tool to round off the edges and save the print. I'm done, I put it all back in this case, put it in the drawer, done. So great to have on hand to save a print.
+
+**DEUTSCH:** **Hook:** Wenn du 3D-druckst, gehört dieses Mini-Werkzeug auf deine Wunschliste.
+**Skript:** Ich hab’s mir letztes Jahr im Black-Friday-Deal geholt und nutze es ständig. Wenn ein Druck raue Kanten hat oder Teile nicht ganz zusammenpassen – kurz drüber, fertig. Alles ist in einem kleinen Koffer, die Aufsätze sind magnetisch und klicken direkt wieder rein. Verschiedene Körnungen, damit kannst du ganz fein arbeiten. Hier hat das Teil nicht gepasst – Kante abgerundet, Druck gerettet. Zurück in den Koffer, Schublade zu. Link ist unten.
+
+<!-- us-755 -->
+## US SLIDES Nr 755 · 2 days ago · +125.1K Views · Sprache en · Men's Winter Knitted Earflap Hat, Warm Stretchy Beanie with Ear Covers
+https://www.tiktok.com/@sam038894/video/7709434552095214862
+
+**Original:**
+> Wanna be a baller, shot caller, 20 inch blades on the M baller, caller, get laid now
+
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
+
+<!-- us-751 -->
+## US SLIDES Nr 751 · 2 days ago · +126.9K Views · Sprache en · Highland Cow Advent Calendar 2026, 24 Days Christmas Countdown Calenda
+https://www.tiktok.com/@bbhhv435/video/7709372023763406110
+
+**Original:**
+> Silent night, holy night, all is calm, all is bright, round yon virgin mother and child. Holy infant, so tender and mild, sleep in heavenly peace. Sleep in heavenly peace. Heroin. Heroin.
+
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
+
+<!-- us-725 -->
+## US QUALITY Nr 725 · 3 days ago · +148.7K Views · Sprache en · Shark WandVac Cordless Handheld Vacuum - WV201/WV205
+https://www.tiktok.com/@dealswithty/video/7709236929543408927
+
+**Original:**
+> and this is why you wait for black friday because now you can get the shark wand back on sale with some extra coupons on top check it out normally 130 but when you scroll down they have these extra coupons so you can get it for even less and this is the one everyone wants because it's handheld and lightweight it only weighs one and a half pounds while still having a ton of suction power and i also like how these have the one click empty so you can just put it right over the trash can and you don't have to touch a thing and since it's cordless you just place it on the dock here to recharge it it's gonna come with your upholstery attachment that's perfect for dog hair on the couch or even in the car and you also get a crevice attachment for all those tight spots and they store nice and neat right on the back of the charging dock so it's always ready to go but i think the best part's got to be the price and that's why they've been selling like crazy and last time they sold out really quick it looks like there's only one color left in stock so if you see a link below you can still grab one but i would do it quick
+
+**DEUTSCH:** **Hook:** Deshalb wartet man auf Black Friday.
+**Skript:** Diesen Akku-Handstaubsauger gibt’s gerade im Angebot – und unten auf der Seite noch Extra-Gutscheine obendrauf. Er ist superleicht, hat aber richtig Saugkraft. Ausleeren mit einem Klick direkt über dem Mülleimer, du fasst nichts an. Kabellos, zum Laden einfach auf die Station. Dabei: ein Aufsatz für Tierhaare auf der Couch oder im Auto und eine Fugendüse für enge Ecken – beides hängt direkt hinten an der Station. Das Beste ist der Preis, deshalb ist er ständig ausverkauft. Wenn der Link noch da ist: schnell sein.
+
+<!-- us-446 -->
+## US QUALITY Nr 446 · 3 days ago · +133.1K Views · Sprache en · Shark PowerPro Cordless Vacuum - IZ383H
+https://www.tiktok.com/@spencerdfinds/video/7709288536712727838
+
+**Original:**
+> In my house, we use a Dyson. In my house, we use a Bissell. And in me house, we use a shark. So what's better for pet hair and allergies? Alright, well I'm going first since I'm the most expensive. I can handle long hair, pet hair, your hair. All without getting clogged. Ah, but I think I did just get clogged. And I'm supposed to have an anti-tangle brush roll, but it's normal for vacuums to get clogged up like this. At least I have a HEPA filter for allergies. And I do way better on a hard floor watch. Yikes, mine is called the fur finder. Watch this. What? Alright, well this happens with every vacuum. You just gotta cut the hair out. Now I'll do the hard floor test. Yeah, so my shark was the least expensive. Let's see how it does. And mine has the power fin self-cleaning brush roll, so I don't have to worry about hair getting wrapped up in the roller. And mine detects whether you're on carpet or hard floor, and adjusts the suction power for you. Pass the shake test. Plus mine is boneless, so you can use it to easily get underneath your furniture without blowing your back out. Plus I love the blue reveal light, so you can see the dust-haired debris that you would normally miss. And it has the anti-allergen seal with the HEPA filter, so it helps out a ton with allergies. Alright, so how much did you guys pay for yours? I only paid 500. Yikes! Mine was only 260. I bet that pink one's way more. Well, usually I am like 380, but right now Shrug has some huge coupons, so you could
+
+**DEUTSCH:** **Hook:** Dyson, Bissell oder der günstige – welcher ist am besten bei Tierhaaren?
+**Skript:** Der Teure fängt an: „Ich schaffe lange Haare, Tierhaare, alles, ohne zu verstopfen.“ – Und schon hängen die Haare in der Bürste. Der Zweite: gleiches Problem, Haare rausschneiden. Jetzt der günstigste: Die Bürste reinigt sich selbst, nichts wickelt sich auf. Er merkt, ob du auf Teppich oder Fliesen bist, und passt die Saugkraft an. Er knickt ab, damit du ohne Bücken unters Sofa kommst, und ein Licht zeigt dir Staub, den du sonst übersiehst. Und der Preis? Der Teure 500 Euro, der günstige gerade deutlich weniger – mit Gutschein. Link ist unten.
+
+<!-- us-709 -->
+## US QUALITY Nr 709 · 3 days ago · +163.2K Views · Sprache en · ECOFLOW DELTA 3 Classic Portable Power Station with 160 or 220W Solar 
+https://www.tiktok.com/@urtechdaddy/video/7709250683748355359
+
+**Original:**
+> go back to my country. Listen up little buddy, I am home and I am in my own country. Plus we already know that the 90 days is for the military bases. But if the military bases aren't going to rely on civilian power grids, then neither am I. Because personally, I want my refrigerator running for 90 days. Which is why I specifically went with the EcoFlow Delta Classic. When I paired the 220 watt solar panels that this combo came with, I'm putting more energy into my power source than my refrigerator is pulling. Which leaves me room to charge up other devices for emergency purposes. I don't know what part of the hills have eyes country you're from, but my dad always told me to prepare for the worst and hope for the best. And I know my family is going to be eating well, while you are probably going to be a statistic. I'll have to do that link down below.
+
+**DEUTSCH:** **Hook:** Wenn der Strom mal tagelang weg ist, läuft mein Kühlschrank trotzdem weiter.
+**Skript:** Genau dafür hab ich mir diese Powerstation geholt. Mit dem Solarpanel lade ich mehr rein, als der Kühlschrank verbraucht – und hab noch Strom übrig für Handy, Licht und alles Wichtige im Notfall. Mein Vater hat immer gesagt: Rechne mit dem Schlimmsten und hoffe auf das Beste. Meine Familie ist versorgt. Link ist unten.
