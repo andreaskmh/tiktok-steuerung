@@ -1290,6 +1290,8 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
                                               + "\n".join(x for i, z in enumerate(slides, 1) for x in eintrag(i, z)))
     desk = pathlib.Path.home() / "Documents" / "Ranglisten" / HEUTE.isoformat()      # Artur 20.11.: Dokumente, ein Ordner pro Tag
     desk.mkdir(parents=True, exist_ok=True)
+    for alt in desk.glob(f"{HEUTE.isoformat()} {'DE' if land == 'de' else 'USA'} *"):   # Artur 20.11.: nur die aktuelle Version im Ordner
+        alt.unlink()
     for name, text in dateien.items():
         (ORDNER / name).write_text(text)
         (desk / schoen(name)).write_text(text)
