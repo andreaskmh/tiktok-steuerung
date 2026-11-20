@@ -732,7 +732,7 @@ https://www.tiktok.com/@sparradar1/video/7710183926500740385
 **Original:**
 > Oh-oh-oh-oh-oh So I'ma give it to you, baby One and two, one of three and four Come and let me know if you want something more You know what I like, like it right You boy talk, that talk to me all night
 
-**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
 
 <!-- de-224 -->
 ## DE SLIDES Nr 224 · Yesterday · +1.2M Views · Sprache en · Pukka Bio Tee Adventskalender 2026, Geschenkset, 24 Teebeutel, vegan, 
@@ -741,7 +741,7 @@ https://www.tiktok.com/@socialmediacreations/video/7709905379257355552
 **Original:**
 > I've got feathers in my hair I get down to be poetry And I just collect your trash I can blame most anything I'm a Brooklyn baby
 
-**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
 
 <!-- de-228 -->
 ## DE SLIDES Nr 228 · Yesterday · +304.4K Views · Sprache en · Tatort Escape Adventskalender: Krimi-Rätsel in 24 Teilen
@@ -750,7 +750,7 @@ https://www.tiktok.com/@socialmediacreations/video/7709900738503232800
 **Original:**
 > You've got to shake your ducies!
 
-**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
 
 <!-- de-234 -->
 ## DE SLIDES Nr 234 · Yesterday · +188.3K Views · Sprache en · WindBoss Gold Shilajit Gummies - 30 Stück Bio-Gummibärchen mit Granata
@@ -759,7 +759,7 @@ https://www.tiktok.com/@shadowluna_twins/video/7709970992231189793
 **Original:**
 > I'm in need of one thing and it's running through my brain Let that bitch go, cause she breaking windows I'm saying to Joel, don't do these niggas not have shame Your girl, she a whore, but you show her like she gold Look at how she tree and sun, time don't use a tender month When you call, she do not come, that is not your whore I don't think he knows, what a shame, he's a whore Acting like she likes him for that money He's a flock of flock of all my guys arrive Cause they all shout as shout as if I wanna pop this bottle Then I'ma pop that bottle Lying with a fine ass model, she wanna ride this saddle I can see you don't want battle, your voice it shakes and rattles I'm in need of one thing and it's running through my brain Let that bitch go, cause she breaking windows I'm saying to Joel, don't do these niggas not have shame Your girl, she a whore, but you show her like she gold Why do all these bitches keep on shooting?
 
-**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
 
 <!-- de-244 -->
 ## DE BOF Nr 244 · Yesterday · +133.8K Views · Sprache ru · Ariel Waschpulver, effektive Reinigung und frischer Duft, Variante 7 k
@@ -768,7 +768,8 @@ https://www.tiktok.com/@rabbitshopde/video/7709938839061564705
 **Original:**
 > огромный мешок 10 килограмм стирального порошка от ариэля сейчас стоит 20 евро на черную пятницу я не знаю что может быть выгоднее ссылочку для вас оставляю вот здесь вот оранжевая корзиночка нажимаете на нее переходите заказывайте только на черную пятницу такая шикарная цена 20 евро за 10 килограмм но думаю о том что ариэль хороший порошок рассказывать не нужно об этом и так все прекрасно знают абсолютно моя рекомендация классный порошок мне прислали 10 килограмм я конечно очень рада спасибо большое я тоже люблю порошок ариэль поэтому буду им пользоваться с удовольствием запах хочу сказать стоит на всю кухню очень интенсивный запах у ариэля потому что никакие полоски вателем ему не нужны он сам очень интенсивно пахнет
 
-**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+**DEUTSCH:** **Hook:** 10 Kilo Ariel für 20 Euro – das gibt's nur am Black Friday.
+**Skript:** Schaut euch diesen riesigen Sack an: 10 Kilo Ariel Waschpulver. Gerade nur 20 Euro zum Black Friday. Günstiger wird's echt nicht. Dass Ariel gut ist, muss ich keinem erzählen. Link ist unten im orangenen Warenkorb – aber nur solange Black Friday läuft.
 
 <!-- de-257 -->
 ## DE SLIDES Nr 257 · Yesterday · +81.8K Views · Sprache en · Besondere herzförmige Wohndekoration für Mama, künstlerisches Wohnacce
@@ -777,7 +778,7 @@ https://www.tiktok.com/@elisesahin/video/7709871594054651168
 **Original:**
 > Shift my paradigm Ooh I'm drifting from my innocence I wanna be a kid again Ooh
 
-**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
 
 <!-- de-251 -->
 ## DE BOF+SLIDES Nr 251 · Yesterday · +97.3K Views · Sprache en · Blechschild Metallposter Wanddekoration GTA 6 Retro Poster Kunstdruck 
@@ -786,7 +787,7 @@ https://www.tiktok.com/@zuwideals/video/7710008550122147105
 **Original:**
 > Don't be so quick to walk away, dance with me, I wanna rock your body, please stay, dance with me, you don't have to admit you wanna play, dance with me, just let me rock you, till the break of day, dance with me.
 
-**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
 
 <!-- de-129 -->
 ## DE SLIDES Nr 129 · Yesterday · +88.1K Views · Sprache ru · ALLJOY Beinomassagegerät – Geschenk für Vater und Mutter; Beinomassage
@@ -795,7 +796,8 @@ https://www.tiktok.com/@baks_kater/video/7709833895520308512
 **Original:**
 > Вот после рабочего дня тяжелого это просто будет идеально. Так потому что это профессиональные штучки. И лимфу разгоняет, смотри, просто массажирует. Если я закрою глаза, и я думаю, что это кто-то делает. Это потому что профессиональный вот такой вот массажер для ног. После тяжелого рабочего дня, кстати, он и нагревает. Смотрите, какой пульт. В данный момент массажируются именно вот эти части ног. Смотрите, и нагревается, и сдавливается. Там все правильно распределено, как все положено. Поэтому сейчас большие скидки на эти штучки идут в TikTok шопе. Ссылку оставляю в корзинке. Корзинка внизу. Нажимайте и заказывайте.
 
-**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+**DEUTSCH:** **Hook:** Nach einem langen Arbeitstag ist das einfach perfekt.
+**Skript:** Das ist ein richtiges Profi-Massagegerät für die Beine. Es massiert, regt die Lymphe an – wenn ich die Augen zumache, denke ich, da sitzt jemand und massiert mich. Und es wärmt sogar. Schaut mal die Fernbedienung, alles einstellbar. Perfektes Geschenk für Mama oder Papa. Link im orangenen Warenkorb.
 
 <!-- de-237 -->
 ## DE SLIDES Nr 237 · Yesterday · +167.3K Views · Sprache en · Elusa 501 - Extrait de Parfum - Unisex - süß/würzig/cremig
@@ -804,7 +806,7 @@ https://www.tiktok.com/@schnaepchenking/video/7709897328567553313
 **Original:**
 > It's time, baby If it won't be, if it won't be If it won't be, if it won't be
 
-**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
 
 <!-- de-254 -->
 ## DE SLIDES Nr 254 · Yesterday · +86.8K Views · Sprache en · Elusa 383 - Extrait de Parfum - Unisex - süß/frisch/fruchtig
@@ -813,7 +815,7 @@ https://www.tiktok.com/@nolantestet/video/7709780232458243361
 **Original:**
 > I feel right, the music sounds right out with you Love might bring us back together, I feel so good I feel right, the music sounds right out with you Love might bring us back together, I feel so good
 
-**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
 
 <!-- de-229 -->
 ## DE SLIDES Nr 229 · 2 days ago · +278.3K Views · Sprache en · Purelei Tiny Heart Armband mit kleinem Herz, filigrane Armkette aus Ed
@@ -822,7 +824,7 @@ https://www.tiktok.com/@schnaepchenking/video/7709539744673172769
 **Original:**
 > It's time, baby If it won't be, if it won't be If it won't be, if it won't be
 
-**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
 
 <!-- de-104 -->
 ## DE SLIDES Nr 104 · 2 days ago · +78.9K Views · Sprache en · Herren-Kapuzenjacke im Y2K-Techwear-Stil, leicht, wasser- und winddich
@@ -831,7 +833,8 @@ https://www.tiktok.com/@produktwolf/video/7709479560651246850
 **Original:**
 > Come on! Bro, I can't even feel my hands. Wait, how's he not freezing? Oh, I need that. Okay, this is soft. Bro, how are you not freezing? That jacket looks so thin. That's what I thought. Look inside. It's fleece-lined, even the hood. I'm actually warm. Okay, where'd you get it? TikTok shop. Tap the orange button down here.
 
-**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+**DEUTSCH:** **Hook:** Bro, ich spür meine Hände nicht mehr – wieso frierst du nicht?
+**Skript:** (Zwei Freunde draußen in der Kälte.) „Wie frierst du nicht? Die Jacke sieht so dünn aus.“ – „Guck mal rein: komplett gefüttert, sogar die Kapuze.“ – „Okay, die ist richtig weich. Ich brauch die. Wo hast du die her?“ – „TikTok Shop. Unten auf den orangenen Warenkorb.“
 
 <!-- de-240 -->
 ## DE SLIDES Nr 240 · 2 days ago · +149.3K Views · Sprache en · Purelei Tiny Heart Armband mit kleinem Herz, filigrane Armkette aus Ed
@@ -840,7 +843,7 @@ https://www.tiktok.com/@schnaepchenking/video/7709551134414736673
 **Original:**
 > It's time, baby If it won't be, if it won't be If it won't be, if it won't be
 
-**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
 
 <!-- de-242 -->
 ## DE SLIDES Nr 242 · 2 days ago · +145.5K Views · Sprache ru · Gutes Dutzend 12er-Geschenkset je 60g
@@ -849,7 +852,8 @@ https://www.tiktok.com/@veselyedeti/video/7709415160049405217
 **Original:**
 > Я решила всем на Рождество сделать вот такие подарки. Вот такой вот маленький разный-разный мед. Это обалденный подарок, шикардосный просто. Он прозрачный, как слеза. Ой, что, не лезет? Так, ложка у нас не лезет. Так, давай попробуем вилочкой. Попробуй. Очень вкусный. Вкусно? Со вкусом. Качество меда очень помогает нашему здоровью. В общем, будьте все здоровы.
 
-**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+**DEUTSCH:** **Hook:** Ich hab dieses Jahr für alle das gleiche Weihnachtsgeschenk.
+**Skript:** 12 kleine Gläser Honig, jeder eine andere Sorte – ein mega Geschenk. Klar wie eine Träne. (Löffel passt nicht rein – dann eben mit der Gabel.) Probier mal – richtig lecker, jeder schmeckt anders. Und Honig tut auch noch gut. Link im orangenen Warenkorb.
 
 <!-- de-247 -->
 ## DE SLIDES Nr 247 · 2 days ago · +110.8K Views · Sprache en · Red Bull Iced Vanilla Berry 250 ml – 3er Pack Iced Edition
@@ -858,4 +862,87 @@ https://www.tiktok.com/@alsytestet/video/7709629103720107296
 **Original:**
 > I know that you will never feel the same, nohhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 
-**DEUTSCH:** _(Claude schreibt: Hook + Skript)_
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
+
+<!-- de-421 -->
+## DE SLIDES Nr 421 · Yesterday · +137.9K Views · Sprache en · [medicube Offizieller Shop] Black Friday Exklusiv: Rundum-Pflegeset | 
+https://www.tiktok.com/@morabackup5/video/7709808643289484576
+
+**Original:**
+> It's time, baby If it won't be, if it won't be If it won't be, if it won't be
+
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
+
+<!-- de-209 -->
+## DE SLIDES Nr 209 · Yesterday · +226K Views · Sprache en · Sommertal KS 15 LED Mini Kühlschrank 15L | kühlen & wärmen, 230V & 12V
+https://www.tiktok.com/@mr.newwave_/video/7709978230349925664
+
+**Original:**
+> Kissing and hold the cutters, what are they like or not? I wanna show you off, I wanna show you off Don't wanna brag about it, don't wanna tie the knot I wanna show you off, I wanna show you off I wanna show you, yeah, yeah I wanna show you off, I wanna show you off
+
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
+
+<!-- de-134 -->
+## DE SLIDES Nr 134 · Yesterday · +79.6K Views · Sprache en · Energy-Drink-Plüsch-Schlüsselanhänger, ca. 22 cm, 5 Designs, mit Haken
+https://www.tiktok.com/@elisesahin/video/7709844847259159840
+
+**Original:**
+> Shift my paradigm Ooh I'm drifting from my innocence I wanna be a kid again Ooh
+
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
+
+<!-- de-490 -->
+## DE SLIDES Nr 490 · Yesterday · +84.6K Views · Sprache es · Tatort Escape Adventskalender: Krimi-Rätsel in 24 Teilen
+https://www.tiktok.com/@socialmediacreations/video/7709800899677261089
+
+**Original:**
+> y ahora dónde está ella ella como ninguna dime dime baby cómo hacer que tu boca
+
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
+
+<!-- de-323 -->
+## DE SLIDES Nr 323 · 2 days ago · +952.2K Views · Sprache en · Probiotikum Gummibonbons für Frauen | Intimflora & pH‑Wert ausgleichen
+https://www.tiktok.com/@shadowluna_twins/video/7709469954403257632
+
+**Original:**
+> I'm in need of one thing and it's running through my brain Let that bitch go, cause she breaking windows I'm saying to Joel, don't do these niggas not have shame Your girl, she a whore, but you show her like she gold Look at how she tree and sun, time don't use a tender month When you call, she do not come, that is not your whore I don't think he knows, what a shame, he's a whore Acting like she likes him for that money He's a flock of flock of all my guys arrive Cause they all shout as shout as if I wanna pop this bottle Then I'ma pop that bottle Lying with a fine ass model, she wanna ride this saddle I can see you don't want battle, your voice it shakes and rattles I'm in need of one thing and it's running through my brain Let that bitch go, cause she breaking windows I'm saying to Joel, don't do these niggas not have shame Your girl, she a whore, but you show her like she gold Why do all these bitches keep on shooting?
+
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
+
+<!-- de-339 -->
+## DE SLIDES Nr 339 · 2 days ago · +428.6K Views · Sprache en · ONE MEMORY NOIR/AURA Damenparfum 30 ml x 2 | Elegantes Geschenkset | F
+https://www.tiktok.com/@produktwolf/video/7709538912087084310
+
+**Original:**
+> Babe, keep looking at me like that and you're coming upstairs. Say less. I'm already parked. Easy, tiger. Text me first. Wait. What perfume are you wearing? My car still smells like you. I'm actually obsessed. Girl, I just left his car. He's already obsessed. Okay, what did you wear? Let me smell. Noir and Aura by One Memory. My little date night combo. Girl, send the link. Right now. Both come in one set. Tap the orange cart. Thank me later. Thank you.
+
+**DEUTSCH:** **Hook:** Mein Auto riecht immer noch nach dir – welches Parfüm ist das?
+**Skript:** (Date-Szene im Auto, dann Freundin.) „Schreib mir erst.“ – „Warte, was trägst du? Mein Auto riecht immer noch nach dir.“ – Freundin: „Er ist schon besessen. Was hattest du drauf?“ – „Noir und Aura von One Memory, meine Date-Night-Kombi. Beide in einem Set.“ – „Schick mir sofort den Link.“ – „Orangener Warenkorb. Danke mir später.“
+
+<!-- de-348 -->
+## DE SLIDES Nr 348 · 2 days ago · +337.6K Views · Sprache en · Gawfolk 24‑Zoll 200 Hz/300 Hz Gaming‑Monitor mit eingebauten Lautsprec
+https://www.tiktok.com/@deal_vault/video/7709478387538038049
+
+**Original:**
+> No change, I can't change, I can't change, I can't change, but I'm here in my mold. I can't hear in my mold, but I'm a million different people.
+
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
+
+<!-- de-381 -->
+## DE SLIDES Nr 381 · 2 days ago · +186.1K Views · Sprache en · 【Black Friday】 Sweatpants für Herren mit lockerem Schnitt im casualen 
+https://www.tiktok.com/@produktwolf/video/7709530188253613344
+
+**Original:**
+> I said I wanted to pray, I wasn't really able to be a part, baby, to me, I said it. No, I don't want a lifeboat for Christmas, this is all I'm asking for. I just want to see my baby, say it right outside my door.
+
+**DEUTSCH:** Nur Musik, kein Sprechtext → kein Skript nötig. Bildidee/Text-Overlay übernehmen.
+
+<!-- de-390 -->
+## DE SLIDES Nr 390 · 2 days ago · +170.6K Views · Sprache en · ONE MEMORY NOIR/AURA Damenparfum 30 ml x 2 | Elegantes Geschenkset | F
+https://www.tiktok.com/@produktwolf/video/7709539334197693718
+
+**Original:**
+> Babe, you smell way too good to leave me like this then give me a reason to stay Wait, what perfume is that my car still smells like you? Girl he texted before I even made it inside come here. Let me smell It's aura by one memory noir comes in the set too, okay? Yeah, I'd fold to send me the link girl. They're both in the orange cart I
+
+**DEUTSCH:** **Hook:** Du riechst viel zu gut, um jetzt einfach zu gehen.
+**Skript:** „Welches Parfüm ist das? Mein Auto riecht noch nach dir.“ – Freundin: „Er hat geschrieben, bevor ich überhaupt drin war.“ – „Komm her, lass riechen.“ – „Aura von One Memory, Noir ist mit im Set.“ – „Okay, ich bin raus – schick mir den Link.“ – „Beide im orangenen Warenkorb.“
