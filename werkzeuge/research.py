@@ -1222,8 +1222,7 @@ def personen_und_desktop(land, zeilen, kand, gemacht):
             musik.add(v.group(1))
 
     def standard(k):
-        name = re.split(r" [-–|] |, |\(|【|\[", k["produkt"])[0].strip()[:45] or k["produkt"][:45]
-        preis = k.get("preis") or "einen Spitzenpreis"
+        name, preis = "(Produkt)", "(Preis)"                    # Artur 20.11.: Platzhalter – Produkt und Preis schaut er selbst nach
         s = [f"TikTok Shop verschenkt einfach fast ihren {name}. Leute, den gibt's grade für {preis}, das ist kein Fake. "
              f"Ich hab selber nachgeschaut, unten links jetzt abchecken. Das muss ein Preisfehler sein, die müssen doch insolvent gehen, digga was?"]
         if HEUTE <= date(2026, 12, 1):                         # nur während Black Friday / Cyber Monday

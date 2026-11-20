@@ -553,3 +553,4 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - 20.11.2026 (spät): Ranglisten: BOF-Videos ohne Sprache (Transkript < 30 Zeichen oder SKRIPTE „nur Musik“) bekommen Badge „🎵 Standard-Skript“ mit Arturs 2 Standard-Skripten (Black-Friday-Skript nur bis 01.12.2026, Produktname gekürzt, Preis falls bekannt). Warum: Artur – bei Musik-Videos braucht man trotzdem einen Text.
 - 20.11.2026 (spät): Ablage ~/Documents/Ranglisten/<datum>/ mit Dateinamen „<JJJJ-MM-TT> <DE|USA> <Artur|Andreas|SLIDES>.<md|html>“. Warum: Artur – Datum im Namen, klarer sortiert.
 - 20.11.2026 (spät): Steht im deutschen Skript „nur Musik“, kommen Arturs 2 Standard-Skripte (Black Friday + Preisfehler) mit Produktname dazu – in .md und HTML, alle Listen. Warum: Artur.
+- 20.11.2026 (spät): Standard-Skripte mit Platzhaltern „(Produkt)“ und „(Preis)“ statt automatisch eingesetzt. Warum: Artur schaut Produkt und Preis selbst nach.
