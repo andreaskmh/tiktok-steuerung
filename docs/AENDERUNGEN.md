@@ -586,3 +586,6 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
   (sonst will kabel.py bei WLAN-Steuerung auf Kabel umschalten = Server-Neustart); Rohmeldung wird mitgeloggt.
   Kalender: Tage 1–5 fehlten am Monatsanfang (leere Felder hatten dieselben IDs) → behoben. Aktualisieren-Karte wieder oben,
   Accountliste direkt unter den Kacheln, Wechsel ohne Animation, alter Scroll-Ausgleich entfernt (machte den Schieb-Effekt).
+- 21.11.2026 Eigentliche Ursache „Handy nicht erreichbar“: Steuer-Server lieferte Bilder, aber jede Eingabe übers WLAN → „No route to host“
+  (beide iPhones). Server-Neustart behebt es. `aktualisieren.py` prüft jetzt vor jedem Handy eine Probe-Eingabe (Home-Taste) und startet
+  den Server bei Bedarf selbst neu.

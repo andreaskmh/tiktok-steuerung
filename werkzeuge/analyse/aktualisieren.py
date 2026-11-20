@@ -52,15 +52,48 @@ def log(t):
         f.write(time.strftime("%Y-%m-%d %H:%M:%S ") + t + "\n")
 
 
-def erreichbar(udid):
-    """Steuer-Server läuft (sonst starten) und das Handy liefert ein frisches Bild."""
-    subprocess.run([sys.executable, str(HIER.parent / "kabel.py"), "status"], env=dict(os.environ, TS_IPHONE_UDID=udid, TS_WLAN="1"),
-                   capture_output=True, timeout=90)
+def bild_da(udid):
     try:
         geraete = json.load(urllib.request.urlopen("http://127.0.0.1:27893/api/devices", timeout=10))
         return any(g["udid"] == udid and (g.get("age_ms") or 99999) < 5000 for g in geraete)
     except Exception:
         return False
+
+
+def tippen_geht(udid):
+    """Probe-Eingabe (Home-Taste – der Lauf startet ohnehin auf dem Home-Bildschirm)."""
+    r = subprocess.run([sys.executable, "-c", "import kabel; kabel.taste('home')"], cwd=HIER.parent,
+                       env=dict(os.environ, TS_IPHONE_UDID=udid, TS_WLAN="1"), capture_output=True, text=True, timeout=60)
+    return r.returncode == 0, (r.stderr.strip().splitlines() or [""])[-1]
+
+
+def server_neu():
+    """21.11.2026: Server lieferte noch Bilder, aber jede Eingabe übers WLAN endete mit „No route to host“ → Neustart half."""
+    subprocess.run(["pkill", "-f", "oiu.cli serve"], capture_output=True)
+    time.sleep(3)
+    subprocess.run([sys.executable, str(HIER.parent / "kabel" / "waechter.py"), "einmal"], capture_output=True, timeout=120)
+
+
+def erreichbar(udid):
+    """Steuer-Server läuft (sonst starten), das Handy liefert ein frisches Bild und nimmt Eingaben an (sonst Server neu starten)."""
+    subprocess.run([sys.executable, str(HIER.parent / "kabel.py"), "status"], env=dict(os.environ, TS_IPHONE_UDID=udid, TS_WLAN="1"),
+                   capture_output=True, timeout=90)
+    if not bild_da(udid):
+        return False
+    ok, msg = tippen_geht(udid)
+    if ok:
+        return True
+    log(f"Eingabe geht nicht ({msg[:120]}) – starte Steuer-Server neu")
+    server_neu()
+    geraet_hinzufuegen(udid)
+    for _ in range(24):
+        time.sleep(5)
+        if bild_da(udid):
+            break
+    ok, msg = tippen_geht(udid)
+    if not ok:
+        log(f"Eingabe geht auch nach Neustart nicht: {msg[:160]}")
+    return ok
 
 
 def sek_pro_konto(art):
