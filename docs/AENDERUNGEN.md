@@ -506,3 +506,10 @@ vom linken Rand (kein Tipp); Profil-Reiter mit Beschriftung „Profil“; länge
 - `speichern`: Nummern, die beim neuen Lesen nicht mehr unter den Kandidaten sind, werden übersprungen (vorher KeyError
   beim USA-Abendlauf 20.11.).
 - Vorbilder-Research (klickguru) läuft jetzt in jeder Research-Runde (7/13/19 Uhr) nach USA mit (Artur 20.11.).
+- **20.11.2026** – iPhone-Spiegel wie Mirror My Phone umgebaut: Menüs Ablage (Neues Gerät, Alle schließen), Optionen (Im Vordergrund
+  fixieren ⌘T, Schreibtisch), Gerät (Rahmen: Geräterahmen/Geräteform/Fenster, 12 Rahmenfarben, Größe: Gerätegröße/Punkt für Punkt/
+  Pixel für Pixel/An Bildschirm anpassen, iPhone-Wahl ⌘1 …), Fenster (Minimieren, Füllen, Zentrieren, Vollbild, Schließen).
+  „Warte auf iPhone …“-Bildschirm, echte Bildgröße auch über WLAN (PNG-Kopf). Fehler behoben: App kam beim Klick nicht nach vorn
+  (Menüleiste blieb bei der vorigen App). Weggelassen: Aufnahme, Bildschirmfoto, Musik/Video-Modus, Ton, Gerätemodell.
+- **20.11.2026** – iPhone-Spiegel: Klick aufs iPhone holt die App selbst nach vorn und verschiebt das Fenster von überall
+  (vorher verschob macOS das Fenster ohne die App zu aktivieren → Menüleiste blieb bei der vorigen App).
