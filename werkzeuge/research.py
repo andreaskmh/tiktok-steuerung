@@ -358,18 +358,20 @@ UNSERE = re.compile(r"^(BOF DE|SLIDES DE|Reactions DE|SLIDES USA|Quality USA) \d
 
 
 def gemacht_abgleich():
-    """Seit 20.11.2026 arbeitet Artur UNSERE „BOF DE …“-Listen ab (vorher einmalig „eigene BOF 19.11.“): was er dort seit der
-    letzten Momentaufnahme rausgenommen hat, ist erledigt → gemacht.json + aus unseren Listen. Nicht Erledigtes wandert in die
-    Liste des nächsten Tages (filtern). Arturs eigene Listen zählen nicht mehr."""
+    """Artur 20.11.2026: ALLE unsere Research-Listen (BOF/SLIDES/Reactions DE, Quality/SLIDES USA): was seit der letzten
+    Momentaufnahme rausgenommen = abgehakt wurde (von Hand oder nach dem Upload per post_mensch.social1_abhaken), ist erledigt
+    → gemacht.json + aus unseren Listen. Nicht Abgehaktes wandert in die Liste des nächsten Tages (filtern), je Land für sich."""
     aktionen_laden()
     ls = (s1("getVideoLists").get("data") or {}).get("lists") or []
-    artur = [l for l in ls if re.match(r"^BOF DE ", l.get("name", "")) and UNSERE.match(l.get("name", ""))]
+    artur = [l for l in ls if UNSERE.match(l.get("name", ""))]
     jetzt = {l["_id"]: {"name": l["name"], "videos": listen_videos(l["_id"])} for l in artur}
     alt = json.loads(ARTUR_STAND.read_text()) if ARTUR_STAND.exists() else {}
     weg = set()
     for lid, l in jetzt.items():
         if lid in alt:                                         # shortcut: zählt auch, was ein abgebrochenes `sortieren` rausnahm
-            weg |= set(alt[lid]["videos"]) - set(l["videos"])  # was Artur dort rausgenommen hat, ist erledigt
+            ab = set(alt[lid]["videos"]) - set(l["videos"])    # was dort rausgenommen = abgehakt wurde, ist erledigt
+            print(f"{l['name']}: {len(ab)} abgehakt, {len(l['videos'])} noch drin")
+            weg |= ab
     weg -= gemacht()
     if weg:
         gemacht_merken(weg)
@@ -379,16 +381,17 @@ def gemacht_abgleich():
                 if n:
                     print(f"{l['name']}: {n} erledigte raus")
     ARTUR_STAND.write_text(json.dumps(jetzt, ensure_ascii=False))
-    print(f"FERTIG gemacht-abgleich: {len(artur)} BOF-DE-Listen, {len(weg)} neu erledigt, gemacht.json hat {len(gemacht())}")
+    print(f"FERTIG gemacht-abgleich: {len(artur)} Research-Listen, {len(weg)} neu erledigt, gemacht.json hat {len(gemacht())}")
 
 
 def frueher_gespeichert():
     """{video_id: Liste-Art} aller Videos, die an früheren Tagen schon in einer Research-Liste gelandet sind.
-    USA: kommen nie ein zweites Mal rein. DE (Artur 20.11.2026): nicht Erledigtes wandert in die heutige Liste derselben Art."""
+    Artur 20.11.2026: nicht Abgehaktes wandert (DE und USA) in die heutige Liste derselben Art."""
     ids = {}
     for f in sorted((PROJ / "uebergabe" / "research").glob("*/gespeichert-*.json")):
         if f.parent.name != HEUTE.isoformat():
-            art = "REACTIONS" if "Reactions" in f.name else "SLIDES" if "SLIDES" in f.name else "BOF"
+            art = ("REACTIONS" if "Reactions" in f.name else "SLIDES" if "SLIDES" in f.name
+                   else "QUALITY" if "Quality" in f.name else "BOF")
             for v in json.loads(f.read_text()):
                 if v:
                     ids[v] = "BOF+SLIDES" if {ids.get(v), art} == {"BOF", "SLIDES"} else art
@@ -421,8 +424,6 @@ def filtern(land):
             grund = "doppelt"
         elif k["video_id"] in schon:
             grund = "schon gemacht (gemacht.json)"
-        elif k["video_id"] in frueher and land != "de":
-            grund = "schon an früherem Tag in einer Liste"
         elif tage > REGELN["max_alter_tage"][land]:
             grund = f"zu alt ({k['alter']})"
         elif any(p in cr for p in REGELN["promis"]):
@@ -448,14 +449,14 @@ def filtern(land):
             k["neu"] = True
     rein.sort(key=lambda k: k["nr"])
     (ORDNER / f"{land}-kandidaten.json").write_text(json.dumps(rein, ensure_ascii=False, indent=1))
-    if land == "de":                                          # Übernahme von früheren Tagen: Art von damals, nicht neu ansehen
-        sort = ORDNER / "de-sortiert.json"
-        so = json.loads(sort.read_text()) if sort.exists() else {}
-        neu = {str(k["nr"]): frueher[k["video_id"]] for k in rein
-               if k["video_id"] in frueher and str(k["nr"]) not in so and frueher[k["video_id"]] != "REACTIONS"}
-        if neu:
-            sort.write_text(json.dumps({**so, **neu}, ensure_ascii=False, indent=1))
-            print(f"Übernahme von früheren Tagen: {len(neu)} Videos → de-sortiert.json")
+    # Übernahme von früheren Tagen (DE + USA): Art von damals, nicht neu ansehen
+    sort = ORDNER / f"{land}-sortiert.json"
+    so = json.loads(sort.read_text()) if sort.exists() else {}
+    neu = {str(k["nr"]): frueher[k["video_id"]] for k in rein
+           if k["video_id"] in frueher and str(k["nr"]) not in so and frueher[k["video_id"]] != "REACTIONS"}
+    if neu:
+        sort.write_text(json.dumps({**so, **neu}, ensure_ascii=False, indent=1))
+        print(f"Übernahme von früheren Tagen: {len(neu)} Videos → {land}-sortiert.json")
     promis = [str(k["nr"]) for k in rein if k.get("promi")]
     (ORDNER / f"{land}-promis.txt").write_text(" ".join(promis))   # → speichern <land> "Reactions DE <datum>" "$(cat …)"
     if promis:
@@ -629,6 +630,7 @@ def sortieren(land, liste):
                 s1("addVideoToList", lid, p)
             except RuntimeError:
                 pass                                           # Rest holt die Nachkontrolle „fehlt“ unten
+        time.sleep(1)                                          # 20.11.: ohne Pause verlangte Social1 nach ~280 Aufrufen ein Captcha (429)
         if n % 50 == 0:
             print(f"… {n}/{len(reihe) - k}", flush=True)
     echt = set(listen_videos(lid))
@@ -1149,7 +1151,7 @@ def punkte(k):
 def rangliste(land):
     sort = json.loads((ORDNER / f"{land}-sortiert.json").read_text())   # {"nr": "BOF"|"SLIDES"|"QUALITY", ...}
     kand = {str(k["nr"]): k for k in json.loads((ORDNER / f"{land}-kandidaten.json").read_text())}
-    gemacht = gepostete_produkte()
+    gemacht = set()   # Artur 20.11.: Hinweis „Produkt schon verlinkt“ weglassen (bringt nichts); gepostete_produkte() bleibt für später
     zeilen = sorted(((punkte(kand[n]), n, art) for n, art in sort.items() if n in kand and not art.endswith("?")
                      and int(kand[n].get("seite") or 0) <= seiten_max(f"{art.split('+')[0]} {land.upper()}")),   # wie speichern
                     reverse=True)   # Gleichstand: Nr als Text absteigend – sortieren nutzt denselben Schlüssel
@@ -1162,7 +1164,7 @@ def rangliste(land):
         for i, (p, n, art) in enumerate(teil, 1):
             k = kand[n]
             if k["produkt_id"] in gemacht:
-                art += " (Produkt schon gepostet)"
+                art += " (Produkt schon verlinkt)"
             aus.append(f"| {i} | {p} | {art} | {k['alter']} | {k['plus_views']} | {k['produkt'][:50].replace('|', '/')} | @{k['creator']} | "
                        f"https://www.tiktok.com/@{k['creator']}/video/{k['video_id']} |")
         f = ORDNER / f"{land}-rangliste{endung}.md"
@@ -1176,7 +1178,7 @@ def rangliste(land):
             schon = " schon" if k["produkt_id"] in gemacht else ""
             karten.append(f'<a class="k{schon}" href="https://www.tiktok.com/@{esc(k["creator"])}/video/{k["video_id"]}" target="_blank">'
                           f'<img loading="lazy" src="{esc(bild)}" onerror="this.onerror=null;this.src=\'{lokal}\'" alt=""><b>{i}</b><i>{esc(art)}</i>'
-                          f'<span>{esc(k["alter"])} · +{esc(k["plus_views"])}{" · Produkt schon gepostet" if schon else ""}</span>'
+                          f'<span>{esc(k["alter"])} · +{esc(k["plus_views"])}{" · Produkt schon verlinkt" if schon else ""}</span>'
                           f'<span class="p">{esc(k["produkt"][:70])}</span><span>@{esc(k["creator"])} · Seite {esc(k.get("seite", "?"))}</span></a>')
         titel = f"Rangliste {land.upper()} {HEUTE.strftime('%d.%m.%Y')}{zusatz}"
         (ORDNER / f"{land}-rangliste{endung}.html").write_text(
@@ -1188,10 +1190,118 @@ def rangliste(land):
             'color:inherit;text-decoration:none;padding-bottom:6px}.k span,.k i{padding:0 6px}.k.schon{opacity:.55}'
             '.k img{width:100%;aspect-ratio:9/16;object-fit:cover;background:#999}.p{font-weight:600}'
             '.k b{position:absolute;top:6px;left:6px;background:#000c;color:#fe2c55;padding:2px 7px;border-radius:6px;font-size:15px}'
-            f'</style><h1>{titel}</h1><p>{len(teil)} Videos · Platz 1 = beste Punkte · blass = Produkt schon gepostet · '
+            f'</style><h1>{titel}</h1><p>{len(teil)} Videos · Platz 1 = beste Punkte · blass = Produkt schon verlinkt (Video trotzdem machen) · '
             f'Klick öffnet TikTok</p><div class="g">{"".join(karten)}</div>')
         print("\n".join(aus[4:14]))
         print(f"FERTIG rangliste: {f}")
+    personen_und_desktop(land, zeilen, kand, gemacht)
+
+
+PERSONEN = ("Artur", "Andreas")                               # Artur 20.11.2026: teilen sich BOF/Reactions/Quality
+
+
+def personen_und_desktop(land, zeilen, kand, gemacht):
+    """Alles außer SLIDES auf PERSONEN aufteilen (nur .md): abwechselnd nach Platz, gleiches Produkt immer zur selben Person.
+    Personen- + SLIDES-Datei als einfache Liste (keine Tabelle – Artur 20.11.: iPhone/WhatsApp zeigen .md als reinen Text)
+    → uebergabe/research/<datum>/ und ~/Documents/Ranglisten/<JJJJ-MM-TT>/."""
+    skr = {}                                                   # Artur 20.11.: fremdsprachige → Badge + deutsches Skript
+    sf = ORDNER / f"SKRIPTE {HEUTE.strftime('%d.%m.%Y')}.md"
+    if sf.exists():
+        for blk in sf.read_text().split("<!-- ")[1:]:
+            v, spr = re.search(r"/video/(\d+)", blk), re.search(r"Sprache (\w+)", blk)
+            if v and "**DEUTSCH:**" in blk:
+                skr[v.group(1)] = ((spr.group(1) if spr else "?").upper(), blk.split("**DEUTSCH:**", 1)[1].strip())
+
+    def eintrag(i, z):
+        e = eintrag_ohne(i, z)
+        v = kand[z[1]]["video_id"]
+        if v not in skr:
+            return e
+        return e[:-1] + [f"🌐 **{skr[v][0]} – Skript auf Deutsch:**", ""] + [f"> {l}  " if l else ">" for l in skr[v][1].splitlines()] + [""]
+
+    def eintrag_ohne(i, z):
+        pk, n, art = z
+        k = kand[n]
+        schon = " · ⚠️ Produkt schon verlinkt (Video trotzdem machen)" if k["produkt_id"] in gemacht else ""
+        return [f"**{i}. {k['produkt'][:60]}**  ", f"{art} · {k['alter']} · +{k['plus_views']} · @{k['creator']}{schon}  ",
+                f"https://www.tiktok.com/@{k['creator']}/video/{k['video_id']}", ""]
+    datum = HEUTE.strftime('%d.%m.%Y')
+    aus, abschnitte = {p: [] for p in PERSONEN}, {p: [] for p in PERSONEN}
+    arten = sorted({t for z in zeilen for t in z[2].split("+")} - {"SLIDES"})
+    for a in arten:
+        wem, teil = {}, {p: [] for p in PERSONEN}
+        for z in zeilen:
+            if a not in z[2].split("+"):
+                continue
+            pid = kand[z[1]]["produkt_id"]
+            p = wem.setdefault(pid, min(PERSONEN, key=lambda x: len(teil[x])))
+            teil[p].append(z)
+        for p in PERSONEN:
+            abschnitte[p].append((a, teil[p]))
+            aus[p] += [f"## {a} ({len(teil[p])})", ""] + [x for i, z in enumerate(teil[p], 1) for x in eintrag(i, z)]
+    dateien = {f"{land}-rangliste-{p.lower()}.md": f"# {land.upper()} {datum} – {p}\n\nGleiches Produkt steht immer nur bei einer Person.\n\n"
+               + "\n".join(aus[p]) for p in PERSONEN}
+    slides = [z for z in zeilen if "SLIDES" in z[2].split("+")]
+    dateien[f"{land}-rangliste-slides.md"] = (f"# {land.upper()} {datum} – SLIDES ({len(slides)})\n\n"
+                                              + "\n".join(x for i, z in enumerate(slides, 1) for x in eintrag(i, z)))
+    desk = pathlib.Path.home() / "Documents" / "Ranglisten" / HEUTE.isoformat()      # Artur 20.11.: Dokumente, ein Ordner pro Tag
+    desk.mkdir(parents=True, exist_ok=True)
+    for name, text in dateien.items():
+        (ORDNER / name).write_text(text)
+        (desk / name).write_text(text)
+    # Artur 20.11.: dieselben Dateien als HTML-Tabelle (iPhone-Vorschau in WhatsApp/AirDrop/Dateien), Produkt = Link
+    esc = lambda t: str(t).replace("&", "&amp;").replace("<", "&lt;").replace('"', "&quot;")
+    def badge(k):
+        v = k["video_id"]
+        return (f'<a class="chip sp" href="#s{v}" onclick="document.getElementById(\'s{v}\').toggleAttribute(\'open\');return false">'
+                f'🌐 {skr[v][0]} · Skript</a>') if v in skr else ""
+
+    def skript(k):
+        if k["video_id"] not in skr:
+            return ""
+        t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", esc(skr[k["video_id"]][1])).replace("\n", "<br>")
+        return (f'<tr class="skr"><td></td><td colspan="3"><details id="s{k["video_id"]}"><summary>Skript auf Deutsch</summary>'
+                f'<div>{t}</div></details></td></tr>')
+
+    def tabelle(teil):
+        r = ["<table><tr><th>#</th><th>Produkt</th><th>Alter</th><th>+Views</th></tr>"]
+        for i, (pk, n, art) in enumerate(teil, 1):
+            k = kand[n]
+            alt = {"Today": "neu", "Yesterday": "gestern"}.get(k["alter"], "alt")
+            r.append(f'<tr><td><span class="nr">{i}</span></td><td><a href="https://www.tiktok.com/@{esc(k["creator"])}/video/{k["video_id"]}">'
+                     f'{esc(k["produkt"][:60])}</a><div class="sub"><span class="chip">{esc(art)}</span>{badge(k)}'
+                     f'<span class="cr">@{esc(k["creator"])}</span></div></td><td><span class="chip {alt}">{esc(k["alter"])}</span></td>'
+                     f'<td class="v">{esc(k["plus_views"])}</td></tr>' + skript(k))
+        return "".join(r) + "</table>"
+    seiten = {p: "".join(f"<h2>{a} ({len(t)})</h2>{tabelle(t)}" for a, t in abschnitte[p]) for p in PERSONEN}
+    seiten["slides"] = f"<h2>SLIDES ({len(slides)})</h2>{tabelle(slides)}"
+    for wer, inhalt in seiten.items():
+        titel = f"{land.upper()} {datum} – {wer if wer != 'slides' else 'SLIDES'}"
+        html = (f'<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{titel}</title>'
+                # Artur 20.11.: immer dunkel – iPhone-Vorschau (WhatsApp/AirDrop) beachtet den Dunkelmodus nicht
+                # Artur 20.11.: Graphit-Tabelle wie sein Dock + leichte Farben aus seiner statsKMH-App (Grün, Türkis, Blau)
+                '<meta name="color-scheme" content="dark"><style>:root{--bg:#161618;--fg:#ececee;--mut:#8e8e93;--line:#2a2a2d;'
+                '--kopf:#1f1f22;--chip:#2c2c2f;--glas:linear-gradient(180deg,#4a4a4e,#2a2a2d);--gruen:#4cd964;--tuerkis:#5ac8c8;--blau:#64a8ff}'
+                'html{background:#161618}body{font:15px -apple-system,sans-serif;margin:0;padding:14px 12px 40px;background:var(--bg);color:var(--fg)}'
+                'h1{font-size:22px;font-weight:700;margin:4px 0 2px;color:#fff}.st{color:var(--mut);font-size:13px;margin:0 0 4px}'
+                'h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gruen);margin:22px 0 6px}'
+                'table{border-collapse:separate;border-spacing:0;width:100%}th{position:sticky;top:0;background:var(--kopf);color:var(--mut);font-size:11px;'
+                'text-transform:uppercase;letter-spacing:.06em;text-align:left;padding:8px 6px;z-index:1;border-bottom:1px solid var(--line)}'
+                'td{padding:10px 6px;border-bottom:1px solid var(--line);vertical-align:top}'
+                '.nr{display:inline-block;min-width:28px;text-align:center;padding:4px 0;border-radius:9px;background:var(--glas);'
+                'box-shadow:inset 0 1px 0 #ffffff26,0 1px 2px #0008;color:#fff;font-weight:700;font-size:13px}'
+                'a{color:var(--fg);font-weight:600;text-decoration:none;line-height:1.3}.sub{margin-top:5px;display:flex;flex-wrap:wrap;gap:5px;align-items:center}'
+                '.chip{font-size:11px;padding:2px 8px;border-radius:999px;background:var(--chip);color:var(--blau);white-space:nowrap;font-weight:500;'
+                'box-shadow:inset 0 1px 0 #ffffff12}.chip.neu{color:var(--gruen);background:#4cd96422}.chip.gestern{color:var(--tuerkis);background:#5ac8c81a}'
+                '.chip.alt{color:var(--mut)}.chip.sp{color:#ffcc66;background:#ffcc661c}.cr{font-size:12px;color:var(--mut)}'
+                '.v{font-weight:700;color:#fff;white-space:nowrap}tr.skr td{padding-top:0}tr:has(+tr.skr) td{border-bottom:0}'
+                'details:not([open]){display:none}details{background:#1f1f22;border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.45}'
+                'summary{color:#ffcc66;font-size:12px;margin-bottom:6px;list-style:none}'
+                f'</style><h1>{wer if wer != "slides" else "SLIDES"}</h1><p class="st">Rangliste {land.upper()} · {datum}</p>{inhalt}')
+        name = f"{land}-rangliste-{wer.lower()}.html"
+        (ORDNER / name).write_text(html)
+        (desk / name).write_text(html)
+    print(f"FERTIG Aufteilung {', '.join(PERSONEN)} + Ablage: {desk}")
 
 
 if __name__ == "__main__":

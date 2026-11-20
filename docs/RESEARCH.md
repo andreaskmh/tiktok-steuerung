@@ -28,7 +28,8 @@ Momentaufnahme (`~/.tiktok-research/artur-listen.json`) rausgenommen hat = erled
 eigene Listen zählen nicht mehr. Momentaufnahme nach jedem Lauf (am Ende nochmal `gemacht-abgleich`, wenn die Listen fertig sind).
 **Übernahme DE (Artur 20.11.):** Nicht Erledigtes aus unseren DE-Listen früherer Tage kommt wieder in die heutige Liste derselben
 Art (`filtern de` trägt die Art in `de-sortiert.json` ein, nicht neu ansehen), solange es noch auf Social1 steht, ≤ 7 Tage alt und
-bis Seite 50 (BOF/SLIDES) ist. USA: weiterhin nie zweimal.
+bis Seite 50 (BOF/SLIDES) ist. **Seit 20.11. (spät) auch USA** und für alle Listen: nur Abgehaktes (= aus einer unserer Listen
+entfernt, von Hand oder nach dem Upload per `post_mensch.social1_abhaken`) fällt weg; DE und USA zählen getrennt.
 
 **Deutschland**
 1. `python3 werkzeuge/research.py lesen de [--frisch]`
@@ -79,6 +80,7 @@ bis Seite 50 (BOF/SLIDES) ist. USA: weiterhin nie zweimal.
 ## Rangliste (Punkte)
 Frische (Today 100, Yesterday 85, 2 Tage 55 … 7 Tage 12, danach weniger) + Tempo (+Views, log, max. 40) + Video-Umsatz (Social1 `gmv` des Videos, log: €1K → 6, €10K → 9, max. 15)
 + Likes/Kommentare pro View (max. 15). Seit 21.11. ohne Creator-GMV und ohne 🔥 (Artur 20.11.). Ausgabe `<land>-rangliste.md` + je Liste extra `<land>-rangliste-bof|reactions|slides|quality.md/.html` (Artur 20.11., Platz-Nr. je Datei neu).
+Dazu `<land>-rangliste-artur.md` / `-andreas.md`: alles außer SLIDES abwechselnd nach Platz geteilt, gleiches Produkt immer nur bei einer Person. Alle .md-Ranglisten werden nach `~/Documents/Ranglisten/<JJJJ-MM-TT>/` kopiert.
 
 ## Zeiten
 Start 7 / 13 / 19 Uhr. Stündliche Messung (`research.py messen`, launchd `de.tiktoksteuerung.research-messen`) protokolliert Seite 1
