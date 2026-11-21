@@ -88,12 +88,23 @@
    "entwurf": false,
    "dauer_s": 109,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "16:11",
+   "account": "artur.official",
+   "datei": "Video 151 - 22 SooSo Mini-Laubbläser - V1.mp4",
+   "produkt": "Leistungsstarker Akku-Laubbläser, Mini-A",
+   "tts_link": "https://shop.tiktok.com/view/product/1729928717392320783",
+   "weg": "erstellen",
+   "entwurf": false,
+   "dauer_s": 239,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "anduri.official": 4,
   "ella_robinson2": 1,
   "andreas.testet": 2,
-  "artur.official": 1
+  "artur.official": 2
  }
 }
