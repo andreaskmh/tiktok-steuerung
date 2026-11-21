@@ -598,3 +598,5 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
   (app/kmhview/kmhview/Ranglisten.swift; iPhone: MacBook-Pro-von-Andreas.local:8080, sonst 192.168.8.214:8080; Mac: localhost:8080).
   Seite und Server unverändert. Info-iOS.plist: NSAllowsLocalNetworking + NSLocalNetworkUsageDescription; neu Info-mac.plist (ATS lokal).
   TikTok-Links öffnen außerhalb (TikTok/Browser). Auftrag aus dem Research-Chat (Artur 21.11.).
+- 21.11.2026 statsKMH: Navigationsleiste unten (schwebende Glas-Kapsel, `Haupt.swift`): „Statistik“ und „Ranglisten“; weitere Bereiche
+  später in `enum Bereich`. Ranglisten jetzt eingebettet (bleibt beim Wechseln geladen), Listen-Knopf oben entfällt.

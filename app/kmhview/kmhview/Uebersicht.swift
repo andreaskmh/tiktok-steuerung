@@ -42,7 +42,6 @@ struct Uebersicht: View {
     @State private var videoPeriode: Periode = .tage3
     @State private var eigen = Spanne(von: Calendar.current.date(byAdding: .day, value: -13, to: Calendar.current.startOfDay(for: Date()))!, bis: Calendar.current.startOfDay(for: Date()))
     @State private var waehlen = false
-    @State private var ranglisten = false
 
     var konto: Konto? { s.daten?.konten.first { $0.name == auswahl } ?? s.daten?.konten.first }
 
@@ -93,10 +92,6 @@ struct Uebersicht: View {
         HStack(spacing: 10) {
             if let d = s.daten { KontoWahl(konten: d.konten, auswahl: $auswahl) }
             else { Text(appName).font(.title2.weight(.bold)); Spacer() }
-            Button { ranglisten = true } label: {   // Research-Ranglisten (Seite vom Mac)
-                Image(systemName: "list.number").font(.system(size: 16, weight: .semibold)).frame(width: 44, height: 44)
-                    .background(Color.flaeche, in: Circle())
-            }.buttonStyle(.plain)
             #if os(iOS)
             Button { waehlen = true } label: {
                 Image(systemName: s.hatOrdner ? "icloud.fill" : "icloud.and.arrow.down")
@@ -110,11 +105,6 @@ struct Uebersicht: View {
             #endif
         }
         .padding(.top, 8)
-        #if os(iOS)
-        .fullScreenCover(isPresented: $ranglisten) { Ranglisten() }
-        #else
-        .sheet(isPresented: $ranglisten) { Ranglisten() }
-        #endif
         .overlay(alignment: .bottomLeading) {
             if let f = s.fehler { Text(f).font(.caption).foregroundStyle(Color.warn).offset(y: 18) }
         }

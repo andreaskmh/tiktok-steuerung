@@ -6,7 +6,7 @@ struct KmhviewApp: App {
     @Environment(\.scenePhase) private var phase
     var body: some Scene {
         WindowGroup {
-            StartBild { Uebersicht().environmentObject(speicher) }
+            StartBild { Haupt().environmentObject(speicher) }
                 .onChange(of: phase) { _, p in if p == .active { speicher.laden() } }
                 #if os(macOS)
                 .frame(minWidth: 420, idealWidth: 520, minHeight: 640)

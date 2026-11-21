@@ -9,12 +9,31 @@ let ranglistenAdressen = ["http://MacBook-Pro-von-Andreas.local:8080", "http://1
 #endif
 
 struct Ranglisten: View {
+    var eingebettet = false   // in der Leiste unten: ohne Titelzeile und „Fertig“
     @Environment(\.dismiss) var weg
     @State private var nr = 0
     @State private var fehler = false
     @State private var neu = UUID()
     var body: some View {
-        NavigationStack {
+        if eingebettet { inhalt } else {
+            NavigationStack {
+                inhalt
+                    .navigationTitle("Ranglisten")
+                    #if os(iOS)
+                    .navigationBarTitleDisplayMode(.inline)
+                    #endif
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) { Button("Fertig") { weg() } }
+                        ToolbarItem(placement: .cancellationAction) { Button { neu = UUID() } label: { Image(systemName: "arrow.clockwise") } }
+                    }
+            }
+            #if os(macOS)
+            .frame(minWidth: 520, minHeight: 760)
+            #endif
+        }
+    }
+
+    var inhalt: some View {
             ZStack {
                 Color("StartFarbe").ignoresSafeArea()
                 if fehler {
@@ -29,21 +48,9 @@ struct Ranglisten: View {
                     WebSeite(url: URL(string: ranglistenAdressen[nr])!) {   // Adresse geht nicht → nächste, dann Hinweis
                         if nr + 1 < ranglistenAdressen.count { nr += 1 } else { fehler = true }
                     }
-                    .id("\(nr)\(neu)").ignoresSafeArea(edges: .bottom)
+                    .id("\(nr)\(neu)")
                 }
             }
-            .navigationTitle("Ranglisten")
-            #if os(iOS)
-            .navigationBarTitleDisplayMode(.inline)
-            #endif
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) { Button("Fertig") { weg() } }
-                ToolbarItem(placement: .cancellationAction) { Button { neu = UUID() } label: { Image(systemName: "arrow.clockwise") } }
-            }
-        }
-        #if os(macOS)
-        .frame(minWidth: 520, minHeight: 760)
-        #endif
     }
 }
 
