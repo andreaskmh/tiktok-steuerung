@@ -430,16 +430,27 @@
 "video_gmv": 159.52
 },
 "2026-11-20": {
-"ansichten": 2100.0,
-"gelesen": "2026-11-20 04:56",
+"ansichten": 15900.0,
+"artikel": 8.0,
+"gelesen": "2026-11-21 08:41",
 "gerundet": [
 "sichtkontakte"
 ],
-"gmv": 0.0,
-"klicks": 25.0,
-"provision": 0.0,
-"sichtkontakte": 2400.0,
+"gmv": 155.52,
+"klicks": 320.0,
+"provision": 17.71,
+"sichtkontakte": 18700.0,
+"video_artikel": 8.0,
+"video_gmv": 155.52
+},
+"2026-11-21": {
+"ansichten": 4200.0,
+"artikel": 1.0,
+"gelesen": "2026-11-21 08:41",
+"gmv": 9.18,
+"klicks": 99.0,
+"provision": 0.92,
 "unvollstaendig": true,
-"video_gmv": 0.0
+"video_gmv": 9.18
 }
 }

@@ -457,18 +457,34 @@
 "video_gmv": 1000.0
 },
 "2026-11-20": {
-"ansichten": 14800.0,
-"artikel": 3.0,
-"gelesen": "2026-11-20 04:28",
+"ansichten": 288400.0,
+"artikel": 63.0,
+"gelesen": "2026-11-21 08:37",
+"gerundet": [
+"gmv",
+"sichtkontakte",
+"klicks"
+],
+"gmv": 1100.0,
+"klicks": 6200.0,
+"provision": 108.78,
+"sichtkontakte": 310600.0,
+"video_artikel": 63.0,
+"video_gmv": 1100.0
+},
+"2026-11-21": {
+"ansichten": 46700.0,
+"artikel": 7.0,
+"gelesen": "2026-11-21 08:37",
 "gerundet": [
 "sichtkontakte"
 ],
-"gmv": 164.34,
-"klicks": 321.0,
-"provision": 6.85,
-"sichtkontakte": 16300.0,
+"gmv": 116.26,
+"klicks": 890.0,
+"provision": 16.64,
+"sichtkontakte": 50700.0,
 "unvollstaendig": true,
-"video_artikel": 3.0,
-"video_gmv": 164.34
+"video_artikel": 7.0,
+"video_gmv": 116.26
 }
 }

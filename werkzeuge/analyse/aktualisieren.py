@@ -78,7 +78,12 @@ def erreichbar(udid):
     """Steuer-Server läuft (sonst starten), das Handy liefert ein frisches Bild und nimmt Eingaben an (sonst Server neu starten)."""
     subprocess.run([sys.executable, str(HIER.parent / "kabel.py"), "status"], env=dict(os.environ, TS_IPHONE_UDID=udid, TS_WLAN="1"),
                    capture_output=True, timeout=90)
-    if not bild_da(udid):
+    for _ in range(12):            # frisch angemeldetes Handy braucht ein paar Sekunden bis zum ersten Bild (21.11.: Lauf endete nach 1 s)
+        if bild_da(udid):
+            break
+        time.sleep(5)
+    else:
+        log(f"Kein Bild vom Handy {udid} nach 60 s")
         return False
     ok, msg = tippen_geht(udid)
     if ok:

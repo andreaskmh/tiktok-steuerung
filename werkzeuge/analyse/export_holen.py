@@ -46,13 +46,34 @@ def tipp(x, y, w=1.5):
 POPUP = ("Jetzt nicht", "Später", "Nicht jetzt", "Schließen", "Abbrechen")
 
 
+def captcha_abwarten(tx):
+    """Captcha macht Artur (nie selbst lösen). Bis zu 3 Min. warten, bis es weg ist, statt den Account abzubrechen (21.11.2026)."""
+    if not seh.finde("Verifiziere, um fortzufahren", tx) and not seh.finde("Puzzleteil", tx):
+        return False
+    print("Captcha auf dem Handy – warte, bis Artur es löst …", flush=True)
+    for _ in range(90):
+        time.sleep(2)
+        tx = seh.lesen()
+        if not seh.finde("Verifiziere, um fortzufahren", tx) and not seh.finde("Puzzleteil", tx):
+            time.sleep(2)
+            return True
+    raise Stopp("Captcha nicht gelöst (3 Min. gewartet)")
+
+
 def warte(muster, sek=12, **kw):
     ende = time.time() + sek
     while True:
         tx = seh.lesen()
+        if captcha_abwarten(tx):
+            ende = max(ende, time.time() + sek)
+            continue
         p = seh.finde(muster, tx, **kw)
         if p:
             return p
+        r = seh.finde("Tippe, um es erneut", tx) or seh.finde("Erneut versuchen", tx) or seh.finde("Fehler beim Laden", tx)
+        if r:                             # Ladefehler in TikTok → antippen lädt neu (Artur 21.11.2026)
+            tipp(*r, 2.5)
+            continue
         for w in POPUP:
             q = seh.finde(w, tx, genau=True)
             if q and w.lower() not in muster.lower():
@@ -84,19 +105,47 @@ def creator_oeffnen():
     tipp_text("Creator*innen", w=5, unter=380)
 
 
-def tiktok_profil():
-    K.taste("home"); time.sleep(1.2)
-    tipp_text("Suchen", w=1.2)
+TIKTOK_SEITEN = ("Posteingang", "Hallo ", "Auszahlungsübersicht", "Auszahlungsverlauf", "Meistbesucht", "Schlüsseldaten",
+                 "Monetarisierung", "Partnerbestellungen", "TikTok Shop Toolkit", "Letzte 7 Tage", "Gelegenheiten für Creator")
+
+
+def tiktok_oeffnen():
+    """Home → Suche → „TikTok“. Zweimal Home: von der Widget-Seite oder einer anderen Seite zurück zur ersten (21.11.2026)."""
+    for versuch in range(2):
+        K.taste("home"); time.sleep(1.2)
+        if not seh.finde("Suchen"):
+            K.taste("home"); time.sleep(1.2)
+        try:
+            tipp_text("Suchen", sek=4, w=1.2)
+            break
+        except Stopp:
+            if versuch:
+                raise
     K.text("TikTok"); time.sleep(1); K.taste("return"); time.sleep(4)
     if seh.finde("Siri-Vorschl"):     # Tippen ging daneben → TikTok-Symbol in den Vorschlägen
         x, y = warte("TikTok", 4, genau=True); tipp(x, y - 25, 4)
+
+
+def tiktok_profil():
+    # TikTok schon offen (z. B. nach „Zahlen“ auf der Daten-Seite)? → nur zurück zum Profil, nicht neu starten (Artur 21.11.2026)
+    tx = seh.lesen()
+    if not any(seh.finde(w, tx) for w in TIKTOK_SEITEN):
+        tiktok_oeffnen()
+    unbekannt = 0
     for i in range(12):
         tx = seh.lesen()
+        if captcha_abwarten(tx):
+            continue
+        r = seh.finde("Tippe, um es erneut", tx) or seh.finde("Fehler beim Laden", tx)
+        if r:                             # Ladefehler auf dem Profil → antippen lädt neu
+            tipp(*r, 2.5); continue
         g = gesperrt(tx)
         if g:
             raise Stopp(f"Post-/Story-Bildschirm offen („{g}“) – tippe nichts, Artur schaut")
         # Eigenes Profil = „Gefolgt“ ohne „Nachricht“ (fremde Profile haben „Nachricht“); hier NIE oben links tippen (Stift = Story)
-        if seh.finde("Gefolgt", tx) and not seh.finde("Nachricht", tx):
+        # „Für dich“ ganz oben = Feed, dort steht auch ein Reiter „Gefolgt“ (iPhone 15, 21.11.2026). Nur oben prüfen:
+        # artur.official hat „für dich“ in der Bio → sonst endlos im Profil hochgezogen
+        if seh.finde("Gefolgt", tx) and not seh.finde("Nachricht", tx) and not seh.finde("Für dich", tx, ueber=110):
             return
         q = next((seh.finde(w, tx, genau=True) for w in POPUP if seh.finde(w, tx, genau=True)), None)
         if q:
@@ -104,7 +153,7 @@ def tiktok_profil():
         elif seh.finde("Profil", tx, genau=True, unter=650):
             tipp(*seh.finde("Profil", tx, genau=True, unter=650), 2)      # untere Leiste mit Beschriftung (z. B. iPhone 15)
             K.ziehe(167, 250, 167, 650, 0.3); time.sleep(1.5)            # Profil nach oben scrollen
-        elif seh.finde("Posteingang", tx, genau=True) or seh.finde("Für dich", tx):
+        elif seh.finde("Posteingang", tx, genau=True) or seh.finde("Für dich", tx, ueber=110):
             tipp(299, 681, 2.5)       # Hauptseite mit unterer Leiste → Profil-Reiter (nur hier, sonst trifft der Tipp Inhalte)
         elif seh.finde("Exportverlauf", tx):
             tipp(310, 129, 1.5)       # Download-Blatt zu
@@ -112,15 +161,29 @@ def tiktok_profil():
                                               "Schlüsseldaten", "Monetarisierung", "Partnerbestellungen",
                                               "TikTok Shop Toolkit", "Letzte 7 Tage", "Gelegenheiten für Creator")):
             tipp(22, 58, 2.5)         # bekannte Shop-/Studio-Seiten: oben links ist X bzw. Pfeil zurück (kein Profil → kein Story-Stift)
-        else:
+        elif seh.finde("Suchen", tx, unter=600) and not seh.finde("Profil", tx):
+            tiktok_oeffnen()          # iPhone-Home-Bildschirm (Such-Feld unten) → TikTok öffnen statt wischen
+        elif unbekannt < 2:
+            unbekannt += 1
             K.ziehe(2, 380, 260, 380, 0.3); time.sleep(2)   # Zurück-Wischgeste vom linken Rand (kein Tipp → trifft keinen Knopf)
+            continue
+        else:   # 2× zurück half nicht → wohl gar nicht in TikTok (Home/Widgets, Artur 21.11.: „wischt die ganze Zeit nach links“)
+            tiktok_oeffnen()
+        unbekannt = 0
     raise Stopp("eigenes Profil nicht gefunden")
 
 
 def konto_wechseln(konto):
-    if not seh.finde("Konto wechseln"):
+    for versuch in range(2):          # Profil lädt manchmal langsam → Name-Tipp geht ins Leere (andrucha 21.11.2026)
+        if seh.finde("Konto wechseln"):
+            break
         konto_liste_oeffnen()
-    warte("Konto wechseln", 6)
+        try:
+            warte("Konto wechseln", 8)
+            break
+        except Stopp:
+            if versuch:
+                raise
     p = seh.finde(konto, genau=True) or seh.aehnlich(konto, schwelle=0.8)   # OCR liest z. B. „andreastastlane“
     if not p:
         raise Stopp(f"Konto „{konto}“ nicht in der Liste")

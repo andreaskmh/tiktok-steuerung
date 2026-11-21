@@ -15,6 +15,7 @@
   python3 werkzeuge/research.py skripte <de|us> [--top 30]      # Transkripte Top je Liste → fremdsprachige in „SKRIPTE <datum>.md“
   python3 werkzeuge/research.py skript <de|us> <nr>             # Transkript (Social1 „Transcribe“) speichern
   python3 werkzeuge/research.py vorbilder [--min 30000]           # Slideshow-Vorbilder (klickguru …) → uebergabe/ausgang/social1-vorbilder.json
+  python3 werkzeuge/research.py seite-sync                     # Kategorie-Korrekturen der Ranglisten-Seite → Videos in die richtige Social1-Liste
   python3 werkzeuge/research.py gemacht-abgleich               # Arturs Listen vs. letzte Momentaufnahme → Erledigtes in gemacht.json
   python3 werkzeuge/research.py messen                         # stündlich (launchd): Seite 1 DE+US protokollieren
   python3 werkzeuge/research.py messung                        # Auswertung: wann aktualisiert Social1?
@@ -357,6 +358,7 @@ def aus_liste_entfernen(liste, ids, paeckchen=20):
     if not lid:
         return 0
     videos = ((s1("getVideoListDetail", lid).get("data") or {}).get("list") or {}).get("videos") or []
+    ORDNER.mkdir(parents=True, exist_ok=True)
     (ORDNER / f"sicherung-{liste}-{time.strftime('%H%M%S')}.json").write_text(json.dumps(videos, ensure_ascii=False, indent=1))
     weg = [v["videoId"] for v in videos if v["videoId"] in set(ids)]
     for i in range(0, len(weg), paeckchen):
@@ -404,6 +406,74 @@ def gemacht_abgleich():
     print(f"FERTIG gemacht-abgleich: {len(artur)} Research-Listen, {len(weg)} neu erledigt, gemacht.json hat {len(gemacht())}")
 
 
+LISTE_JE_ART = {"de": {"BOF": "BOF DE", "SLIDES": "SLIDES DE", "REACTIONS": "Reactions DE"},
+                "us": {"QUALITY": "Quality USA", "SLIDES": "SLIDES USA"}}
+
+
+def seite_sync():
+    """Artur 21.11.: Kategorie-Korrekturen der Ranglisten-Seite auf unsere neuesten Social1-Listen übertragen (Video zieht in die
+    richtige Liste um, erst rein, dann raus). ✓/✕ und Offenes bleiben in Social1 unberührt (filtern lässt ✓/✕ künftig weg).
+    Die Momentaufnahme (artur-listen.json) wird mitgezogen, damit der Umzug beim gemacht-abgleich nicht als „abgehakt“ zählt."""
+    global ORDNER
+    from datetime import datetime
+    korr = seite_kategorie()
+    if not korr:
+        print("FERTIG seite-sync: keine Korrekturen")
+        return
+    aktionen_laden()
+    ls = [l for l in (s1("getVideoLists").get("data") or {}).get("lists") or [] if UNSERE.match(l.get("name", ""))]
+    stand = json.loads(ARTUR_STAND.read_text()) if ARTUR_STAND.exists() else {}
+    umzuege = 0
+    for land, namen in LISTE_JE_ART.items():
+        eigene = [l for l in ls if any(l["name"].startswith(p + " ") for p in namen.values())]
+        if not eigene:
+            continue
+        tag = max(eigene, key=lambda l: datetime.strptime(l["name"][-10:], "%d.%m.%Y"))["name"][-10:]
+        inhalt = {}
+        for p in namen.values():
+            lid = liste_id(f"{p} {tag}", anlegen=False)
+            if lid:
+                inhalt[p] = (lid, ((s1("getVideoListDetail", lid).get("data") or {}).get("list") or {}).get("videos") or [])
+        neu_drin = set()
+        for vid, art in korr.items():
+            ziel = {namen[a] for a in art.split("+") if a in namen}
+            wo = {p: next(v for v in vs if v.get("videoId") == vid) for p, (lid, vs) in inhalt.items() if any(v.get("videoId") == vid for v in vs)}
+            if not wo or set(wo) == ziel:
+                continue                                         # nicht in den neuesten Listen oder schon richtig
+            if not ziel:
+                print(f"{vid}: Kategorie {art} gibt es in {land.upper()} nicht als Liste → übersprungen")
+                continue
+            v = next(iter(wo.values()))
+            paket = {f: v.get(f) for f in ("videoId", "isAd", "description", "handle", "timePosted")}
+            paket["product"] = {f: (v.get("product") or {}).get(f, "") for f in ("productId", "name", "priceDisplay", "imgUrl")}
+            for p in ziel - set(wo):
+                lid = inhalt[p][0] if p in inhalt else liste_id(f"{p} {tag}")
+                r = s1("addVideoToList", lid, paket)
+                if r.get("error") or (isinstance(r.get("data"), dict) and r["data"].get("error")):
+                    print(f"{vid}: Fehler beim Einlegen in {p} {tag} → bleibt, wo es ist: {str(r)[:120]}")
+                    break
+                neu_drin.add(p)
+                if lid in stand and vid not in stand[lid]["videos"]:
+                    stand[lid]["videos"].append(vid)
+                time.sleep(1)
+            else:
+                for p in set(wo) - ziel:
+                    lid = inhalt[p][0]
+                    s1("removeVideosFromList", lid, [vid])
+                    if lid in stand and vid in stand[lid]["videos"]:
+                        stand[lid]["videos"].remove(vid)
+                    time.sleep(1)
+                umzuege += 1
+                print(f"{v.get('product', {}).get('name', vid)[:50]}: {', '.join(sorted(wo))} → {', '.join(sorted(ziel))}")
+        ARTUR_STAND.write_text(json.dumps(stand, ensure_ascii=False))
+        tagordner = PROJ / "uebergabe" / "research" / datetime.strptime(tag, "%d.%m.%Y").date().isoformat()
+        if neu_drin and (tagordner / f"{land}-rangliste.md").exists():
+            ORDNER = tagordner                                   # shortcut: sortieren liest die Rangliste des Listen-Tages über ORDNER
+            for p in sorted(neu_drin):
+                sortieren(land, f"{p} {tag}")
+    print(f"FERTIG seite-sync: {umzuege} Videos in die richtige Social1-Liste umgezogen")
+
+
 def frueher_gespeichert():
     """{video_id: Liste-Art} aller Videos, die an früheren Tagen schon in einer Research-Liste gelandet sind.
     Artur 20.11.2026: nicht Abgehaktes wandert (DE und USA) in die heutige Liste derselben Art."""
@@ -415,6 +485,9 @@ def frueher_gespeichert():
             for v in json.loads(f.read_text()):
                 if v:
                     ids[v] = "BOF+SLIDES" if {ids.get(v), art} == {"BOF", "SLIDES"} else art
+    if ARTUR_STAND.exists():   # 21.11.: nur was noch in einer unserer Listen steht (von Hand Aussortiertes nicht wiederholen)
+        drin = {v for l in json.loads(ARTUR_STAND.read_text()).values() for v in l["videos"]}
+        ids = {v: a for v, a in ids.items() if v in drin}
     return ids
 
 
@@ -1428,6 +1501,9 @@ if __name__ == "__main__":
         sys.exit()
     if a[:1] == ["vorbilder"]:
         mit_neustart(vorbilder, int(a[a.index("--min") + 1]) if "--min" in a else 30000)
+        sys.exit()
+    if a[:1] == ["seite-sync"]:
+        mit_neustart(seite_sync)
         sys.exit()
     if a[:1] == ["gemacht-abgleich"]:
         mit_neustart(gemacht_abgleich)

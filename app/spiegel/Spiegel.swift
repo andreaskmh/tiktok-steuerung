@@ -37,17 +37,72 @@ final class SpiegelNSFenster: NSWindow {
     override func cancelOperation(_ s: Any?) { (delegate as? SpiegelFenster)?.vollbildAus() }   // Esc
 }
 
-/// Liegt über dem Bild: Fenster lässt sich überall ziehen, Rechtsklick öffnet das Menü.
+/// Gerät ▸ Größe und Rechtsklick ▸ Größe: (Titel, Wert); Zahl = Höhe des iPhone-Bildschirms in Punkten
+let GROESSEN: [(String, String)] = [("Gerätegröße", "geraet"), ("Punkt für Punkt", "punkt"), ("Pixel für Pixel", "pixel"),
+                                    ("An Bildschirm anpassen", "fuellen"), ("", ""),
+                                    ("Klein", "420"), ("Mittel", "600"), ("Groß", "800")]
+let GRIFF: CGFloat = 24        // so breit ist der Rand (innen), an dem man die Größe zieht – macOS hat nur ~3 pt
+
+/// Liegt über dem Bild: Fenster lässt sich überall ziehen, am Rand vergrößern/verkleinern, Rechtsklick öffnet das Menü.
 final class Deckel: NSView {
     // Nicht macOS verschieben lassen (dann bekommt die App den Klick nie und bleibt hinten → keine Menüs),
     // sondern Klick selbst nehmen: App nach vorn, dann überall ziehen.
+    static var zieht = false     // gerade Größe ziehen
     override var mouseDownCanMoveWindow: Bool { false }
     override func acceptsFirstMouse(for e: NSEvent?) -> Bool { true }
+
+    /// Welche Ränder unter dem Punkt liegen: (links, rechts, unten, oben)
+    func raender(_ p: NSPoint) -> (Bool, Bool, Bool, Bool) {
+        let g = min(GRIFF, bounds.width / 4)
+        return (p.x < g, p.x > bounds.width - g, p.y < g, p.y > bounds.height - g)
+    }
+
+    override func resetCursorRects() {
+        let g = min(GRIFF, bounds.width / 4), b = bounds
+        addCursorRect(NSRect(x: 0, y: g, width: g, height: b.height - 2 * g), cursor: .resizeLeftRight)
+        addCursorRect(NSRect(x: b.width - g, y: g, width: g, height: b.height - 2 * g), cursor: .resizeLeftRight)
+        addCursorRect(NSRect(x: g, y: 0, width: b.width - 2 * g, height: g), cursor: .resizeUpDown)
+        addCursorRect(NSRect(x: g, y: b.height - g, width: b.width - 2 * g, height: g), cursor: .resizeUpDown)
+        for (x, y, pos) in [(0, 0, "bottomLeft"), (b.width - g, 0, "bottomRight"),
+                            (0, b.height - g, "topLeft"), (b.width - g, b.height - g, "topRight")] as [(CGFloat, CGFloat, String)] {
+            var c = NSCursor.crosshair
+            if #available(macOS 15, *) {
+                let p: NSCursor.FrameResizePosition = pos == "bottomLeft" ? .bottomLeft : pos == "bottomRight" ? .bottomRight
+                    : pos == "topLeft" ? .topLeft : .topRight
+                c = .frameResize(position: p, directions: .all)
+            }
+            addCursorRect(NSRect(x: x, y: y, width: g, height: g), cursor: c)
+        }
+    }
+
     override func mouseDown(with e: NSEvent) {
         NSRunningApplication.current.activate(from: NSWorkspace.shared.frontmostApplication ?? .current, options: [])
         NSApp.activate()
-        window?.makeKeyAndOrderFront(nil)
-        window?.performDrag(with: e)
+        guard let w = window else { return }
+        w.makeKeyAndOrderFront(nil)
+        let (l, r, u, o) = raender(convert(e.locationInWindow, from: nil))
+        if (l || r || u || o) && w.isMovable { groesseZiehen(w, e, l, r, u, o) } else { w.performDrag(with: e) }
+    }
+
+    /// Größe ziehen mit festem Seitenverhältnis; die gegenüberliegende Seite bleibt stehen.
+    func groesseZiehen(_ w: NSWindow, _ e: NSEvent, _ l: Bool, _ r: Bool, _ u: Bool, _ o: Bool) {
+        let start = w.frame, maus = NSEvent.mouseLocation
+        let seite = w.contentAspectRatio.height > 0 ? w.contentAspectRatio.width / w.contentAspectRatio.height
+                                                    : start.width / start.height
+        let maxH = (w.screen ?? NSScreen.main!).visibleFrame.height
+        Deckel.zieht = true
+        defer { Deckel.zieht = false; w.invalidateShadow() }
+        while let ev = w.nextEvent(matching: [.leftMouseDragged, .leftMouseUp]), ev.type == .leftMouseDragged {
+            let dx = NSEvent.mouseLocation.x - maus.x, dy = NSEvent.mouseLocation.y - maus.y
+            let ausBreite = (start.width + (r ? dx : l ? -dx : 0)) / seite
+            let ausHoehe = start.height + (o ? dy : u ? -dy : 0)
+            var h = (l || r) && (u || o) ? max(ausBreite, ausHoehe) : (l || r) ? ausBreite : ausHoehe
+            h = min(max(h, w.minSize.height), maxH)
+            let b = h * seite
+            let x = l ? start.maxX - b : r ? start.minX : start.midX - b / 2
+            let y = u ? start.maxY - h : o ? start.minY : start.midY - h / 2
+            w.setFrame(NSRect(x: x, y: y, width: b, height: h).integral, display: true)
+        }
     }
 }
 
@@ -89,7 +144,7 @@ final class Geraet: NSView {
         CATransaction.begin(); CATransaction.setDisableActions(true)
         vorschau.frame = bildschirm.bounds
         CATransaction.commit()
-        window?.invalidateShadow()
+        if !Deckel.zieht { window?.invalidateShadow() }    // Schatten neu rechnen ist teuer → beim Ziehen erst am Ende
     }
 }
 
@@ -214,8 +269,8 @@ final class Spiegel: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 i.isEnabled = DARSTELLUNG == "rahmen"
             }
             let groesse = untermenue("Größe")
-            for (titel, wert) in [("Gerätegröße", "geraet"), ("Punkt für Punkt", "punkt"), ("Pixel für Pixel", "pixel"),
-                                  ("An Bildschirm anpassen", "fuellen")] {
+            for (titel, wert) in GROESSEN {
+                if titel.isEmpty { groesse.addItem(.separator()); continue }
                 eintrag(groesse, titel, #selector(SpiegelFenster.groesseWaehlen), ziel: f, wert: wert)
             }
             m.addItem(.separator())
@@ -231,12 +286,17 @@ final class Spiegel: NSObject, NSApplicationDelegate, NSMenuDelegate {
             eintrag(m, "Minimieren", #selector(SpiegelFenster.minimieren), ziel: f, taste: "m")
             eintrag(m, "Füllen", #selector(SpiegelFenster.fuellen), ziel: f)
             eintrag(m, "Zentrieren", #selector(SpiegelFenster.zentrieren), ziel: f)
+            let ordnen = untermenue("Alle anordnen")
+            for (titel, reihen) in [("10 Handys (2 × 5)", 0), ("1 Reihe", 1), ("2 Reihen", 2), ("3 Reihen", 3)] {
+                eintrag(ordnen, titel, #selector(anordnen), taste: reihen == 0 ? "a" : "", mod: [.command, .option], wert: reihen)
+            }
             m.addItem(.separator())
             eintrag(m, f?.istVollbild == true ? "Vollbild beenden" : "Vollbild", #selector(SpiegelFenster.vollbild), ziel: f,
                     taste: "f", mod: [.command, .control])
             m.addItem(.separator())
             eintrag(m, "Alle nach vorne bringen", #selector(NSApplication.arrangeInFront), ziel: NSApp)
             eintrag(m, "Schließen", #selector(SpiegelFenster.schliessen), ziel: f, taste: "w")
+            eintrag(m, "Alle schließen", #selector(alleSchliessen))      // ⌥⌘W steht schon unter Ablage
         default: break
         }
     }
@@ -254,6 +314,30 @@ final class Spiegel: NSObject, NSApplicationDelegate, NSMenuDelegate {
         speicher.set(s.representedObject as? String, forKey: "farbe")
         fenster.forEach { $0.geraet.needsLayout = true }
     }
+    /// Fenster ▸ Alle anordnen: festes Raster über den ganzen Bildschirm, der Reihe nach (Fenster 1, 2, …).
+    /// Automatisch = 10 Plätze (oben 5, unten 5); mehr Fenster → mehr Spalten. Spalten verteilen sich über die volle Breite.
+    @objc func anordnen(_ s: NSMenuItem) {
+        let liste = fenster.filter { !$0.istVollbild }.sorted { $0.nr < $1.nr }    // minimierte kommen mit zurück
+        guard !liste.isEmpty, let schirm = vorderstes?.fenster.screen ?? NSScreen.main else { return }
+        let v = schirm.visibleFrame, luft: CGFloat = 6, n = liste.count
+        let seite = liste.map { $0.geraetGroesse.width / $0.geraetGroesse.height }.max()!
+        let wunsch = s.representedObject as? Int ?? 0
+        let reihen = wunsch > 0 ? wunsch : 2
+        let spalten = max((max(n, wunsch > 0 ? 1 : 10) + reihen - 1) / reihen, 1)
+        let breite = v.width / CGFloat(spalten)                           // Spalte inkl. Abstand
+        let h = min((v.height - luft * CGFloat(reihen + 1)) / CGFloat(reihen), (breite - luft) / seite).rounded(.down)
+        let zelle = (h * seite).rounded(.down)
+        let rest = (v.height - CGFloat(reihen) * h) / CGFloat(reihen + 1) // gleicher Abstand oben, zwischen, unten
+        for (i, f) in liste.enumerated() {
+            let r = i / spalten, c = i % spalten
+            let x = v.minX + breite * (CGFloat(c) + 0.5) - zelle / 2
+            let y = v.maxY - CGFloat(r + 1) * (h + rest)
+            let b = (h * f.geraetGroesse.width / f.geraetGroesse.height).rounded()
+            f.fenster.deminiaturize(nil)
+            f.rahmenSetzen(NSRect(x: (x + (zelle - b) / 2).rounded(), y: y.rounded(), width: b, height: h))
+        }
+    }
+
     @objc func alleSchliessen() { NSApp.terminate(nil) }    // wie Mirror My Phone: alle zu = App zu; Fenster kommen beim Start wieder
 
     // Letztes Fenster zu = App zu; Klick aufs Dock-Symbol holt minimierte Fenster zurück.
@@ -459,6 +543,7 @@ final class SpiegelFenster: NSObject, NSWindowDelegate, NSMenuDelegate {
             let id = schirm.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? CGDirectDisplayID ?? CGMainDisplayID()
             let schirmMm = CGDisplayScreenSize(id).height
             groesse(hoehe: schirmMm > 0 ? mm * schirm.frame.height / schirmMm : pixel.height / skala)
+        case let w? where Double(w) != nil: groesse(hoehe: CGFloat(Double(w)!))   // Klein/Mittel/Groß
         default: fuellen()
         }
     }
@@ -472,7 +557,16 @@ final class SpiegelFenster: NSObject, NSWindowDelegate, NSMenuDelegate {
         let mitte = NSPoint(x: f.midX, y: f.maxY)
         f.size = NSSize(width: (h * g.width / g.height).rounded(), height: h.rounded())
         f.origin = NSPoint(x: mitte.x - f.width / 2, y: mitte.y - f.height)
-        fenster.setFrame(f, display: true, animate: true)
+        rahmenSetzen(f)
+    }
+
+    /// Weich animiert (macOS' eigenes animate: ist linear, je nach Strecke lang und ruckelt)
+    func rahmenSetzen(_ f: NSRect) {
+        NSAnimationContext.runAnimationGroup { k in
+            k.duration = 0.22
+            k.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            fenster.animator().setFrame(f, display: true)
+        }
     }
 
     @objc func vollbild() {
@@ -592,10 +686,20 @@ final class SpiegelFenster: NSObject, NSWindowDelegate, NSMenuDelegate {
         let vorne = m.addItem(withTitle: "Im Vordergrund fixieren", action: #selector(Spiegel.vordergrundUmschalten), keyEquivalent: "")
         vorne.target = app; vorne.state = app.ebene == "vorne" ? .on : .off
         m.addItem(withTitle: "Neues Gerät", action: #selector(Spiegel.neuesFenster), keyEquivalent: "").target = app
+        let ordnen = m.addItem(withTitle: "Alle anordnen", action: #selector(Spiegel.anordnen), keyEquivalent: "")
+        ordnen.target = app; ordnen.representedObject = 0
         m.addItem(.separator())
+        let g = NSMenu()
+        m.addItem(withTitle: "Größe", action: nil, keyEquivalent: "").submenu = g
+        for (titel, wert) in GROESSEN {
+            if titel.isEmpty { g.addItem(.separator()); continue }
+            let i = g.addItem(withTitle: titel, action: #selector(groesseWaehlen), keyEquivalent: "")
+            i.target = self; i.representedObject = wert
+        }
         for (titel, aktion) in [("Vollbild", #selector(vollbild)), ("Minimieren", #selector(minimieren)), ("Schließen", #selector(schliessen))] {
             m.addItem(withTitle: titel, action: aktion, keyEquivalent: "").target = self
         }
+        m.addItem(withTitle: "Alle schließen", action: #selector(Spiegel.alleSchliessen), keyEquivalent: "").target = app
     }
 }
 

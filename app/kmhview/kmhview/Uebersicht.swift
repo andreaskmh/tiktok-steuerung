@@ -192,12 +192,29 @@ struct Aktualisieren: View {
                 }
                 if let g = s.auftragGesendet, wartet {
                     TimelineView(.periodic(from: .now, by: 5)) { ctx in
-                        Text(ctx.date.timeIntervalSince(g) > 90 ? "Mac antwortet nicht – ist er an und der Dienst gestartet?" : "Auftrag gesendet – wartet auf den Mac …")
-                            .font(.caption).foregroundStyle(ctx.date.timeIntervalSince(g) > 90 ? Color.warn : .secondary)
+                        HStack {
+                            Text(ctx.date.timeIntervalSince(g) > 90 ? "Mac antwortet nicht – ist er an und statsKMH dort offen?" : "Auftrag gesendet – wartet auf den Mac …")
+                                .font(.caption).foregroundStyle(ctx.date.timeIntervalSince(g) > 90 ? Color.warn : .secondary)
+                            Spacer()
+                            if ctx.date.timeIntervalSince(g) > 90 {
+                                Button("Erneut senden") { s.auftrag(s.auftragArt, udid: handy) }
+                                    .font(.caption.weight(.semibold)).buttonStyle(.plain).foregroundStyle(Color.akzent)
+                                Button("Verwerfen") { s.auftragGesendet = nil }
+                                    .font(.caption).buttonStyle(.plain).foregroundStyle(.secondary)
+                            }
+                        }
                     }
                 }
                 if let f = st?.fehler, !f.isEmpty, Date().timeIntervalSince(datum(st?.ende)) < 6 * 3600 {
                     ForEach(f.reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } }.prefix(3), id: \.self) { Text($0).font(.caption2).foregroundStyle(Color.warn).lineLimit(2) }
+                    if !wartet {   // statt nur Fehler zu zeigen: denselben Lauf direkt neu starten (Artur 21.11.)
+                        let art = st?.art == "voll" ? "voll" : "schnell"
+                        Button { frage = (art, art == "voll" ? "Voll" : "Schnell", st?.schaetzung?[art] ?? 12 * 60) } label: {
+                            Label("Nochmal starten", systemImage: "arrow.clockwise").font(.subheadline.weight(.semibold))
+                                .frame(maxWidth: .infinity).padding(.vertical, 8)
+                        }
+                        .buttonStyle(.plain).background(Color.warn.opacity(0.14), in: Capsule()).foregroundStyle(Color.warn)
+                    }
                 }
                 #if os(iOS)
                 if !s.hatOrdner { Text("Erst oben rechts (Wolke) den iCloud-Ordner „statsKMH“ wählen.").font(.caption).foregroundStyle(Color.warn) }

@@ -220,6 +220,7 @@ final class Speicher: ObservableObject {
     // MARK: Aktualisieren auf Knopfdruck (Mac-Dienst werkzeuge/analyse/aktualisieren.py liest auftrag.json, schreibt status.json)
     @Published var status: AufStatus?
     @Published var auftragGesendet: Date?
+    var auftragArt = "schnell"
     @Published var geraete: [Handy] = []
 
     /// Arbeit im iCloud-Ordner statsKMH (Mac: fester Pfad, iPhone: gewählter Ordner)
@@ -245,7 +246,7 @@ final class Speicher: ObservableObject {
             }
             return geschrieben
         }
-        if ok == true { if art != "stopp" { auftragGesendet = Date() } } else { fehler = "Auftrag nicht gespeichert – iCloud-Ordner wählen" }
+        if ok == true { if art != "stopp" { auftragGesendet = Date(); auftragArt = art } } else { fehler = "Auftrag nicht gespeichert – iCloud-Ordner wählen" }
     }
 
     #if os(macOS)
@@ -356,7 +357,9 @@ final class Speicher: ObservableObject {
             if n.laeuft, let j = n.jetzt.flatMap({ f.date(from: $0) }), Date().timeIntervalSince(j) > 900 {
                 n.laeuft = false; n.schritt = "abgebrochen (keine Meldung mehr vom Mac)"   // z. B. Mac-App beendet
             }
-            if n.laeuft, auftragGesendet != nil { auftragGesendet = nil }
+            if let g = auftragGesendet, n.laeuft || (n.start.flatMap { f.date(from: $0) }.map { $0 > g.addingTimeInterval(-60) } ?? false) {
+                auftragGesendet = nil   // Mac hat den Auftrag angenommen – auch wenn der Lauf schon vorbei ist, bevor die App ihn sieht
+            }
             if warLaufend && !n.laeuft { laden() }                // fertig → neue Zahlen laden
             if n != status { status = n }   // nur bei Änderung neu zeichnen (sonst ruckelt alles alle 4 s)
         }

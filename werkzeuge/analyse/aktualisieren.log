@@ -79,3 +79,27 @@
 2026-11-21 07:24:08 STOPP anduri.official: eigenes Profil nicht gefunden
 2026-11-21 07:24:08   roh: STOPP anduri.official: eigenes Profil nicht gefunden (Foto /tmp/export-stopp-anduri.official.png)
 2026-11-21 07:25:20 Abgebrochen schnell nach 358 s
+2026-11-21 07:44:34 Start schnell: 6 Accounts
+2026-11-21 07:45:10 Ende schnell: 37 s, Fehler: ['anduri.official: Handy nicht erreichbar (entsperrt, am Kabel/WLAN?)', 'ella_robinson2: Handy nicht erreichbar (entsperrt, am Kabel/WLAN?)', 'artur.official: Handy nicht erreichbar (entsperrt, am Kabel/WLAN?)', 'andreasfastlane: Handy nicht erreichbar (entsperrt, am Kabel/WLAN?)', 'andreas.testet: Handy nicht erreichbar (entsperrt, am Kabel/WLAN?)', 'andrucha.official: Handy nicht erreichbar (entsperrt, am Kabel/WLAN?)']
+2026-11-21 07:49:09 Start schnell: 6 Accounts
+2026-11-21 07:51:16 STOPP anduri.official: „Konto wechseln“ nicht gefunden
+2026-11-21 07:51:16   roh: STOPP anduri.official: „Konto wechseln“ nicht gefunden (Foto /tmp/daten-stopp-anduri.official.png)
+2026-11-21 07:51:39 STOPP anduri.official: „Konto wechseln“ nicht gefunden
+2026-11-21 07:51:39   roh: STOPP anduri.official: „Konto wechseln“ nicht gefunden (Foto /tmp/export-stopp-anduri.official.png)
+2026-11-21 07:52:07 Abgebrochen schnell nach 177 s
+2026-11-21 08:01:03 Start schnell: 6 Accounts
+2026-11-21 08:01:04 Ende schnell: 1 s, Fehler: ['anduri.official: Handy nicht erreichbar (entsperrt, am Kabel/WLAN?)', 'ella_robinson2: Handy nicht erreichbar (entsperrt, am Kabel/WLAN?)', 'artur.official: Handy nicht erreichbar (entsperrt, am Kabel/WLAN?)', 'andreasfastlane: Handy nicht erreichbar (entsperrt, am Kabel/WLAN?)', 'andreas.testet: Handy nicht erreichbar (entsperrt, am Kabel/WLAN?)', 'andrucha.official: Handy nicht erreichbar (entsperrt, am Kabel/WLAN?)']
+2026-11-21 08:17:10 Start schnell: 6 Accounts
+2026-11-21 08:24:13 STOPP artur.official: eigenes Profil nicht gefunden
+2026-11-21 08:24:13   roh: STOPP artur.official: eigenes Profil nicht gefunden (Foto /tmp/export-stopp-artur.official.png)
+2026-11-21 08:26:44 STOPP andreasfastlane: eigenes Profil nicht gefunden
+2026-11-21 08:26:44   roh: STOPP andreasfastlane: eigenes Profil nicht gefunden (Foto /tmp/daten-stopp-andreasfastlane.png)
+2026-11-21 08:30:25 STOPP andrucha.official: „Konto wechseln“ nicht gefunden
+2026-11-21 08:30:25   roh: STOPP andrucha.official: „Konto wechseln“ nicht gefunden (Foto /tmp/export-stopp-andrucha.official.png)
+2026-11-21 08:30:25 Ende schnell: 795 s, Fehler: ['STOPP artur.official: eigenes Profil nicht gefunden', 'STOPP andreasfastlane: eigenes Profil nicht gefunden', 'STOPP andrucha.official: „Konto wechseln“ nicht gefunden']
+2026-11-21 08:34:44 Start schnell: 6 Accounts
+2026-11-21 08:36:14 STOPP anduri.official: „Konto wechseln“ nicht gefunden
+2026-11-21 08:36:14   roh: STOPP anduri.official: „Konto wechseln“ nicht gefunden (Foto /tmp/daten-stopp-anduri.official.png)
+2026-11-21 08:36:42 STOPP anduri.official: „Konto wechseln“ nicht gefunden
+2026-11-21 08:36:42   roh: STOPP anduri.official: „Konto wechseln“ nicht gefunden (Foto /tmp/export-stopp-anduri.official.png)
+2026-11-21 08:45:31 Ende schnell: 647 s, Fehler: ['STOPP anduri.official: „Konto wechseln“ nicht gefunden', 'STOPP anduri.official: „Konto wechseln“ nicht gefunden']

@@ -198,8 +198,14 @@
 "video_gmv": 0.0
 },
 "2026-11-20": {
-"ansichten": 17.0,
-"gelesen": "2026-11-20 06:58",
+"gelesen": "2026-11-21 08:44",
+"gmv": 0.0,
+"provision": 0.0,
+"video_gmv": 0.0
+},
+"2026-11-21": {
+"ansichten": 5.0,
+"gelesen": "2026-11-21 08:44",
 "gmv": 0.0,
 "provision": 0.0,
 "unvollstaendig": true,

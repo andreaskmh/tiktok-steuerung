@@ -627,3 +627,40 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - 21.11.2026 Ranglisten-Seite: Kategorie-Feld bleibt bei ✓/✕-Zeilen voll sichtbar (nur Name/Rest blass). Neu: Video 0,4 s lange drücken und in eine
   andere Karte ziehen = Kategorie ändern (Pointer-Events, kein HTML5-Drag, damit es im iPhone/WKWebView geht; vorher bewegen = normales Scrollen).
 - statsKMH Research: Videos lassen sich per langem Drücken in eine andere Karte ziehen (Seite: Research-Session). In der App gibt es dafür keine Link-Vorschau beim langen Drücken (allowsLinkPreview=false). Die gezogene Zeile und die Zielkarte sind schlicht weiß hervorgehoben.
+- **21.11.2026** – iPhone Mirroring: Größe ziehen geht jetzt an einem 24 pt breiten Rand innen am Gerät (vorher nur ~3 pt
+  von macOS), mit passendem Zeiger, das Seitenverhältnis bleibt fest. Rechtsklick ▸ Größe (auch Gerät ▸ Größe): Gerätegröße,
+  Punkt/Pixel für Pixel, An Bildschirm anpassen sowie die Vorlagen Klein/Mittel/Groß (420/600/800 pt hohe iPhone-Anzeige).
+- 21.11.2026 research.py `seite-sync`: Kategorie-Korrekturen der Ranglisten-Seite → Video zieht in unseren neuesten Social1-Listen in die richtige Liste
+  (erst rein, dann raus, danach Zielliste in Ranglisten-Reihenfolge sortieren); Momentaufnahme artur-listen.json wird mitgezogen, damit der Umzug
+  nicht als „abgehakt“ zählt. ✓/✕/Offen bleiben in Social1 unberührt (filtern regelt künftige Listen). Läuft ab jetzt bei jeder Research zuerst (Artur: „immer so machen“).
+- **21.11.2026** – iPhone Mirroring: Größenwechsel (Klein/Mittel/Groß usw.) weich animiert (0,22 s, Ease-in-out statt macOS-Linear);
+  beim Größe-Ziehen wird der Schatten erst am Ende neu berechnet (ruckelt weniger). Neu: Fenster ▸ Alle anordnen
+  (Automatisch ⌥⌘A, 1/2/3 Reihen, auch im Rechtsklick): alle iPhones gleich hoch der Reihe nach über den Bildschirm,
+  Automatisch wählt die Reihenzahl mit den größten iPhones (12 auf dem MacBook → 2 × 6), letzte Reihe mittig.
+- **21.11.2026** – iPhone Mirroring ▸ Alle anordnen: festes Raster „10 Handys (2 × 5)“ (⌥⌘A) über den ganzen Bildschirm,
+  Spalten gleichmäßig über die volle Breite, gleicher Abstand oben/zwischen/unten (mind. 24 pt); minimierte Fenster kommen mit.
+  Mehr als 10 Fenster → mehr Spalten. 1/2/3 Reihen nutzen dieselbe Verteilung.
+
+## 21.11.2026 – Daten auslesen hing im „Für dich“-Feed (iPhone 15)
+- Was: `export_holen.tiktok_profil` hielt den Feed fürs eigene Profil, weil oben der Reiter „Gefolgt“ steht und kein „Nachricht“ zu sehen ist. Danach suchte es „Konto wechseln“ und brach jedes Konto ab. Jetzt gilt als Profil nur noch, was „Gefolgt“ zeigt, aber weder „Nachricht“ noch „Für dich“. Im Feed tippt das Skript also unten auf „Profil“.
+- Warum: Artur meldete, das Auslesen schaue nur Videos (Christian Wolf) an. Der laufende Lauf wurde mit dem neuen Abbrechen gestoppt.
+- **21.11.2026** – iPhone Mirroring: Anordnen nutzt die Höhe voll aus (Abstand oben/zwischen/unten 6 pt statt 24 pt →
+  Handys 214 × 442 statt 201 × 415 auf dem MacBook). „Alle schließen“ jetzt auch im Rechtsklick und unter Fenster (⌥⌘W unter Ablage).
+- **21.11.2026** – iPhone Mirroring: neues, moderneres App-Symbol (Blau-Violett-Verlauf mit Glanz, weißes iPhone mit
+  Farbverlauf-Bildschirm und Dynamic Island, dahinter sein durchscheinendes Spiegelbild). Gezeichnet in `app/spiegel/icon.swift`.
+- 21.11.2026: Lauf endete nach 1 s mit „Handy nicht erreichbar“, weil das frisch angemeldete iPhone 15 noch kein Bild hatte. `erreichbar()` wartet jetzt bis zu 60 s auf das erste Bild.
+- Die App zeigte „Mac antwortet nicht“, obwohl der Mac den Auftrag angenommen hatte, weil der Lauf vorbei war, bevor die App ihn sah. Jetzt zählt auch ein Laufbeginn nach dem Absenden als Antwort. Neue Knöpfe: „Nochmal starten“ unter Fehlermeldungen sowie „Erneut senden“ und „Verwerfen“, wenn der Mac nicht antwortet (Artur: neu starten statt ausgegraut).
+- **21.11.2026** – iPhone Mirroring: Symbol auf Grautöne umgestellt (Graphit-Verlauf, silbernes iPhone, dunkler Bildschirm),
+  passend zu Arturs Space-Grau-Setup; die bunte Version davor gefiel nicht.
+- **21.11.2026** – iPhone Mirroring: Symbol-Hintergrund fast schwarz mit feinem hellem Rand, wie das Claude-Symbol in Arturs
+  Graphit-Look (Darstellung „Getönt“, Farbe Graphit).
+- **21.11.2026** – iPhone Mirroring: Symbol ist jetzt ein echtes Icon-Composer-Symbol (`bauen.sh` erzeugt `AppIcon.icon`,
+  `actool` → `Assets.car`, `CFBundleIconName`). Nur so zeigt macOS es im Getönt-/Graphit-Look dunkel wie Claude; ein reines
+  `.icns` landet in einer hellgrauen Kachel. Zeichen: zwei iPhone-Umrisse (vorne hell, Spiegelbild dahinter blasser).
+  `bauen.sh` signiert erst in /Applications (iCloud hängt im Build-Ordner FinderInfo an → codesign brach ab).
+- 21.11.2026 (2): artur.official hat in der Bio „für dich“ stehen, deshalb hielt das Skript sein Profil für den Feed und zog endlos hoch. „Für dich“ zählt jetzt nur noch ganz oben (y<110) als Feed. Außerdem startet `tiktok_profil` TikTok nicht mehr neu, wenn TikTok schon offen ist (zum Beispiel nach „Zahlen“ auf der Daten-Seite), sondern geht nur zurück zum Profil. Das macht den Übergang Zahlen → Guthaben kürzer (Artur: „extrem umständlich“).
+- 21.11.2026 (3): Bei „Fehler beim Laden. Tippe, um es erneut zu versuchen“ tippt das Skript jetzt darauf. Das gilt in `warte()` (alle Shop-Seiten) und auf dem Profil (Artur: „Warum tippt er nicht?“). `konto_wechseln` versucht das Öffnen der Kontoliste zweimal mit je 8 s, weil bei andrucha das Profil noch lud und der Tipp ins Leere ging.
+- 21.11.2026 (4): Erscheint ein Captcha („Verifiziere, um fortzufahren“ / Puzzleteil), wartet das Auslesen bis zu 3 Min., bis Artur es gelöst hat, und macht dann weiter. Das Skript löst es nie selbst. Vorher brach der Account ab, so bei anduri.official im Testlauf. Testlauf Schnell iPhone 15: 5 von 6 Accounts ok in 647 s, Ausfall nur anduri.official wegen Captcha.
+- 21.11.2026 (5): `tiktok_oeffnen()` drückt zweimal Home, bis „Suchen“ zu sehen ist, und versucht es zweimal. In `tiktok_profil` öffnet der Home-Bildschirm TikTok direkt, und nach 2× erfolglosem Zurück-Wischen wird TikTok neu geöffnet statt endlos weiterzuwischen (Artur: „wischt die ganze Zeit nach links“, Handy landete auf der Widget-Seite). anduri.official danach erfolgreich nachgeholt.
+- 21.11.2026 research.py: `aus_liste_entfernen` legt den Tagesordner an, bevor die Sicherung geschrieben wird (gemacht-abgleich brach im ersten Lauf des Tages mit FileNotFoundError ab).
+- 21.11.2026 research.py `frueher_gespeichert` (Übernahme früherer Tage): nur Videos, die laut Momentaufnahme (artur-listen.json) noch in einer unserer Listen stehen. Grund: gespeichert-Quality USA 19.11. hatte 249 Videos, die Liste wurde am 19.11. von Hand auf 59 gekürzt – ohne Fix wären 127 aussortierte Quality-Videos wiedergekommen (DE: 1 Video im Bereich bis Seite 50, LYORA Ermis, nachträglich aus BOF DE 21.11. genommen).
