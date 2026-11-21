@@ -81,7 +81,9 @@ struct WebSeite: WebBasis {
         }
     }
     func neu(_ c: Context) -> WKWebView {
-        let w = WKWebView(); w.navigationDelegate = c.coordinator
+        let k = WKWebViewConfiguration()
+        k.userContentController.addUserScript(WKUserScript(source: ranglistenAussehen, injectionTime: .atDocumentEnd, forMainFrameOnly: true))
+        let w = WKWebView(frame: .zero, configuration: k); w.navigationDelegate = c.coordinator
         #if os(iOS)
         w.isOpaque = false; w.backgroundColor = .clear
         #endif
@@ -96,3 +98,45 @@ struct WebSeite: WebBasis {
     func updateNSView(_ v: WKWebView, context: Context) {}
     #endif
 }
+
+/// Nur in der App: eigenes Aussehen über die Ranglisten-Seite legen (Seite/Server bleiben unverändert, Artur 21.11.).
+/// Zeichen-Icons (▶ ☺ ▤ ★, 🌐 🎵, ✓) → saubere Vektor-Symbole in Verlaufskreisen wie in „Statistik“, Today/Yesterday → Heute/Gestern.
+let ranglistenAussehen = #"""
+(() => {
+  const css = `
+  .ic{width:30px!important;height:30px!important;background-image:linear-gradient(180deg,rgba(255,255,255,.30),rgba(255,255,255,0) 60%,rgba(0,0,0,.10))!important;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+  .ic svg{width:15px;height:15px;display:block}
+  .kt b{font-weight:700!important;letter-spacing:-.01em}
+  .hk{width:24px!important;height:24px!important;border-width:1.5px!important;border-color:rgba(255,255,255,.22)!important}
+  .hk[aria-pressed="true"]{font-size:0!important;background:var(--gruen) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4L18.5 8' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/15px no-repeat!important}
+  .chip{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.08)!important;color:var(--mut)!important;font-weight:600!important}
+  .chip.skript{color:var(--gelb)!important;background:rgba(255,210,63,.12)!important}
+  .chip svg{width:11px;height:11px;flex:none}
+  .alt{font-weight:600}
+  details summary{list-style:none}details summary::-webkit-details-marker{display:none}
+  details summary::before{content:"";display:inline-block;width:0;height:0;border-left:6px solid currentColor;border-top:4px solid transparent;border-bottom:4px solid transparent;margin-right:7px;transition:transform .15s}
+  details[open] summary::before{transform:rotate(90deg)}`;
+  const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
+  const w = 'xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"';
+  const SYM = {
+    "▶": `<svg ${w} fill="#fff"><path d="M8 5.6v12.8c0 .8.9 1.3 1.6.9l10.2-6.4c.6-.4.6-1.3 0-1.7L9.6 4.8C8.9 4.3 8 4.8 8 5.6z"/></svg>`,
+    "☺": `<svg ${w} fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round"><circle cx="12" cy="12" r="8.3"/><path d="M8.6 14a4.3 4.3 0 0 0 6.8 0"/><path d="M9.3 9.6v.4M14.7 9.6v.4" stroke-width="2.8"/></svg>`,
+    "▤": `<svg ${w} fill="#fff"><rect x="3.5" y="7.5" width="12.5" height="13" rx="2.6"/><path d="M8 4.5h9.5a3 3 0 0 1 3 3V17" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>`,
+    "★": `<svg ${w} fill="#fff"><path d="M12 3.6l2.5 5.2 5.7.8-4.1 4 1 5.7L12 16.6l-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/></svg>`
+  };
+  const KLEIN = {
+    "🌐": `<svg ${w} fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.6 2.6 2.6 14.4 0 17M12 3.5c-2.6 2.6-2.6 14.4 0 17"/></svg>`,
+    "🎵": `<svg ${w} fill="currentColor"><path d="M9 17.5V6.6l10-2.1v10.9" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="6.6" cy="17.6" r="2.6"/><circle cx="16.6" cy="15.4" r="2.6"/></svg>`
+  };
+  const ALT = { Today: "Heute", Yesterday: "Gestern" };
+  function fix() {
+    document.querySelectorAll(".ic:not([data-k])").forEach(e => { const s = SYM[e.textContent.trim()]; if (s) e.innerHTML = s; e.dataset.k = 1; });
+    document.querySelectorAll(".chip:not([data-k])").forEach(c => {
+      c.dataset.k = 1;
+      for (const [z, s] of Object.entries(KLEIN)) if (c.textContent.includes(z)) { c.innerHTML = s + c.innerHTML.replace(z, "").trim(); c.classList.add("skript"); }
+    });
+    document.querySelectorAll(".alt").forEach(a => { const t = ALT[a.textContent.trim()]; if (t) a.textContent = t; });
+  }
+  fix(); new MutationObserver(fix).observe(document.body, { childList: true, subtree: true });
+})();
+"""#
