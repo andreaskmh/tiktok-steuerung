@@ -87,6 +87,7 @@ struct WebSeite: WebBasis {
         let w = WKWebView(frame: .zero, configuration: k); w.navigationDelegate = c.coordinator
         #if os(iOS)
         w.isOpaque = false; w.backgroundColor = .clear; w.scrollView.backgroundColor = .clear
+        w.allowsLinkPreview = false   // langes Drücken = Video in andere Karte ziehen, keine Link-Vorschau
         #else
         w.setValue(false, forKey: "drawsBackground")
         #endif
@@ -119,6 +120,8 @@ let ranglistenAussehen = #"""
   .chip svg{width:11px;height:11px;flex:none}
   .kat{background-color:rgba(255,255,255,.08)!important;color:var(--mut)!important;font-weight:600!important;border:0!important}
   .kat.geaendert{background-color:rgba(255,210,63,.12)!important;color:var(--gelb)!important}
+  .z.zieht{background:rgba(255,255,255,.14)!important;border-radius:14px}
+  .karte.ziel{box-shadow:inset 0 0 0 2px rgba(255,255,255,.7)!important}
   .alt{font-weight:600}
   html,body{background:transparent!important}
   body{padding-bottom:120px!important}

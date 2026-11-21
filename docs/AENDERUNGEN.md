@@ -626,3 +626,4 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - statsKMH Research: Die Kategorie-Auswahl der Seite (`select.kat`, von der Research-Session) sieht in der App aus wie die übrigen Chips, also grau. Eine von Hand geänderte Kategorie (`.geaendert`) ist gelb.
 - 21.11.2026 Ranglisten-Seite: Kategorie-Feld bleibt bei ✓/✕-Zeilen voll sichtbar (nur Name/Rest blass). Neu: Video 0,4 s lange drücken und in eine
   andere Karte ziehen = Kategorie ändern (Pointer-Events, kein HTML5-Drag, damit es im iPhone/WKWebView geht; vorher bewegen = normales Scrollen).
+- statsKMH Research: Videos lassen sich per langem Drücken in eine andere Karte ziehen (Seite: Research-Session). In der App gibt es dafür keine Link-Vorschau beim langen Drücken (allowsLinkPreview=false). Die gezogene Zeile und die Zielkarte sind schlicht weiß hervorgehoben.
