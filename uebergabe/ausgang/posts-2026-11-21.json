@@ -77,12 +77,23 @@
    "entwurf": false,
    "dauer_s": 109,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "16:06",
+   "account": "andreas.testet",
+   "datei": "Video 151 - 26 Ariel Waschpulver - V1.mp4",
+   "produkt": "Ariel Waschpulver, effektive Reinigung u",
+   "tts_link": "https://shop.tiktok.com/view/product/1729976565388122133",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 109,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "anduri.official": 4,
   "ella_robinson2": 1,
-  "andreas.testet": 1,
+  "andreas.testet": 2,
   "artur.official": 1
  }
 }
