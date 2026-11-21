@@ -839,18 +839,18 @@ def pfeil_x(dunkel, start, luecke=14):
     return (letzte - 3) if letzte is not None else start + 60
 
 
-def konto_unscharf(account, tx):
+def konto_unscharf(account, tx, grenze=300):
     """17.11.2026: OCR liest „andreasfastlane“ als „andreastastlane“ → Kontoname im Wechsel-Blatt mit kleiner Abweichung
     (≥ 0,88 Ähnlichkeit, gleiche Länge ±1) finden; nie zwei Kandidaten. → (x, y) oder None. Reine Funktion."""
     import difflib
-    kand = [(t[1], t[2]) for t in tx if t[2] > 300 and abs(len(t[0].strip()) - len(account)) <= 1
+    kand = [(t[1], t[2]) for t in tx if t[2] > grenze and abs(len(t[0].strip()) - len(account)) <= 1
             and difflib.SequenceMatcher(None, t[0].strip().lower(), account.lower()).ratio() >= 0.88]
     if len(kand) == 1:
         return kand[0]
     # 17.11.2026 (Artur): nur über den Namen, nie nach Position – eindeutiger Namensteil (z. B. „fastlane“, „robinson“)
     teil = {"andreasfastlane": "fastlane", "ella_robinson2": "robinson", "anduri.official": "anduri",
             "artur.official": "artur.", "andreas.testet": "testet"}.get(account)
-    kand = [(t[1], t[2]) for t in tx if t[2] > 300 and teil and teil in t[0].lower()]
+    kand = [(t[1], t[2]) for t in tx if t[2] > grenze and teil and teil in t[0].lower()]
     return kand[0] if len(kand) == 1 else None
 
 
@@ -905,12 +905,14 @@ def konto(account):
     for _ in range(12):                                          # Liste fährt animiert auf → erst tippen, wenn sie ruht
         time.sleep(0.45)
         tx = lesen()
-        z = seh.finde(account, tx, unter=300) or konto_unscharf(account, tx)
+        kw = seh.finde("Konto wechseln", tx)                    # 21.11.2026: mit 6 Konten reicht die Liste über y=300
+        grenze = min(300, kw[1] + 10) if kw else 300            # (anduri oben „fehlte“) → ab dem Blatt-Titel suchen
+        z = seh.finde(account, tx, unter=grenze) or konto_unscharf(account, tx, grenze)
         if z and vorher and abs(z[1] - vorher[1]) < 3:
             break
         vorher, z = z, None
     if not z:                                                    # 21.11.2026: Liste mitloggen (anduri fehlte mehrfach)
-        print("Konto-Liste gelesen:", [t[0] for t in tx if t[2] > 300], flush=True)
+        print("Konto-Liste gelesen:", [(t[0], round(t[2])) for t in tx], flush=True)
     z = muss(z, f"{account} nicht in „Konto wechseln“")
     tipp(z[0], z[1], tx, account, abstand=34)
     for _ in range(12):                                          # 13.11.: während Upload kein Kontowechsel → bestätigen, warten, nochmal
