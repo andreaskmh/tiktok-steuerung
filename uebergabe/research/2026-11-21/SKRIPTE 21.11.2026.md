@@ -835,3 +835,69 @@ https://www.tiktok.com/@kaleyreed_/video/7709585184810650893
 **DEUTSCH:**
 **Hook:** Klar kannst du die Kamera einzeln kaufen, aber rechne mal nach.
 **Skript:** Das Kodak PIXPRO FZ55 Bundle mit 64-GB-Karte, Kartenleser und Tasche. Alles, was du sonst extra kaufen müsstest, ist schon dabei. Die Kamera ist richtig kompakt und hat viele Modi. Die Bilder sehen mega aus. Gerade richtig günstig, unten über den orangenen Button.
+
+<!-- de-658 -->
+## DE SLIDES Nr 658 · 2 days ago · +235.1K Views · Sprache en · WindBoss Gold Shilajit Gummies - 30 Stück Bio-Gummibärchen mit Granata
+https://www.tiktok.com/@shadowluna_twins/video/7709854749075459361
+
+**Original:**
+> I'm in need of one thing and it's running through my brain Let that bitch go, cause she breaking windows I'm saying to Joel, don't do these niggas not have shame Your girl, she a whore, but you show her like she gold Look at how she tree and sun, time don't use a tender month When you call, she do not come, that is not your whore I don't think he knows, what a shame, he's a whore Acting like she likes him for that money He's a flock of flock of all my guys arrive Cause they all shout as shout as if I wanna pop this bottle Then I'ma pop that bottle Lying with a fine ass model, she wanna ride this saddle I can see you don't want battle, your voice it shakes and rattles I'm in need of one thing and it's running through my brain Let that bitch go, cause she breaking windows I'm saying to Joel, don't do these niggas not have shame Your girl, she a whore, but you show her like she gold Why do all these bitches keep on shooting?
+
+**DEUTSCH:** (Original ist nur Musik – Skript frei geschrieben)
+**Hook:** Shilajit, aber als Gummibärchen – endlich ohne den ekligen Geschmack.
+**Skript:** 30 Bio-Gummis mit Shilajit und Granatapfel. Einer am Tag, fertig. Kein Pulver, kein Harz, kein Abwiegen. Schmeckt wie ein normales Fruchtgummi. Gerade im Angebot, unten über den orangenen Button.
+
+<!-- de-499 -->
+## DE BOF+SLIDES Nr 499 · 5 days ago · +36.7K Views · Sprache ro · HOMCOM Weihnachtsmann 120 cm Stehende Singender & Tanzender Weihnachts
+https://www.tiktok.com/@ramonikadulcika3/video/7708709459077434657
+
+**Original:**
+> La vinea, ai să vezi cât e de superb moșul ăsta, are un metru douăzeci, preț e bombiță undeva la vreo cinzeci de euro, dacă aveți cupon de reducere ajunge și la patruzeci și ceva de euro, la prețul ăsta nu-l găsim în magazin niciodată și hai să vezi ce-i place. Start! Îi spui start, el începe ștansează și cântă, deci e superb! Iauși! Și-o iubat din palme și cântă frumos! Deci mi-a plăcut tare mult! Mi-a mai luat unul, apropo, dar alt model și tot de la firma asta!
+
+**DEUTSCH:**
+**Hook:** Schau dir an, wie genial dieser Weihnachtsmann ist – 1,20 Meter groß.
+**Skript:** Der Preis ist eine Bombe, um die 50 Euro, mit Gutschein sogar nur 40 und ein bisschen. So günstig findest du den in keinem Laden. Du sagst „Start“, und er fängt an zu tanzen und zu singen. Klatsch in die Hände, und er singt weiter. Ich fand ihn so gut, dass ich gleich noch einen zweiten gekauft habe. Unten über den orangenen Button.
+
+<!-- us-941 -->
+## US QUALITY Nr 941 · Yesterday · +353.7K Views · Sprache en · Travel Power Strip, ORICO 4 Outlets 3 USB Ports (1 USB C) with 4FT Wra
+https://www.tiktok.com/@jayctech/video/7710283831756066061
+
+**Original:**
+> This is the Christmas gift every mom will actually want and use. And with TikTok already rolling out Black Friday deals, it is a great time to check it out. It is small enough to fit in your suitcase, but you have no idea how useful it is. And I bet you have never seen this. It comes with four AC outlets, three USB ports, and a USB-C port, so you can charge all your devices at the same time. No more fighting over hotel outlets and no more bringing multiple chargers everywhere. Compact design and wrapped four-foot cord make it perfect for travel, hotels, cruises, and work trips. It is honestly one of those travel essentials you don't realize you need until you have it. Grab yours now before it is gone.
+
+**DEUTSCH:**
+**Hook:** Das ist das Weihnachtsgeschenk, das jeder wirklich benutzt.
+**Skript:** Passt in jeden Koffer, aber du glaubst nicht, wie praktisch die ist. Mehrere Steckdosen plus USB und USB-C – du lädst alle Geräte gleichzeitig. Kein Streit mehr um die eine Steckdose im Hotel, keine fünf Ladegeräte mehr. Perfekt für Urlaub, Hotel und Dienstreise. Gerade mit Black-Friday-Rabatt, unten über den orangenen Button.
+
+<!-- us-945 -->
+## US SLIDES Nr 945 · 2 days ago · +301.1K Views · Sprache en · Kids Long Sleeve Pajama Set, Mj Song Lyrics Print, Soft and Comfortabl
+https://www.tiktok.com/@zkwsrqdhgy6/video/7709841918556998926
+
+**Original:**
+> They told them, don't you ever come around here Don't wanna see your face, you better disappear The fires in their eyes and their works are really clear So beat it, just beat it You better run, you better do what you can Don't wanna see no blood, don't be a macho man You wanna be tough, better do what you can So beat it, but you wanna be fair Just beat it, beat it No one wants to beat it, beat it Showin' how funky, strong, destructive, fighter It doesn't matter who's broken right Just beat it, beat it, beat it Just beat it, beat it, beat it Just beat it, beat it, beat it They're right to get you better, leave while you can You wanna be a boy, you wanna be a man You wanna stay alive, better do what you can So beat it, just beat it
+
+**DEUTSCH:** (Original ist nur Musik – Format-Idee: Slideshow mit Songtext-Print; Text frei geschrieben)
+**Hook:** Dieser Schlafanzug ist für alle, deren Kinder nur noch Michael Jackson hören.
+**Skript:** Langarm-Schlafanzug mit Songtext-Print, superweich. Mein Kind will ihn gar nicht mehr ausziehen. Perfekt als Weihnachtsgeschenk. Unten über den orangenen Button.
+
+<!-- us-948 -->
+## US SLIDES Nr 948 · 2 days ago · +267.4K Views · Sprache en · Dickies Classic Bib Overalls,Durable Comfort, Utility Storage, Wide Le
+https://www.tiktok.com/@shop.pluggy/video/7709721792318950687
+
+**Original:**
+> Spent months in the corner, just me and my back I'm used to this, I'm numb to that I know I just gotta adapt, ayy Let's wait on your Spotify rap The messages you about to send on the 16th Please don't hit send on none of that There's no need to check what the temperature is You know what it is if you double back Should've put another blade in my back Should've stood over and double tap Bank, but y'all need a duffel bag What is the offer they said? What did they put on the table? What does that say on that paper? Fuck that, they gotta double that, triple that Fuck is the bitches at? Yo, the chef too Michelin Come to the 6th and we dipping you boys like a christenin' Kevin Hart Lincoln, he shook, I'ma put you in sticky predicaments Killie might come take a stick off a pussy like they was transitionin' I'm fightin' the man, I suin' a rapper, you boys not listenin' Ah, your boyfriend a fisherman, that's just a word in the industry Don't mean to be in your business I'm talkin' spicy, hot, sizzlin' Don't stick around if you visitin' Yeah, what is the offer they said?
+
+**DEUTSCH:** (Original ist nur Musik – Format-Idee: Outfit-Slideshow; Text frei geschrieben)
+**Hook:** Die Latzhose, die einfach jeden Look besser macht.
+**Skript:** Robuster Stoff, weit geschnitten, jede Menge Taschen. Bequem für die Arbeit und trotzdem stylisch. Gerade im Angebot, unten über den orangenen Button.
+
+<!-- us-341 -->
+## US QUALITY Nr 341 · 4 days ago · +275.5K Views · Sprache en · ROVE R3 - 3 Channel Touchscreen Dash Cam Front, Inside and Rear 1440P+
+https://www.tiktok.com/@presy_jay/video/7708937914540969229
+
+**Original:**
+> That's how you do it right there. That's how you do it.
+
+**DEUTSCH:** (Original fast ohne Text – Skript frei geschrieben)
+**Hook:** So macht man das richtig: Eine Dashcam, die vorne, innen und hinten filmt.
+**Skript:** Drei Kameras in einem Gerät, mit Touchscreen und scharfem Bild. Wenn jemand auffährt oder dir reinfährt, hast du alles auf Video. Einfach an die Scheibe, fertig. Unten über den orangenen Button.
