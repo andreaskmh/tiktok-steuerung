@@ -1287,6 +1287,8 @@ def _kn(t):
 
 
 def _passt(kachel, ocr):
+    if "|" in kachel:                                            # 21.11.2026: Reactions – Galerie liest den Untertitel,
+        return any(_passt(x, ocr) for x in kachel.split("|") if x.strip())   # Cover die Original-Überschrift
     k, o = _kn(kachel), _kn(ocr)
     if bool(k) and (o.startswith(k[:max(6, len(k) - 2)]) or (len(o) >= 6 and k.startswith(o))):
         return True
