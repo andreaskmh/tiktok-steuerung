@@ -176,11 +176,22 @@
    "entwurf": false,
    "dauer_s": 185,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "17:47",
+   "account": "ella_robinson2",
+   "datei": "Video 151 - 08 Tunnelblick XXL Reaction - V1.mp4",
+   "produkt": "6x Tunnelblick XXL Bundle - Alle Sorten!",
+   "tts_link": "https://shop.tiktok.com/view/product/1729863109168569276",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 94,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "anduri.official": 5,
-  "ella_robinson2": 3,
+  "ella_robinson2": 4,
   "andreas.testet": 3,
   "artur.official": 5
  }
