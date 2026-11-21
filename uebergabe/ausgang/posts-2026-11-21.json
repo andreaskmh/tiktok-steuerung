@@ -110,11 +110,22 @@
    "entwurf": false,
    "dauer_s": 111,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "16:33",
+   "account": "ella_robinson2",
+   "datei": "Video 151 - 10 Braun Series 7 - V1.mp4",
+   "produkt": "Braun All-in-One Series 7 Elektrischer R",
+   "tts_link": "https://shop.tiktok.com/view/product/1729695792425638695",
+   "weg": "erstellen",
+   "entwurf": false,
+   "dauer_s": 333,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "anduri.official": 4,
-  "ella_robinson2": 1,
+  "ella_robinson2": 2,
   "andreas.testet": 3,
   "artur.official": 2
  }
