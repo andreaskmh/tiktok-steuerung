@@ -609,3 +609,6 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - 21.11.2026 statsKMH Research: Haken weiß statt grün; Listen-Symbole schlicht wie in „Statistik“ (je eine App-Farbe mit leichtem Verlauf:
   BOF blau, Reactions pink, Slideshows lila, Qualität orange).
 - 21.11.2026 statsKMH Research: Seite in der App durchsichtig, dahinter derselbe Verlauf wie „Statistik“ (oben war ein dunkelblauer Streifen).
+- 21.11.2026 Ranglisten-Seite: neben dem Haken ein ✕ (= bewusst nicht gemacht). Zustände in ~/.tiktok-research/seite-haken.json: "gemacht" | "nein" (alt true = gemacht);
+  Server POST /haken {v, wert} (alt {v, an} geht weiter). research.py filtern lässt ✓ und ✕ weg (seite_erledigt), offene Videos dürfen wiederkommen.
+  Warum: Artur will, dass das Research weiß, was gemacht oder bewusst ausgelassen wurde.

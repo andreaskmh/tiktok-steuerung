@@ -325,6 +325,18 @@ def gemacht():
     return set(json.loads(GEMACHT.read_text())) if GEMACHT.exists() else set()
 
 
+SEITE_HAKEN = pathlib.Path.home() / ".tiktok-research" / "seite-haken.json"
+
+
+def seite_erledigt():
+    """Videos, die auf der Ranglisten-Seite ✓ (gemacht) oder X (bewusst nicht) haben → nie wieder in eine Rangliste (Artur 21.11.).
+    Offen gelassene Videos dürfen wiederkommen. Alter Wert true = gemacht."""
+    try:
+        return {v for v, w in json.loads(SEITE_HAKEN.read_text()).items() if w in (True, "gemacht", "nein")}
+    except (FileNotFoundError, json.JSONDecodeError):
+        return set()
+
+
 def gemacht_merken(ids):
     g = gemacht() | set(ids)
     GEMACHT.write_text(json.dumps(sorted(g), indent=0))
@@ -415,7 +427,7 @@ def gepostete_produkte():
 def filtern(land):
     raus, rein, gesehen = [], [], set()
     frueher = frueher_gespeichert()
-    schon = gemacht()
+    schon, seite = gemacht(), seite_erledigt()
     for k in alle_videos(land):
         name, cr, tage = k["produkt"].lower(), k["creator"].lower(), alter_tage(k["alter"])
         k["tage"] = tage
@@ -424,6 +436,8 @@ def filtern(land):
             grund = "doppelt"
         elif k["video_id"] in schon:
             grund = "schon gemacht (gemacht.json)"
+        elif k["video_id"] in seite:
+            grund = "auf der Ranglisten-Seite ✓ oder X"
         elif tage > REGELN["max_alter_tage"][land]:
             grund = f"zu alt ({k['alter']})"
         elif any(p in cr for p in REGELN["promis"]):

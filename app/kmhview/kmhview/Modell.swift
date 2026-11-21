@@ -245,7 +245,7 @@ final class Speicher: ObservableObject {
             }
             return geschrieben
         }
-        if ok == true { auftragGesendet = Date() } else { fehler = "Auftrag nicht gespeichert – iCloud-Ordner wählen" }
+        if ok == true { if art != "stopp" { auftragGesendet = Date() } } else { fehler = "Auftrag nicht gespeichert – iCloud-Ordner wählen" }
     }
 
     #if os(macOS)
@@ -253,13 +253,18 @@ final class Speicher: ObservableObject {
     /// (Ein launchd-Dienst darf nicht in ~/Documents; die App fragt dafür einmal um Erlaubnis.)
     private var prozess: Process?
     func auftragAusfuehren() {
-        if let p = prozess, p.isRunning { return }
         let o = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Mobile Documents/com~apple~CloudDocs/statsKMH")
         let datei = o.appendingPathComponent("auftrag.json")
         try? FileManager.default.startDownloadingUbiquitousItem(at: datei)
         guard let d = try? Data(contentsOf: datei),
               let j = try? JSONSerialization.jsonObject(with: d) as? [String: Any], let art = j["art"] as? String,
-              ["schnell", "voll"].contains(art) else { return }
+              ["schnell", "voll", "stopp"].contains(art) else { return }
+        if art == "stopp" {   // Abbrechen-Knopf: Python fängt SIGTERM, beendet den Schritt und meldet „abgebrochen“
+            try? FileManager.default.removeItem(at: datei)
+            if let p = prozess, p.isRunning { p.terminate() }
+            return
+        }
+        if let p = prozess, p.isRunning { return }
         let udid = j["udid"] as? String
         try? FileManager.default.removeItem(at: datei)
         let ordner = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Documents/Coding/TikTok-Steuerung/werkzeuge/analyse")

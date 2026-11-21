@@ -6,7 +6,7 @@
   /* Farben 1:1 aus statsKMH (app/kmhview/Modell.swift, dunkel) */
   --bg:#12161d;--karte:rgba(255,255,255,.075);--feld:rgba(255,255,255,.12);--mulde:rgba(255,255,255,.08);
   --linie:rgba(255,255,255,.10);--fg:#fff;--mut:rgba(235,240,247,.6);
-  --gruen:#34d6ae;--tuerkis:#34d6ae;--blau:#4c8dff;--gelb:#ffd23f;--orange:#ff9f2e;--pink:#ff5c9a;--lila:#b57bff;
+  --gruen:#34d6ae;--tuerkis:#34d6ae;--blau:#4c8dff;--gelb:#ffd23f;--orange:#ff9f2e;--schlecht:#ff5c63;--pink:#ff5c9a;--lila:#b57bff;
   color-scheme:dark;
   --schrift:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
 }
@@ -26,7 +26,11 @@ h1{font-size:30px;font-weight:800;margin:4px 0 2px;letter-spacing:-.01em}
 .kt+.z{border-top:0}
 .hk{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.28);background:transparent;cursor:pointer;padding:0;display:grid;place-items:center;color:#000;font:800 14px var(--schrift)}
 .hk[aria-pressed="true"]{background:var(--gruen);border-color:var(--gruen)}
-.hk:focus-visible{outline:2px solid var(--blau);outline-offset:2px}
+.hk:focus-visible,.nx:focus-visible{outline:2px solid var(--blau);outline-offset:2px}
+.zst{display:flex;flex-direction:column;align-items:center;gap:8px}
+.nx{width:22px;height:22px;border-radius:50%;border:0;background:var(--mulde);color:var(--mut);cursor:pointer;padding:0;display:grid;place-items:center;font:700 12px var(--schrift)}
+.nx[aria-pressed="true"]{background:var(--schlecht);color:#fff}
+.nein .m,.nein .r,.nein .nr{opacity:.35}
 .nr{color:var(--mut);text-align:center;padding-top:3px;font-variant-numeric:tabular-nums}
 .m{min-width:0}
 .m a{color:var(--fg);text-decoration:none;font-weight:600;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -60,7 +64,7 @@ details p{margin:0 0 8px}
 </div>
 <div class="info"><span id="zaehler"></span><span id="sync"></span></div>
 <main id="liste"><p class="leer">Rangliste wird geladen …</p></main>
-<p class="hinweis">Kreis antippen = erledigt (nur für euch, gilt auf allen Geräten). Produktname antippen öffnet das Video in TikTok.</p>
+<p class="hinweis">Kreis = gemacht, ✕ = bewusst nicht gemacht (beides kommt nicht wieder in die Rangliste), nochmal antippen = wieder offen (gilt auf allen Geräten). Produktname antippen öffnet das Video in TikTok.</p>
 
 <script>
 const icon = t => { const [f, z] = /REACT/i.test(t) ? ["pink", "☺"] : /SLIDE/i.test(t) ? ["blau", "▤"] : /QUAL/i.test(t) ? ["lila", "★"] : ["orange", "▶"];
@@ -71,14 +75,15 @@ const fett = t => esc(t).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\n/g,"<b
 let wahl = {land:"de", wer:"Artur"};
 try { Object.assign(wahl, JSON.parse(localStorage.getItem("wahl") || "{}")); } catch(e) {}
 const daten = {};
-let haken = {};          // video-id → true
+let haken = {};          // video-id → "gemacht" | "nein" (alt: true = gemacht)
+const zust = v => haken[v] === "nein" ? "nein" : haken[v] ? "gemacht" : "";
 let db = null;
 
 function lokalLaden(){ try { haken = JSON.parse(localStorage.getItem("haken") || "{}"); } catch(e) { haken = {}; } }
 function lokalSpeichern(){ try { localStorage.setItem("haken", JSON.stringify(haken)); } catch(e) {} }
 
 function zeile(v){
-  const fertig = !!haken[v.v];
+  const st = zust(v.v), fertig = st === "gemacht";
   const alt = v.alter === "Today" ? "neu" : v.alter === "Yesterday" ? "gestern" : "";
   let extra = "";
   if (v.skript) extra += `<span class="chip" style="color:var(--gelb)">🌐 ${esc(v.sprache)} · Skript</span>`;
@@ -90,8 +95,9 @@ function zeile(v){
       v.standard.map(([titel, text]) => `<p><b>${esc(titel)}:</b> ${esc(text)}</p>`).join("");
     det = `<details><summary>${v.skript ? "Skript auf Deutsch" : "Nur Musik – Standard-Skripte"}</summary>${inhalt}</details>`;
   }
-  return `<div class="z${fertig ? " fertig" : ""}" data-v="${esc(v.v)}">
-    <button class="hk" aria-pressed="${fertig}" aria-label="Video ${v.nr} erledigt">${fertig ? "✓" : ""}</button>
+  return `<div class="z${st === "gemacht" ? " fertig" : st === "nein" ? " nein" : ""}" data-v="${esc(v.v)}">
+    <div class="zst"><button class="hk" aria-pressed="${fertig}" aria-label="Video ${v.nr} gemacht">${fertig ? "✓" : ""}</button>
+    <button class="nx" aria-pressed="${st === "nein"}" aria-label="Video ${v.nr} bewusst nicht gemacht">✕</button></div>
     <span class="nr">${v.nr}</span>
     <div class="m"><a href="${esc(v.url)}" target="_blank" rel="noopener">${esc(v.produkt)}</a>
       <div class="sub"><span class="chip">${esc(nenn(v.art))}</span>${extra}<span class="cr">@${esc(v.creator)}</span></div></div>
@@ -125,15 +131,16 @@ document.addEventListener("click", async e => {
     try { localStorage.setItem("wahl", JSON.stringify(wahl)); } catch(e) {}
     zeigen(); return;
   }
-  if (b.classList.contains("hk")) {
-    const v = b.closest(".z").dataset.v, an = !haken[v];
-    if (an) haken[v] = true; else delete haken[v];
+  if (b.classList.contains("hk") || b.classList.contains("nx")) {
+    const v = b.closest(".z").dataset.v, ziel = b.classList.contains("hk") ? "gemacht" : "nein";
+    const wert = zust(v) === ziel ? null : ziel;                 // nochmal tippen = wieder offen
+    if (wert) haken[v] = wert; else delete haken[v];
     zeigen();
     if (mac) {
-      try { const r = await fetch("haken", {method: "POST", body: JSON.stringify({v, an})}); if (!r.ok) throw 0; }
+      try { const r = await fetch("haken", {method: "POST", body: JSON.stringify({v, wert})}); if (!r.ok) throw 0; }
       catch(err) { document.getElementById("sync").textContent = "Haken nicht gespeichert – Mac erreichbar?"; }
     } else if (db) {
-      try { an ? await db.collection("haken").doc(v).set({an: true, zeit: Date.now()}) : await db.collection("haken").doc(v).delete(); }
+      try { wert ? await db.collection("haken").doc(v).set({wert, zeit: Date.now()}) : await db.collection("haken").doc(v).delete(); }
       catch(err) { document.getElementById("sync").textContent = "Haken nicht gespeichert"; }
     } else lokalSpeichern();
   }
@@ -169,7 +176,7 @@ async function hakenVerbinden(){
   const t = setTimeout(() => s.textContent = "Haken werden geladen …", 10000);
   db.collection("haken").onSnapshot(snap => {
     if (!snap.metadata.fromCache) { clearTimeout(t); s.textContent = "Haken für alle"; }
-    const neu = {}; snap.docs.forEach(d => { if (d.exists) neu[d.id] = true; });
+    const neu = {}; snap.docs.forEach(d => { if (d.exists) neu[d.id] = d.data().wert || "gemacht"; });
     haken = neu; zeigen();
   }, () => { clearTimeout(t); s.textContent = "Haken gerade nicht erreichbar"; });
 }

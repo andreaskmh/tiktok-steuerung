@@ -9,7 +9,7 @@ Knopf in statsKMH → iCloud Drive/statsKMH/auftrag.json {"art": "schnell"|"voll
 schreibt laufend statsKMH/status.json (Schritt, Fortschritt, Restzeit). Danach app_daten.py → provision.json (App lädt neu).
 Die Web-Version (Artifact) veröffentlicht nur Claude – sie wird beim nächsten Gespräch aktualisiert.
 Geschätzte Zeiten lernen mit (dauer.json). Accounts eines Handys, das nicht erreichbar ist, werden übersprungen."""
-import json, os, sys, time, subprocess, pathlib, urllib.request, datetime as D
+import json, os, sys, time, signal, subprocess, pathlib, urllib.request, datetime as D
 
 HIER = pathlib.Path(__file__).resolve().parent
 ICLOUD = pathlib.Path.home() / "Library/Mobile Documents/com~apple~CloudDocs/statsKMH"
@@ -149,7 +149,17 @@ def spiegel(udid):
     subprocess.run(["open", "-g", f"iphonespiegel://geraet/{udid}"], capture_output=True)
 
 
+class Abbruch(Exception):
+    pass
+
+
+def abbrechen(*_):
+    """Abbrechen-Knopf in der App → Mac-App schickt SIGTERM (Artur 21.11.2026)."""
+    raise Abbruch()
+
+
 def lauf(art, udid=None):
+    signal.signal(signal.SIGTERM, abbrechen)
     schritte = SCHRITTE[art]
     if udid:   # gewähltes Handy: bekannte Accounts dieses Handys, sonst alle versuchen (fehlende werden übersprungen)
         geraet_hinzufuegen(udid)
@@ -175,34 +185,48 @@ def lauf(art, udid=None):
 
     log(f"Start {art}: {len(plan)} Accounts")
     ok_geraete = {}
-    for udid, k in plan:
-        if udid not in ok_geraete:
-            melde(f"Handy wird verbunden …", k)
-            ok_geraete[udid] = erreichbar(udid)
-            if ok_geraete[udid]:
-                spiegel(udid)
-        for name, befehl in schritte:
-            if not ok_geraete[udid]:
-                if name == schritte[0][0]:
-                    fehler.append(f"{k}: Handy nicht erreichbar (entsperrt, am Kabel/WLAN?)")
-                erledigt += 1; geschaetzt_fertig += pro_schritt; melde("übersprungen", k); continue
-            melde(name, k)
-            r = subprocess.run([sys.executable, str(HIER / befehl[0])] + [b.replace("{k}", k) for b in befehl[1:]],
-                               cwd=HIER, env=dict(os.environ, TS_IPHONE_UDID=udid, TS_WLAN="1"), capture_output=True, text=True)
-            zeilen = [z for z in (r.stdout + r.stderr).splitlines() if z.strip()]
-            stopp = [verstaendlich(z, k) for z in zeilen if z.startswith("STOPP")]
-            if any("Traceback" in z for z in zeilen):                 # letzte Zeile = eigentlicher Fehler
-                stopp.append(verstaendlich(zeilen[-1], k))
-            if any("nicht in der Liste" in z for z in stopp):          # Account ist auf diesem Handy nicht angemeldet
-                erledigt += len(schritte) - [n for n, _ in schritte].index(name) - 1
-                geschaetzt_fertig += pro_schritt * (len(schritte) - [n for n, _ in schritte].index(name) - 1)
-                fehler.append(f"{k}: nicht auf diesem Handy – übersprungen")
-                erledigt += 1; geschaetzt_fertig += pro_schritt; melde("übersprungen", k)
-                break
-            if stopp:
-                fehler.append(stopp[0][:160]); log(stopp[0]); log("  roh: " + " | ".join(zeilen[-3:])[:400])   # echte Meldung für die Fehlersuche
-            erledigt += 1; geschaetzt_fertig += pro_schritt
-            melde(name + " fertig", k)
+    kind = [None]
+    try:
+        for udid, k in plan:
+            if udid not in ok_geraete:
+                melde(f"Handy wird verbunden …", k)
+                ok_geraete[udid] = erreichbar(udid)
+                if ok_geraete[udid]:
+                    spiegel(udid)
+            for name, befehl in schritte:
+                if not ok_geraete[udid]:
+                    if name == schritte[0][0]:
+                        fehler.append(f"{k}: Handy nicht erreichbar (entsperrt, am Kabel/WLAN?)")
+                    erledigt += 1; geschaetzt_fertig += pro_schritt; melde("übersprungen", k); continue
+                melde(name, k)
+                kind[0] = subprocess.Popen([sys.executable, str(HIER / befehl[0])] + [b.replace("{k}", k) for b in befehl[1:]], cwd=HIER,
+                                           env=dict(os.environ, TS_IPHONE_UDID=udid, TS_WLAN="1"), stdout=subprocess.PIPE,
+                                           stderr=subprocess.PIPE, text=True, start_new_session=True)   # eigene Gruppe → beim Abbruch ganz beenden
+                aus, err = kind[0].communicate()
+                zeilen = [z for z in (aus + err).splitlines() if z.strip()]
+                stopp = [verstaendlich(z, k) for z in zeilen if z.startswith("STOPP")]
+                if any("Traceback" in z for z in zeilen):                 # letzte Zeile = eigentlicher Fehler
+                    stopp.append(verstaendlich(zeilen[-1], k))
+                if any("nicht in der Liste" in z for z in stopp):          # Account ist auf diesem Handy nicht angemeldet
+                    erledigt += len(schritte) - [n for n, _ in schritte].index(name) - 1
+                    geschaetzt_fertig += pro_schritt * (len(schritte) - [n for n, _ in schritte].index(name) - 1)
+                    fehler.append(f"{k}: nicht auf diesem Handy – übersprungen")
+                    erledigt += 1; geschaetzt_fertig += pro_schritt; melde("übersprungen", k)
+                    break
+                if stopp:
+                    fehler.append(stopp[0][:160]); log(stopp[0]); log("  roh: " + " | ".join(zeilen[-3:])[:400])   # echte Meldung für die Fehlersuche
+                erledigt += 1; geschaetzt_fertig += pro_schritt
+                melde(name + " fertig", k)
+    except Abbruch:
+        if kind[0] and kind[0].poll() is None:   # laufenden Schritt samt Unterprozessen beenden
+            os.killpg(kind[0].pid, signal.SIGKILL)
+        schreibe(STATUS, dict(st, laeuft=False, ende=D.datetime.now().isoformat(timespec="seconds"), schritt="abgebrochen",
+                              rest_sek=0, fehler=fehler))
+        log(f"Abgebrochen {art} nach {round(time.time() - start)} s")
+        for u in ok_geraete:
+            if u != GERAETE[0][0]:
+                geraet_entfernen(u)
+        return
     melde("App-Daten werden gebaut")
     if art == "voll":
         subprocess.run([sys.executable, str(HIER / "baue.py")], cwd=HIER, capture_output=True)

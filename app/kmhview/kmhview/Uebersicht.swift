@@ -121,6 +121,8 @@ struct Aktualisieren: View {
     @EnvironmentObject var s: Speicher
     @AppStorage("datenHandy") private var handy = "00008030-00096C8621C3402E"   // Standard: iPhone 11
     @State private var frage: (art: String, titel: String, sek: Int)?   // Rückfrage vor jedem Start (Artur 20.11.)
+    @State private var stoppFrage = false
+    @State private var stoppZeit: Date?
     static let fmt: DateFormatter = { let f = DateFormatter(); f.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"; return f }()
     func datum(_ t: String?) -> Date { t.flatMap { Self.fmt.date(from: $0) } ?? Date() }
     func dauer(_ sek: Double) -> String {
@@ -150,6 +152,13 @@ struct Aktualisieren: View {
                             Text("läuft seit \(uhr(vergangen))").monospacedDigit()
                         }.font(.caption).foregroundStyle(.secondary)
                         Text("Das Daten-Handy wird gerade bedient – bitte solange nicht benutzen. Live-Bild: iPhone-Spiegel auf dem Mac.").font(.caption2).foregroundStyle(.tertiary)
+                        let stoppt = stoppZeit.map { ctx.date.timeIntervalSince($0) < 120 } ?? false
+                        Button(role: .destructive) { stoppFrage = true } label: {
+                            Label(stoppt ? "Wird abgebrochen …" : "Abbrechen", systemImage: "xmark")
+                                .font(.subheadline.weight(.semibold)).frame(maxWidth: .infinity).padding(.vertical, 8)
+                        }
+                        .buttonStyle(.plain).foregroundStyle(Color.schlecht)
+                        .background(Color.schlecht.opacity(0.12), in: Capsule()).disabled(stoppt)
                     }
                 }
             } else {
@@ -195,6 +204,10 @@ struct Aktualisieren: View {
                 #endif
             }
         }
+        .alert("Aktualisierung abbrechen?", isPresented: $stoppFrage) {
+            Button("Ja, abbrechen", role: .destructive) { s.auftrag("stopp", udid: handy); stoppZeit = Date() }
+            Button("Weiterlaufen lassen", role: .cancel) {}
+        } message: { Text("Bis dahin gelesene Zahlen bleiben, der Rest wird nicht mehr abgelesen.") }
         .alert(frage.map { "\($0.titel)-Aktualisierung starten?" } ?? "", isPresented: Binding(get: { frage != nil }, set: { if !$0 { frage = nil } })) {
             Button("Ja, starten") { if let f = frage { s.auftrag(f.art, udid: handy) }; frage = nil }
             Button("Abbrechen", role: .cancel) { frage = nil }

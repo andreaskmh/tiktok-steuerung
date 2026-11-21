@@ -2,7 +2,8 @@
 """Ranglisten-Seite im WLAN (Artur 20.11.2026): http://<Mac>.local:8080 auf jedem Handy, ohne Anmeldung.
 
 Liefert ~/.tiktok-research/seite/ (index.html, daten-de.json, daten-us.json – legt research.py `rangliste` dort ab)
-und die gemeinsamen Haken: GET /haken → {video_id: true}, POST /haken {"v": id, "an": bool}.
+und die gemeinsamen Haken: GET /haken → {video_id: "gemacht"|"nein"}, POST /haken {"v": id, "wert": "gemacht"|"nein"|null}
+(alt: {"v": id, "an": bool}; gespeichertes true = gemacht). research.py filtern lässt ✓ und X weg (Artur 21.11.).
 Haken liegen in ~/.tiktok-research/seite-haken.json (nur für Artur/Andreas, nichts mit Social1/gemacht.json).
 Liegt außerhalb von ~/Documents, weil der Dauer-Start (launchd) dort nicht lesen darf (macOS-Schutz).
 Start: werkzeuge/ranglisten-server-installieren.sh
@@ -52,12 +53,14 @@ class Handler(http.server.BaseHTTPRequestHandler):
             d = json.loads(self.rfile.read(min(int(self.headers.get("Content-Length", 0)), 1000)))
             v = str(d["v"])
             assert re.fullmatch(r"\d{5,25}", v)                 # nur Video-IDs, sonst nichts speichern
+            wert = d["wert"] if "wert" in d else ("gemacht" if d.get("an") else None)
+            assert wert in ("gemacht", "nein", None)
         except Exception:
             return self.senden(400, b"", "text/plain")
         with SPERRE:
             h = haken_lesen()
-            if d.get("an"):
-                h[v] = True
+            if wert:
+                h[v] = wert
             else:
                 h.pop(v, None)
             tmp = HAKEN.with_suffix(".tmp")
