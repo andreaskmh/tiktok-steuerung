@@ -121,12 +121,23 @@
    "entwurf": false,
    "dauer_s": 333,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "16:36",
+   "account": "artur.official",
+   "datei": "Video 151 - 27 Weihnachtsmann und Co KG Buch - V1.mp4",
+   "produkt": "Weihnachtsmann & Co. KG - Der Weihnachts",
+   "tts_link": "https://shop.tiktok.com/view/product/1729947599963200427",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 114,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "anduri.official": 4,
   "ella_robinson2": 2,
   "andreas.testet": 3,
-  "artur.official": 2
+  "artur.official": 3
  }
 }
