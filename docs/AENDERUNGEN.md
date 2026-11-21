@@ -612,3 +612,8 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - 21.11.2026 Ranglisten-Seite: neben dem Haken ein ✕ (= bewusst nicht gemacht). Zustände in ~/.tiktok-research/seite-haken.json: "gemacht" | "nein" (alt true = gemacht);
   Server POST /haken {v, wert} (alt {v, an} geht weiter). research.py filtern lässt ✓ und ✕ weg (seite_erledigt), offene Videos dürfen wiederkommen.
   Warum: Artur will, dass das Research weiß, was gemacht oder bewusst ausgelassen wurde.
+
+## 21.11.2026 – statsKMH: Aktualisierung abbrechen
+- Was: Während „Schnell“/„Voll“ läuft, gibt es in der App einen Knopf „Abbrechen“ (mit Rückfrage). Er schreibt `auftrag.json` mit `art: "stopp"`, die Mac-App schickt dem Python-Lauf SIGTERM. `aktualisieren.py` beendet den laufenden Schritt samt Unterprozessen (eigene Prozessgruppe), meldet „abgebrochen“ und gibt die Handys frei.
+- Warum: Artur will einen laufenden Lauf stoppen können. Getestet mit einem Schein-Schritt: der Abbruch dauert 3 s und hinterlässt keine Unterprozesse.
+- X neben dem Haken in Research plus Abgleich mit der täglichen Social1-Research: an die Research-Session gegeben (Seite, Server und research.py liegen dort).

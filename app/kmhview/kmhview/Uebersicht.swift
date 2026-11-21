@@ -207,7 +207,7 @@ struct Aktualisieren: View {
         .alert("Aktualisierung abbrechen?", isPresented: $stoppFrage) {
             Button("Ja, abbrechen", role: .destructive) { s.auftrag("stopp", udid: handy); stoppZeit = Date() }
             Button("Weiterlaufen lassen", role: .cancel) {}
-        } message: { Text("Bis dahin gelesene Zahlen bleiben, der Rest wird nicht mehr abgelesen.") }
+        } message: { Text("Der laufende Schritt wird sofort beendet und das Handy freigegeben. Neue Zahlen gibt es erst beim nächsten Lauf.") }
         .alert(frage.map { "\($0.titel)-Aktualisierung starten?" } ?? "", isPresented: Binding(get: { frage != nil }, set: { if !$0 { frage = nil } })) {
             Button("Ja, starten") { if let f = frage { s.auftrag(f.art, udid: handy) }; frage = nil }
             Button("Abbrechen", role: .cancel) { frage = nil }
