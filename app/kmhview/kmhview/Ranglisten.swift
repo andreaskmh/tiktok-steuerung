@@ -117,6 +117,8 @@ let ranglistenAussehen = #"""
   .chip{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.08)!important;color:var(--mut)!important;font-weight:600!important}
   .chip.skript{color:var(--gelb)!important;background:rgba(255,210,63,.12)!important}
   .chip svg{width:11px;height:11px;flex:none}
+  .kat{background-color:rgba(255,255,255,.08)!important;color:var(--mut)!important;font-weight:600!important;border:0!important}
+  .kat.geaendert{background-color:rgba(255,210,63,.12)!important;color:var(--gelb)!important}
   .alt{font-weight:600}
   html,body{background:transparent!important}
   body{padding-bottom:120px!important}

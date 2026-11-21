@@ -623,3 +623,4 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - 21.11.2026 Ranglisten-Seite: Kategorie pro Video änderbar (Auswahlfeld statt Art-Chip). Server GET/POST /kategorie {v, art} → ~/.tiktok-research/seite-kategorie.json.
   Seite verschiebt das Video sofort in die passende Karte bzw. den Slideshows-Reiter. research.py filtern übernimmt die Korrektur in <land>-sortiert.json
   (REACTIONS ↔ Promi-Liste mit), schreibt <land>-korrekturen.md als Beispiele fürs Einsortieren (Research-Aufgabe liest sie). Warum: viele Reactions landeten unter BOF.
+- statsKMH Research: Die Kategorie-Auswahl der Seite (`select.kat`, von der Research-Session) sieht in der App aus wie die übrigen Chips, also grau. Eine von Hand geänderte Kategorie (`.geaendert`) ist gelb.
