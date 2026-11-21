@@ -603,3 +603,6 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - 21.11.2026 statsKMH Ranglisten: eigenes Aussehen nur in der App (eingespielt per WKUserScript `ranglistenAussehen` in Ranglisten.swift,
   Seite/Server unverändert): Vektor-Symbole in Verlaufskreisen statt ▶☺▤★, Globus/Noten-Symbol statt Emoji, Häkchen als Vektor,
   Today/Yesterday → Heute/Gestern, dezentere Schilder. Artur: Browser-Version wird später verworfen, Seite bleibt bis dahin zum Arbeiten.
+- 21.11.2026 statsKMH: Bereich „Ranglisten“ heißt „Research“ (Leiste + Seitentitel in der App); Leiste unten über der Research-Seite
+  durchsichtig (Seite läuft darunter weiter); Listen-Symbole mit Verläufen wie das Logo: BOF Türkis→Blau (statt Orange),
+  Reactions Pink→Lila, Slideshows Blau→Indigo, Qualität Gelb→Orange.

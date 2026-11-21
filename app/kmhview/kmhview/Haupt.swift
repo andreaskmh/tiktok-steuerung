@@ -2,7 +2,7 @@ import SwiftUI
 
 /// Bereiche der App – unten als schwebende Leiste (Revolut-Art). Neue Bereiche hier ergänzen (Artur 21.11.: „kommt noch mehr“).
 enum Bereich: String, CaseIterable, Identifiable {
-    case statistik = "Statistik", ranglisten = "Ranglisten"
+    case statistik = "Statistik", ranglisten = "Research"
     var id: String { rawValue }
     var symbol: String { self == .statistik ? "chart.line.uptrend.xyaxis" : "list.number" }
 }
