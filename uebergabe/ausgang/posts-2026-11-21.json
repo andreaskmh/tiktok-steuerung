@@ -99,12 +99,23 @@
    "entwurf": false,
    "dauer_s": 239,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "16:23",
+   "account": "andreas.testet",
+   "datei": "Video 151 - 36 More Milkyccino - V1.mp4",
+   "produkt": "More Nutrition Protein Milkyccino mit Ko",
+   "tts_link": "https://shop.tiktok.com/view/product/1729788816133036922",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 111,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "anduri.official": 4,
   "ella_robinson2": 1,
-  "andreas.testet": 2,
+  "andreas.testet": 3,
   "artur.official": 2
  }
 }
