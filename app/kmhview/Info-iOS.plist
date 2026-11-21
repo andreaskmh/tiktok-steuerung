@@ -7,5 +7,12 @@
 		<key>UIColorName</key>
 		<string>StartFarbe</string>
 	</dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>statsKMH lädt die Ranglisten vom Mac im WLAN.</string>
 </dict>
 </plist>

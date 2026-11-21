@@ -594,3 +594,7 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 
 ## 21.11.2026 – Ranglisten-Seite im statsKMH-Design
 - `uebergabe/ranglisten-seite/index.html`: Farben 1:1 aus statsKMH (Verlauf oben, Glas-Karten, Minzgrün, bunte runde Icons je Videoart: BOF orange, Reactions pink, Slideshows blau, Quality lila). Warum: Artur wollte das statsKMH-Design (Bildschirmaufnahme 21.11.).
+- 21.11.2026 statsKMH: Knopf „Ranglisten“ (Listen-Symbol oben) öffnet die Research-Ranglisten-Seite vom Mac in einer Webansicht
+  (app/kmhview/kmhview/Ranglisten.swift; iPhone: MacBook-Pro-von-Andreas.local:8080, sonst 192.168.8.214:8080; Mac: localhost:8080).
+  Seite und Server unverändert. Info-iOS.plist: NSAllowsLocalNetworking + NSLocalNetworkUsageDescription; neu Info-mac.plist (ATS lokal).
+  TikTok-Links öffnen außerhalb (TikTok/Browser). Auftrag aus dem Research-Chat (Artur 21.11.).
