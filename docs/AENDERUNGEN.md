@@ -624,3 +624,5 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
   Seite verschiebt das Video sofort in die passende Karte bzw. den Slideshows-Reiter. research.py filtern übernimmt die Korrektur in <land>-sortiert.json
   (REACTIONS ↔ Promi-Liste mit), schreibt <land>-korrekturen.md als Beispiele fürs Einsortieren (Research-Aufgabe liest sie). Warum: viele Reactions landeten unter BOF.
 - statsKMH Research: Die Kategorie-Auswahl der Seite (`select.kat`, von der Research-Session) sieht in der App aus wie die übrigen Chips, also grau. Eine von Hand geänderte Kategorie (`.geaendert`) ist gelb.
+- 21.11.2026 Ranglisten-Seite: Kategorie-Feld bleibt bei ✓/✕-Zeilen voll sichtbar (nur Name/Rest blass). Neu: Video 0,4 s lange drücken und in eine
+  andere Karte ziehen = Kategorie ändern (Pointer-Events, kein HTML5-Drag, damit es im iPhone/WKWebView geht; vorher bewegen = normales Scrollen).
