@@ -132,10 +132,21 @@
    "entwurf": false,
    "dauer_s": 114,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "16:47",
+   "account": "anduri.official",
+   "datei": "Video 151 - 15 LYORA Ermis - V1.mp4",
+   "produkt": "LYORA Ermis",
+   "tts_link": "https://shop.tiktok.com/view/product/1729899915342551376",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 115,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
-  "anduri.official": 4,
+  "anduri.official": 5,
   "ella_robinson2": 2,
   "andreas.testet": 3,
   "artur.official": 3
