@@ -209,11 +209,22 @@
    "entwurf": false,
    "dauer_s": 100,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "18:44",
+   "account": "ella_robinson2",
+   "datei": "Video 151 - 18 Geschirr-Abtropfgestell - V1.mp4",
+   "produkt": "2-stöckiges Geschirrtrockengestell, Abtr",
+   "tts_link": "https://shop.tiktok.com/view/product/1729886397305297383",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 114,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "anduri.official": 5,
-  "ella_robinson2": 6,
+  "ella_robinson2": 7,
   "andreas.testet": 3,
   "artur.official": 5
  }
