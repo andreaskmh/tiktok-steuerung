@@ -143,11 +143,22 @@
    "entwurf": false,
    "dauer_s": 115,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "16:51",
+   "account": "ella_robinson2",
+   "datei": "Video 151 - 14 Gawfolk Gaming-Monitor - V1.mp4",
+   "produkt": "Gawfolk 24‑Zoll 200 Hz/300 Hz Gaming‑Mon",
+   "tts_link": "https://shop.tiktok.com/view/product/1729840397366237230",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 126,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "anduri.official": 5,
-  "ella_robinson2": 2,
+  "ella_robinson2": 3,
   "andreas.testet": 3,
   "artur.official": 3
  }
