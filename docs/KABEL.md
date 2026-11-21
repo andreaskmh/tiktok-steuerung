@@ -24,7 +24,7 @@ Nach Änderungen an waechter.py erneut `an` ausführen (kopiert die Fassung nach
 open-iphone-use stop; open-iphone-use serve     # ~20 s, nimmt USB, wenn das Kabel steckt (sonst WLAN)
 python3 werkzeuge/kabel.py status               # → „USB  verbunden=True  bild=True“
 ```
-Live zuschauen: http://127.0.0.1:27893 . Als eigenes Fenster (statt Mirror My Phone): App **iPhone-Spiegel** (`app/spiegel/`). Der Server wechselt **nicht** von selbst von WLAN auf USB → nach dem Einstecken neu starten.
+Live zuschauen: http://127.0.0.1:27893 . Als eigenes Fenster (statt Mirror My Phone): App **iPhone Mirroring** (`app/spiegel/`). Der Server wechselt **nicht** von selbst von WLAN auf USB → nach dem Einstecken neu starten.
 
 Alle Werkzeuge (`seh.py`, `tap.py`, `posten.py`, `post_wagen.py`, `stock.py`, `eingang.py`) nehmen automatisch das Kabel,
 sobald der Server ein Live-Bild liefert. Alte Steuerung erzwingen: `TS_MODUS=sync`.

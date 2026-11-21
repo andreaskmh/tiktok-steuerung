@@ -1,4 +1,4 @@
-// iPhone-Spiegel: zeigt iPhone-Bildschirme in eigenen Fenstern – nur zuschauen. Ein Fenster pro iPhone (⌘N).
+// iPhone Mirroring: zeigt iPhone-Bildschirme in eigenen Fenstern – nur zuschauen. Ein Fenster pro iPhone (⌘N).
 // Bedienung wie Mirror My Phone: alles in der Menüleiste (Ablage, Optionen, Gerät, Fenster).
 // Kabel: wie QuickTime / Mirror My Phone (CoreMediaIO gibt das iPhone als Kamera frei, AVFoundation zeigt es an).
 // Ohne Kabel: Live-Bild des Kabel-Servers open-iphone-use (WLAN, http://127.0.0.1:27893), läuft eh für die Steuerung.
@@ -159,11 +159,11 @@ final class Spiegel: NSObject, NSApplicationDelegate, NSMenuDelegate {
     // Menüleiste wie Mirror My Phone. Ablage/Optionen/Gerät werden beim Öffnen gebaut (aktuelle iPhones, Häkchen).
     func hauptmenue() {
         let leiste = NSMenu(), app = NSMenu()
-        app.addItem(withTitle: "iPhone-Spiegel ausblenden", action: #selector(NSApplication.hide), keyEquivalent: "h")
+        app.addItem(withTitle: "iPhone Mirroring ausblenden", action: #selector(NSApplication.hide), keyEquivalent: "h")
         app.addItem(withTitle: "Andere ausblenden", action: #selector(NSApplication.hideOtherApplications), keyEquivalent: "h")
             .keyEquivalentModifierMask = [.command, .option]
         app.addItem(.separator())
-        app.addItem(withTitle: "iPhone-Spiegel beenden", action: #selector(NSApplication.terminate), keyEquivalent: "q")
+        app.addItem(withTitle: "iPhone Mirroring beenden", action: #selector(NSApplication.terminate), keyEquivalent: "q")
         leiste.addItem(withTitle: "", action: nil, keyEquivalent: "").submenu = app
         for titel in ["Ablage", "Optionen", "Gerät", "Fenster"] {
             let m = NSMenu(title: titel)

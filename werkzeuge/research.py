@@ -337,6 +337,14 @@ def seite_erledigt():
         return set()
 
 
+def seite_kategorie():
+    """Kategorie-Korrekturen von der Ranglisten-Seite {video_id: "BOF"|"REACTIONS"|"SLIDES"|"BOF+SLIDES"|"QUALITY"} (Artur 21.11.)."""
+    try:
+        return json.loads((SEITE_HAKEN.parent / "seite-kategorie.json").read_text())
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+
 def gemacht_merken(ids):
     g = gemacht() | set(ids)
     GEMACHT.write_text(json.dumps(sorted(g), indent=0))
@@ -427,7 +435,7 @@ def gepostete_produkte():
 def filtern(land):
     raus, rein, gesehen = [], [], set()
     frueher = frueher_gespeichert()
-    schon, seite = gemacht(), seite_erledigt()
+    schon, seite, korr = gemacht(), seite_erledigt(), seite_kategorie()
     for k in alle_videos(land):
         name, cr, tage = k["produkt"].lower(), k["creator"].lower(), alter_tage(k["alter"])
         k["tage"] = tage
@@ -468,6 +476,15 @@ def filtern(land):
     so = json.loads(sort.read_text()) if sort.exists() else {}
     neu = {str(k["nr"]): frueher[k["video_id"]] for k in rein
            if k["video_id"] in frueher and str(k["nr"]) not in so and frueher[k["video_id"]] != "REACTIONS"}
+    # Artur 21.11.: Kategorie von Hand auf der Ranglisten-Seite geändert → gilt vor allem anderen (auch Reactions/Promi)
+    for k in rein:
+        if k["video_id"] in korr:
+            neu[str(k["nr"])] = korr[k["video_id"]]
+            k["promi"] = korr[k["video_id"]] == "REACTIONS"
+    if korr:
+        beisp = [f"- {k['produkt'][:70]} · @{k['creator']} → {korr[k['video_id']]}" for k in rein if k["video_id"] in korr]
+        (ORDNER / f"{land}-korrekturen.md").write_text("# Arturs Kategorie-Korrekturen (als Beispiele beim Einsortieren beachten)\n" + "\n".join(beisp) + "\n")
+        print(f"Kategorie-Korrekturen von der Seite: {len(beisp)} → {land}-sortiert.json (+ {land}-korrekturen.md)")
     if neu:
         sort.write_text(json.dumps({**so, **neu}, ensure_ascii=False, indent=1))
         print(f"Übernahme von früheren Tagen: {len(neu)} Videos → {land}-sortiert.json")

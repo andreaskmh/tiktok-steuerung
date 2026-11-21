@@ -618,3 +618,8 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - Warum: Artur will einen laufenden Lauf stoppen können. Getestet mit einem Schein-Schritt: der Abbruch dauert 3 s und hinterlässt keine Unterprozesse.
 - X neben dem Haken in Research plus Abgleich mit der täglichen Social1-Research: an die Research-Session gegeben (Seite, Server und research.py liegen dort).
 - statsKMH Research: Das neue ✕ der Seite (`.nx`, von der Research-Session) sieht in der App aus wie der Haken: grauer Ring, gedrückt rot mit weißem ✕ (CSS in Ranglisten.swift).
+
+- 21.11.2026: Spiegel-App umbenannt in **iPhone Mirroring** (Wunsch Artur). Bundle-ID bleibt gleich → Kamera-Erlaubnis und Fensterpositionen bleiben. Alte /Applications/iPhone-Spiegel.app entfernt.
+- 21.11.2026 Ranglisten-Seite: Kategorie pro Video änderbar (Auswahlfeld statt Art-Chip). Server GET/POST /kategorie {v, art} → ~/.tiktok-research/seite-kategorie.json.
+  Seite verschiebt das Video sofort in die passende Karte bzw. den Slideshows-Reiter. research.py filtern übernimmt die Korrektur in <land>-sortiert.json
+  (REACTIONS ↔ Promi-Liste mit), schreibt <land>-korrekturen.md als Beispiele fürs Einsortieren (Research-Aufgabe liest sie). Warum: viele Reactions landeten unter BOF.

@@ -36,6 +36,10 @@ h1{font-size:30px;font-weight:800;margin:4px 0 2px;letter-spacing:-.01em}
 .m a{color:var(--fg);text-decoration:none;font-weight:600;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .sub{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-top:5px}
 .chip{font-size:11px;padding:2px 8px;border-radius:999px;background:var(--feld);color:var(--blau);white-space:nowrap;font-weight:500}
+.kat{appearance:none;-webkit-appearance:none;border:0;font:500 11px var(--schrift);padding:2px 18px 2px 8px;border-radius:999px;
+  background:var(--feld) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%234c8dff'/%3E%3C/svg%3E") no-repeat right 7px center;color:var(--blau);cursor:pointer}
+.kat.geaendert{color:var(--gelb);box-shadow:inset 0 0 0 1px var(--gelb)}
+.kat:focus-visible{outline:2px solid var(--blau);outline-offset:1px}
 .cr{font-size:12px;color:var(--mut);overflow-wrap:anywhere}
 .r{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
 .r b{font-variant-numeric:tabular-nums}
@@ -64,7 +68,7 @@ details p{margin:0 0 8px}
 </div>
 <div class="info"><span id="zaehler"></span><span id="sync"></span></div>
 <main id="liste"><p class="leer">Rangliste wird geladen …</p></main>
-<p class="hinweis">Kreis = gemacht, ✕ = bewusst nicht gemacht (beides kommt nicht wieder in die Rangliste), nochmal antippen = wieder offen (gilt auf allen Geräten). Produktname antippen öffnet das Video in TikTok.</p>
+<p class="hinweis">Kreis = gemacht, ✕ = bewusst nicht gemacht (beides kommt nicht wieder in die Rangliste), nochmal antippen = wieder offen. Kategorie-Feld antippen = Video in eine andere Kategorie verschieben (Research merkt es sich) (gilt auf allen Geräten). Produktname antippen öffnet das Video in TikTok.</p>
 
 <script>
 const icon = t => { const [f, z] = /REACT/i.test(t) ? ["pink", "☺"] : /SLIDE/i.test(t) ? ["blau", "▤"] : /QUAL/i.test(t) ? ["lila", "★"] : ["orange", "▶"];
@@ -76,10 +80,14 @@ let wahl = {land:"de", wer:"Artur"};
 try { Object.assign(wahl, JSON.parse(localStorage.getItem("wahl") || "{}")); } catch(e) {}
 const daten = {};
 let haken = {};          // video-id → "gemacht" | "nein" (alt: true = gemacht)
+let kat = {};            // video-id → korrigierte Kategorie (Artur 21.11., Server /kategorie)
+const ART = ["BOF", "REACTIONS", "SLIDES", "BOF+SLIDES", "QUALITY"];
+const art = v => kat[v.v] || v.art;
+const gruppe = a => a === "SLIDES" ? "SLIDES" : a.startsWith("REACT") ? "REACTIONS" : a === "QUALITY" ? "QUALITY" : "BOF";
 const zust = v => haken[v] === "nein" ? "nein" : haken[v] ? "gemacht" : "";
 let db = null;
 
-function lokalLaden(){ try { haken = JSON.parse(localStorage.getItem("haken") || "{}"); } catch(e) { haken = {}; } }
+function lokalLaden(){ try { haken = JSON.parse(localStorage.getItem("haken") || "{}"); kat = JSON.parse(localStorage.getItem("kategorie") || "{}"); } catch(e) { haken = {}; } }
 function lokalSpeichern(){ try { localStorage.setItem("haken", JSON.stringify(haken)); } catch(e) {} }
 
 function zeile(v){
@@ -100,7 +108,8 @@ function zeile(v){
     <button class="nx" aria-pressed="${st === "nein"}" aria-label="Video ${v.nr} bewusst nicht gemacht">✕</button></div>
     <span class="nr">${v.nr}</span>
     <div class="m"><a href="${esc(v.url)}" target="_blank" rel="noopener">${esc(v.produkt)}</a>
-      <div class="sub"><span class="chip">${esc(nenn(v.art))}</span>${extra}<span class="cr">@${esc(v.creator)}</span></div></div>
+      <div class="sub"><select class="kat${kat[v.v] ? " geaendert" : ""}" aria-label="Kategorie von Video ${v.nr} ändern">${
+        ART.map(a => `<option value="${a}"${a === art(v) ? " selected" : ""}>${esc(nenn(a))}</option>`).join("")}</select>${extra}<span class="cr">@${esc(v.creator)}</span></div></div>
     <div class="r"><b>+${esc(v.plus)}</b><span class="alt ${alt}">${esc(v.alter)}</span></div>
     ${det}</div>`;
 }
@@ -112,8 +121,15 @@ function zeigen(){
   const offen = new Set([...el.querySelectorAll("details[open]")].map(x => x.closest(".z").dataset.v));   // aufgeklappte Skripte behalten
   if (!d) { el.innerHTML = '<p class="leer">Rangliste wird geladen …</p>'; return; }
   document.getElementById("stand").textContent = `Stand ${d.stand} · Research ${d.datum}`;
-  const teile = d.listen[wahl.wer] || [];
-  const alle = teile.flatMap(t => t.videos);
+  // Videos aller Reiter mit Besitzer; Kategorie-Korrektur verschiebt sie in die passende Karte bzw. den Slideshows-Reiter
+  const besitzer = new Map();
+  const reiter = wahl.wer === "SLIDES" ? ["SLIDES", "Artur", "Andreas"] : ["Artur", "Andreas", "SLIDES"];   // Reihenfolge = Rangliste des Reiters
+  for (const w of reiter) for (const t of d.listen[w] || []) for (const v of t.videos)
+    if (!besitzer.has(v.v)) besitzer.set(v.v, {v, wer: w === "SLIDES" ? (v.nr % 2 ? "Artur" : "Andreas") : w});   // shortcut: aus Slideshows verschobene Videos abwechselnd nach Nr. verteilt
+  const sichtbar = [...besitzer.values()].filter(({v, wer}) => wahl.wer === "SLIDES" ? art(v).includes("SLIDES") : wer === wahl.wer && art(v) !== "SLIDES").map(x => x.v);
+  const reihen = ["BOF", "REACTIONS", "QUALITY", "SLIDES"];
+  const teile = reihen.map(g => ({titel: g, videos: sichtbar.filter(v => (wahl.wer === "SLIDES" ? "SLIDES" : gruppe(art(v))) === g)})).filter(t => t.videos.length);
+  const alle = sichtbar;
   const erledigt = alle.filter(v => haken[v.v]).length;
   document.getElementById("zaehler").textContent = `${erledigt} von ${alle.length} erledigt`;
   el.innerHTML = teile.length ? teile.map(t =>
@@ -121,6 +137,19 @@ function zeigen(){
   ).join("") : '<p class="leer">Keine Videos in dieser Liste.</p>';
   el.querySelectorAll(".z").forEach(z => { if (offen.has(z.dataset.v)) z.querySelector("details")?.setAttribute("open", ""); });
 }
+
+document.addEventListener("change", async e => {
+  const s = e.target.closest(".kat"); if (!s) return;
+  const v = s.closest(".z").dataset.v, d = daten[wahl.land];
+  const original = Object.values(d.listen).flat().flatMap(t => t.videos).find(x => x.v === v)?.art;
+  const neu = s.value === original ? null : s.value;                 // zurück auf die Research-Kategorie = Korrektur weg
+  if (neu) kat[v] = neu; else delete kat[v];
+  zeigen();
+  if (mac) {
+    try { const r = await fetch("kategorie", {method: "POST", body: JSON.stringify({v, art: neu})}); if (!r.ok) throw 0; }
+    catch(err) { document.getElementById("sync").textContent = "Kategorie nicht gespeichert – Mac erreichbar?"; }
+  } else try { localStorage.setItem("kategorie", JSON.stringify(kat)); } catch(err) {}
+});
 
 document.addEventListener("click", async e => {
   const b = e.target.closest("button");
@@ -159,7 +188,8 @@ let mac = false;
 async function macHaken(){
   try { const r = await fetch("haken", {cache: "no-store"}); if (!r.ok) return false;
         const neu = await r.json(); document.getElementById("sync").textContent = "Haken für alle";
-        if (JSON.stringify(neu) !== JSON.stringify(haken)) { haken = neu; zeigen(); } return true; }
+        const k = await fetch("kategorie", {cache: "no-store"}).then(r => r.ok ? r.json() : kat).catch(() => kat);
+        if (JSON.stringify(neu) !== JSON.stringify(haken) || JSON.stringify(k) !== JSON.stringify(kat)) { haken = neu; kat = k; zeigen(); } return true; }
   catch(e) { if (mac) document.getElementById("sync").textContent = "Mac gerade nicht erreichbar"; return false; }
 }
 async function hakenVerbinden(){
