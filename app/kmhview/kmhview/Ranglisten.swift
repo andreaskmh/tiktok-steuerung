@@ -112,6 +112,8 @@ let ranglistenAussehen = #"""
   .kt b{font-weight:700!important;letter-spacing:-.01em}
   .hk{width:24px!important;height:24px!important;border-width:1.5px!important;border-color:rgba(255,255,255,.22)!important}
   .hk[aria-pressed="true"]{font-size:0!important;border-color:rgba(255,255,255,.9)!important;background:rgba(255,255,255,.9) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4L18.5 8' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/15px no-repeat!important}
+  .nx{width:24px!important;height:24px!important;background:transparent!important;border:1.5px solid rgba(255,255,255,.22)!important;color:rgba(255,255,255,.45)!important}
+  .nx[aria-pressed="true"]{background:var(--schlecht)!important;border-color:var(--schlecht)!important;color:#fff!important}
   .chip{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.08)!important;color:var(--mut)!important;font-weight:600!important}
   .chip.skript{color:var(--gelb)!important;background:rgba(255,210,63,.12)!important}
   .chip svg{width:11px;height:11px;flex:none}

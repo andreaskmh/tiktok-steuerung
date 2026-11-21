@@ -617,3 +617,4 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - Was: Während „Schnell“/„Voll“ läuft, gibt es in der App einen Knopf „Abbrechen“ (mit Rückfrage). Er schreibt `auftrag.json` mit `art: "stopp"`, die Mac-App schickt dem Python-Lauf SIGTERM. `aktualisieren.py` beendet den laufenden Schritt samt Unterprozessen (eigene Prozessgruppe), meldet „abgebrochen“ und gibt die Handys frei.
 - Warum: Artur will einen laufenden Lauf stoppen können. Getestet mit einem Schein-Schritt: der Abbruch dauert 3 s und hinterlässt keine Unterprozesse.
 - X neben dem Haken in Research plus Abgleich mit der täglichen Social1-Research: an die Research-Session gegeben (Seite, Server und research.py liegen dort).
+- statsKMH Research: Das neue ✕ der Seite (`.nx`, von der Research-Session) sieht in der App aus wie der Haken: grauer Ring, gedrückt rot mit weißem ✕ (CSS in Ranglisten.swift).
