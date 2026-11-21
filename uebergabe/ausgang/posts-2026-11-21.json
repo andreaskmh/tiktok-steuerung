@@ -44,9 +44,21 @@
    "entwurf": false,
    "dauer_s": 161,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "15:42",
+   "account": "ella_robinson2",
+   "datei": "Video 151 - 04 BotaBay Roll-on-Parfuemset - V1.mp4",
+   "produkt": "BotaBay 9PCS Roll-on-Parfümset 3ml*9PCS ",
+   "tts_link": "https://shop.tiktok.com/view/product/1729839737516431684",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 126,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
-  "anduri.official": 4
+  "anduri.official": 4,
+  "ella_robinson2": 1
  }
 }
