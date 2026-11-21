@@ -543,6 +543,8 @@ def filtern(land):
             k["nr"], naechste = naechste, naechste + 1
             k["neu"] = True
     rein.sort(key=lambda k: k["nr"])
+    for k in rein:                                            # Artur 21.11.: Übernommenes (nicht erledigt) gilt ohne Seiten-Grenze
+        k["frueher"] = k["video_id"] in frueher and frueher[k["video_id"]] != "REACTIONS"
     (ORDNER / f"{land}-kandidaten.json").write_text(json.dumps(rein, ensure_ascii=False, indent=1))
     # Übernahme von früheren Tagen (DE + USA): Art von damals, nicht neu ansehen
     sort = ORDNER / f"{land}-sortiert.json"
@@ -666,7 +668,7 @@ def speichern(land, liste, nummern):
     neu = 0
     grenze = seiten_max(liste)
     nummern = [nr for nr in nummern if int(nr) in kand]       # Nr aus früherem Lesen (nicht mehr auf Social1) → war schon gespeichert
-    zu_weit = [nr for nr in nummern if kand[int(nr)].get("seite", 0) > grenze]
+    zu_weit = [nr for nr in nummern if kand[int(nr)].get("seite", 0) > grenze and not kand[int(nr)].get("frueher")]
     if zu_weit:
         print(f"{len(zu_weit)} Videos von Seite > {grenze} → nicht in {liste}: {zu_weit[:10]}")
     nummern = [nr for nr in nummern if nr not in zu_weit]
@@ -1257,7 +1259,7 @@ def rangliste(land):
     kand = {str(k["nr"]): k for k in json.loads((ORDNER / f"{land}-kandidaten.json").read_text())}
     gemacht = set()   # Artur 20.11.: Hinweis „Produkt schon verlinkt“ weglassen (bringt nichts); gepostete_produkte() bleibt für später
     zeilen = sorted(((punkte(kand[n]), n, art) for n, art in sort.items() if n in kand and not art.endswith("?")
-                     and int(kand[n].get("seite") or 0) <= seiten_max(f"{art.split('+')[0]} {land.upper()}")),   # wie speichern
+                     and (kand[n].get("frueher") or int(kand[n].get("seite") or 0) <= seiten_max(f"{art.split('+')[0]} {land.upper()}"))),   # wie speichern
                     reverse=True)   # Gleichstand: Nr als Text absteigend – sortieren nutzt denselben Schlüssel
     # Artur 20.11.2026: jede Liste (BOF, SLIDES, REACTIONS, QUALITY) zusätzlich als eigene Datei, Platz-Nr. je Datei neu
     arten = sorted({t for z in zeilen for t in z[2].split("+")})
