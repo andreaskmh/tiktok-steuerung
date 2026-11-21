@@ -198,11 +198,22 @@
    "entwurf": false,
    "dauer_s": 137,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "18:30",
+   "account": "ella_robinson2",
+   "datei": "Video 151 - 16 Elektrofahrrad - V1.mp4",
+   "produkt": "Elektrofahrrad für Erwachsene, 48 V 42,4",
+   "tts_link": "https://shop.tiktok.com/view/product/1729988087333886671",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 100,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "anduri.official": 5,
-  "ella_robinson2": 5,
+  "ella_robinson2": 6,
   "andreas.testet": 3,
   "artur.official": 5
  }
