@@ -909,6 +909,8 @@ def konto(account):
         if z and vorher and abs(z[1] - vorher[1]) < 3:
             break
         vorher, z = z, None
+    if not z:                                                    # 21.11.2026: Liste mitloggen (anduri fehlte mehrfach)
+        print("Konto-Liste gelesen:", [t[0] for t in tx if t[2] > 300], flush=True)
     z = muss(z, f"{account} nicht in „Konto wechseln“")
     tipp(z[0], z[1], tx, account, abstand=34)
     for _ in range(12):                                          # 13.11.: während Upload kein Kontowechsel → bestätigen, warten, nochmal
