@@ -591,3 +591,6 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
   den Server bei Bedarf selbst neu.
 - 21.11.2026 Kamera am iPhone 15 war schwarz, solange der Steuer-Server dessen Bildschirm mitschnitt → iPhone 15 beim Server abgemeldet.
   `aktualisieren.py` meldet nach jedem Lauf alle Handys außer dem Daten-iPhone 11 wieder ab.
+
+## 21.11.2026 – Ranglisten-Seite im statsKMH-Design
+- `uebergabe/ranglisten-seite/index.html`: Farben 1:1 aus statsKMH (Verlauf oben, Glas-Karten, Minzgrün, bunte runde Icons je Videoart: BOF orange, Reactions pink, Slideshows blau, Quality lila). Warum: Artur wollte das statsKMH-Design (Bildschirmaufnahme 21.11.).
