@@ -187,11 +187,22 @@
    "entwurf": false,
    "dauer_s": 94,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "18:05",
+   "account": "ella_robinson2",
+   "datei": "Video 151 - 12 Raglan Slim Tee Reaction - V1.mp4",
+   "produkt": "Raglan Slim Tee",
+   "tts_link": "https://shop.tiktok.com/view/product/1729910933378996877",
+   "weg": "wagen",
+   "entwurf": false,
+   "dauer_s": 137,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "anduri.official": 5,
-  "ella_robinson2": 4,
+  "ella_robinson2": 5,
   "andreas.testet": 3,
   "artur.official": 5
  }
