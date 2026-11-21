@@ -35,7 +35,7 @@ struct Ranglisten: View {
 
     var inhalt: some View {
             ZStack {
-                Color("StartFarbe").ignoresSafeArea()
+                Hintergrund()   // derselbe Verlauf wie in „Statistik“ – die Seite selbst wird durchsichtig
                 if fehler {
                     ContentUnavailableView {
                         Label("Ranglisten nicht erreichbar", systemImage: "wifi.exclamationmark")
@@ -86,7 +86,9 @@ struct WebSeite: WebBasis {
         k.userContentController.addUserScript(WKUserScript(source: ranglistenAussehen, injectionTime: .atDocumentEnd, forMainFrameOnly: true))
         let w = WKWebView(frame: .zero, configuration: k); w.navigationDelegate = c.coordinator
         #if os(iOS)
-        w.isOpaque = false; w.backgroundColor = .clear
+        w.isOpaque = false; w.backgroundColor = .clear; w.scrollView.backgroundColor = .clear
+        #else
+        w.setValue(false, forKey: "drawsBackground")
         #endif
         w.load(URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 8))
         return w
@@ -114,6 +116,7 @@ let ranglistenAussehen = #"""
   .chip.skript{color:var(--gelb)!important;background:rgba(255,210,63,.12)!important}
   .chip svg{width:11px;height:11px;flex:none}
   .alt{font-weight:600}
+  html,body{background:transparent!important}
   body{padding-bottom:120px!important}
   details summary{list-style:none}details summary::-webkit-details-marker{display:none}
   details summary::before{content:"";display:inline-block;width:0;height:0;border-left:6px solid currentColor;border-top:4px solid transparent;border-bottom:4px solid transparent;margin-right:7px;transition:transform .15s}

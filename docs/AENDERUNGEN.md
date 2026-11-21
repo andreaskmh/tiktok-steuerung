@@ -608,3 +608,4 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
   Reactions Pink→Lila, Slideshows Blau→Indigo, Qualität Gelb→Orange.
 - 21.11.2026 statsKMH Research: Haken weiß statt grün; Listen-Symbole schlicht wie in „Statistik“ (je eine App-Farbe mit leichtem Verlauf:
   BOF blau, Reactions pink, Slideshows lila, Qualität orange).
+- 21.11.2026 statsKMH Research: Seite in der App durchsichtig, dahinter derselbe Verlauf wie „Statistik“ (oben war ein dunkelblauer Streifen).
