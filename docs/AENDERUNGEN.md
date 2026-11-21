@@ -606,3 +606,5 @@ bleibt (vorher: 0 Videos, `filtern` leerte de-kandidaten.json; aus Git wiederher
 - 21.11.2026 statsKMH: Bereich „Ranglisten“ heißt „Research“ (Leiste + Seitentitel in der App); Leiste unten über der Research-Seite
   durchsichtig (Seite läuft darunter weiter); Listen-Symbole mit Verläufen wie das Logo: BOF Türkis→Blau (statt Orange),
   Reactions Pink→Lila, Slideshows Blau→Indigo, Qualität Gelb→Orange.
+- 21.11.2026 statsKMH Research: Haken weiß statt grün; Listen-Symbole schlicht wie in „Statistik“ (je eine App-Farbe mit leichtem Verlauf:
+  BOF blau, Reactions pink, Slideshows lila, Qualität orange).

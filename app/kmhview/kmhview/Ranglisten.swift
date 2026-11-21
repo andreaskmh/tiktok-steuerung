@@ -109,7 +109,7 @@ let ranglistenAussehen = #"""
   .ic svg{width:15px;height:15px;display:block}
   .kt b{font-weight:700!important;letter-spacing:-.01em}
   .hk{width:24px!important;height:24px!important;border-width:1.5px!important;border-color:rgba(255,255,255,.22)!important}
-  .hk[aria-pressed="true"]{font-size:0!important;background:var(--gruen) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4L18.5 8' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/15px no-repeat!important}
+  .hk[aria-pressed="true"]{font-size:0!important;border-color:rgba(255,255,255,.9)!important;background:rgba(255,255,255,.9) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4L18.5 8' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/15px no-repeat!important}
   .chip{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.08)!important;color:var(--mut)!important;font-weight:600!important}
   .chip.skript{color:var(--gelb)!important;background:rgba(255,210,63,.12)!important}
   .chip svg{width:11px;height:11px;flex:none}
@@ -131,8 +131,9 @@ let ranglistenAussehen = #"""
     "🎵": `<svg ${w} fill="currentColor"><path d="M9 17.5V6.6l10-2.1v10.9" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="6.6" cy="17.6" r="2.6"/><circle cx="16.6" cy="15.4" r="2.6"/></svg>`
   };
   // Verläufe wie das App-Logo (BOF = Türkis→Blau statt Orange, Artur 21.11.)
-  const FARBE = { "▶": "linear-gradient(135deg,#2FE0B5,#2C6BFF)", "☺": "linear-gradient(135deg,#FF7AB6,#B57BFF)",
-                  "▤": "linear-gradient(135deg,#5AA8FF,#5B4CFF)", "★": "linear-gradient(135deg,#FFD23F,#FF8A3D)" };
+  // schlicht wie die Symbole in „Statistik“: eine App-Farbe mit leichtem Verlauf (Artur 21.11.)
+  const f = c => `linear-gradient(180deg,color-mix(in srgb,${c} 78%,#fff),${c})`;
+  const FARBE = { "▶": f("#4C8DFF"), "☺": f("#FF5C9A"), "▤": f("#B57BFF"), "★": f("#FF9F2E") };
   const ALT = { Today: "Heute", Yesterday: "Gestern" };
   function fix() {
     document.querySelectorAll(".ic:not([data-k])").forEach(e => {
