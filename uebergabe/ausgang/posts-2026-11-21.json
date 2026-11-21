@@ -165,12 +165,23 @@
    "entwurf": false,
    "dauer_s": 110,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "17:18",
+   "account": "artur.official",
+   "datei": "Video 151 - 51 Magic John Privacy Folie - V1.mp4",
+   "produkt": "MAGIC JOHN Red Privacy Tempered Glass Sc",
+   "tts_link": "https://shop.tiktok.com/view/product/1729997983331425236",
+   "weg": "erstellen",
+   "entwurf": false,
+   "dauer_s": 185,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "anduri.official": 5,
   "ella_robinson2": 3,
   "andreas.testet": 3,
-  "artur.official": 4
+  "artur.official": 5
  }
 }
