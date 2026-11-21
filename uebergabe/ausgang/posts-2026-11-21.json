@@ -66,11 +66,23 @@
    "entwurf": false,
    "dauer_s": 133,
    "werkzeug": "post_mensch"
+  },
+  {
+   "zeit": "15:50",
+   "account": "artur.official",
+   "datei": "Video 151 - 02 Medicube Pflegeset - V1.mp4",
+   "produkt": "[medicube Offizieller Shop] Black Friday",
+   "tts_link": "https://shop.tiktok.com/view/product/1729988048241859286",
+   "weg": "showcase",
+   "entwurf": false,
+   "dauer_s": 109,
+   "werkzeug": "post_mensch"
   }
  ],
  "zaehler": {
   "anduri.official": 4,
   "ella_robinson2": 1,
-  "andreas.testet": 1
+  "andreas.testet": 1,
+  "artur.official": 1
  }
 }
